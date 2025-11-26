@@ -57,6 +57,8 @@ dependencies:
   toastification: ^3.0.3
   connectivity_plus: ^7.0.0
   internet_connection_checker: ^1.0.0+1
+  firebase_core: ^4.2.1
+  firebase_messaging: ^16.0.4
 
 
 dev_dependencies:
