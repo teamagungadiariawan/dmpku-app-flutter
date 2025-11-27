@@ -1,16 +1,22 @@
+import 'dart:io';
+
 import 'package:dmpku/core/constants/app_info.dart';
-import 'package:dmpku/core/themes/app_colors.dart';
+import 'package:dmpku/core/helpers/device_info_helper.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/pages/auth/splash_page.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'core/helpers/connection_helper.dart';
@@ -19,23 +25,17 @@ import 'core/helpers/navigator_helper.dart';
 import 'core/themes/app_theme.dart';
 import 'core/themes/theme_provider.dart';
 
+part 'service_init.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Enable Edge-to-Edge on Android 10+
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.yellow,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
-    ),
-  );
 
   // Initialize TextScaleProvider
   final textScaleProvider = TextScaleProvider();
   await textScaleProvider.init();
+
+  await _init();
+
   runApp(MyApp(textScaleProvider: textScaleProvider));
 }
 
@@ -111,18 +111,17 @@ class _MyAppState extends State<MyApp> {
                     themeMode: themeProvider.themeMode,
                     navigatorKey: navigatorKey,
                     initialRoute: SplashPage.routeName,
-                    supportedLocales: const [
-                      Locale('en'),
-                      Locale('id'),
-                    ],
+                    supportedLocales: const [Locale('en'), Locale('id')],
                     // Tambahkan ini untuk disable system text scale
                     builder: (context, child) {
-                      debugPrint('=== SCALE: ${MediaQuery.textScalerOf(context).scale(0.8)}');
+                      debugPrint(
+                        '=== SCALE: ${MediaQuery.textScalerOf(context).scale(0.8)}',
+                      );
 
                       return MediaQuery(
-                        data: MediaQueryData.fromView(View.of(context)).copyWith(
-                          textScaler: const TextScaler.linear(0.8),
-                        ),
+                        data: MediaQueryData.fromView(
+                          View.of(context),
+                        ).copyWith(textScaler: const TextScaler.linear(0.8)),
                         child: child ?? const SizedBox.shrink(),
                       );
                     },

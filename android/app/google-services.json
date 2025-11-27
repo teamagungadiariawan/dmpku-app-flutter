@@ -1,0 +1,219 @@
+{
+  "project_info": {
+    "project_number": "297603514419",
+    "project_id": "dmplinks-c09f4",
+    "storage_bucket": "dmplinks-c09f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:0f4bdab98bcdfa7d3e6346",
+        "android_client_info": {
+          "package_name": "com.anonymous.first"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:aa158f254f82cbc03e6346",
+        "android_client_info": {
+          "package_name": "com.dmp.mitrakonter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:5f14798c246934533e6346",
+        "android_client_info": {
+          "package_name": "com.dmp.mitrakonter.no_loc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:ba57834ce565a6353e6346",
+        "android_client_info": {
+          "package_name": "com.dmp.pramigrasi.mitrakonter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:9d8aeeed3a0faecc3e6346",
+        "android_client_info": {
+          "package_name": "com.dmpku.saldo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:8e660a5da29d82f43e6346",
+        "android_client_info": {
+          "package_name": "com.dmplinks.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:20fd81670a33e08d3e6346",
+        "android_client_info": {
+          "package_name": "com.dmplinks_apps.dmplinks_apps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:635170de2d0aacb33e6346",
+        "android_client_info": {
+          "package_name": "id.co.aviana.duniamasterpulsa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:ef49dfda127a26c23e6346",
+        "android_client_info": {
+          "package_name": "id.co.aviana.duniamasterpulsa_develop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:904d5801be98cba43e6346",
+        "android_client_info": {
+          "package_name": "id.co.aviana.pramigrasi.duniamasterpulsa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297603514419:android:54321b481f93a2343e6346",
+        "android_client_info": {
+          "package_name": "test.tt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZxzxLJISKrBCCmLOjQGMSOiBac_aBvLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
