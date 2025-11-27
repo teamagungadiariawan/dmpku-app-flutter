@@ -2,6 +2,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dmpku/core/helpers/connection_helper.dart';
+import 'package:dmpku/core/helpers/date_helper.dart';
+import 'package:dmpku/core/helpers/device_info_helper.dart';
+import 'package:dmpku/core/helpers/encrypt_helper.dart';
+import 'package:dmpku/core/helpers/location_helper.dart';
+import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:flutter/cupertino.dart';
 
 String _base() {
@@ -40,7 +45,7 @@ String getPathAfterGuest(String url) {
 }
 
 class ApiClientGuest {
-  static final Dio _dio = _createDio(baseUrl);
+  static final Dio _dio = _createDio(baseUrl + "/api/");
   static final Dio _dioCallback = _createDio(baseUrlCallback);
 
   static Dio get dio => _dio;
@@ -74,23 +79,66 @@ class _AppInterceptor extends QueuedInterceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final isOnline = await ConnectivityService().isOnline();
-
-    if (!isOnline) {
-      return handler.reject(
-        DioException(
-          requestOptions: options,
-          type: DioExceptionType.connectionError,
-          error: 'Tidak ada koneksi internet',
-        ),
-      );
-    }
-
-
     try {
-      final dataMap = {};
-    } catch (e) {
-      // Handle any errors if necessary
+      final isOnline = await ConnectivityService().checkConnection();
+      final dataMap = options.data as Map<dynamic, dynamic>? ?? {};
+
+      var headers = options.headers;
+
+      var fmcUser = (await SecureStorageHelper.instance.getToken()) ?? '';
+      var keteragan = await getKeterangan();
+      var location = await getLocation();
+      var part = getPathAfterGuest(options.path);
+
+      var requnixtime = DateHelper.currentUnixTimestamp().toString();
+
+      dataMap["fmcuser"] = fmcUser;
+      dataMap["keterangan"] = '$keteragan - $location';
+      dataMap["requnixtime"] = requnixtime;
+      dataMap["uuid"] = await getDeviceId2();
+      dataMap["version"] = await getVersion();
+      dataMap["part"] = part;
+
+      var noauthsign = EncryptHelper.md5NoAuth(
+        unixtime: requnixtime,
+        keterangan: dataMap["keterangan"],
+        part: part,
+      );
+
+      debugPrint("Request DATA : $dataMap");
+
+      var encData = EncryptHelper.encrypt(dataMap);
+
+      headers["ariawan"] = encData.a;
+      headers["noauthsign"] = noauthsign;
+      headers["version"] = await getVersion();
+      headers["time"] = DateHelper.currentIso8601StringZ();
+
+
+      var hslEnc = EncryptHelper.encrypt(dataMap);
+
+      options.data = {"a": hslEnc.a};
+      options.headers = headers;
+
+      debugPrint("Request URL: ${options.uri}");
+      debugPrint("Request HEader: ${options.headers}");
+      debugPrint("Request Encrypted Data: ${hslEnc.a}");
+
+      if (!isOnline) {
+        return handler.reject(
+          DioException(
+            requestOptions: options,
+            type: DioExceptionType.connectionError,
+            error: 'Tidak ada koneksi internet',
+          ),
+        );
+      }
+    } catch (e, stackTrace) {
+      debugPrint('═══════════════════════════════════');
+      debugPrint('ERROR: $e');
+      debugPrint('STACK TRACE:');
+      debugPrint(stackTrace.toString());
+      debugPrint('═══════════════════════════════════');
     }
 
     super.onRequest(options, handler);
@@ -98,6 +146,34 @@ class _AppInterceptor extends QueuedInterceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
+    try {
+      debugPrint("Response Status Code: ${response.statusCode}");
+
+      debugPrint("Response Data: ${response.data}");
+
+      if (response.data == null) {
+        throw DioException(
+          requestOptions: response.requestOptions,
+          type: DioExceptionType.badResponse,
+          error: 'Response data is null',
+        );
+      }
+
+      var data = response.data;
+
+      if (data["a"] != null) {
+        var enc = Encrypted(a: data["a"] as String);
+        var decryptedData = EncryptHelper.decrypt(enc);
+        debugPrint("Decrypted Response Data: $decryptedData");
+
+        response.data = decryptedData;
+      } else {
+        debugPrint("No encrypted data found in response.");
+      }
+    } catch (e) {
+      debugPrint("Error during response decryption: $e");
+    }
+
     super.onResponse(response, handler);
   }
 
