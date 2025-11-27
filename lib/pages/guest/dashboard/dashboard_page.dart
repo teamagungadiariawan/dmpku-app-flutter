@@ -1,3 +1,4 @@
+import 'package:dmpku/core/helpers/encrypt_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
@@ -140,7 +141,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
   void _handleMenuTap(String menuTitle) {
     debugPrint('Tapped on menu: $menuTitle');
-    // TODO: Navigate to respective page
+    var hslEnc = EncryptHelper.encrypt({'menu': menuTitle});
+    debugPrint('Encrypted menu data: ${hslEnc.a}');
   }
 
   void _handlePromoTap() {
