@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:dmpku/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,8 +20,16 @@ Future<String> getLocation() async {
     );
     result = "${loc.latitude},${loc.longitude}";
 
-    await secureStorage.write(key: keyLocation, value: result);
-  } catch (_) {}
+    await SecureStorageHelper.instance.write(StorageKeys.location, result);
+  } catch (e) {
+    debugPrint("ERROR GET LOCATION: $e");
+    final storedLoc = await SecureStorageHelper.instance.read(
+      StorageKeys.location,
+    );
+    if (storedLoc != null && storedLoc.isNotEmpty) {
+      result = storedLoc;
+    }
+  }
 
   if (result.isEmpty) {
     throw errLoc;
