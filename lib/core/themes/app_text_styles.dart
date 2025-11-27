@@ -337,6 +337,15 @@ class FontSizeTextStyles {
 
 // ==================== HELPER EXTENSION WITH SCALING ====================
 
+class AppTextHeightBehavior {
+  // Menghilangkan padding atas dan bawah dari font
+  static const TextHeightBehavior noPadding = TextHeightBehavior(
+    applyHeightToFirstAscent: false,
+    applyHeightToLastDescent: false,
+    leadingDistribution: TextLeadingDistribution.even,
+  );
+}
+
 extension TextStyleHelperExtension on BuildContext {
   // ========== Private Helper ==========
   bool get _isDark => Theme.of(this).brightness == Brightness.dark;
