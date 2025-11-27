@@ -3,6 +3,7 @@ import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
+import 'package:dmpku/service/informasi_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
@@ -18,14 +19,18 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  final InformasiService _informasiService = InformasiService();
+
   @override
-  void initState() {
+  void initState()  {
     super.initState();
+
 
     gotoGuestDashboard();
   }
 
   void gotoGuestDashboard() async {
+    await _informasiService.getInformasi();
     await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
     pushReplacementNamed(MainPage.routeName);

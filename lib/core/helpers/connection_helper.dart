@@ -1,66 +1,66 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dmpku/widgets/dialog/offline_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ConnectivityService {
   static final ConnectivityService _instance = ConnectivityService._internal();
-
   factory ConnectivityService() => _instance;
-
   ConnectivityService._internal();
 
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<List<ConnectivityResult>>? _subscription;
 
   bool _isOfflineSheetShown = false;
-  BuildContext? _context;
 
-  void init(BuildContext context) {
-    _context = context;
+  // Gunakan GlobalKey untuk akses Navigator yang aman
+  GlobalKey<NavigatorState>? _navigatorKey;
+  VoidCallback? _onOffline;
+  VoidCallback? _onOnline;
+
+  void init({
+    required GlobalKey<NavigatorState> navigatorKey,
+    VoidCallback? onOffline,
+    VoidCallback? onOnline,
+  }) {
+    _navigatorKey = navigatorKey;
+    _onOffline = onOffline;
+    _onOnline = onOnline;
+    _subscription?.cancel();
     _subscription = _connectivity.onConnectivityChanged.listen(_handleChange);
   }
 
   void _handleChange(List<ConnectivityResult> results) {
-    if (_context == null) return;
+    final navigator = _navigatorKey?.currentState;
+    if (navigator == null) return;
 
-    // Cek apakah semua result adalah none (offline)
-    final isOffline =
-        results.isEmpty ||
-        results.every((result) => result == ConnectivityResult.none);
+    final isOffline = results.isEmpty ||
+        results.every((r) => r == ConnectivityResult.none);
 
-    if (isOffline) {
-      if (!_isOfflineSheetShown) {
-        _isOfflineSheetShown = true;
-        OfflineDialog.show(_context!, onRetry: () => _checkAndRetry());
-      }
-    } else {
-      if (_isOfflineSheetShown) {
-        _isOfflineSheetShown = false;
-        Navigator.of(_context!).pop();
-      }
-    }
-  }
-
-  Future<void> _checkAndRetry() async {
-    final results = await _connectivity.checkConnectivity();
-    final isOnline =
-        results.isNotEmpty &&
-        results.any((result) => result != ConnectivityResult.none);
-
-    if (isOnline && _context != null) {
+    if (isOffline && !_isOfflineSheetShown) {
+      _isOfflineSheetShown = true;
+      _onOffline?.call();
+    } else if (!isOffline && _isOfflineSheetShown) {
       _isOfflineSheetShown = false;
-      Navigator.of(_context!).pop();
+      _onOnline?.call();
+      if (navigator.canPop()) navigator.pop();
     }
   }
 
-  Future<bool> isOnline() async {
+  Future<bool> checkConnection() async {
     final results = await _connectivity.checkConnectivity();
     return results.isNotEmpty &&
-        results.any((result) => result != ConnectivityResult.none);
+        results.any((r) => r != ConnectivityResult.none);
+  }
+
+  Future<void> retryConnection() async {
+    if (await checkConnection()) {
+      _isOfflineSheetShown = false;
+      _navigatorKey?.currentState?.pop();
+    }
   }
 
   void dispose() {
     _subscription?.cancel();
+    _subscription = null;
   }
 }
