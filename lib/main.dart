@@ -1,18 +1,11 @@
-import 'dart:io';
-
 import 'package:dmpku/core/constants/app_info.dart';
-import 'package:dmpku/core/helpers/device_info_helper.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/pages/auth/splash_page.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:dmpku/service_init.dart';
+import 'package:dmpku/widgets/dialog/offline_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -25,7 +18,9 @@ import 'core/helpers/navigator_helper.dart';
 import 'core/themes/app_theme.dart';
 import 'core/themes/theme_provider.dart';
 
-part 'service_init.dart';
+Future<void> _init() async {
+  await ServiceInitializer.init(); // Gabungkan semua
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,10 +50,13 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final context = _navigatorKey.currentContext;
-      if (context != null) {
-        ConnectivityService().init(context);
-      }
+      ConnectivityService().init(
+        navigatorKey: navigatorKey, // Gunakan yang dari navigator_helper.dart
+        onOffline: () => OfflineDialog.show(
+          navigatorKey.currentContext!,
+          onRetry: () => ConnectivityService().retryConnection(),
+        ),
+      );
     });
   }
 

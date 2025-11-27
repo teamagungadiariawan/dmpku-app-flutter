@@ -1,106 +1,59 @@
-part of 'main.dart';
+import 'dart:io';
 
-late final FlutterSecureStorage secureStorage;
-late final PackageInfo packageInfo;
-late final String deviceName;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-const keyToken =
-    "bDCMnwWOGQXk8s/IC4IiXuPWDfvwy/Wx4Y3jlAxSRCC8dsWgLdJjc1Ur6qerxA/8";
-const keyLocation =
-    "sLm05Q89J2YRKyJNGfzqIxvH/eFHuibnPNAphmos0l+8dsWgLdJjc1Ur6qerxA/8";
+import 'core/helpers/storage_helper.dart';
+import 'core/helpers/system_ui_helper.dart';
 
-FlutterSecureStorage getSecureStorage() {
-  if (Platform.isAndroid) {
-    return FlutterSecureStorage(
-      aOptions: AndroidOptions(encryptedSharedPreferences: true),
-    );
-  } else if (Platform.isIOS) {
-    return FlutterSecureStorage(
-      iOptions: IOSOptions(
-        accessibility: KeychainAccessibility.first_unlock_this_device,
-      ),
-    );
-  }
-  return FlutterSecureStorage();
-}
-
-void _setupSecureStorage() async {
-  secureStorage = getSecureStorage();
-}
-
-void _setupEdgeToEdge() {
-  // Enable Edge-to-Edge on Android 10+
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.yellow,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
-    ),
-  );
-}
-
-Future<void> _setupFirebase() async {
-  await Firebase.initializeApp();
-
-  // Dapatkan FCM token
-  String? token = await FirebaseMessaging.instance.getToken();
-  debugPrint('FCM Token: $token');
-
-  if (token != null) {
-    secureStorage.write(key: keyToken, value: token);
+class ServiceInitializer {
+  static Future<void> init() async {
+    await Future.wait([_setupPermissions(), _setupFirebase()]);
+    setupEdgeToEdge();
   }
 
-  FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
-    debugPrint('Token refreshed: $newToken');
-    secureStorage.write(key: keyToken, value: newToken);
-  });
-}
+  static Future<void> _setupFirebase() async {
+    await Firebase.initializeApp();
 
-Future<void> _setupPackageInfo() async {
-  packageInfo = await PackageInfo.fromPlatform();
-}
+    final messaging = FirebaseMessaging.instance;
+    final token = await messaging.getToken();
 
-Future<void> _setupPermissions() async {
-  if (Platform.isAndroid) {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
-      Permission.storage,
-      Permission.camera,
-      Permission.notification,
-    ].request();
-
-    // Handle jika permission denied
-    if (statuses[Permission.location]!.isDenied) {
-      // Handle denied
+    if (token != null) {
+      await SecureStorageHelper.instance.saveToken(token);
+      debugPrint('FCM Token: $token');
     }
 
-    if (statuses[Permission.location]!.isPermanentlyDenied) {
-      // Arahkan ke settings
-      await openAppSettings();
-    }
-  } else if (Platform.isIOS) {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.locationWhenInUse,
-      Permission.photos,
-      Permission.camera,
-      Permission.notification,
-    ].request();
-
-    // Handle denied
+    messaging.onTokenRefresh.listen((newToken) {
+      SecureStorageHelper.instance.saveToken(newToken);
+      debugPrint('Token refreshed: $newToken');
+    });
   }
-}
 
-Future<void> _init() async {
-  await _setupPermissions();
-  _setupSecureStorage();
-  _setupEdgeToEdge();
-  await _setupPackageInfo();
-  await _setupFirebase();
+  static Future<void> _setupPermissions() async {
+    final permissions = Platform.isAndroid
+        ? [
+            Permission.location,
+            Permission.storage,
+            Permission.camera,
+            Permission.notification,
+          ]
+        : [
+            Permission.locationWhenInUse,
+            Permission.photos,
+            Permission.camera,
+            Permission.notification,
+          ];
 
-  var id = await getDeviceId2();
+    final statuses = await permissions.request();
 
-  debugPrint("DEVICE ID: $id");
-
+    // Handle permanently denied permissions
+    for (final entry in statuses.entries) {
+      if (entry.value.isPermanentlyDenied) {
+        await openAppSettings();
+        break;
+      }
+    }
+  }
 }
