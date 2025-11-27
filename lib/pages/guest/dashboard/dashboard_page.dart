@@ -1,7 +1,9 @@
 import 'package:dmpku/core/helpers/encrypt_helper.dart';
+import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -63,10 +65,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: IsiUlangSection(
-                    menus: _isiUlangMenus,
-                    onMenuTap: _handleMenuTap,
-                  ),
+                  child: IsiUlangSection(menus: _isiUlangMenus),
                 ),
                 SliverToBoxAdapter(
                   child: PaketCuanBanner(onTap: _handlePaketCuanTap),
@@ -97,7 +96,13 @@ class _DashboardPageState extends State<DashboardPage> {
   ];
 
   List<MenuData> get _isiUlangMenus => [
-    MenuData("Pulsa", Assets.img.menuIsiUlang.iconPulsa.provider()),
+    MenuData(
+      "Pulsa",
+      Assets.img.menuIsiUlang.iconPulsa.provider(),
+      onTap: () {
+        pushNamed(GuestPulsaProviderPage.routeName);
+      },
+    ),
     MenuData("Paket Data", Assets.img.menuIsiUlang.iconPaketData.provider()),
     MenuData(
       "Paket SMS & Telepon",

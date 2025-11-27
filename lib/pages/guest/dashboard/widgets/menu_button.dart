@@ -6,8 +6,9 @@ import 'package:gap/gap.dart';
 class MenuData {
   final String title;
   final ImageProvider icon;
+  final VoidCallback? onTap;
 
-  const MenuData(this.title, this.icon);
+  const MenuData(this.title, this.icon, {this.onTap});
 }
 
 class MenuButton extends StatelessWidget {

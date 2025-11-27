@@ -6,12 +6,10 @@ import 'menu_button.dart';
 
 class IsiUlangSection extends StatelessWidget {
   final List<MenuData> menus;
-  final ValueChanged<String> onMenuTap;
 
   const IsiUlangSection({
     super.key,
     required this.menus,
-    required this.onMenuTap,
   });
 
   @override
@@ -43,7 +41,9 @@ class IsiUlangSection extends StatelessWidget {
               return MenuButton(
                 title: menu.title,
                 icon: menu.icon,
-                onTap: () => onMenuTap(menu.title),
+                onTap: () => {
+                  if (menu.onTap != null) {menu.onTap!()}
+                },
               );
             },
           ),
