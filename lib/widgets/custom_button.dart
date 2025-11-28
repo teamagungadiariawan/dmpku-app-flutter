@@ -20,6 +20,7 @@ class CustomButton extends StatefulWidget {
 
   final Color? foregroundColor;
   final Color? backgroundColor;
+  final Color? borderColor;
 
   const CustomButton({
     Key? key,
@@ -40,6 +41,7 @@ class CustomButton extends StatefulWidget {
 
     this.foregroundColor,
     this.backgroundColor,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -72,6 +74,8 @@ class _CustomButtonState extends State<CustomButton> {
           shape: RoundedRectangleBorder(
             borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
             side: widget.variant == ButtonVariant.outline
+                ? BorderSide(color: borderColor, width: 1.5)
+                : widget.variant == ButtonVariant.border
                 ? BorderSide(color: borderColor, width: 1.5)
                 : BorderSide.none,
           ),
@@ -266,13 +270,23 @@ class _CustomButtonState extends State<CustomButton> {
             : AppColors.lightForeground;
         brColor = Colors.transparent;
         break;
+
+      case ButtonVariant.border:
+        bgColor = isDarkMode
+            ? AppColors.darkBackground
+            : AppColors.lightBackground;
+        fgColor = isDarkMode
+            ? AppColors.darkForeground
+            : AppColors.lightForeground;
+        brColor = isDarkMode ? AppColors.darkBorder : AppColors.lightBorder;
+        break;
     }
 
     // Override dengan custom color jika diberikan
     return (
       widget.backgroundColor ?? bgColor,
       widget.foregroundColor ?? fgColor,
-      widget.foregroundColor ?? brColor, // border color mengikuti foreground
+      widget.borderColor ?? brColor, // border color mengikuti foreground
     );
   }
 
@@ -290,7 +304,7 @@ class _CustomButtonState extends State<CustomButton> {
 
 enum ButtonSize { small, medium, large }
 
-enum ButtonVariant { primary, secondary, destructive, outline, ghost }
+enum ButtonVariant { primary, secondary, destructive, outline, ghost, border }
 
 enum ButtonState { enabled, disabled, loading }
 
