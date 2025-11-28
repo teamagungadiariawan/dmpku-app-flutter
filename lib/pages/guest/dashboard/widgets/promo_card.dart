@@ -1,3 +1,4 @@
+import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class PromoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: paddingCard,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

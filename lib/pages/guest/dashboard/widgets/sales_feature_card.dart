@@ -1,3 +1,4 @@
+import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -19,7 +20,7 @@ class SalesFeatureCard extends StatelessWidget {
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.only(left: 10,right: 10, top: 6),
+        padding: paddingCard,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
