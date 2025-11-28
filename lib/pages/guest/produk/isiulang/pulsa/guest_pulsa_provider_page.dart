@@ -1,9 +1,11 @@
 import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
+import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/model/provider_response.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/custom_popup_input_tujuan.dart';
@@ -41,6 +43,23 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
     getPulsaProvider(context).fetchPulsaProviders();
   }
 
+  // Extract ke method terpisah:
+  List<ProviderModel> _filterProviders(
+    List<ProviderModel> providers,
+    String tujuan,
+  ) {
+    if (tujuan.length <= 2) return providers;
+
+    return providers.where((provider) {
+      return provider.prefixList.any((prefix) {
+        final maxRange = tujuan.length < prefix.length
+            ? tujuan.length
+            : prefix.length;
+        return prefix.startsWith(tujuan.substring(0, maxRange));
+      });
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -60,10 +79,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
             },
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 6.0,
-            ),
+            padding: paddingPage,
             child: Column(
               children: [
                 _buildPhoneNumberCard(context),
@@ -82,7 +98,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
       builder: (context, state) {
         return Card(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: paddingCard,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -142,16 +158,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
               },
               decoration: InputDecoration(
                 isDense: true,
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
                 hintText: 'Masukkan No. Tujuan',
-                contentPadding: EdgeInsets.zero,
-                hoverColor: Colors.transparent,
-                fillColor: Colors.transparent,
-                focusColor: Colors.transparent,
                 suffixIcon: Padding(
                   padding: const EdgeInsets.only(right: 0),
                   // Sesuaikan jika perlu
@@ -187,10 +194,6 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                     ],
                   ),
                 ),
-                suffixIconConstraints: const BoxConstraints(
-                  minHeight: 0,
-                  minWidth: 0,
-                ), // Hilangkan constraint default
               ),
             ),
           ),
@@ -203,6 +206,29 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
     );
   }
 
+  Widget _buildEmptyState(BuildContext context, PulsaState state) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset(Assets.animations.noData, width: 200, fit: BoxFit.cover),
+          Text(
+            state.tujuan.isEmpty
+                ? 'Masukkan nomor untuk melihat provider'
+                : 'Provider tidak ditemukan',
+            style: context.bodyMedium
+                .copyWith(color: context.mutedForeground)
+                .withWeight(FontWeight.bold),
+          ),
+          Text(
+            'Tarik ke bawah untuk refresh',
+            style: context.bodySmall.copyWith(color: context.mutedForeground),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<PulsaProvider, PulsaState>(
       builder: (context, state) {
@@ -210,27 +236,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
           return CardProviderListShimmer(itemCount: 6);
         }
 
-        var providers = state.pulsaProviders;
-
-        // Filter providers berdasarkan prefix nomor tujuan
-        if (state.tujuan.length > 2) {
-          providers = providers.where((provider) {
-            var ada = false;
-            var prefikList = provider.prefixList;
-
-            for (var prefik in prefikList) {
-              var maxRange = state.tujuan.length < prefik.length
-                  ? state.tujuan.length
-                  : prefik.length;
-
-              if (prefik.startsWith(state.tujuan.substring(0, maxRange))) {
-                ada = true;
-                break;
-              }
-            }
-            return ada;
-          }).toList();
-        }
+        var providers = _filterProviders(state.pulsaProviders, state.tujuan);
 
         if (providers.isEmpty) {
           return RefreshIndicator(
@@ -242,32 +248,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.5,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(
-                          Assets.animations.noData,
-                          width: 200,
-                          fit: BoxFit.cover,
-                        ),
-                        Text(
-                          state.tujuan.isEmpty
-                              ? 'Masukkan nomor untuk melihat provider'
-                              : 'Provider tidak ditemukan',
-                          style: context.bodyMedium
-                              .copyWith(color: context.mutedForeground)
-                              .withWeight(FontWeight.bold),
-                        ),
-                        Text(
-                          'Tarik ke bawah untuk refresh',
-                          style: context.bodySmall.copyWith(
-                            color: context.mutedForeground,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: _buildEmptyState(context, state),
                 ),
               ],
             ),
