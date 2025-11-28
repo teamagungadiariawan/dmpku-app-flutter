@@ -1,8 +1,9 @@
 import 'package:dmpku/core/apiconfig/server_exception.dart';
 import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
+import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/model/provider_response.dart';
-import 'package:dmpku/service/guest/produk_service.dart';
+import 'package:dmpku/service/guest/product_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,12 @@ class PulsaState extends Equatable {
   final TextEditingController? inputTujuanController;
   final String tujuan;
 
+  final ProviderModel selectedProvider;
+
+  final ApiStatus apiFetchPulsaProductStatus;
+  final String apiFetchPulsaProductMessage;
+  final List<ProductModel> pulsaProduct;
+
   const PulsaState({
     this.apiFetchPulsaProviderStatus = ApiStatus.initial,
     this.apiFetchPulsaProviderMessage = '',
@@ -28,6 +35,12 @@ class PulsaState extends Equatable {
     this.errorMessageInputTujuan = '',
     this.inputTujuanController,
     this.tujuan = '',
+
+    this.selectedProvider = DEFAULT_PROVIDER,
+
+    this.apiFetchPulsaProductStatus = ApiStatus.initial,
+    this.apiFetchPulsaProductMessage = '',
+    this.pulsaProduct = const [],
   });
 
   PulsaState copyWith({
@@ -40,6 +53,12 @@ class PulsaState extends Equatable {
     String? errorMessageInputTujuan,
     TextEditingController? inputTujuanController,
     String? tujuan,
+
+    ProviderModel? selectedProvider,
+
+    ApiStatus? apiFetchPulsaProductStatus,
+    String? apiFetchPulsaProductMessage,
+    List<ProductModel>? pulsaProduct,
   }) {
     return PulsaState(
       apiFetchPulsaProviderStatus:
@@ -55,6 +74,14 @@ class PulsaState extends Equatable {
       inputTujuanController:
           inputTujuanController ?? this.inputTujuanController,
       tujuan: tujuan ?? this.tujuan,
+
+      selectedProvider: selectedProvider ?? this.selectedProvider,
+
+      apiFetchPulsaProductStatus:
+          apiFetchPulsaProductStatus ?? this.apiFetchPulsaProductStatus,
+      apiFetchPulsaProductMessage:
+          apiFetchPulsaProductMessage ?? this.apiFetchPulsaProductMessage,
+      pulsaProduct: pulsaProduct ?? this.pulsaProduct,
     );
   }
 
@@ -69,6 +96,12 @@ class PulsaState extends Equatable {
     errorMessageInputTujuan,
     inputTujuanController,
     tujuan,
+
+    selectedProvider,
+
+    apiFetchPulsaProductStatus,
+    apiFetchPulsaProductMessage,
+    pulsaProduct,
   ];
 }
 
@@ -83,14 +116,8 @@ class PulsaProvider extends Cubit<PulsaState> {
         ),
       );
 
-  void setTujuan(String tujuan,{
-    bool updateTextController = false,
-  }) {
-    emit(
-      state.copyWith(
-        tujuan: tujuan,
-      ),
-    );
+  void setTujuan(String tujuan, {bool updateTextController = false}) {
+    emit(state.copyWith(tujuan: tujuan));
 
     if (updateTextController) {
       state.inputTujuanController?.text = tujuan;
@@ -101,10 +128,7 @@ class PulsaProvider extends Cubit<PulsaState> {
 
     if (state.tujuan == '') {
       emit(
-        state.copyWith(
-          hasErrorInputTujuan: false,
-          errorMessageInputTujuan: '',
-        ),
+        state.copyWith(hasErrorInputTujuan: false, errorMessageInputTujuan: ''),
       );
       return;
     }
@@ -114,11 +138,10 @@ class PulsaProvider extends Cubit<PulsaState> {
     }
   }
 
-  bool validateTujuan({ProviderModel selectedProvider = DEFAULT_PROVIDER})  {
+  bool validateTujuan({ProviderModel selectedProvider = DEFAULT_PROVIDER}) {
     emit(
       state.copyWith(hasErrorInputTujuan: false, errorMessageInputTujuan: ''),
     );
-
 
     final tujuan = state.tujuan.trim();
 
@@ -186,6 +209,17 @@ class PulsaProvider extends Cubit<PulsaState> {
     return true;
   }
 
+  void resetProduk() {
+    emit(
+      state.copyWith(
+        apiFetchPulsaProductStatus: ApiStatus.initial,
+        apiFetchPulsaProductMessage: '',
+        pulsaProduct: [],
+        selectedProvider: DEFAULT_PROVIDER,
+      ),
+    );
+  }
+
   void resetState() {
     emit(
       PulsaState(
@@ -235,6 +269,59 @@ class PulsaProvider extends Cubit<PulsaState> {
         state.copyWith(
           apiFetchPulsaProviderStatus: ApiStatus.failure,
           apiFetchPulsaProviderMessage: e.message,
+        ),
+      );
+    }
+  }
+
+  void setSelectedProvider(ProviderModel provider) async {
+    emit(state.copyWith(selectedProvider: provider));
+
+    fetchPulsaProducts();
+  }
+
+  void fetchPulsaProducts() async {
+    if (state.selectedProvider.idprovider == 0) return;
+
+    if (state.apiFetchPulsaProductStatus.isLoading) return;
+    emit(
+      state.copyWith(
+        apiFetchPulsaProductStatus: ApiStatus.loading,
+        apiFetchPulsaProductMessage: '',
+        pulsaProduct: [],
+      ),
+    );
+
+    try {
+      final result = await _produkService.getPulsaGuestProducts(
+        idProvider: state.selectedProvider.idprovider,
+      );
+
+      final data = result.data;
+
+      if (data != null) {
+        emit(
+          state.copyWith(
+            apiFetchPulsaProductStatus: ApiStatus.success,
+            pulsaProduct: data.productList,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            apiFetchPulsaProductStatus: ApiStatus.failure,
+            apiFetchPulsaProductMessage: 'Data produk pulsa kosong',
+          ),
+        );
+      }
+    } on ServerException catch (e) {
+      debugPrint("SERVER EXCEPTION FETCH PULSA PRODUCTS: ${e.message}");
+
+      showWarningMessage(e.message);
+      emit(
+        state.copyWith(
+          apiFetchPulsaProductStatus: ApiStatus.failure,
+          apiFetchPulsaProductMessage: e.message,
         ),
       );
     }
