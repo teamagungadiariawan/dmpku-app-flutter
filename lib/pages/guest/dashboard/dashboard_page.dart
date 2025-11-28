@@ -5,6 +5,7 @@ import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -147,9 +148,7 @@ class _DashboardPageState extends State<DashboardPage> {
   // ============================================================
 
   void _handleMenuTap(String menuTitle) {
-    debugPrint('Tapped on menu: $menuTitle');
-    var hslEnc = EncryptHelper.encrypt({'menu': menuTitle});
-    debugPrint('Encrypted menu data: ${hslEnc.a}');
+    BelumLoginDialog.show(context);
   }
 
   void _handlePromoTap() {

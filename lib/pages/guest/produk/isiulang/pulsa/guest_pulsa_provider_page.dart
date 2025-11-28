@@ -7,6 +7,7 @@ import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/custom_popup_input_tujuan.dart';
+import 'package:dmpku/widgets/produk/button_favorit.dart';
 import 'package:dmpku/widgets/produk/card_provider.dart';
 import 'package:dmpku/widgets/produk/card_provider_shimmer.dart';
 import 'package:dmpku/widgets/shake_widget.dart';
@@ -103,6 +104,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                 ],
 
                 const Gap(5),
+                ButtonFavorit(isGuest: true, onResult: (val) {}),
               ],
             ),
           ),

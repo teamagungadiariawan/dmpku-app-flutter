@@ -1,6 +1,7 @@
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/dashboard/dashboard_page.dart';
+import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -35,6 +36,12 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _onItemTapped(int index) {
+
+    if (index != 0 && index != 3) {
+      BelumLoginDialog.show(context);
+      return;
+    }
+
     setState(() {
       _currentIndex = index;
     });
