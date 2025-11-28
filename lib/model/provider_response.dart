@@ -130,3 +130,19 @@ class ListProviderResponse {
     return {"data": providerList.map((e) => e.toJson()).toList()};
   }
 }
+
+const ProviderModel DEFAULT_PROVIDER = ProviderModel(
+  idprovider: 0,
+  kodeprovider: '',
+  namaprovider: '',
+  deskripsiprovider: '',
+  prefix: '',
+  mintujuan: 0,
+  maxtujuan: 0,
+  urutanprovider: 0,
+  tipepajak: 0,
+  imgprovider: '',
+  tipeinput: '',
+  statusprovider: 0,
+  imglocal: null,
+);
