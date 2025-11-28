@@ -1,3 +1,4 @@
+import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class CardProvider extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: paddingCard,
         decoration: BoxDecoration(
           color: isGangguan ? context.muted : context.card,
           border: Border.all(color: context.border, width: 1),

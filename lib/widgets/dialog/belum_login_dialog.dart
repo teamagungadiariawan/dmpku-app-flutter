@@ -1,5 +1,6 @@
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_colors.dart';
+import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/widgets/custom_button.dart';
@@ -42,7 +43,7 @@ class BelumLoginDialog extends StatelessWidget {
               Gap(5),
               Card(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  padding: paddingCard,
                   child: Row(
                     children: [
                       Container(
