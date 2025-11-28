@@ -108,3 +108,25 @@ class ProviderModel {
     return 'ProviderModel(idprovider: $idprovider, kodeprovider: $kodeprovider, namaprovider: $namaprovider)';
   }
 }
+
+class ListProviderResponse {
+  final List<ProviderModel> providerList;
+
+  ListProviderResponse({required this.providerList});
+
+  factory ListProviderResponse.fromJson(List<dynamic>? json) {
+    final List<ProviderModel> dataList = [];
+
+    if (json is List && json.isNotEmpty) {
+      for (final el in json) {
+        dataList.add(ProviderModel.fromJson(el));
+      }
+    }
+
+    return ListProviderResponse(providerList: dataList);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {"data": providerList.map((e) => e.toJson()).toList()};
+  }
+}
