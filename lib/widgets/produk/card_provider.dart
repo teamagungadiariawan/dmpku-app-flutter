@@ -44,7 +44,7 @@ class CardProvider extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: isGangguan ? context.muted : context.card,
           border: Border.all(color: context.border, width: 1),
@@ -65,7 +65,7 @@ class CardProvider extends StatelessWidget {
 
   Widget _buildImageContainer(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: context.muted,
         borderRadius: BorderRadius.circular(8),

@@ -16,7 +16,7 @@ class CardProviderShimmer extends StatelessWidget {
       margin: margin,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: context.card,
           border: Border.all(color: context.border, width: 1),
@@ -29,8 +29,8 @@ class CardProviderShimmer extends StatelessWidget {
             children: [
               // Image placeholder
               Container(
-                width: 32,
-                height: 32,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   color: context.muted,
                   borderRadius: BorderRadius.circular(8),
