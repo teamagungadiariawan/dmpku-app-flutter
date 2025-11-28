@@ -3,10 +3,12 @@ import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/pages/auth/splash_page.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/service_init.dart';
 import 'package:dmpku/widgets/dialog/offline_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -32,7 +34,12 @@ void main() async {
 
   await _init();
 
-  runApp(MyApp(textScaleProvider: textScaleProvider));
+  runApp(
+    MultiBlocProvider(
+      providers: [BlocProvider(create: (_) => PulsaProvider())],
+      child: MyApp(textScaleProvider: textScaleProvider),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -45,8 +52,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _navigatorKey = GlobalKey<NavigatorState>();
-
   @override
   void initState() {
     super.initState();
@@ -111,7 +116,6 @@ class _MyAppState extends State<MyApp> {
                     navigatorKey: navigatorKey,
                     initialRoute: SplashPage.routeName,
                     supportedLocales: const [Locale('en'), Locale('id')],
-                    // Tambahkan ini untuk disable system text scale
                     builder: (context, child) {
                       debugPrint(
                         '=== SCALE: ${MediaQuery.textScalerOf(context).scale(0.8)}',

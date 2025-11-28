@@ -4,6 +4,7 @@ import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -100,6 +101,7 @@ class _DashboardPageState extends State<DashboardPage> {
       "Pulsa",
       Assets.img.menuIsiUlang.iconPulsa.provider(),
       onTap: () {
+        getPulsaProvider(context).fetchPulsaProviders();
         pushNamed(GuestPulsaProviderPage.routeName);
       },
     ),
