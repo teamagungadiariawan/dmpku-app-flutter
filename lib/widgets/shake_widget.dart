@@ -208,10 +208,10 @@ class ShakeErrorWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ShakeErrorWidget> createState() => _ShakeErrorWidgetState();
+  State<ShakeErrorWidget> createState() => ShakeErrorWidgetState();
 }
 
-class _ShakeErrorWidgetState extends State<ShakeErrorWidget>
+class ShakeErrorWidgetState extends State<ShakeErrorWidget>
     with SingleTickerProviderStateMixin {
   late ShakeController _shakeController;
   bool _previousError = false;
@@ -243,6 +243,10 @@ class _ShakeErrorWidgetState extends State<ShakeErrorWidget>
     super.dispose();
   }
 
+  Future<void> shake() async {
+    await _shakeController.shake();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -257,7 +261,6 @@ class _ShakeErrorWidgetState extends State<ShakeErrorWidget>
     );
   }
 }
-
 
 // ==================== EXTENSION FOR EASY USE ====================
 
@@ -293,12 +296,14 @@ extension ShakeExtension on Widget {
   }
 
   Widget withErrorShake({
+    Key? key,
     required bool hasError,
     Duration duration = const Duration(milliseconds: 500),
     double distance = 8.0,
     VoidCallback? onShakeComplete,
   }) {
     return ShakeErrorWidget(
+      key: key,
       hasError: hasError,
       duration: duration,
       distance: distance,
