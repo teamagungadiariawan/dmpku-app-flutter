@@ -26,19 +26,18 @@ class AppTheme {
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: AppColors.lightBackground,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: AppColors.lightBorder),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: AppColors.lightBorder),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: AppColors.lightPrimary, width: 2),
+      filled: false,
+      fillColor: Colors.transparent,
+      border: InputBorder.none,
+      enabledBorder:  InputBorder.none,
+      focusedBorder:  InputBorder.none,
+      disabledBorder: InputBorder.none,
+      contentPadding: EdgeInsets.zero,
+      hoverColor: Colors.transparent,
+      focusColor: Colors.transparent,
+      suffixIconConstraints: const BoxConstraints(
+        minHeight: 0,
+        minWidth: 0,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
