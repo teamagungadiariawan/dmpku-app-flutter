@@ -33,19 +33,19 @@ class ProviderModel {
 
   factory ProviderModel.fromJson(Map<String, dynamic> json) {
     return ProviderModel(
-      idprovider: (json['idprovider'] ?? 0) as int,
-      kodeprovider: (json['kodeprovider'] ?? '') as String,
-      namaprovider: (json['namaprovider'] ?? '') as String,
-      deskripsiprovider: (json['deskripsiprovider'] ?? '') as String,
-      prefix: (json['prefix'] ?? '') as String,
-      mintujuan: (json['mintujuan'] ?? 0) as int,
-      maxtujuan: (json['maxtujuan'] ?? 0) as int,
-      urutanprovider: (json['urutanprovider'] ?? 0) as int,
-      tipepajak: (json['tipepajak'] ?? 0) as int,
-      imgprovider: (json['imgprovider'] ?? '') as String,
-      tipeinput: (json['tipeinput'] ?? '') as String,
-      statusprovider: (json['statusprovider'] ?? 0) as int,
-      imglocal: null, // not deserialized from JSON
+      idprovider: json['idprovider'] ?? 0,
+      kodeprovider: json['kodeprovider'] ?? '',
+      namaprovider: json['namaprovider'] ?? '',
+      deskripsiprovider: json['deskripsiprovider'] ?? '',
+      prefix: json['prefix'] ?? '',
+      mintujuan: json['mintujuan'] ?? 0,
+      maxtujuan: json['maxtujuan'] ?? 0,
+      urutanprovider: json['urutanprovider'] ?? 0,
+      tipepajak: json['tipepajak'] ?? 0,
+      imgprovider: json['imgprovider'] ?? '',
+      tipeinput: json['tipeinput'] ?? '',
+      statusprovider: json['statusprovider'] ?? 0,
+      imglocal: null,
     );
   }
 
