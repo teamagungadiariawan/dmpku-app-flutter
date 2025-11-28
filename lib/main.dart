@@ -2,6 +2,7 @@ import 'package:dmpku/core/constants/app_info.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/pages/auth/splash_page.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/service_init.dart';
@@ -141,6 +142,10 @@ class _MyAppState extends State<MyApp> {
                         case GuestPulsaProviderPage.routeName:
                           return _customTransition(
                             child: const GuestPulsaProviderPage(),
+                          );
+                        case GuestPulsaProdukPage.routeName:
+                          return _customTransition(
+                            child: const GuestPulsaProdukPage(),
                           );
                         default:
                           return null;

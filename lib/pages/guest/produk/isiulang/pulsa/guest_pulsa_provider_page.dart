@@ -6,6 +6,7 @@ import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/provider_response.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/custom_popup_input_tujuan.dart';
@@ -278,6 +279,9 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                   if (!valid) {
                     shakeKey.currentState?.shake();
                     return;
+                  } else {
+                    pushNamed(GuestPulsaProdukPage.routeName);
+                    getPulsaProvider(context).setSelectedProvider(provider);
                   }
                 },
               );
