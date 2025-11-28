@@ -22,7 +22,8 @@ class InformasiService {
       }
 
       return result;
-    } on DioException catch (e) {
+    } on DioException catch (e,stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
       debugPrint("DIO EXCEPTION INFORMASI SERVICE: $e");
       throw ServerException.fromDio(e: e);
     }
