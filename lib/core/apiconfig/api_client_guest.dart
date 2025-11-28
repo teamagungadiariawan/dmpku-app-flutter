@@ -76,12 +76,17 @@ class ApiClientGuest {
 class _AppInterceptor extends QueuedInterceptor {
   @override
   void onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
+      RequestOptions options,
+      RequestInterceptorHandler handler,
+      ) async {
     try {
       final isOnline = await ConnectivityService().checkConnection();
-      final dataMap = options.data as Map<dynamic, dynamic>? ?? {};
+
+      // Ubah ini - hapus casting ke Map<dynamic, dynamic>
+      // dan buat map baru dengan tipe yang benar
+      final dataMap = Map<String, dynamic>.from(
+          (options.data as Map?) ?? {}
+      );
 
       var headers = options.headers;
 
@@ -91,6 +96,8 @@ class _AppInterceptor extends QueuedInterceptor {
       var part = getPathAfterGuest(options.path);
 
       var requnixtime = DateHelper.currentUnixTimestamp().toString();
+
+      debugPrint("type of dataMap: ${dataMap.runtimeType}");
 
       dataMap["fmcuser"] = fmcUser;
       dataMap["keterangan"] = '$keteragan - $location';
@@ -113,7 +120,6 @@ class _AppInterceptor extends QueuedInterceptor {
       headers["noauthsign"] = noauthsign;
       headers["version"] = await getVersion();
       headers["time"] = DateHelper.currentIso8601StringZ();
-
 
       var hslEnc = EncryptHelper.encrypt(dataMap);
 
