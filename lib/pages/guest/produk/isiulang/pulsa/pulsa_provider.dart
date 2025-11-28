@@ -83,13 +83,97 @@ class PulsaProvider extends Cubit<PulsaState> {
         ),
       );
 
-  void setTujuan(String tujuan) {
+  void setTujuan(String tujuan,{
+    bool updateTextController = false,
+  }) {
     emit(
       state.copyWith(
         tujuan: tujuan,
-        inputTujuanController: state.inputTujuanController?..text = tujuan,
       ),
     );
+
+    if (updateTextController) {
+      state.inputTujuanController?.text = tujuan;
+      state.inputTujuanController?.selection = TextSelection.fromPosition(
+        TextPosition(offset: tujuan.length),
+      );
+    }
+
+    if (tujuan.length > 2) {
+      validateTujuan();
+    }
+  }
+
+  bool validateTujuan({ProviderModel selectedProvider = DEFAULT_PROVIDER})  {
+    emit(
+      state.copyWith(hasErrorInputTujuan: false, errorMessageInputTujuan: ''),
+    );
+
+
+    final tujuan = state.tujuan.trim();
+
+    if (tujuan.isEmpty) {
+      emit(
+        state.copyWith(
+          hasErrorInputTujuan: true,
+          errorMessageInputTujuan: 'Tujuan tidak boleh kosong',
+        ),
+      );
+
+      return false;
+    } else {
+      if (!tujuan.startsWith('08')) {
+        emit(
+          state.copyWith(
+            hasErrorInputTujuan: true,
+            errorMessageInputTujuan: 'Tujuan harus diawali dengan 08',
+          ),
+        );
+        return false;
+      }
+    }
+
+    if (selectedProvider.idprovider != 0) {
+      final minLength = selectedProvider.mintujuan;
+      final maxLength = selectedProvider.maxtujuan;
+
+      if (tujuan.length < minLength || tujuan.length > maxLength) {
+        emit(
+          state.copyWith(
+            hasErrorInputTujuan: true,
+            errorMessageInputTujuan:
+                'Panjang tujuan harus antara $minLength hingga $maxLength karakter',
+          ),
+        );
+        return false;
+      }
+
+      final prefixList = selectedProvider.prefixList;
+      var valid = false;
+      for (var prefik in prefixList) {
+        var maxRange = state.tujuan.length < prefik.length
+            ? state.tujuan.length
+            : prefik.length;
+
+        if (prefik.startsWith(state.tujuan.substring(0, maxRange))) {
+          valid = true;
+          break;
+        }
+      }
+
+      if (!valid) {
+        emit(
+          state.copyWith(
+            hasErrorInputTujuan: true,
+            errorMessageInputTujuan:
+                'Tujuan tidak sesuai dengan prefix provider ${selectedProvider.namaprovider}',
+          ),
+        );
+        return false;
+      }
+    }
+
+    return true;
   }
 
   void resetState() {
