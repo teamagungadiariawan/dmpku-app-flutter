@@ -40,11 +40,9 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
   }
 
   Future<void> _onRefresh() async {
-    // Trigger refresh data provider
     getPulsaProvider(context).fetchPulsaProviders();
   }
 
-  // Extract ke method terpisah:
   List<ProviderModel> _filterProviders(
     List<ProviderModel> providers,
     String tujuan,
@@ -86,6 +84,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                 _buildPhoneNumberCard(context),
                 const Gap(5),
                 Expanded(child: _buildListProvider(context)),
+                const Gap(5),
               ],
             ),
           ),
@@ -270,8 +269,6 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                 subtitle: provider.deskripsiprovider,
                 imageUrl: provider.imgprovider,
                 onPressed: () {
-                  // Handle provider selection
-                  debugPrint('Selected: ${provider.namaprovider}');
                   var valid = getPulsaProvider(
                     context,
                   ).validateTujuan(selectedProvider: provider);
