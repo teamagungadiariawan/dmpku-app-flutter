@@ -99,6 +99,16 @@ class PulsaProvider extends Cubit<PulsaState> {
       );
     }
 
+    if (state.tujuan == '') {
+      emit(
+        state.copyWith(
+          hasErrorInputTujuan: false,
+          errorMessageInputTujuan: '',
+        ),
+      );
+      return;
+    }
+
     if (tujuan.length > 2) {
       validateTujuan();
     }
