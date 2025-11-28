@@ -27,6 +27,8 @@ class GuestPulsaProviderPage extends StatefulWidget {
 }
 
 class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
+  final shakeKey = GlobalKey<ShakeErrorWidgetState>();
+
   @override
   void dispose() {
     getPulsaProvider(context).resetState();
@@ -91,6 +93,15 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                 ),
                 const Gap(5),
                 _buildPhoneInputField(context, state),
+
+                if (state.hasErrorInputTujuan) ...[
+                  const Gap(5),
+                  Text(
+                    state.errorMessageInputTujuan,
+                    style: context.bodySmall.withColor(context.destructive),
+                  ),
+                ],
+
                 const Gap(5),
               ],
             ),
@@ -105,7 +116,12 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
       width: double.infinity,
       decoration: BoxDecoration(
         color: context.muted,
-        border: Border.all(color: context.border, width: 1),
+        border: Border.all(
+          color: state.hasErrorInputTujuan
+              ? context.destructive
+              : context.border,
+          width: 1,
+        ),
         borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       padding: const EdgeInsets.all(6),
@@ -135,7 +151,8 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                 fillColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 suffixIcon: Padding(
-                  padding: const EdgeInsets.only(right: 0), // Sesuaikan jika perlu
+                  padding: const EdgeInsets.only(right: 0),
+                  // Sesuaikan jika perlu
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -143,7 +160,9 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                       if (state.tujuan.isNotEmpty) ...[
                         InkWell(
                           onTap: () {
-                            getPulsaProvider(context).setTujuan('');
+                            getPulsaProvider(
+                              context,
+                            ).setTujuan('', updateTextController: true);
                           },
                           child: Icon(
                             MdiIcons.close,
@@ -158,7 +177,9 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                         isVoice: true,
                         isTempel: true,
                         onResult: (value) {
-                          getPulsaProvider(context).setTujuan(value);
+                          getPulsaProvider(
+                            context,
+                          ).setTujuan(value, updateTextController: true);
                         },
                       ),
                     ],
@@ -174,6 +195,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
         ],
       ),
     ).withErrorShake(
+      key: shakeKey,
       hasError: state.hasErrorInputTujuan,
       onShakeComplete: () {},
     );
@@ -266,6 +288,14 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                 onPressed: () {
                   // Handle provider selection
                   debugPrint('Selected: ${provider.namaprovider}');
+                  var valid = getPulsaProvider(
+                    context,
+                  ).validateTujuan(selectedProvider: provider);
+
+                  if (!valid) {
+                    shakeKey.currentState?.shake();
+                    return;
+                  }
                 },
               );
             },
