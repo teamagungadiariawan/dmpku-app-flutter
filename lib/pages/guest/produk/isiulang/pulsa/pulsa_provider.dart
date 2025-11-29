@@ -25,6 +25,12 @@ class PulsaState extends Equatable {
   final String apiFetchPulsaProductMessage;
   final List<ProductModel> pulsaProduct;
 
+  final SortProductBy sortProduct;
+  final String searchProduct;
+  final TextEditingController? searchProductController;
+
+  final ProductModel selectedProduct;
+
   const PulsaState({
     this.apiFetchPulsaProviderStatus = ApiStatus.initial,
     this.apiFetchPulsaProviderMessage = '',
@@ -41,6 +47,12 @@ class PulsaState extends Equatable {
     this.apiFetchPulsaProductStatus = ApiStatus.initial,
     this.apiFetchPulsaProductMessage = '',
     this.pulsaProduct = const [],
+
+    this.sortProduct = SortProductBy.hargaTerendah,
+    this.searchProduct = '',
+    this.searchProductController,
+
+    this.selectedProduct = DEFAULT_PRODUCT,
   });
 
   PulsaState copyWith({
@@ -59,6 +71,12 @@ class PulsaState extends Equatable {
     ApiStatus? apiFetchPulsaProductStatus,
     String? apiFetchPulsaProductMessage,
     List<ProductModel>? pulsaProduct,
+
+    SortProductBy? sortProduct,
+    String? searchProduct,
+    TextEditingController? searchProductController,
+
+    ProductModel? selectedProduct,
   }) {
     return PulsaState(
       apiFetchPulsaProviderStatus:
@@ -82,6 +100,13 @@ class PulsaState extends Equatable {
       apiFetchPulsaProductMessage:
           apiFetchPulsaProductMessage ?? this.apiFetchPulsaProductMessage,
       pulsaProduct: pulsaProduct ?? this.pulsaProduct,
+
+      sortProduct: sortProduct ?? this.sortProduct,
+      searchProduct: searchProduct ?? this.searchProduct,
+      searchProductController:
+          searchProductController ?? this.searchProductController,
+
+      selectedProduct: selectedProduct ?? this.selectedProduct,
     );
   }
 
@@ -102,6 +127,12 @@ class PulsaState extends Equatable {
     apiFetchPulsaProductStatus,
     apiFetchPulsaProductMessage,
     pulsaProduct,
+
+    sortProduct,
+    searchProduct,
+    searchProductController,
+
+    selectedProduct,
   ];
 }
 
@@ -113,6 +144,7 @@ class PulsaProvider extends Cubit<PulsaState> {
         PulsaState(
           inputTujuanFocusNode: FocusNode(),
           inputTujuanController: TextEditingController(),
+          searchProductController: TextEditingController(),
         ),
       );
 
@@ -216,6 +248,9 @@ class PulsaProvider extends Cubit<PulsaState> {
         apiFetchPulsaProductMessage: '',
         pulsaProduct: [],
         selectedProvider: DEFAULT_PROVIDER,
+        sortProduct: SortProductBy.hargaTerendah,
+        searchProduct: '',
+        searchProductController: TextEditingController(),
       ),
     );
   }
@@ -325,6 +360,25 @@ class PulsaProvider extends Cubit<PulsaState> {
         ),
       );
     }
+  }
+
+  void setSortProduct(SortProductBy sortBy) {
+    emit(state.copyWith(sortProduct: sortBy));
+  }
+
+  void setSearchProduct(String search, {bool updateTextController = false}) {
+    emit(state.copyWith(searchProduct: search));
+
+    if (updateTextController) {
+      state.searchProductController?.text = search;
+      state.searchProductController?.selection = TextSelection.fromPosition(
+        TextPosition(offset: search.length),
+      );
+    }
+  }
+
+  void setSelectedProduct(ProductModel product) {
+    emit(state.copyWith(selectedProduct: product));
   }
 }
 
