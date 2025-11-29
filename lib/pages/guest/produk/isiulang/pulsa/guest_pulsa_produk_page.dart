@@ -81,17 +81,13 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
       value: getTransparentSystemUiOverlayStyle(),
       child: PopScope(
         canPop: true,
-        onPopInvoked: (didPop) async {
-          closePage();
-        },
+        onPopInvokedWithResult: (didPop, result) => closePage(),
         child: Scaffold(
           appBar: CustomAppBar(
             title: getPulsaProvider(
               context,
             ).state.selectedProvider.namaprovider,
-            onBackButtonPressed: () {
-              closePage();
-            },
+            onBackButtonPressed: closePage,
           ),
           body: Padding(
             padding: paddingPage,
@@ -106,7 +102,8 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
           bottomNavigationBar: BlocBuilder<PulsaProvider, PulsaState>(
             builder: (context, state) {
               return ButtonCheckout(
-                isDisabled: state.selectedProduct.idproduk == 0 ||
+                isDisabled:
+                    state.selectedProduct.idproduk == 0 ||
                     state.hasErrorInputTujuan ||
                     state.tujuan.isEmpty ||
                     state.apiFetchPulsaProductStatus.isLoading,
@@ -135,19 +132,20 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const Gap(5),
+                const Gap(8),
                 _buildPhoneInputField(context, state),
 
                 if (state.hasErrorInputTujuan) ...[
-                  const Gap(5),
+                  const Gap(8),
                   Text(
                     state.errorMessageInputTujuan,
                     style: context.bodySmall.withColor(context.destructive),
                   ),
                 ],
 
-                const Gap(5),
+                const Gap(8),
                 ButtonFavorit(isGuest: true, onResult: (val) {}),
+                Gap(5)
               ],
             ),
           ),
