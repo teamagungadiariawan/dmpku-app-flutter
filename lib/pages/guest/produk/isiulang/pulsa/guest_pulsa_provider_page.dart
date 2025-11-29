@@ -9,7 +9,7 @@ import 'package:dmpku/model/provider_response.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
-import 'package:dmpku/widgets/custom_popup_input_tujuan.dart';
+import 'package:dmpku/widgets/produk/custom_popup_input_tujuan.dart';
 import 'package:dmpku/widgets/produk/button_favorit.dart';
 import 'package:dmpku/widgets/produk/card_provider.dart';
 import 'package:dmpku/widgets/produk/card_provider_shimmer.dart';
@@ -43,6 +43,11 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
     getPulsaProvider(context).fetchPulsaProviders();
   }
 
+  void closePage() {
+    getPulsaProvider(context).resetState();
+    pop();
+  }
+
   List<ProviderModel> _filterProviders(
     List<ProviderModel> providers,
     String tujuan,
@@ -66,15 +71,13 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
       child: PopScope(
         canPop: true,
         onPopInvoked: (didPop) async {
-          getPulsaProvider(context).resetState();
-          pop();
+          closePage();
         },
         child: Scaffold(
           appBar: CustomAppBar(
             title: "Pilih Provider Pulsa",
             onBackButtonPressed: () {
-              getPulsaProvider(context).resetState();
-              pop();
+              closePage();
             },
           ),
           body: Padding(
