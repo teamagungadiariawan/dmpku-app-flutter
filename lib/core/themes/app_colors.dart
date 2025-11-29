@@ -34,7 +34,7 @@ class AppColors {
   static const lightDestructive = Color(0xFFEF4444);
   static const lightDestructiveForeground = Color(0xFFFAFAFA);
 
-  static const lightBorder = Color(0xFFE4E4E7);
+  static const lightBorder = Color(0xFFD6D3D1);
   static const lightInput = Color(0xFFE4E4E7);
   static const lightRing = Color(0xFF18181B);
 
@@ -69,7 +69,7 @@ class AppColors {
   static const darkDestructive = Color(0xFF7F1D1D);
   static const darkDestructiveForeground = Color(0xFFFAFAFA);
 
-  static const darkBorder = Color(0xFF27272A);
+  static const darkBorder = Color(0xFF57534E);
   static const darkInput = Color(0xFF27272A);
   static const darkRing = Color(0xFFD4D4D8);
 }
