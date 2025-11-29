@@ -1,3 +1,4 @@
+import 'package:dmpku/core/helpers/produk_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
@@ -5,7 +6,7 @@ import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class CardProduct extends StatelessWidget {
+class CardProductPulsa extends StatelessWidget {
   final String title;
   final String subtitle;
   final String harga;
@@ -14,7 +15,7 @@ class CardProduct extends StatelessWidget {
   final VoidCallback onPress;
   final bool isPulsa;
 
-  const CardProduct({
+  const CardProductPulsa({
     Key? key,
     required this.title,
     required this.subtitle,
@@ -24,6 +25,13 @@ class CardProduct extends StatelessWidget {
     required this.onPress,
     this.isPulsa = false,
   }) : super(key: key);
+
+  ReformattedDesc get formattedSubtitle {
+    if (!isPulsa) {
+      return ReformattedDesc(format: false, info: subtitle, keyValuePairs: []);
+    }
+    return getInfoProduk(subtitle);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +71,8 @@ class CardProduct extends StatelessWidget {
             color: selected ? context.primary : context.border,
           ),
           Gap(5),
+          _buildInfoSection(context),
+          Gap(5),
         ],
       ),
     );
@@ -77,7 +87,7 @@ class CardProduct extends StatelessWidget {
           Expanded(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                 child: Row(
                   children: [
                     Icon(
@@ -96,7 +106,7 @@ class CardProduct extends StatelessWidget {
           // Price Section
           Container(
             constraints: BoxConstraints(minWidth: 100),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: context.primary,
               borderRadius: const BorderRadius.only(
@@ -107,11 +117,44 @@ class CardProduct extends StatelessWidget {
             child: Text(
               ToRupiah(harga),
               textAlign: TextAlign.center,
-              style: context.labelLarge.copyWith(
-                color: context.primaryForeground,
-              ),
+              style: context.labelLarge
+                  .withColor(context.primaryForeground)
+                  .withWeight(FontWeight.w600),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoSection(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        children: [
+          if (!formattedSubtitle.format) ...[
+            Text(
+              formattedSubtitle.info,
+              style: context.bodyExtraSmall.withWeight(FontWeight.w600),
+            ),
+          ],
+          if (formattedSubtitle.format) ...[
+            for (var pair in formattedSubtitle.keyValuePairs) ...[
+              Row(
+                children: [
+                  Icon(pair.type.icon, size: 12),
+                  Gap(6),
+                  Expanded(
+                    child: Text(
+                      pair.value,
+                      style: context.bodyExtraSmall.withWeight(FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+              Gap(1),
+            ],
+          ],
         ],
       ),
     );
