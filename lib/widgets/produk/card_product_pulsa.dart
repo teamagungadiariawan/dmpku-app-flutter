@@ -67,7 +67,7 @@ class CardProductPulsa extends StatelessWidget {
           // Header Section
           _buildHeaderSection(context),
           Container(
-            height: 1,
+            height: 0.5,
             color: selected ? context.primary : context.border,
           ),
           Gap(5),
