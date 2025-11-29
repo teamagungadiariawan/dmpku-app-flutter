@@ -20,6 +20,10 @@ class AppTheme {
     cardTheme: CardThemeData(
       color: AppColors.lightCard,
       elevation: 0,
+      margin:EdgeInsets.symmetric(
+          horizontal: 0,
+        vertical: 4
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(color: AppColors.lightBorder, width: 1),
@@ -90,6 +94,10 @@ class AppTheme {
     cardTheme: CardThemeData(
       color: AppColors.darkCard,
       elevation: 0,
+      margin: EdgeInsets.symmetric(
+        horizontal: 0,
+          vertical: 4
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(color: AppColors.darkBorder, width: 1),
