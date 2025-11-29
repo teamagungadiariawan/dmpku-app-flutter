@@ -32,7 +32,7 @@ class ButtonCheckout extends StatelessWidget {
         left: 16,
         right: 16,
         top: 8,
-        bottom: 8 + MediaQuery.paddingOf(context).bottom,
+        bottom: 2 + MediaQuery.paddingOf(context).bottom,
       ),
       decoration: BoxDecoration(
         color: context.background,
@@ -57,8 +57,8 @@ class ButtonCheckout extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Gap(6),
-        Text("Produk Terpilih : ", style: context.bodyLarge),
+        const Gap(8),
+        Text("Produk Terpilih : ", style: context.bodyMedium),
         Expanded(
           child: Text(
             _hasSelectedProduct ? selectedProduct.namaproduk : "-",
@@ -66,7 +66,7 @@ class ButtonCheckout extends StatelessWidget {
             style: context.bodyMedium.withWeight(FontWeight.w600),
           ),
         ),
-        const Gap(6),
+        const Gap(8),
       ],
     );
   }
