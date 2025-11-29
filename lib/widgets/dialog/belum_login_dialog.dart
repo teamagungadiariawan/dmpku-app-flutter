@@ -40,7 +40,7 @@ class BelumLoginDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TopDividerSheet(),
-              Gap(5),
+              Gap(15),
               Card(
                 child: Padding(
                   padding: paddingCard,
@@ -79,7 +79,7 @@ class BelumLoginDialog extends StatelessWidget {
                   ),
                 ),
               ),
-              Gap(5),
+              Gap(10),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
