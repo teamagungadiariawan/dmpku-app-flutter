@@ -251,6 +251,7 @@ class PulsaProvider extends Cubit<PulsaState> {
         sortProduct: SortProductBy.hargaTerendah,
         searchProduct: '',
         searchProductController: TextEditingController(),
+        selectedProduct: DEFAULT_PRODUCT,
       ),
     );
   }
@@ -263,6 +264,14 @@ class PulsaProvider extends Cubit<PulsaState> {
         tujuan: '',
         apiFetchPulsaProviderStatus: ApiStatus.initial,
         pulsaProviders: [],
+        apiFetchPulsaProductStatus: ApiStatus.initial,
+        apiFetchPulsaProductMessage: '',
+        pulsaProduct: [],
+        selectedProvider: DEFAULT_PROVIDER,
+        sortProduct: SortProductBy.hargaTerendah,
+        searchProduct: '',
+        searchProductController: TextEditingController(),
+        selectedProduct: DEFAULT_PRODUCT,
       ),
     );
   }
