@@ -28,7 +28,7 @@ class ButtonFavorit extends StatelessWidget {
       children: [
         Expanded(
           child: CustomButton(
-            height: 30,
+            height: 32,
             padding: EdgeInsets.zero,
             variant: ButtonVariant.border,
             text: "Pilih Dari Favorit",
@@ -45,7 +45,7 @@ class ButtonFavorit extends StatelessWidget {
         Gap(10),
         Expanded(
           child: CustomButton(
-            height: 30,
+            height: 32,
             padding: EdgeInsets.zero,
             variant: ButtonVariant.border,
             text: "Simpan Ke Favorit",
