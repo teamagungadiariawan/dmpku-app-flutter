@@ -1,16 +1,23 @@
 import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
+import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
+import 'package:dmpku/widgets/custom_button.dart';
+import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
+import 'package:dmpku/widgets/produk/button_checkout.dart';
 import 'package:dmpku/widgets/produk/button_favorit.dart';
 import 'package:dmpku/widgets/produk/card_product.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa.dart';
+import 'package:dmpku/widgets/produk/card_product_pulsa_shimmer.dart';
 import 'package:dmpku/widgets/produk/custom_popup_sort_product.dart';
+import 'package:dmpku/widgets/produk/sort_filter_product.dart';
 import 'package:dmpku/widgets/shake_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class GuestPulsaProdukPage extends StatefulWidget {
@@ -95,6 +103,18 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
               ],
             ),
           ),
+          bottomNavigationBar: BlocBuilder<PulsaProvider, PulsaState>(
+            builder: (context, state) {
+              return ButtonCheckout(
+                isDisabled: state.selectedProduct.idproduk == 0 ||
+                    state.hasErrorInputTujuan ||
+                    state.tujuan.isEmpty ||
+                    state.apiFetchPulsaProductStatus.isLoading,
+                selectedProduct: state.selectedProduct,
+                onContinue: () => BelumLoginDialog.show(context),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -167,83 +187,45 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
   Widget _buildSortFilterProduct(BuildContext context) {
     return BlocBuilder<PulsaProvider, PulsaState>(
       builder: (context, state) {
-        return Row(
-          children: [
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: context.muted,
-                  border: Border.all(
-                    color: state.hasErrorInputTujuan
-                        ? context.destructive
-                        : context.border,
-                    width: 1,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                ),
-                padding: const EdgeInsets.all(6),
-                child: Row(
-                  children: [
-                    Icon(
-                      LucideIcons.search,
-                      size: 18,
-                      color: context.foreground,
-                    ),
-                    Gap(6),
-                    Expanded(
-                      child: TextField(
-                        controller: state.searchProductController,
-                        onChanged: (val) {
-                          getPulsaProvider(context).setSearchProduct(val);
-                        },
-                        decoration: InputDecoration(
-                          isDense: true,
-                          hintText: 'Cari Produk',
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.only(right: 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                if (state.searchProduct.isNotEmpty) ...[
-                                  InkWell(
-                                    onTap: () {
-                                      getPulsaProvider(
-                                        context,
-                                      ).setSearchProduct(
-                                        '',
-                                        updateTextController: true,
-                                      );
-                                    },
-                                    child: Icon(
-                                      MdiIcons.close,
-                                      size: 18,
-                                      color: context.foreground,
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                        ),
-                        textInputAction: TextInputAction.done,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const Gap(6),
-            CustomPopupSortProduct(
-              selectedSort: state.sortProduct,
-              onSelected: (sortBy) {
-                getPulsaProvider(context).setSortProduct(sortBy);
-              },
-            ),
-          ],
+        return SortFilterProduct(
+          searchController: state.searchProductController!,
+          searchValue: state.searchProduct,
+          hasError: state.hasErrorInputTujuan,
+          selectedSort: state.sortProduct,
+          onSearchChanged: (val) {
+            getPulsaProvider(context).setSearchProduct(val);
+          },
+          onClearSearch: () {
+            getPulsaProvider(
+              context,
+            ).setSearchProduct('', updateTextController: true);
+          },
+          onSortSelected: (sortBy) {
+            getPulsaProvider(context).setSortProduct(sortBy);
+          },
         );
       },
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context, PulsaState state) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset(Assets.animations.noData, width: 200, fit: BoxFit.cover),
+          Text(
+            'Product tidak ditemukan',
+            style: context.bodyMedium
+                .copyWith(color: context.mutedForeground)
+                .withWeight(FontWeight.bold),
+          ),
+          Text(
+            'Tarik ke bawah untuk refresh',
+            style: context.bodySmall.copyWith(color: context.mutedForeground),
+          ),
+        ],
+      ),
     );
   }
 
@@ -251,9 +233,7 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
     return BlocBuilder<PulsaProvider, PulsaState>(
       builder: (context, state) {
         if (state.apiFetchPulsaProductStatus.isLoading) {
-          return Center(
-            child: CupertinoActivityIndicator(color: context.primary),
-          );
+          return CardProductPulsaListShimmer(itemCount: 6);
         }
 
         var products = _filterProducts(
@@ -261,6 +241,23 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
           state.searchProduct,
           state.sortProduct,
         );
+
+        if (products.isEmpty && !state.apiFetchPulsaProductStatus.isLoading) {
+          return RefreshIndicator(
+            onRefresh: _onRefresh,
+            color: context.primary,
+            backgroundColor: context.card,
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: _buildEmptyState(context, state),
+                ),
+              ],
+            ),
+          );
+        }
 
         return RefreshIndicator(
           onRefresh: _onRefresh,
