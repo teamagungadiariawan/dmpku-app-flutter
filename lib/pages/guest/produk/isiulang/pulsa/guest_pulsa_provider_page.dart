@@ -85,7 +85,6 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
             child: Column(
               children: [
                 _buildPhoneNumberCard(context),
-                const Gap(5),
                 Expanded(child: _buildListProvider(context)),
                 const Gap(5),
               ],
@@ -111,19 +110,20 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const Gap(5),
+                const Gap(8),
                 _buildPhoneInputField(context, state),
 
                 if (state.hasErrorInputTujuan) ...[
-                  const Gap(5),
+                  const Gap(8),
                   Text(
                     state.errorMessageInputTujuan,
                     style: context.bodySmall.withColor(context.destructive),
                   ),
                 ],
 
-                const Gap(5),
+                const Gap(8),
                 ButtonFavorit(isGuest: true, onResult: (val) {}),
+                Gap(5)
               ],
             ),
           ),
