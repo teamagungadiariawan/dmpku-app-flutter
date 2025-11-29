@@ -1,4 +1,7 @@
 // dart
+import 'package:flutter/material.dart' show Icons, IconData;
+import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
+
 class ProductModel {
   final int idproduk;
   final int idprovider;
@@ -124,6 +127,8 @@ class ProductModel {
     );
   }
 
+  bool get isGangguan => statusproduk == 0;
+
   @override
   String toString() {
     return 'ProductModel(idproduk: $idproduk, idprovider: $idprovider, namaproduk: $namaproduk)';
@@ -172,3 +177,94 @@ const ProductModel DEFAULT_PRODUCT = ProductModel(
   mintujuan: 0,
   maxtujuan: 0,
 );
+
+enum SortProductBy { hargaTerendah, hargaTertinggi, namaAtoZ, namaZtoA }
+
+List<ProductModel> sortProducts(
+  List<ProductModel> products,
+  SortProductBy sortBy,
+) {
+  List<ProductModel> sortedProducts = List.from(products);
+
+  switch (sortBy) {
+    case SortProductBy.hargaTerendah:
+      sortedProducts.sort((a, b) => a.hargaproduk.compareTo(b.hargaproduk));
+      break;
+    case SortProductBy.hargaTertinggi:
+      sortedProducts.sort((a, b) => b.hargaproduk.compareTo(a.hargaproduk));
+      break;
+    case SortProductBy.namaAtoZ:
+      sortedProducts.sort(
+        (a, b) => _naturalCompare(a.namaproduk, b.namaproduk),
+      );
+      break;
+    case SortProductBy.namaZtoA:
+      sortedProducts.sort(
+        (a, b) => _naturalCompare(b.namaproduk, a.namaproduk),
+      );
+      break;
+  }
+
+  return sortedProducts;
+}
+
+extension SortProductByExtension on SortProductBy {
+  String get displayName {
+    switch (this) {
+      case SortProductBy.hargaTerendah:
+        return 'Harga Terendah';
+      case SortProductBy.hargaTertinggi:
+        return 'Harga Tertinggi';
+      case SortProductBy.namaAtoZ:
+        return 'Nama A-Z';
+      case SortProductBy.namaZtoA:
+        return 'Nama Z-A';
+    }
+  }
+
+  IconData get iconData {
+    switch (this) {
+      case SortProductBy.hargaTerendah:
+        return MdiIcons.sortNumericDescending;
+      case SortProductBy.hargaTertinggi:
+        return MdiIcons.sortNumericAscending;
+      case SortProductBy.namaAtoZ:
+        return MdiIcons.sortAlphabeticalDescending;
+      case SortProductBy.namaZtoA:
+        return MdiIcons.sortAlphabeticalAscending;
+    }
+  }
+}
+
+int _naturalCompare(String a, String b) {
+  final RegExp regex = RegExp(r'(\d+)|(\D+)');
+  final List<String> aParts = regex
+      .allMatches(a)
+      .map((m) => m.group(0)!)
+      .toList();
+  final List<String> bParts = regex
+      .allMatches(b)
+      .map((m) => m.group(0)!)
+      .toList();
+
+  for (int i = 0; i < aParts.length && i < bParts.length; i++) {
+    final String aPart = aParts[i];
+    final String bPart = bParts[i];
+
+    // Jika keduanya angka, compare sebagai number
+    final int? aNum = int.tryParse(aPart);
+    final int? bNum = int.tryParse(bPart);
+
+    if (aNum != null && bNum != null) {
+      final int result = aNum.compareTo(bNum);
+      if (result != 0) return result;
+    } else {
+      // Compare sebagai string
+      final int result = aPart.compareTo(bPart);
+      if (result != 0) return result;
+    }
+  }
+
+  // Jika semua part sama, yang lebih pendek di depan
+  return aParts.length.compareTo(bParts.length);
+}
