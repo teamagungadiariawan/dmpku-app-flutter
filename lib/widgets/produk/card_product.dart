@@ -1,3 +1,4 @@
+import 'package:dmpku/core/helpers/produk_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
@@ -12,7 +13,6 @@ class CardProduct extends StatelessWidget {
   final bool selected;
   final bool isGangguan;
   final VoidCallback onPress;
-  final bool isPulsa;
 
   const CardProduct({
     Key? key,
@@ -22,7 +22,6 @@ class CardProduct extends StatelessWidget {
     required this.selected,
     required this.isGangguan,
     required this.onPress,
-    this.isPulsa = false,
   }) : super(key: key);
 
   @override
@@ -59,9 +58,11 @@ class CardProduct extends StatelessWidget {
           // Header Section
           _buildHeaderSection(context),
           Container(
-            height: 1,
+            height: 0.5,
             color: selected ? context.primary : context.border,
           ),
+          Gap(5),
+          _buildInfoSection(context),
           Gap(5),
         ],
       ),
@@ -77,7 +78,7 @@ class CardProduct extends StatelessWidget {
           Expanded(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                 child: Row(
                   children: [
                     Icon(
@@ -96,7 +97,7 @@ class CardProduct extends StatelessWidget {
           // Price Section
           Container(
             constraints: BoxConstraints(minWidth: 100),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: context.primary,
               borderRadius: const BorderRadius.only(
@@ -107,10 +108,24 @@ class CardProduct extends StatelessWidget {
             child: Text(
               ToRupiah(harga),
               textAlign: TextAlign.center,
-              style: context.labelLarge.copyWith(
-                color: context.primaryForeground,
-              ),
+              style: context.labelLarge
+                  .withColor(context.primaryForeground)
+                  .withWeight(FontWeight.w600),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoSection(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        children: [
+          Text(
+            subtitle,
+            style: context.bodyExtraSmall.withWeight(FontWeight.w600),
           ),
         ],
       ),
