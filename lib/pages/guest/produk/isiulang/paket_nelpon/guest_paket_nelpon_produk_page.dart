@@ -11,6 +11,7 @@ import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa_shimmer.dart';
+import 'package:dmpku/widgets/produk/card_provider.dart';
 import 'package:dmpku/widgets/produk/refreshable_list.dart';
 import 'package:dmpku/widgets/produk/sort_filter_product.dart';
 import 'package:dmpku/widgets/shake_widget.dart';
@@ -28,7 +29,8 @@ class GuestPaketNelponProdukPage extends StatefulWidget {
       _GuestPaketNelponProdukPageState();
 }
 
-class _GuestPaketNelponProdukPageState extends State<GuestPaketNelponProdukPage> {
+class _GuestPaketNelponProdukPageState
+    extends State<GuestPaketNelponProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
@@ -70,9 +72,12 @@ class _GuestPaketNelponProdukPageState extends State<GuestPaketNelponProdukPage>
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child: PopScope(
-        canPop: true,
-        onPopInvokedWithResult: (didPop, result) => closePage(),
+      child: WillPopScope(
+        onWillPop: () async {
+          debugPrint("WillPopScope: onWillPop");
+          closePage();
+          return true; // true = izinkan pop
+        },
         child: Scaffold(
           appBar: CustomAppBar(
             title: getPaketNelponProvider(
@@ -86,23 +91,25 @@ class _GuestPaketNelponProdukPageState extends State<GuestPaketNelponProdukPage>
               children: [
                 _buildPhoneNumberCard(context),
                 _buildSortFilterProduct(context),
+                _buildDetailProvider(context),
                 Expanded(child: _buildListProduk(context)),
               ],
             ),
           ),
-          bottomNavigationBar: BlocBuilder<PaketNelponProvider, PaketNelponState>(
-            builder: (context, state) {
-              return ButtonCheckout(
-                isDisabled:
-                    state.selectedProduct.idproduk == 0 ||
-                    state.hasErrorInputTujuan ||
-                    state.tujuan.isEmpty ||
-                    state.apiFetchPaketNelponProductStatus.isLoading,
-                selectedProduct: state.selectedProduct,
-                onContinue: () => BelumLoginDialog.show(context),
-              );
-            },
-          ),
+          bottomNavigationBar:
+              BlocBuilder<PaketNelponProvider, PaketNelponState>(
+                builder: (context, state) {
+                  return ButtonCheckout(
+                    isDisabled:
+                        state.selectedProduct.idproduk == 0 ||
+                        state.hasErrorInputTujuan ||
+                        state.tujuan.isEmpty ||
+                        state.apiFetchPaketNelponProductStatus.isLoading,
+                    selectedProduct: state.selectedProduct,
+                    onContinue: () => BelumLoginDialog.show(context),
+                  );
+                },
+              ),
         ),
       ),
     );
@@ -133,6 +140,27 @@ class _GuestPaketNelponProdukPageState extends State<GuestPaketNelponProdukPage>
           isGuest: true,
 
           onFavoritResult: (val) {},
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailProvider(BuildContext context) {
+    return BlocBuilder<PaketNelponProvider, PaketNelponState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CardProvider(
+              imageUrl: state.selectedProvider.imgprovider,
+              title: state.selectedProvider.namaprovider,
+              subtitle: state.selectedProvider.deskripsiprovider,
+              isGanti: false,
+              onPressed: () {
+                closePage();
+              },
+            ),
+          ],
         );
       },
     );

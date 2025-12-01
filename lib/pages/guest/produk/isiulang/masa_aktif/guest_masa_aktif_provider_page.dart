@@ -74,10 +74,11 @@ class _GuestMasaAktifProviderPageState
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child: PopScope(
-        canPop: true,
-        onPopInvoked: (didPop) async {
+      child:  WillPopScope(
+        onWillPop: () async {
+          debugPrint("WillPopScope: onWillPop");
           closePage();
+          return true; // true = izinkan pop
         },
         child: Scaffold(
           appBar: CustomAppBar(

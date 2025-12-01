@@ -74,10 +74,11 @@ class _GuestPaketNelponProviderPageState
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child: PopScope(
-        canPop: true,
-        onPopInvoked: (didPop) async {
+      child:  WillPopScope(
+        onWillPop: () async {
+          debugPrint("WillPopScope: onWillPop");
           closePage();
+          return true; // true = izinkan pop
         },
         child: Scaffold(
           appBar: CustomAppBar(
@@ -156,6 +157,8 @@ class _GuestPaketNelponProviderPageState
                 var valid = getPaketNelponProvider(
                   context,
                 ).validateTujuan(selectedProvider: provider);
+
+                debugPrint('Is Valid Tujuan: $valid');
 
                 if (!valid) {
                   shakeKey.currentState?.shake();

@@ -5,6 +5,7 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/provider_response.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/topup_game/guest_topup_game_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/card_provider_shimmer.dart';
@@ -73,7 +74,6 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
   void dispose() {
     _pageViewController.dispose();
     _tabController.dispose();
-    getTopupGameProvider(context).resetState();
     super.dispose();
   }
 
@@ -99,10 +99,11 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child: PopScope(
-        canPop: true,
-        onPopInvoked: (didPop) async {
+      child: WillPopScope(
+        onWillPop: () async {
+          debugPrint("WillPopScope: onWillPop");
           closePage();
+          return true; // true = izinkan pop
         },
         child: Scaffold(
           appBar: CustomAppBar(
@@ -213,6 +214,10 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
             return GridProvider(
               title: provider.namaprovider,
               imageUrl: provider.imgprovider,
+              onPressed: () {
+                getTopupGameProvider(context).setSelectedProvider(provider);
+                pushNamed(GuestTopupGameProdukPage.routeName);
+              },
             );
           },
         );
@@ -244,6 +249,14 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
             return GridProvider(
               title: provider.namaprovider,
               imageUrl: provider.imgprovider,
+              onPressed: () {
+                getTopupGameProvider(context).setSelectedProvider(
+                  provider,
+                  titleForm: 'No. Tujuan',
+                  hintForm: 'Contoh : 081XXXXXXXXX',
+                );
+                pushNamed(GuestTopupGameProdukPage.routeName);
+              },
             );
           },
         );

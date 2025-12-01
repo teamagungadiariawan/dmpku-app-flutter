@@ -14,6 +14,7 @@ import 'package:dmpku/widgets/produk/button_checkout.dart';
 import 'package:dmpku/widgets/produk/button_favorit.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa_shimmer.dart';
+import 'package:dmpku/widgets/produk/card_provider.dart';
 import 'package:dmpku/widgets/produk/custom_popup_input_tujuan.dart';
 import 'package:dmpku/widgets/produk/refreshable_list.dart';
 import 'package:dmpku/widgets/produk/sort_filter_product.dart';
@@ -76,9 +77,12 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child: PopScope(
-        canPop: true,
-        onPopInvokedWithResult: (didPop, result) => closePage(),
+      child: WillPopScope(
+        onWillPop: () async {
+          debugPrint("WillPopScope: onWillPop");
+          closePage();
+          return true; // true = izinkan pop
+        },
         child: Scaffold(
           appBar: CustomAppBar(
             title: getPulsaProvider(
@@ -92,6 +96,7 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
               children: [
                 _buildPhoneNumberCard(context),
                 _buildSortFilterProduct(context),
+                _buildDetailProvider(context),
                 Expanded(child: _buildListProduk(context)),
               ],
             ),
@@ -137,6 +142,27 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
           isGuest: true,
 
           onFavoritResult: (val) {},
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailProvider(BuildContext context) {
+    return BlocBuilder<PulsaProvider, PulsaState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CardProvider(
+              imageUrl: state.selectedProvider.imgprovider,
+              title: state.selectedProvider.namaprovider,
+              subtitle: state.selectedProvider.deskripsiprovider,
+              isGanti: false,
+              onPressed: () {
+                closePage();
+              },
+            ),
+          ],
         );
       },
     );
