@@ -7,6 +7,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/guest_paket_nelpo
 import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/guest_paket_nelpon_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/topup_game/guest_topup_game_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/guest_topup_game_provider_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -52,6 +53,8 @@ class AppRouter {
       /// ------  TOPUP GAME ------ ///
       case GuestTopupGameProviderPage.routeName:
         return _customTransition(child: const GuestTopupGameProviderPage());
+      case GuestTopupGameProdukPage.routeName:
+        return _customTransition(child: const GuestTopupGameProdukPage());
 
       /// ------  TOPUP GAME ------ ///
       ///
