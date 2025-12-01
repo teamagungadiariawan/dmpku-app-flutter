@@ -118,7 +118,7 @@ class CardInputTujuanTopupGame extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            icon ?? MdiIcons.clipboardAccount,
+            icon ?? MdiIcons.cardAccountDetails,
             size: 18,
             color: context.foreground,
           ),

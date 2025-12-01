@@ -83,7 +83,7 @@ class CardProduct extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.layers,
-                      size: 20,
+                      size: 16,
                       color: context.mutedForeground,
                     ),
                     const SizedBox(width: 2),
