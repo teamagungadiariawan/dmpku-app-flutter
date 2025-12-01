@@ -7,6 +7,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/guest_paket_nelpo
 import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/guest_paket_nelpon_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/topup_game/guest_topup_game_provider_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -21,6 +22,7 @@ class AppRouter {
         return _customTransition(child: const GuestPulsaProviderPage());
       case GuestPulsaProdukPage.routeName:
         return _customTransition(child: const GuestPulsaProdukPage());
+
       /// ------  PULSA ------ ///
 
       /// ------  PAKETDATA ------ ///
@@ -28,21 +30,31 @@ class AppRouter {
         return _customTransition(child: const GuestPaketDataProviderPage());
       case GuestPaketDataProdukPage.routeName:
         return _customTransition(child: const GuestPaketDataProdukPage());
+
       /// ------  PAKETDATA ------ ///
-      
+
       /// ------  MASA AKTIF ------ ///
       case GuestMasaAktifProviderPage.routeName:
         return _customTransition(child: const GuestMasaAktifProviderPage());
       case GuestMasaAktifProdukPage.routeName:
         return _customTransition(child: const GuestMasaAktifProdukPage());
+
       /// ------  MASA AKTIF ------ ///
-      
+
       /// ------  PAKET NELPON ------ ///
       case GuestPaketNelponProviderPage.routeName:
         return _customTransition(child: const GuestPaketNelponProviderPage());
       case GuestPaketNelponProdukPage.routeName:
         return _customTransition(child: const GuestPaketNelponProdukPage());
+
       /// ------  PAKET NELPON ------ ///
+
+      /// ------  TOPUP GAME ------ ///
+      case GuestTopupGameProviderPage.routeName:
+        return _customTransition(child: const GuestTopupGameProviderPage());
+
+      /// ------  TOPUP GAME ------ ///
+      ///
       default:
         return null;
     }

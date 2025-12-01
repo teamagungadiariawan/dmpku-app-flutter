@@ -11,6 +11,8 @@ import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/guest_paket_nelpo
 import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/topup_game/guest_topup_game_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -136,7 +138,14 @@ class _DashboardPageState extends State<DashboardPage> {
         pushNamed(GuestMasaAktifProviderPage.routeName);
       },
     ),
-    MenuData("Topup Game", Assets.img.menuIsiUlang.iconTopupGame.provider()),
+    MenuData(
+      "Topup Game",
+      Assets.img.menuIsiUlang.iconTopupGame.provider(),
+      onTap: () {
+        getTopupGameProvider(context).fetchTopupGameProviders();
+        pushNamed(GuestTopupGameProviderPage.routeName);
+      },
+    ),
     MenuData("Token PLN", Assets.img.menuIsiUlang.iconTokenPln.provider()),
     MenuData(
       "Aktivasi Voucher",
