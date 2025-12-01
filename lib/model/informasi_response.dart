@@ -98,6 +98,5 @@ class InformasiResponse {
     }
 
     return infoResponse;
-
   }
 }
