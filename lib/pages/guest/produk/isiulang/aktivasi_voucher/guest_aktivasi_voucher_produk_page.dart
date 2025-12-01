@@ -88,7 +88,6 @@ class _GuestAktivasiVoucherProdukPageState extends State<GuestAktivasiVoucherPro
             padding: paddingPage,
             child: Column(
               children: [
-                _buildPhoneNumberCard(context),
                 _buildSortFilterProduct(context),
                 _buildDetailProvider(context),
                 Expanded(child: _buildListProduk(context)),
@@ -100,8 +99,6 @@ class _GuestAktivasiVoucherProdukPageState extends State<GuestAktivasiVoucherPro
               return ButtonCheckout(
                 isDisabled:
                     state.selectedProduct.idproduk == 0 ||
-                    state.hasErrorInputTujuan ||
-                    state.tujuan.isEmpty ||
                     state.apiFetchAktivasiVoucherProductStatus.isLoading,
                 selectedProduct: state.selectedProduct,
                 onContinue: () => BelumLoginDialog.show(context),
@@ -113,35 +110,6 @@ class _GuestAktivasiVoucherProdukPageState extends State<GuestAktivasiVoucherPro
     );
   }
 
-  Widget _buildPhoneNumberCard(BuildContext context) {
-    return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
-      builder: (context, state) {
-        return CardInputTujuanPulsa(
-          tujuan: state.tujuan,
-          label: 'No. Tujuan',
-          hasError: state.hasErrorInputTujuan,
-          errorMessage: state.errorMessageInputTujuan,
-          isEditable: false,
-          hintText: 'Masukkan No. Tujuan',
-          controller: state.inputTujuanController,
-          focusNode: state.inputTujuanFocusNode,
-          onChanged: (value) {
-            getAktivasiVoucherProvider(context).setTujuan(value);
-          },
-          onClear: () {
-            getAktivasiVoucherProvider(
-              context,
-            ).setTujuan('', updateTextController: true);
-          },
-          shakeKey: shakeKey,
-          showFavoritButton: true,
-          isGuest: true,
-
-          onFavoritResult: (val) {},
-        );
-      },
-    );
-  }
 
   Widget _buildDetailProvider(BuildContext context) {
     return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
