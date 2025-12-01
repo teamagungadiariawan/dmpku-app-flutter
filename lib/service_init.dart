@@ -32,28 +32,11 @@ class ServiceInitializer {
   }
 
   static Future<void> _setupPermissions() async {
-    final permissions = Platform.isAndroid
-        ? [
-            Permission.location,
-            Permission.storage,
-            Permission.camera,
-            Permission.notification,
-          ]
-        : [
-            Permission.locationWhenInUse,
-            Permission.photos,
-            Permission.camera,
-            Permission.notification,
-          ];
+    // Request notification permission at startup
+    final status = await Permission.notification.request();
 
-    final statuses = await permissions.request();
-
-    // Handle permanently denied permissions
-    for (final entry in statuses.entries) {
-      if (entry.value.isPermanentlyDenied) {
-        await openAppSettings();
-        break;
-      }
+    if (status.isPermanentlyDenied) {
+      await openAppSettings();
     }
   }
 }

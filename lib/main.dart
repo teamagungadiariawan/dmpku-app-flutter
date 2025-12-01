@@ -1,10 +1,13 @@
 import 'package:dmpku/core/constants/app_info.dart';
+import 'package:dmpku/core/router/app_router.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
-import 'package:dmpku/pages/auth/splash_page.dart';
+import 'package:dmpku/pages/auth/loading_splash_page.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_produk_page.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
 import 'package:dmpku/widgets/dialog/offline_dialog.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +16,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:toastification/toastification.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import 'core/helpers/connection_helper.dart';
@@ -22,25 +24,30 @@ import 'core/helpers/navigator_helper.dart';
 import 'core/themes/app_theme.dart';
 import 'core/themes/theme_provider.dart';
 
-Future<void> _init() async {
-  await ServiceInitializer.init(); // Gabungkan semua
-}
-
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize TextScaleProvider
+  runApp(const MaterialApp(home: LoadingSplashPage()));
+
+  // Initialize services and providers concurrently
+  final servicesFuture = ServiceInitializer.init();
   final textScaleProvider = TextScaleProvider();
-  await textScaleProvider.init();
+  final textScaleFuture = textScaleProvider.init();
+  final informasiFuture = InformasiService().getInformasi();
 
-  await _init();
-
-  runApp(
-    MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => PulsaProvider())],
-      child: MyApp(textScaleProvider: textScaleProvider),
-    ),
-  );
+  Future.wait([servicesFuture, textScaleFuture, informasiFuture]).then((_) {
+    runApp(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => MasaAktifProvider()),
+          BlocProvider(create: (_) => PaketDataProvider()),
+          BlocProvider(create: (_) => PaketNelponProvider()),
+          BlocProvider(create: (_) => PulsaProvider()),
+        ],
+        child: MyApp(textScaleProvider: textScaleProvider),
+      ),
+    );
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -115,7 +122,7 @@ class _MyAppState extends State<MyApp> {
                     darkTheme: AppTheme.darkTheme,
                     themeMode: themeProvider.themeMode,
                     navigatorKey: navigatorKey,
-                    initialRoute: SplashPage.routeName,
+                    initialRoute: MainPage.routeName,
                     supportedLocales: const [Locale('en'), Locale('id')],
                     builder: (context, child) {
                       debugPrint(
@@ -129,28 +136,7 @@ class _MyAppState extends State<MyApp> {
                         child: child ?? const SizedBox.shrink(),
                       );
                     },
-                    onGenerateRoute: (settings) {
-                      switch (settings.name) {
-                        case SplashPage.routeName:
-                          return _customTransitionBottomToTop(
-                            child: const SplashPage(),
-                          );
-                        case MainPage.routeName:
-                          return _customTransitionBottomToTop(
-                            child: const MainPage(),
-                          );
-                        case GuestPulsaProviderPage.routeName:
-                          return _customTransition(
-                            child: const GuestPulsaProviderPage(),
-                          );
-                        case GuestPulsaProdukPage.routeName:
-                          return _customTransition(
-                            child: const GuestPulsaProdukPage(),
-                          );
-                        default:
-                          return null;
-                      }
-                    },
+                    onGenerateRoute: AppRouter.onGenerateRoute,
                   ),
                 ),
               ),
@@ -160,22 +146,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-}
-
-PageTransition _customTransition({required Widget child}) {
-  return PageTransition(
-    child: child,
-    type: PageTransitionType.rightToLeft,
-    duration: const Duration(milliseconds: 225),
-    reverseDuration: const Duration(milliseconds: 225),
-  );
-}
-
-PageTransition _customTransitionBottomToTop({required Widget child}) {
-  return PageTransition(
-    child: child,
-    type: PageTransitionType.bottomToTop,
-    duration: const Duration(milliseconds: 300),
-    reverseDuration: const Duration(milliseconds: 300),
-  );
 }

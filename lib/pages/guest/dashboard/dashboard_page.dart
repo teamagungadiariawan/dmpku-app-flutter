@@ -3,6 +3,12 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/guest_masa_aktif_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_data/guest_paket_data_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/guest_paket_nelpon_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
@@ -106,12 +112,30 @@ class _DashboardPageState extends State<DashboardPage> {
         pushNamed(GuestPulsaProviderPage.routeName);
       },
     ),
-    MenuData("Paket Data", Assets.img.menuIsiUlang.iconPaketData.provider()),
+    MenuData(
+      "Paket Data",
+      Assets.img.menuIsiUlang.iconPaketData.provider(),
+      onTap: () {
+        getPaketDataProvider(context).fetchPaketDataProviders();
+        pushNamed(GuestPaketDataProviderPage.routeName);
+      },
+    ),
     MenuData(
       "Paket SMS & Telepon",
       Assets.img.menuIsiUlang.iconPaketSmsTelepon.provider(),
+      onTap: () {
+        getPaketNelponProvider(context).fetchPaketNelponProviders();
+        pushNamed(GuestPaketNelponProviderPage.routeName);
+      },
     ),
-    MenuData("Masa Aktif", Assets.img.menuIsiUlang.iconMasaAktif.provider()),
+    MenuData(
+      "Masa Aktif",
+      Assets.img.menuIsiUlang.iconMasaAktif.provider(),
+      onTap: () {
+        getMasaAktifProvider(context).fetchMasaAktifProviders();
+        pushNamed(GuestMasaAktifProviderPage.routeName);
+      },
+    ),
     MenuData("Topup Game", Assets.img.menuIsiUlang.iconTopupGame.provider()),
     MenuData("Token PLN", Assets.img.menuIsiUlang.iconTokenPln.provider()),
     MenuData(

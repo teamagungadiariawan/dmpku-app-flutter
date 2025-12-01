@@ -6,8 +6,8 @@ import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/provider_response.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_produk_page.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_data/guest_paket_data_produk_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan_pulsa.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/custom_popup_input_tujuan.dart';
@@ -23,30 +23,32 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 
-class GuestPulsaProviderPage extends StatefulWidget {
-  static const routeName = '/guest/produk/isiulang/pulsa/provider';
+class GuestPaketDataProviderPage extends StatefulWidget {
+  static const routeName = '/guest/produk/isiulang/paket-data/provider';
 
-  const GuestPulsaProviderPage({super.key});
+  const GuestPaketDataProviderPage({super.key});
 
   @override
-  State<GuestPulsaProviderPage> createState() => _GuestPulsaProviderPageState();
+  State<GuestPaketDataProviderPage> createState() =>
+      _GuestPaketDataProviderPageState();
 }
 
-class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
+class _GuestPaketDataProviderPageState
+    extends State<GuestPaketDataProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getPulsaProvider(context).resetState();
+    getPaketDataProvider(context).resetState();
     super.dispose();
   }
 
   Future<void> _onRefresh() async {
-    getPulsaProvider(context).fetchPulsaProviders();
+    getPaketDataProvider(context).fetchPaketDataProviders();
   }
 
   void closePage() {
-    getPulsaProvider(context).resetState();
+    getPaketDataProvider(context).resetState();
     pop();
   }
 
@@ -77,7 +79,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
         },
         child: Scaffold(
           appBar: CustomAppBar(
-            title: "Pilih Provider Pulsa",
+            title: "Pilih Provider Paket Data",
             onBackButtonPressed: () {
               closePage();
             },
@@ -98,7 +100,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
   }
 
   Widget _buildPhoneNumberCard(BuildContext context) {
-    return BlocBuilder<PulsaProvider, PulsaState>(
+    return BlocBuilder<PaketDataProvider, PaketDataState>(
       builder: (context, state) {
         return CardInputTujuanPulsa(
           tujuan: state.tujuan,
@@ -109,10 +111,12 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
           controller: state.inputTujuanController,
           focusNode: state.inputTujuanFocusNode,
           onChanged: (value) {
-            getPulsaProvider(context).setTujuan(value);
+            getPaketDataProvider(context).setTujuan(value);
           },
           onClear: () {
-            getPulsaProvider(context).setTujuan('', updateTextController: true);
+            getPaketDataProvider(
+              context,
+            ).setTujuan('', updateTextController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -130,12 +134,15 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
   }
 
   Widget _buildListProvider(BuildContext context) {
-    return BlocBuilder<PulsaProvider, PulsaState>(
+    return BlocBuilder<PaketDataProvider, PaketDataState>(
       builder: (context, state) {
-        var providers = _filterProviders(state.pulsaProviders, state.tujuan);
+        var providers = _filterProviders(
+          state.paketDataProviders,
+          state.tujuan,
+        );
         return RefreshableList(
           loadingWidget: CardProviderListShimmer(itemCount: 6),
-          isLoading: state.apiFetchPulsaProviderStatus.isLoading,
+          isLoading: state.apiFetchPaketDataProviderStatus.isLoading,
           onRefresh: _onRefresh,
           items: providers,
           itemBuilder: (context, provider, index) {
@@ -144,7 +151,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                var valid = getPulsaProvider(
+                var valid = getPaketDataProvider(
                   context,
                 ).validateTujuan(selectedProvider: provider);
 
@@ -152,8 +159,8 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                   shakeKey.currentState?.shake();
                   return;
                 } else {
-                  pushNamed(GuestPulsaProdukPage.routeName);
-                  getPulsaProvider(context).setSelectedProvider(provider);
+                  pushNamed(GuestPaketDataProdukPage.routeName);
+                  getPaketDataProvider(context).setSelectedProvider(provider);
                 }
               },
             );

@@ -1,3 +1,4 @@
+import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
@@ -39,6 +40,7 @@ class AppTheme {
       contentPadding: EdgeInsets.zero,
       hoverColor: Colors.transparent,
       focusColor: Colors.transparent,
+      hintStyle: LightColorTextStyles.mutedTextStyle,
       suffixIconConstraints: const BoxConstraints(
         minHeight: 0,
         minWidth: 0,
@@ -113,6 +115,7 @@ class AppTheme {
       contentPadding: EdgeInsets.zero,
       hoverColor: Colors.transparent,
       focusColor: Colors.transparent,
+      hintStyle: DarkColorTextStyles.mutedTextStyle,
       suffixIconConstraints: const BoxConstraints(
         minHeight: 0,
         minWidth: 0,

@@ -1,40 +1,14 @@
-import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
-import 'package:dmpku/pages/guest/main_page.dart';
-import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class SplashPage extends StatefulWidget {
-  static const routeName = '/';
-
-  const SplashPage({super.key});
-
-  @override
-  State<SplashPage> createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
-  final InformasiService _informasiService = InformasiService();
-
-  @override
-  void initState() {
-    super.initState();
-
-    gotoGuestDashboard();
-  }
-
-  void gotoGuestDashboard() async {
-    await _informasiService.getInformasi();
-    await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) return;
-    pushReplacementNamed(MainPage.routeName);
-  }
+class LoadingSplashPage extends StatelessWidget {
+  const LoadingSplashPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +40,7 @@ class _SplashPageState extends State<SplashPage> {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(
@@ -74,28 +48,28 @@ class _SplashPageState extends State<SplashPage> {
                               strokeWidth: 2,
                             ),
                           ),
-                          Gap(8),
+                          const Gap(8),
                           Text(
                             'PT. DUNIA MASTER PULSA',
                             style: context.bodyMedium.copyWith(
                               color: Colors.white,
                             ),
                           ),
-                          Gap(2),
+                          const Gap(2),
                           Text(
-                            '${packageInfo.version}',
+                            packageInfo.version,
                             style: context.bodyMedium.copyWith(
                               color: Colors.white,
                             ),
                           ),
-                          Gap(2),
+                          const Gap(2),
                           Text(
                             "Produk INDONESIA",
                             style: context.bodyMedium.copyWith(
                               color: Colors.white,
                             ),
                           ),
-                          Gap(15),
+                          const Gap(15),
                         ],
                       );
                     }

@@ -55,4 +55,148 @@ class ProdukService {
       throw ServerException.fromDio(e: e);
     }
   }
+
+  Future<BaseResponse<ListProviderResponse>>
+  getPaketDataGuestProviders() async {
+    try {
+      final response = await _dio.post("guest/paketdata/provider", data: {});
+
+      final result = BaseResponse<ListProviderResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProviderResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<BaseResponse<ListProductResponse>> getPaketDataGuestProducts({
+    required int idProvider,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "guest/paketdata/product",
+        data: {'idprovider': idProvider} as Map<dynamic, dynamic>,
+      );
+
+      final result = BaseResponse<ListProductResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProductResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<BaseResponse<ListProviderResponse>>
+  getMasaAktifGuestProviders() async {
+    try {
+      final response = await _dio.post("guest/masaaktif/provider", data: {});
+
+      final result = BaseResponse<ListProviderResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProviderResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<BaseResponse<ListProductResponse>> getMasaAktifGuestProducts({
+    required int idProvider,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "guest/masaaktif/product",
+        data: {'idprovider': idProvider} as Map<dynamic, dynamic>,
+      );
+
+      final result = BaseResponse<ListProductResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProductResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<BaseResponse<ListProviderResponse>>
+  getPaketNelponGuestProviders() async {
+    try {
+      final response = await _dio.post("guest/paketnelpon/provider", data: {});
+
+      final result = BaseResponse<ListProviderResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProviderResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<BaseResponse<ListProductResponse>> getPaketNelponGuestProducts({
+    required int idProvider,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "guest/paketnelpon/product",
+        data: {'idprovider': idProvider} as Map<dynamic, dynamic>,
+      );
+
+      final result = BaseResponse<ListProductResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProductResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
 }

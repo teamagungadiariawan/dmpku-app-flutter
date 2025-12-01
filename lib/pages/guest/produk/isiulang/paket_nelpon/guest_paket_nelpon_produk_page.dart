@@ -2,48 +2,42 @@ import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
-import 'package:dmpku/core/themes/app_text_styles.dart';
-import 'package:dmpku/core/themes/theme_extension.dart';
-import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan_pulsa.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
-import 'package:dmpku/widgets/produk/button_favorit.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa_shimmer.dart';
-import 'package:dmpku/widgets/produk/custom_popup_input_tujuan.dart';
 import 'package:dmpku/widgets/produk/refreshable_list.dart';
 import 'package:dmpku/widgets/produk/sort_filter_product.dart';
 import 'package:dmpku/widgets/shake_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
-import 'package:gap/gap.dart';
-import 'package:lottie/lottie.dart';
 
-class GuestPulsaProdukPage extends StatefulWidget {
-  static const routeName = '/guest/produk/isiulang/pulsa/produk';
+class GuestPaketNelponProdukPage extends StatefulWidget {
+  static const routeName = '/guest/produk/isiulang/paket-nelpon/produk';
 
-  const GuestPulsaProdukPage({super.key});
+  const GuestPaketNelponProdukPage({super.key});
 
   @override
-  State<GuestPulsaProdukPage> createState() => _GuestPulsaProdukPageState();
+  State<GuestPaketNelponProdukPage> createState() =>
+      _GuestPaketNelponProdukPageState();
 }
 
-class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
+class _GuestPaketNelponProdukPageState extends State<GuestPaketNelponProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getPulsaProvider(context).resetProduk();
+    getPaketNelponProvider(context).resetProduk();
     pop();
   }
 
   Future<void> _onRefresh() async {
-    getPulsaProvider(context).fetchPulsaProviders();
+    getPaketNelponProvider(context).fetchPaketNelponProviders();
   }
 
   List<ProductModel> _filterProducts(
@@ -81,7 +75,7 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
         onPopInvokedWithResult: (didPop, result) => closePage(),
         child: Scaffold(
           appBar: CustomAppBar(
-            title: getPulsaProvider(
+            title: getPaketNelponProvider(
               context,
             ).state.selectedProvider.namaprovider,
             onBackButtonPressed: closePage,
@@ -96,14 +90,14 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
               ],
             ),
           ),
-          bottomNavigationBar: BlocBuilder<PulsaProvider, PulsaState>(
+          bottomNavigationBar: BlocBuilder<PaketNelponProvider, PaketNelponState>(
             builder: (context, state) {
               return ButtonCheckout(
                 isDisabled:
                     state.selectedProduct.idproduk == 0 ||
                     state.hasErrorInputTujuan ||
                     state.tujuan.isEmpty ||
-                    state.apiFetchPulsaProductStatus.isLoading,
+                    state.apiFetchPaketNelponProductStatus.isLoading,
                 selectedProduct: state.selectedProduct,
                 onContinue: () => BelumLoginDialog.show(context),
               );
@@ -115,7 +109,7 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
   }
 
   Widget _buildPhoneNumberCard(BuildContext context) {
-    return BlocBuilder<PulsaProvider, PulsaState>(
+    return BlocBuilder<PaketNelponProvider, PaketNelponState>(
       builder: (context, state) {
         return CardInputTujuanPulsa(
           tujuan: state.tujuan,
@@ -127,10 +121,12 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
           controller: state.inputTujuanController,
           focusNode: state.inputTujuanFocusNode,
           onChanged: (value) {
-            getPulsaProvider(context).setTujuan(value);
+            getPaketNelponProvider(context).setTujuan(value);
           },
           onClear: () {
-            getPulsaProvider(context).setTujuan('', updateTextController: true);
+            getPaketNelponProvider(
+              context,
+            ).setTujuan('', updateTextController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -143,7 +139,7 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
   }
 
   Widget _buildSortFilterProduct(BuildContext context) {
-    return BlocBuilder<PulsaProvider, PulsaState>(
+    return BlocBuilder<PaketNelponProvider, PaketNelponState>(
       builder: (context, state) {
         return SortFilterProduct(
           searchController: state.searchProductController!,
@@ -151,15 +147,15 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
           hasError: state.hasErrorInputTujuan,
           selectedSort: state.sortProduct,
           onSearchChanged: (val) {
-            getPulsaProvider(context).setSearchProduct(val);
+            getPaketNelponProvider(context).setSearchProduct(val);
           },
           onClearSearch: () {
-            getPulsaProvider(
+            getPaketNelponProvider(
               context,
             ).setSearchProduct('', updateTextController: true);
           },
           onSortSelected: (sortBy) {
-            getPulsaProvider(context).setSortProduct(sortBy);
+            getPaketNelponProvider(context).setSortProduct(sortBy);
           },
         );
       },
@@ -167,17 +163,17 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
   }
 
   Widget _buildListProduk(BuildContext context) {
-    return BlocBuilder<PulsaProvider, PulsaState>(
+    return BlocBuilder<PaketNelponProvider, PaketNelponState>(
       builder: (context, state) {
         var products = _filterProducts(
-          state.pulsaProduct,
+          state.paketNelponProduct,
           state.searchProduct,
           state.sortProduct,
         );
 
         return RefreshableList(
           loadingWidget: CardProductPulsaListShimmer(itemCount: 6),
-          isLoading: state.apiFetchPulsaProductStatus.isLoading,
+          isLoading: state.apiFetchPaketNelponProductStatus.isLoading,
           onRefresh: _onRefresh,
           items: products,
           itemBuilder: (context, provider, index) {
@@ -190,7 +186,7 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
               isGangguan: product.isGangguan,
               isPulsa: true,
               onPress: () {
-                getPulsaProvider(context).setSelectedProduct(product);
+                getPaketNelponProvider(context).setSelectedProduct(product);
               },
             );
           },
