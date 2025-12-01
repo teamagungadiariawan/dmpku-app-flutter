@@ -36,6 +36,10 @@ class TopupGameState extends Equatable {
 
   final ProductModel selectedProduct;
 
+  final bool isCekAkun;
+  final String titleForm;
+  final String hintForm;
+
   const TopupGameState({
     this.apiFetchTopupGameProviderStatus = ApiStatus.initial,
     this.apiFetchTopupGameProviderMessage = '',
@@ -63,6 +67,10 @@ class TopupGameState extends Equatable {
     this.searchProductController,
 
     this.selectedProduct = DEFAULT_PRODUCT,
+
+    this.isCekAkun = false,
+    this.titleForm = 'ID Game',
+    this.hintForm = 'Contoh : 123XXXXXXX',
   });
 
   TopupGameState copyWith({
@@ -92,6 +100,10 @@ class TopupGameState extends Equatable {
     TextEditingController? searchProductController,
 
     ProductModel? selectedProduct,
+
+    bool? isCekAkun,
+    String? titleForm,
+    String? hintForm,
   }) {
     return TopupGameState(
       apiFetchTopupGameProviderStatus:
@@ -131,6 +143,10 @@ class TopupGameState extends Equatable {
           searchProductController ?? this.searchProductController,
 
       selectedProduct: selectedProduct ?? this.selectedProduct,
+
+      isCekAkun: isCekAkun ?? this.isCekAkun,
+      titleForm: titleForm ?? this.titleForm,
+      hintForm: hintForm ?? this.hintForm,
     );
   }
 
@@ -162,6 +178,10 @@ class TopupGameState extends Equatable {
     searchProductController,
 
     selectedProduct,
+
+    isCekAkun,
+    titleForm,
+    hintForm,
   ];
 }
 
@@ -185,6 +205,24 @@ class TopupGameProvider extends Cubit<TopupGameState> {
     emit(state.copyWith(searchProvider: val));
   }
 
+  void setSelectedProvider(
+    ProviderModel provider, {
+    String? titleForm,
+    String? hintForm,
+  }) {
+    emit(state.copyWith(selectedProvider: provider));
+
+    if (titleForm != null) {
+      emit(state.copyWith(titleForm: titleForm));
+    }
+
+    if (hintForm != null) {
+      emit(state.copyWith(hintForm: hintForm));
+    }
+
+    fetchTopupGameProducts();
+  }
+
   void resetProduk() {
     emit(
       state.copyWith(
@@ -196,6 +234,9 @@ class TopupGameProvider extends Cubit<TopupGameState> {
         searchProduct: '',
         searchProductController: TextEditingController(),
         selectedProduct: DEFAULT_PRODUCT,
+        isCekAkun: false,
+        titleForm: 'ID Game',
+        hintForm: 'Contoh : 123XXXXXXX',
       ),
     );
   }
@@ -389,7 +430,7 @@ class TopupGameProvider extends Cubit<TopupGameState> {
   void fetchTopupGameProducts() async {
     if (state.selectedProvider.idprovider == 0) return;
 
-    if(state.apiFetchTopupGameProductStatus.isLoading) return;
+    if (state.apiFetchTopupGameProductStatus.isLoading) return;
     emit(
       state.copyWith(
         apiFetchTopupGameProductStatus: ApiStatus.loading,
@@ -411,6 +452,16 @@ class TopupGameProvider extends Cubit<TopupGameState> {
             topupGameProducts: data.productList,
           ),
         );
+
+        var isCekAkun = false;
+        for (var product in data.productList) {
+          if (product.kodeprodukcek != '') {
+            isCekAkun = true;
+            break;
+          }
+        }
+
+        emit(state.copyWith(isCekAkun: isCekAkun));
       } else {
         emit(
           state.copyWith(
@@ -430,7 +481,6 @@ class TopupGameProvider extends Cubit<TopupGameState> {
         ),
       );
     }
-
   }
 
   void setSortProduct(SortProductBy sortBy) {
