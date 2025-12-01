@@ -385,42 +385,16 @@ class TopupGameProvider extends Cubit<TopupGameState> {
         return false;
       }
 
-      switch (selectedProvider.tipeinput) {
-        case "1":
-          if (!RegExp(r'^[0-9]+$').hasMatch(tujuan)) {
-            emit(
-              state.copyWith(
-                hasErrorInputTujuan: true,
-                errorMessageInputTujuan: 'Tujuan harus berupa angka saja',
-              ),
-            );
-            return false;
-          }
-          break;
-        case "2":
-          if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(tujuan)) {
-            emit(
-              state.copyWith(
-                hasErrorInputTujuan: true,
-                errorMessageInputTujuan:
-                    'Tujuan harus berupa angka dan huruf saja',
-              ),
-            );
-            return false;
-          }
-          break;
-        case "3":
-          if (!RegExp(r'^[a-zA-Z0-9@&=#\-. ]+$').hasMatch(tujuan)) {
-            emit(
-              state.copyWith(
-                hasErrorInputTujuan: true,
-                errorMessageInputTujuan:
-                    'Tujuan mengandung karakter yang tidak diizinkan',
-              ),
-            );
-            return false;
-          }
-          break;
+      var validTipeInput = selectedProvider.inputTipe.isValid(state.tujuan);
+      if (!validTipeInput) {
+        emit(
+          state.copyWith(
+            hasErrorInputTujuan: true,
+            errorMessageInputTujuan:
+                selectedProvider.inputTipe.errorMessage,
+          ),
+        );
+        return false;
       }
     }
 
