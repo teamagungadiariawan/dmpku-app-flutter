@@ -2,6 +2,8 @@ import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/widgets/custom_button.dart';
+import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_favorit.dart';
 import 'package:dmpku/widgets/shake_widget.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class CardInputTujuanTopupGame extends StatelessWidget {
   final GlobalKey<ShakeErrorWidgetState>? shakeKey;
   final bool showFavoritButton;
   final bool isGuest;
+  final bool isCekAkun;
   final ValueChanged<String>? onFavoritResult;
   final IconData? icon;
   final TipeInput tipeInput;
@@ -43,6 +46,7 @@ class CardInputTujuanTopupGame extends StatelessWidget {
     this.shakeKey,
     this.showFavoritButton = true,
     this.isGuest = false,
+    this.isCekAkun = false,
     this.onFavoritResult,
     this.icon,
     this.tipeInput = TipeInput.numericOnly,
@@ -69,6 +73,22 @@ class CardInputTujuanTopupGame extends StatelessWidget {
                 style: context.bodySmall.withColor(context.destructive),
               ),
             ],
+
+            if (isCekAkun) ...[
+              const Gap(8),
+              CustomButton(
+                text: "Cek Akun",
+                onPressed: () {
+                  if (isGuest) {
+                    BelumLoginDialog.show(context);
+                  }
+                },
+                height: 25,
+                width: double.infinity,
+                padding: EdgeInsets.zero,
+              ),
+            ],
+
             if (showFavoritButton) ...[
               const Gap(8),
               ButtonFavorit(
