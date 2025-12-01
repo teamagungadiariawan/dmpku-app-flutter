@@ -3,6 +3,7 @@ import 'package:dmpku/core/router/app_router.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/pages/auth/loading_splash_page.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
@@ -41,6 +42,7 @@ void main() {
     runApp(
       MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => AktivasiVoucherProvider()),
           BlocProvider(create: (_) => MasaAktifProvider()),
           BlocProvider(create: (_) => PaketDataProvider()),
           BlocProvider(create: (_) => PaketNelponProvider()),
