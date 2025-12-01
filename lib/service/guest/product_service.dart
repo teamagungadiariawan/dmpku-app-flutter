@@ -197,7 +197,7 @@ class ProdukService {
     try {
       final response = await _dio.post(
         "guest/masaaktif/product",
-        data: {'idprovider': idProvider} as Map<dynamic, dynamic>,
+        data: {'idprovider': idProvider},
       );
 
       final result = BaseResponse<ListProductResponse>.fromJson(
@@ -249,7 +249,7 @@ class ProdukService {
     try {
       final response = await _dio.post(
         "guest/paketdata/product",
-        data: {'idprovider': idProvider} as Map<dynamic, dynamic>,
+        data: {'idprovider': idProvider},
       );
 
       final result = BaseResponse<ListProductResponse>.fromJson(
@@ -301,7 +301,7 @@ class ProdukService {
     try {
       final response = await _dio.post(
         "guest/paketnelpon/product",
-        data: {'idprovider': idProvider} as Map<dynamic, dynamic>,
+        data: {'idprovider': idProvider},
       );
 
       final result = BaseResponse<ListProductResponse>.fromJson(
@@ -352,7 +352,7 @@ class ProdukService {
     try {
       final response = await _dio.post(
         "guest/pulsa/product",
-        data: {'idprovider': idProvider} as Map<dynamic, dynamic>,
+        data: {'idprovider': idProvider},
       );
 
       final result = BaseResponse<ListProductResponse>.fromJson(
