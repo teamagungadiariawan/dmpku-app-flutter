@@ -3,6 +3,9 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_produk_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/guest_masa_aktif_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_data/guest_paket_data_provider_page.dart';
@@ -148,14 +151,21 @@ class _DashboardPageState extends State<DashboardPage> {
         pushNamed(GuestTopupGameProviderPage.routeName);
       },
     ),
-    MenuData("Token PLN", Assets.img.menuIsiUlang.iconTokenPln.provider(),
+    MenuData(
+      "Token PLN",
+      Assets.img.menuIsiUlang.iconTokenPln.provider(),
       onTap: () {
         getTokenPlnProvider(context).fetchTokenPlnProducts();
         pushNamed(GuestTokenPlnProdukPage.routeName);
-      },),
+      },
+    ),
     MenuData(
       "Aktivasi Voucher",
       Assets.img.menuIsiUlang.iconAktivasiVoucher.provider(),
+      onTap: () {
+        getAktivasiVoucherProvider(context).fetchAktivasiVoucherProviders();
+        pushNamed(GuestAktivasiVoucherProviderPage.routeName);
+      },
     ),
     MenuData(
       "Voucher Data",

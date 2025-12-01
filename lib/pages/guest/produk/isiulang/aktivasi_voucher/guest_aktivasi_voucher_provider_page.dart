@@ -1,0 +1,194 @@
+import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/helpers/navigator_helper.dart';
+import 'package:dmpku/core/helpers/system_ui_helper.dart';
+import 'package:dmpku/core/themes/app_spacing.dart';
+import 'package:dmpku/core/themes/app_text_styles.dart';
+import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/model/provider_response.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_produk_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_data/guest_paket_data_produk_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan_pulsa.dart';
+import 'package:dmpku/widgets/custom_app_bar.dart';
+import 'package:dmpku/widgets/produk/custom_popup_input_tujuan.dart';
+import 'package:dmpku/widgets/produk/button_favorit.dart';
+import 'package:dmpku/widgets/produk/card_provider.dart';
+import 'package:dmpku/widgets/produk/card_provider_shimmer.dart';
+import 'package:dmpku/widgets/produk/refreshable_list.dart';
+import 'package:dmpku/widgets/shake_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
+import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+class GuestAktivasiVoucherProviderPage extends StatefulWidget {
+  static const routeName = '/guest/produk/isiulang/aktivasi-voucher/provider';
+
+  const GuestAktivasiVoucherProviderPage({super.key});
+
+  @override
+  State<GuestAktivasiVoucherProviderPage> createState() =>
+      _GuestAktivasiVoucherProviderPageState();
+}
+
+class _GuestAktivasiVoucherProviderPageState
+    extends State<GuestAktivasiVoucherProviderPage> {
+  final shakeKey = GlobalKey<ShakeErrorWidgetState>();
+
+  @override
+  void dispose() {
+    getAktivasiVoucherProvider(context).resetState();
+    super.dispose();
+  }
+
+  Future<void> _onRefresh() async {
+    getAktivasiVoucherProvider(context).fetchAktivasiVoucherProviders();
+  }
+
+  void closePage() {
+    getAktivasiVoucherProvider(context).resetState();
+    pop();
+  }
+
+  List<ProviderModel> _filterProviders(
+    List<ProviderModel> providers,
+    String search,
+  ) {
+    var filteredProviders = providers;
+
+    if (search.isNotEmpty) {
+      filteredProviders = filteredProviders.where((provider) {
+        var namaProvider = provider.namaprovider.replaceAll(
+          RegExp(r'[^\w\s]'),
+          '',
+        );
+        return namaProvider.toLowerCase().contains(search.toLowerCase());
+      }).toList();
+    }
+
+    return filteredProviders;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: getTransparentSystemUiOverlayStyle(),
+      child: WillPopScope(
+        onWillPop: () async {
+          debugPrint("WillPopScope: onWillPop");
+          closePage();
+          return true; // true = izinkan pop
+        },
+        child: Scaffold(
+          appBar: CustomAppBar(
+            title: "Pilih Provider Aktivasi Voucher",
+            onBackButtonPressed: () {
+              closePage();
+            },
+          ),
+          body: Padding(
+            padding: paddingPage,
+            child: Column(
+              children: [
+                _buildSearchField(context),
+                Gap(10),
+                Expanded(child: _buildListProvider(context)),
+                Gap(5),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildListProvider(BuildContext context) {
+    return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+      builder: (context, state) {
+        var providers = _filterProviders(
+          state.aktivasiVoucherProviders,
+          state.searchProvider,
+        );
+        return RefreshableList(
+          loadingWidget: CardProviderListShimmer(itemCount: 6),
+          isLoading: state.apiFetchAktivasiVoucherProviderStatus.isLoading,
+          onRefresh: _onRefresh,
+          items: providers,
+          itemBuilder: (context, provider, index) {
+            return CardProvider(
+              title: provider.namaprovider,
+              subtitle: provider.deskripsiprovider,
+              imageUrl: provider.imgprovider,
+              onPressed: () {
+                pushNamed(GuestAktivasiVoucherProdukPage.routeName);
+                getAktivasiVoucherProvider(
+                  context,
+                ).setSelectedProvider(provider);
+              },
+            );
+          },
+          emptyTitle: state.tujuan.isEmpty
+              ? 'Masukkan nomor untuk melihat provider'
+              : 'Provider tidak ditemukan',
+        );
+      },
+    );
+  }
+
+  Widget _buildSearchField(BuildContext context) {
+    return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+      builder: (context, state) {
+        return Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: context.muted,
+            border: Border.all(color: context.border, width: 1),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+          ),
+          padding: const EdgeInsets.all(6),
+          child: Row(
+            children: [
+              Icon(LucideIcons.search, size: 18, color: context.foreground),
+              const Gap(6),
+              Expanded(
+                child: TextField(
+                  controller: state.searchProviderController,
+                  onChanged: getAktivasiVoucherProvider(
+                    context,
+                  ).setSearchProvider,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: 'Cari Provider',
+                    suffixIcon: state.searchProvider.isNotEmpty
+                        ? InkWell(
+                            onTap: () {
+                              getAktivasiVoucherProvider(
+                                context,
+                              ).setSearchProvider(
+                                '',
+                                updateTextController: true,
+                              );
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
+                        : null,
+                  ),
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
