@@ -99,6 +99,7 @@ flutter:
     - assets/img/bottom_nav/
     - assets/img/menu_isi_ulang/
     - assets/img/menu_penjualan/
+    - assets/img/produk/
 
   fonts:
     - family: Poppins

@@ -55,6 +55,9 @@ class $AssetsImgGen {
   $AssetsImgMenuPenjualanGen get menuPenjualan =>
       const $AssetsImgMenuPenjualanGen();
 
+  /// Directory path: assets/img/produk
+  $AssetsImgProdukGen get produk => const $AssetsImgProdukGen();
+
   /// List of all assets
   List<AssetGenImage> get values => [
     bgPattern,
@@ -240,6 +243,17 @@ class $AssetsImgMenuPenjualanGen {
     icKalkulator,
     icKasir,
   ];
+}
+
+class $AssetsImgProdukGen {
+  const $AssetsImgProdukGen();
+
+  /// File path: assets/img/produk/ic_token_pln.png
+  AssetGenImage get icTokenPln =>
+      const AssetGenImage('assets/img/produk/ic_token_pln.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [icTokenPln];
 }
 
 class Assets {
