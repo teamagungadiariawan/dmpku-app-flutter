@@ -1,3 +1,4 @@
+import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:flutter/widgets.dart';
 
 class ProviderModel {
@@ -52,6 +53,8 @@ class ProviderModel {
   List<String> get prefixList {
     return prefix.split(',').map((e) => e.trim()).toList();
   }
+
+  TipeInput get inputTipe => TipeInput.fromValue(tipeinput);
 
   Map<String, dynamic> toJson() {
     return {
@@ -128,6 +131,49 @@ class ListProviderResponse {
 
   Map<String, dynamic> toJson() {
     return {"data": providerList.map((e) => e.toJson()).toList()};
+  }
+}
+
+class TopupGameProviderResponse {
+  final List<ProviderModel> topupgame;
+  final List<ProviderModel> vouchergame;
+
+  TopupGameProviderResponse({
+    required this.topupgame,
+    required this.vouchergame,
+  });
+
+  factory TopupGameProviderResponse.fromJson(Map<String, dynamic>? json) {
+    final List<ProviderModel> topupgameList = [];
+    final List<ProviderModel> vouchergameList = [];
+
+    if (json != null) {
+      if (json["topupgame"] is List) {
+        for (final el in json["topupgame"]) {
+          topupgameList.add(ProviderModel.fromJson(el));
+        }
+      }
+
+      if (json["vouchergame"] is List) {
+        for (final el in json["vouchergame"]) {
+          vouchergameList.add(ProviderModel.fromJson(el));
+        }
+      }
+    }
+
+    return TopupGameProviderResponse(
+      topupgame: topupgameList,
+      vouchergame: vouchergameList,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "data": {
+        "topupgame": topupgame.map((e) => e.toJson()).toList(),
+        "vouchergame": vouchergame.map((e) => e.toJson()).toList(),
+      },
+    };
   }
 }
 
