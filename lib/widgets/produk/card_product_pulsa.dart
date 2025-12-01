@@ -135,7 +135,7 @@ class CardProductPulsa extends StatelessWidget {
           if (!formattedSubtitle.format) ...[
             Text(
               formattedSubtitle.info,
-              style: context.bodyExtraSmall.withWeight(FontWeight.w600),
+              style: context.bodyMedium.withWeight(FontWeight.w400),
             ),
           ],
           if (formattedSubtitle.format) ...[

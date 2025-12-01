@@ -125,7 +125,7 @@ class CardProduct extends StatelessWidget {
         children: [
           Text(
             subtitle,
-            style: context.bodyExtraSmall.withWeight(FontWeight.w600),
+            style: context.bodyMedium.withWeight(FontWeight.w400),
           ),
         ],
       ),
