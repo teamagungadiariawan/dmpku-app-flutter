@@ -9,6 +9,10 @@ import 'package:flutter/material.dart';
 class ProdukService {
   final _dio = ApiClientGuest.dio;
 
+  // -----------------------------------------------------------------------------
+  // PULSA
+  // -----------------------------------------------------------------------------
+
   Future<BaseResponse<ListProviderResponse>> getPulsaGuestProviders() async {
     try {
       final response = await _dio.post("guest/pulsa/provider", data: {});
@@ -55,6 +59,10 @@ class ProdukService {
       throw ServerException.fromDio(e: e);
     }
   }
+
+  // -----------------------------------------------------------------------------
+  // PAKET DATA
+  // -----------------------------------------------------------------------------
 
   Future<BaseResponse<ListProviderResponse>>
   getPaketDataGuestProviders() async {
@@ -104,6 +112,10 @@ class ProdukService {
     }
   }
 
+  // -----------------------------------------------------------------------------
+  // MASA AKTIF
+  // -----------------------------------------------------------------------------
+
   Future<BaseResponse<ListProviderResponse>>
   getMasaAktifGuestProviders() async {
     try {
@@ -152,6 +164,10 @@ class ProdukService {
     }
   }
 
+  // -----------------------------------------------------------------------------
+  // PAKET NELPON
+  // -----------------------------------------------------------------------------
+
   Future<BaseResponse<ListProviderResponse>>
   getPaketNelponGuestProviders() async {
     try {
@@ -181,6 +197,57 @@ class ProdukService {
       final response = await _dio.post(
         "guest/paketnelpon/product",
         data: {'idprovider': idProvider} as Map<dynamic, dynamic>,
+      );
+
+      final result = BaseResponse<ListProductResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProductResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  // TOPUP GAME
+  // -----------------------------------------------------------------------------\
+
+  Future<BaseResponse<TopupGameProviderResponse>>
+  getTopupGameGuestProviders() async {
+    try {
+      final response = await _dio.post("guest/game/provider", data: {});
+      final result = BaseResponse<TopupGameProviderResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => TopupGameProviderResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<BaseResponse<ListProductResponse>> getTopupGameGuestProducts({
+    required int idProvider,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "guest/game/product",
+        data: {'idprovider': idProvider},
       );
 
       final result = BaseResponse<ListProductResponse>.fromJson(
