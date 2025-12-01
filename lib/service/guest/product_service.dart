@@ -218,7 +218,7 @@ class ProdukService {
 
   // -----------------------------------------------------------------------------
   // TOPUP GAME
-  // -----------------------------------------------------------------------------\
+  // -----------------------------------------------------------------------------
 
   Future<BaseResponse<TopupGameProviderResponse>>
   getTopupGameGuestProviders() async {
@@ -249,6 +249,31 @@ class ProdukService {
         "guest/game/product",
         data: {'idprovider': idProvider},
       );
+
+      final result = BaseResponse<ListProductResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProductResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  // TOPUP GAME
+  // -----------------------------------------------------------------------------
+
+  Future<BaseResponse<ListProductResponse>> getTokenPlnGuestProducts() async {
+    try {
+      final response = await _dio.post("guest/tokenpln/product", data: {});
 
       final result = BaseResponse<ListProductResponse>.fromJson(
         response.data,
