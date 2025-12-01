@@ -7,6 +7,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/masa_aktif_provider
 import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/token_pln/token_pln_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
@@ -44,6 +45,7 @@ void main() {
           BlocProvider(create: (_) => PaketDataProvider()),
           BlocProvider(create: (_) => PaketNelponProvider()),
           BlocProvider(create: (_) => PulsaProvider()),
+          BlocProvider(create: (_) => TokenPlnProvider()),
           BlocProvider(create: (_) => TopupGameProvider()),
         ],
         child: MyApp(textScaleProvider: textScaleProvider),
