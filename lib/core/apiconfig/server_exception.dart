@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dmpku/core/helpers/encrypt_helper.dart';
 import 'package:flutter/cupertino.dart';
 
 class ServerException implements Exception {
@@ -16,6 +17,19 @@ class ServerException implements Exception {
 
     debugPrint('ServerException Code: $code');
     debugPrint('ServerException Response: ${response?.data}');
+
+    if (response?.data is Map<String, dynamic>) {
+      final data = response!.data as Map<String, dynamic>;
+      if (data.containsKey('a')) {
+        final a = data['a'] as String;
+
+        debugPrint('ServerException Encrypted Data: $a');
+        var enc = Encrypted(a: data["a"] as String);
+        var decryptedData = EncryptHelper.decrypt(enc);
+        debugPrint("Decrypted Response Data: $decryptedData");
+
+      }
+    }
 
     String? message;
     switch (e?.type) {

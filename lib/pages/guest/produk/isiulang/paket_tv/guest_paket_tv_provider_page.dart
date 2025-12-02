@@ -4,8 +4,8 @@ import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/provider_response.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_produk_page.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_tv/guest_paket_tv_produk_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_tv/paket_tv_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/card_provider.dart';
 import 'package:dmpku/widgets/produk/card_provider_shimmer.dart';
@@ -18,39 +18,39 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:gap/gap.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class GuestAktivasiVoucherProviderPage extends StatefulWidget {
-  static const routeName = '/guest/produk/isiulang/aktivasi-voucher/provider';
+class GuestPaketTvProviderPage extends StatefulWidget {
+  static const routeName = '/guest/produk/isiulang/paket-tv/provider';
 
-  const GuestAktivasiVoucherProviderPage({super.key});
+  const GuestPaketTvProviderPage({super.key});
 
   @override
-  State<GuestAktivasiVoucherProviderPage> createState() =>
-      _GuestAktivasiVoucherProviderPageState();
+  State<GuestPaketTvProviderPage> createState() =>
+      _GuestPaketTvProviderPageState();
 }
 
-class _GuestAktivasiVoucherProviderPageState
-    extends State<GuestAktivasiVoucherProviderPage> {
+class _GuestPaketTvProviderPageState
+    extends State<GuestPaketTvProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getAktivasiVoucherProvider(context).resetState();
+    getPaketTvProvider(context).resetState();
     super.dispose();
   }
 
   Future<void> _onRefresh() async {
-    getAktivasiVoucherProvider(context).fetchProviders();
+    getPaketTvProvider(context).fetchProviders();
   }
 
   void closePage() {
-    getAktivasiVoucherProvider(context).resetState();
+    getPaketTvProvider(context).resetState();
     pop();
   }
 
   List<ProviderModel> _filterProviders(
-    List<ProviderModel> providers,
-    String search,
-  ) {
+      List<ProviderModel> providers,
+      String search,
+      ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -78,7 +78,7 @@ class _GuestAktivasiVoucherProviderPageState
         },
         child: Scaffold(
           appBar: CustomAppBar(
-            title: "Pilih Provider Aktivasi Voucher",
+            title: "Pilih Provider Paket TV",
             onBackButtonPressed: () {
               closePage();
             },
@@ -100,9 +100,9 @@ class _GuestAktivasiVoucherProviderPageState
   }
 
   Widget _buildListProvider(BuildContext context) {
-    return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+    return BlocBuilder<PaketTvProvider, PaketTvState>(
       buildWhen: (previous, current) =>
-          previous.providers != current.providers ||
+      previous.providers != current.providers ||
           previous.searchProvider != current.searchProvider ||
           previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
@@ -118,8 +118,8 @@ class _GuestAktivasiVoucherProviderPageState
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                pushNamed(GuestAktivasiVoucherProdukPage.routeName);
-                getAktivasiVoucherProvider(
+                pushNamed(GuestPaketTvProdukPage.routeName);
+                getPaketTvProvider(
                   context,
                 ).setSelectedProvider(provider);
               },
@@ -134,9 +134,9 @@ class _GuestAktivasiVoucherProviderPageState
   }
 
   Widget _buildSearchField(BuildContext context) {
-    return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+    return BlocBuilder<PaketTvProvider, PaketTvState>(
       buildWhen: (previous, current) =>
-          previous.searchProvider != current.searchProvider,
+      previous.searchProvider != current.searchProvider,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -153,7 +153,7 @@ class _GuestAktivasiVoucherProviderPageState
               Expanded(
                 child: TextField(
                   controller: state.searchProviderController,
-                  onChanged: getAktivasiVoucherProvider(
+                  onChanged: getPaketTvProvider(
                     context,
                   ).setSearchProvider,
                   decoration: InputDecoration(
@@ -161,17 +161,17 @@ class _GuestAktivasiVoucherProviderPageState
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProvider.isNotEmpty
                         ? InkWell(
-                            onTap: () {
-                              getAktivasiVoucherProvider(
-                                context,
-                              ).setSearchProvider('', updateController: true);
-                            },
-                            child: Icon(
-                              MdiIcons.close,
-                              size: 18,
-                              color: context.foreground,
-                            ),
-                          )
+                      onTap: () {
+                        getPaketTvProvider(
+                          context,
+                        ).setSearchProvider('', updateController: true);
+                      },
+                      child: Icon(
+                        MdiIcons.close,
+                        size: 18,
+                        color: context.foreground,
+                      ),
+                    )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

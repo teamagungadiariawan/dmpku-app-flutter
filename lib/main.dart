@@ -3,14 +3,22 @@ import 'package:dmpku/core/router/app_router.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/pages/auth/loading_splash_page.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/cek_status_voucher/cek_status_voucher_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/info_kartu/info_kartu_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_streaming/paket_streaming_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_tv/paket_tv_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/token_pln/token_pln_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/voucher_data/voucher_data_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
+import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
 import 'package:dmpku/widgets/dialog/offline_dialog.dart';
@@ -43,13 +51,21 @@ void main() {
     runApp(
       MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => AktivasiPerdanaProvider()),
           BlocProvider(create: (_) => AktivasiVoucherProvider()),
+          BlocProvider(create: (_) => CekStatusVoucherProvider()),
+          BlocProvider(create: (_) => InfoKartuProvider()),
           BlocProvider(create: (_) => MasaAktifProvider()),
+          BlocProvider(create: (_) => PaketCuanProvider()),
           BlocProvider(create: (_) => PaketDataProvider()),
           BlocProvider(create: (_) => PaketNelponProvider()),
+          BlocProvider(create: (_) => PaketStreamingProvider()),
+          BlocProvider(create: (_) => PaketTvProvider()),
           BlocProvider(create: (_) => PulsaProvider()),
           BlocProvider(create: (_) => TokenPlnProvider()),
           BlocProvider(create: (_) => TopupGameProvider()),
+          BlocProvider(create: (_) => VoucherDataProvider()),
+          BlocProvider(create: (_) => VoucherDigitalProvider()),
           BlocProvider(create: (_) => WifiIdProvider()),
         ],
         child: MyApp(textScaleProvider: textScaleProvider),

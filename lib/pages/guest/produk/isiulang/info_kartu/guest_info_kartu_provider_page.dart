@@ -3,9 +3,10 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/model/provider_response.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_produk_page.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/info_kartu/guest_info_kartu_produk_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/info_kartu/info_kartu_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/card_provider.dart';
 import 'package:dmpku/widgets/produk/card_provider_shimmer.dart';
@@ -18,44 +19,44 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:gap/gap.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class GuestAktivasiVoucherProviderPage extends StatefulWidget {
-  static const routeName = '/guest/produk/isiulang/aktivasi-voucher/provider';
+class GuestInfoKartuProviderPage extends StatefulWidget {
+  static const routeName = '/guest/produk/isiulang/info-kartu/provider';
 
-  const GuestAktivasiVoucherProviderPage({super.key});
+  const GuestInfoKartuProviderPage({super.key});
 
   @override
-  State<GuestAktivasiVoucherProviderPage> createState() =>
-      _GuestAktivasiVoucherProviderPageState();
+  State<GuestInfoKartuProviderPage> createState() =>
+      _GuestInfoKartuProviderPageState();
 }
 
-class _GuestAktivasiVoucherProviderPageState
-    extends State<GuestAktivasiVoucherProviderPage> {
+class _GuestInfoKartuProviderPageState
+    extends State<GuestInfoKartuProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getAktivasiVoucherProvider(context).resetState();
+    getInfoKartuProvider(context).resetState();
     super.dispose();
   }
 
   Future<void> _onRefresh() async {
-    getAktivasiVoucherProvider(context).fetchProviders();
+    getInfoKartuProvider(context).fetchProducts();
   }
 
   void closePage() {
-    getAktivasiVoucherProvider(context).resetState();
+    getInfoKartuProvider(context).resetState();
     pop();
   }
 
-  List<ProviderModel> _filterProviders(
-    List<ProviderModel> providers,
+  List<ProductModel> _filterProviders(
+    List<ProductModel> providers,
     String search,
   ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
       filteredProviders = filteredProviders.where((provider) {
-        var namaProvider = provider.namaprovider.replaceAll(
+        var namaProvider = provider.namaproduk.replaceAll(
           RegExp(r'[^\w\s]'),
           '',
         );
@@ -78,7 +79,7 @@ class _GuestAktivasiVoucherProviderPageState
         },
         child: Scaffold(
           appBar: CustomAppBar(
-            title: "Pilih Provider Aktivasi Voucher",
+            title: "Pilih Provider Info Kartu",
             onBackButtonPressed: () {
               closePage();
             },
@@ -100,43 +101,39 @@ class _GuestAktivasiVoucherProviderPageState
   }
 
   Widget _buildListProvider(BuildContext context) {
-    return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+    return BlocBuilder<InfoKartuProvider, InfoKartuState>(
       buildWhen: (previous, current) =>
-          previous.providers != current.providers ||
-          previous.searchProvider != current.searchProvider ||
-          previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
+          previous.products != current.products ||
+          previous.searchProduct != current.searchProduct ||
+          previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
-        var providers = _filterProviders(state.providers, state.searchProvider);
+        var providers = _filterProviders(state.products, state.searchProduct);
         return RefreshableList(
           loadingWidget: CardProviderListShimmer(itemCount: 6),
-          isLoading: state.apiFetchProviderStatus.isLoading,
+          isLoading: state.apiFetchProductStatus.isLoading,
           onRefresh: _onRefresh,
           items: providers,
           itemBuilder: (context, provider, index) {
             return CardProvider(
-              title: provider.namaprovider,
-              subtitle: provider.deskripsiprovider,
-              imageUrl: provider.imgprovider,
+              title: provider.namaproduk,
+              subtitle: provider.deskripsiproduk,
+              imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(GuestAktivasiVoucherProdukPage.routeName);
-                getAktivasiVoucherProvider(
-                  context,
-                ).setSelectedProvider(provider);
+                pushNamed(GuestInfoKartuProdukPage.routeName);
+                getInfoKartuProvider(context).setSelectedProduct(provider);
               },
             );
           },
-          emptyTitle: state.tujuan.isEmpty
-              ? 'Masukkan nomor untuk melihat provider'
-              : 'Provider tidak ditemukan',
+          emptyTitle: 'Provider tidak ditemukan',
         );
       },
     );
   }
 
   Widget _buildSearchField(BuildContext context) {
-    return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+    return BlocBuilder<InfoKartuProvider, InfoKartuState>(
       buildWhen: (previous, current) =>
-          previous.searchProvider != current.searchProvider,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -152,19 +149,17 @@ class _GuestAktivasiVoucherProviderPageState
               const Gap(6),
               Expanded(
                 child: TextField(
-                  controller: state.searchProviderController,
-                  onChanged: getAktivasiVoucherProvider(
-                    context,
-                  ).setSearchProvider,
+                  controller: state.searchProductController,
+                  onChanged: getInfoKartuProvider(context).setSearchProduct,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Provider',
-                    suffixIcon: state.searchProvider.isNotEmpty
+                    suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
                             onTap: () {
-                              getAktivasiVoucherProvider(
+                              getInfoKartuProvider(
                                 context,
-                              ).setSearchProvider('', updateController: true);
+                              ).setSearchProduct('', updateController: true);
                             },
                             child: Icon(
                               MdiIcons.close,
