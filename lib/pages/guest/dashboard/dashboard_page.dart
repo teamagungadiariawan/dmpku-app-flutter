@@ -32,6 +32,8 @@ import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/guest_voucher_
 import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
+import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -97,7 +99,10 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: IsiUlangSection(menus: _isiUlangMenus),
                 ),
                 SliverToBoxAdapter(
-                  child: PaketCuanBanner(onTap: _handlePaketCuanTap),
+                  child: InkWell(
+                    onTap: _handlePaketCuanTap,
+                    child: PaketCuanBanner(onTap: _handlePaketCuanTap),
+                  ),
                 ),
               ],
             ),
@@ -261,8 +266,8 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void _handlePaketCuanTap() {
-    debugPrint('Paket Cuan tapped');
-    // TODO: Navigate to paket cuan page
+    getPaketCuanProvider(context).fetchProviders();
+    pushNamed(GuestPaketCuanProviderPage.routeName);
   }
 
   void _handleNotificationTap() {
