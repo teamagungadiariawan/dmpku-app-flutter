@@ -30,7 +30,7 @@ void _showMessage({
     style: ToastificationStyle.flat,
     title: Text(title),
     description: Text(message),
-    alignment: Alignment.topCenter,
+    alignment: Alignment.bottomCenter,
     autoCloseDuration: const Duration(seconds: 4),
     boxShadow: highModeShadow,
     showProgressBar: true,
