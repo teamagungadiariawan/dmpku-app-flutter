@@ -9,285 +9,209 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// ============================================================
+// STATE
+// ============================================================
 class TokenPlnState extends Equatable {
-  final ApiStatus apiFetchTokenPlnProductStatus;
-  final String apiFetchTokenPlnProductMessage;
-  final List<ProductModel> tokenPlnProducts;
-
-  final FocusNode? inputTujuanFocusNode;
-  final bool hasErrorInputTujuan;
-  final String errorMessageInputTujuan;
-  final TextEditingController? inputTujuanController;
-  final String tujuan;
-
+  // Product API
+  final ApiStatus apiFetchProductStatus;
+  final String apiFetchProductMessage;
+  final List<ProductModel> products;
+  final ProductModel selectedProduct;
   final SortProductBy sortProduct;
   final String searchProduct;
   final TextEditingController? searchProductController;
 
-  final ProductModel selectedProduct;
+  // Single Tujuan
+  final String tujuan;
+  final FocusNode? tujuanFocusNode;
+  final TextEditingController? tujuanController;
+  final bool tujuanHasError;
+  final String tujuanErrorMessage;
 
   const TokenPlnState({
-    this.apiFetchTokenPlnProductStatus = ApiStatus.initial,
-    this.apiFetchTokenPlnProductMessage = '',
-    this.tokenPlnProducts = const [],
-
-    this.inputTujuanFocusNode,
-    this.hasErrorInputTujuan = false,
-    this.errorMessageInputTujuan = '',
-    this.inputTujuanController,
-    this.tujuan = '',
-
+    // Product
+    this.apiFetchProductStatus = ApiStatus.initial,
+    this.apiFetchProductMessage = '',
+    this.products = const [],
+    this.selectedProduct = DEFAULT_PRODUCT,
     this.sortProduct = SortProductBy.hargaTerendah,
     this.searchProduct = '',
     this.searchProductController,
-
-    this.selectedProduct = DEFAULT_PRODUCT,
+    // Single
+    this.tujuan = '',
+    this.tujuanFocusNode,
+    this.tujuanController,
+    this.tujuanHasError = false,
+    this.tujuanErrorMessage = '',
   });
 
   TokenPlnState copyWith({
-    ApiStatus? apiFetchTokenPlnProductStatus,
-    String? apiFetchTokenPlnProductMessage,
-    List<ProductModel>? tokenPlnProducts,
-
-    FocusNode? inputTujuanFocusNode,
-    bool? hasErrorInputTujuan,
-    String? errorMessageInputTujuan,
-    TextEditingController? inputTujuanController,
-    String? tujuan,
-
+    ApiStatus? apiFetchProductStatus,
+    String? apiFetchProductMessage,
+    List<ProductModel>? products,
+    ProductModel? selectedProduct,
     SortProductBy? sortProduct,
     String? searchProduct,
     TextEditingController? searchProductController,
-
-    ProductModel? selectedProduct,
+    String? tujuan,
+    FocusNode? tujuanFocusNode,
+    TextEditingController? tujuanController,
+    bool? tujuanHasError,
+    String? tujuanErrorMessage,
   }) {
     return TokenPlnState(
-      apiFetchTokenPlnProductStatus:
-          apiFetchTokenPlnProductStatus ?? this.apiFetchTokenPlnProductStatus,
-      apiFetchTokenPlnProductMessage:
-          apiFetchTokenPlnProductMessage ?? this.apiFetchTokenPlnProductMessage,
-      tokenPlnProducts: tokenPlnProducts ?? this.tokenPlnProducts,
-
-      inputTujuanFocusNode: inputTujuanFocusNode ?? this.inputTujuanFocusNode,
-      hasErrorInputTujuan: hasErrorInputTujuan ?? this.hasErrorInputTujuan,
-      errorMessageInputTujuan:
-          errorMessageInputTujuan ?? this.errorMessageInputTujuan,
-      inputTujuanController:
-          inputTujuanController ?? this.inputTujuanController,
-      tujuan: tujuan ?? this.tujuan,
-
+      apiFetchProductStatus: apiFetchProductStatus ?? this.apiFetchProductStatus,
+      apiFetchProductMessage: apiFetchProductMessage ?? this.apiFetchProductMessage,
+      products: products ?? this.products,
+      selectedProduct: selectedProduct ?? this.selectedProduct,
       sortProduct: sortProduct ?? this.sortProduct,
       searchProduct: searchProduct ?? this.searchProduct,
-      searchProductController:
-          searchProductController ?? this.searchProductController,
-
-      selectedProduct: selectedProduct ?? this.selectedProduct,
+      searchProductController: searchProductController ?? this.searchProductController,
+      tujuan: tujuan ?? this.tujuan,
+      tujuanFocusNode: tujuanFocusNode ?? this.tujuanFocusNode,
+      tujuanController: tujuanController ?? this.tujuanController,
+      tujuanHasError: tujuanHasError ?? this.tujuanHasError,
+      tujuanErrorMessage: tujuanErrorMessage ?? this.tujuanErrorMessage,
     );
   }
 
   @override
   List<Object?> get props => [
-    apiFetchTokenPlnProductStatus,
-    apiFetchTokenPlnProductMessage,
-    tokenPlnProducts,
-
-    inputTujuanFocusNode,
-    hasErrorInputTujuan,
-    errorMessageInputTujuan,
-    inputTujuanController,
-    tujuan,
-
-    sortProduct,
-    searchProduct,
-    searchProductController,
-
-    selectedProduct,
+    apiFetchProductStatus, apiFetchProductMessage, products,
+    selectedProduct, sortProduct, searchProduct, searchProductController,
+    tujuan, tujuanFocusNode, tujuanController, tujuanHasError, tujuanErrorMessage,
   ];
 }
 
+// ============================================================
+// CUBIT
+// ============================================================
 class TokenPlnProvider extends Cubit<TokenPlnState> {
   final ProdukService _produkService = ProdukService();
 
-  TokenPlnProvider()
-    : super(
-        TokenPlnState(
-          inputTujuanFocusNode: FocusNode(),
-          inputTujuanController: TextEditingController(),
-          searchProductController: TextEditingController(),
-        ),
-      );
+  TokenPlnProvider() : super(TokenPlnState(
+    tujuanFocusNode: FocusNode(),
+    tujuanController: TextEditingController(),
+    searchProductController: TextEditingController(),
+  ));
 
+  @override
+  Future<void> close() {
+    state.tujuanFocusNode?.dispose();
+    state.tujuanController?.dispose();
+    state.searchProductController?.dispose();
+    return super.close();
+  }
 
-  void fetchTokenPlnProducts() async {
-    if (state.apiFetchTokenPlnProductStatus.isLoading) return;
-    emit(
-      state.copyWith(
-        apiFetchTokenPlnProductStatus: ApiStatus.loading,
-        apiFetchTokenPlnProductMessage: '',
-      ),
-    );
+  // ============================================================
+  // API CALLS
+  // ============================================================
+  Future<void> fetchProducts() async {
+    if (state.apiFetchProductStatus.isLoading) return;
+
+    emit(state.copyWith(
+      apiFetchProductStatus: ApiStatus.loading,
+      apiFetchProductMessage: '',
+    ));
 
     try {
       final result = await _produkService.getTokenPlnGuestProducts();
-
       final data = result.data;
 
       if (data != null) {
-        emit(
-          state.copyWith(
-            apiFetchTokenPlnProductStatus: ApiStatus.success,
-            tokenPlnProducts: data.productList,
-          ),
-        );
+        emit(state.copyWith(
+          apiFetchProductStatus: ApiStatus.success,
+          products: data.productList,
+        ));
       } else {
-        emit(
-          state.copyWith(
-            apiFetchTokenPlnProductStatus: ApiStatus.failure,
-            apiFetchTokenPlnProductMessage: 'Data produk kosong',
-          ),
-        );
+        emit(state.copyWith(
+          apiFetchProductStatus: ApiStatus.failure,
+          apiFetchProductMessage: 'Data produk token pln kosong',
+        ));
       }
     } on ServerException catch (e) {
-      debugPrint("SERVER EXCEPTION FETCH TOP UP GAME PRODUCTS: ${e.message}");
-
+      debugPrint("SERVER EXCEPTION FETCH PRODUCTS: ${e.message}");
       showWarningMessage(e.message);
-      emit(
-        state.copyWith(
-          apiFetchTokenPlnProductStatus: ApiStatus.failure,
-          apiFetchTokenPlnProductMessage: e.message,
-        ),
-      );
+      emit(state.copyWith(
+        apiFetchProductStatus: ApiStatus.failure,
+        apiFetchProductMessage: e.message,
+      ));
     }
   }
 
-  void resetState() {
-    emit(
-      TokenPlnState(
-        inputTujuanFocusNode: FocusNode(),
-        inputTujuanController: TextEditingController(),
-        tujuan: '',
-        apiFetchTokenPlnProductStatus: ApiStatus.initial,
-        apiFetchTokenPlnProductMessage: '',
-        tokenPlnProducts: [],
-        hasErrorInputTujuan: false,
-        errorMessageInputTujuan: '',
-        sortProduct: SortProductBy.hargaTerendah,
-        searchProduct: '',
-        searchProductController: TextEditingController(),
-        selectedProduct: DEFAULT_PRODUCT,
-      ),
-    );
-  }
-
-  void setTujuan(String tujuan, {bool updateTextController = false}) {
-    emit(state.copyWith(tujuan: tujuan));
-
-    if (updateTextController) {
-      state.inputTujuanController?.text = tujuan;
-      state.inputTujuanController?.selection = TextSelection.fromPosition(
-        TextPosition(offset: tujuan.length),
-      );
-    }
-
-    if (state.tujuan == '') {
-      emit(
-        state.copyWith(hasErrorInputTujuan: false, errorMessageInputTujuan: ''),
-      );
-      return;
-    }
-
-    if (tujuan.length > 2) {
-      validateTujuan();
-    }
-  }
-
-  bool validateTujuan() {
-    emit(
-      state.copyWith(hasErrorInputTujuan: false, errorMessageInputTujuan: ''),
-    );
-
-    final tujuan = state.tujuan.trim();
-
-    if (tujuan.isEmpty) {
-      emit(
-        state.copyWith(
-          hasErrorInputTujuan: true,
-          errorMessageInputTujuan: 'Tujuan tidak boleh kosong',
-        ),
-      );
-
-      return false;
-    }
-
-    final minLength = 10;
-    final maxLength = 20;
-
-    if (tujuan.length < minLength || tujuan.length > maxLength) {
-      emit(
-        state.copyWith(
-          hasErrorInputTujuan: true,
-          errorMessageInputTujuan:
-              'Panjang tujuan harus antara $minLength hingga $maxLength karakter',
-        ),
-      );
-      return false;
-    }
-
-    final prefixList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    var valid = false;
-    for (var prefik in prefixList) {
-      var maxRange = state.tujuan.length < prefik.length
-          ? state.tujuan.length
-          : prefik.length;
-
-      if (prefik.startsWith(state.tujuan.substring(0, maxRange))) {
-        valid = true;
-        break;
-      }
-    }
-
-    if (!valid) {
-      emit(
-        state.copyWith(
-          hasErrorInputTujuan: true,
-          errorMessageInputTujuan:
-              'Tujuan tidak sesuai dengan prefix provider Token PLN',
-        ),
-      );
-      return false;
-    }
-
-    var validTipeInput = TipeInput.numericOnly.isValid(state.tujuan);
-    if (!validTipeInput) {
-      emit(
-        state.copyWith(
-          hasErrorInputTujuan: true,
-          errorMessageInputTujuan: TipeInput.numericOnly.errorMessage,
-        ),
-      );
-      return false;
-    }
-
-    return true;
+  // ============================================================
+  // SETTERS
+  // ============================================================
+  void setSelectedProduct(ProductModel product) {
+    emit(state.copyWith(selectedProduct: product));
   }
 
   void setSortProduct(SortProductBy sortBy) {
     emit(state.copyWith(sortProduct: sortBy));
   }
 
-  void setSearchProduct(String search, {bool updateTextController = false}) {
+  void setSearchProduct(String search, {bool updateController = false}) {
     emit(state.copyWith(searchProduct: search));
-
-    if (updateTextController) {
-      state.searchProductController?.text = search;
-      state.searchProductController?.selection = TextSelection.fromPosition(
-        TextPosition(offset: search.length),
-      );
-    }
+    if (updateController) _updateController(state.searchProductController, search);
   }
 
-  void setSelectedProduct(ProductModel product) {
-    emit(state.copyWith(selectedProduct: product));
+  void setTujuan(String value, {bool updateController = false}) {
+    emit(state.copyWith(tujuan: value));
+    if (updateController) _updateController(state.tujuanController, value);
+  }
+
+  void _updateController(TextEditingController? controller, String value) {
+    controller?.text = value;
+    controller?.selection = TextSelection.fromPosition(
+      TextPosition(offset: value.length),
+    );
+  }
+
+  // ============================================================
+  // RESET METHODS
+  // ============================================================
+  void resetState() {
+    emit(TokenPlnState(
+      tujuanFocusNode: FocusNode(),
+      tujuanController: TextEditingController(),
+      searchProductController: TextEditingController(),
+    ));
+  }
+
+  // ============================================================
+  // VALIDATION
+  // ============================================================
+  bool validateTujuan() {
+    final error = _validateTujuanValue(state.tujuan.trim());
+
+    emit(state.copyWith(
+      tujuanHasError: error != null,
+      tujuanErrorMessage: error ?? '',
+    ));
+
+    return error == null;
+  }
+
+  // ============================================================
+  // PRIVATE VALIDATION HELPER
+  // ============================================================
+  String? _validateTujuanValue(String tujuan) {
+    if (tujuan.isEmpty) {
+      return 'Tujuan tidak boleh kosong';
+    }
+
+    // Validasi panjang
+    if (tujuan.length < 10 || tujuan.length > 20) {
+      return 'Panjang tujuan harus antara 10 hingga 20 karakter';
+    }
+
+    // Validasi tipe input
+    if (!TipeInput.numericOnly.isValid(tujuan)) {
+      return TipeInput.numericOnly.errorMessage;
+    }
+
+    return null;
   }
 }
 

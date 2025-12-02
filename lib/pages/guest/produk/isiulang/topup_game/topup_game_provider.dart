@@ -8,142 +8,113 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// ============================================================
+// STATE
+// ============================================================
 class TopupGameState extends Equatable {
-  final ApiStatus apiFetchTopupGameProviderStatus;
-  final String apiFetchTopupGameProviderMessage;
-
+  // Provider API
+  final ApiStatus apiFetchProviderStatus;
+  final String apiFetchProviderMessage;
   final List<ProviderModel> topupGameProviders;
   final List<ProviderModel> voucherGameProviders;
-
+  final ProviderModel selectedProvider;
   final String searchProvider;
   final TextEditingController? searchProviderController;
 
-  final ProviderModel selectedProvider;
-
-  final ApiStatus apiFetchTopupGameProductStatus;
-  final String apiFetchTopupGameProductMessage;
-  final List<ProductModel> topupGameProducts;
-
-  final FocusNode? inputTujuanFocusNode;
-  final bool hasErrorInputTujuan;
-  final String errorMessageInputTujuan;
-  final TextEditingController? inputTujuanController;
-  final String tujuan;
-
+  // Product API
+  final ApiStatus apiFetchProductStatus;
+  final String apiFetchProductMessage;
+  final List<ProductModel> products;
+  final ProductModel selectedProduct;
   final SortProductBy sortProduct;
   final String searchProduct;
   final TextEditingController? searchProductController;
 
-  final ProductModel selectedProduct;
+  // Single Tujuan
+  final String tujuan;
+  final FocusNode? tujuanFocusNode;
+  final TextEditingController? tujuanController;
+  final bool tujuanHasError;
+  final String tujuanErrorMessage;
 
+  // Others
   final bool isCekAkun;
   final String titleForm;
   final String hintForm;
 
   const TopupGameState({
-    this.apiFetchTopupGameProviderStatus = ApiStatus.initial,
-    this.apiFetchTopupGameProviderMessage = '',
-
+    // Provider
+    this.apiFetchProviderStatus = ApiStatus.initial,
+    this.apiFetchProviderMessage = '',
     this.topupGameProviders = const [],
     this.voucherGameProviders = const [],
-
+    this.selectedProvider = DEFAULT_PROVIDER,
     this.searchProvider = '',
     this.searchProviderController,
-
-    this.selectedProvider = DEFAULT_PROVIDER,
-
-    this.apiFetchTopupGameProductStatus = ApiStatus.initial,
-    this.apiFetchTopupGameProductMessage = '',
-    this.topupGameProducts = const [],
-
-    this.inputTujuanFocusNode,
-    this.hasErrorInputTujuan = false,
-    this.errorMessageInputTujuan = '',
-    this.inputTujuanController,
-    this.tujuan = '',
-
+    // Product
+    this.apiFetchProductStatus = ApiStatus.initial,
+    this.apiFetchProductMessage = '',
+    this.products = const [],
+    this.selectedProduct = DEFAULT_PRODUCT,
     this.sortProduct = SortProductBy.hargaTerendah,
     this.searchProduct = '',
     this.searchProductController,
-
-    this.selectedProduct = DEFAULT_PRODUCT,
-
+    // Single
+    this.tujuan = '',
+    this.tujuanFocusNode,
+    this.tujuanController,
+    this.tujuanHasError = false,
+    this.tujuanErrorMessage = '',
+    // Others
     this.isCekAkun = false,
     this.titleForm = 'ID Game',
     this.hintForm = 'Contoh : 123XXXXXXX',
   });
 
   TopupGameState copyWith({
-    ApiStatus? apiFetchTopupGameProviderStatus,
-    String? apiFetchTopupGameProviderMessage,
-
+    ApiStatus? apiFetchProviderStatus,
+    String? apiFetchProviderMessage,
     List<ProviderModel>? topupGameProviders,
     List<ProviderModel>? voucherGameProviders,
-
+    ProviderModel? selectedProvider,
     String? searchProvider,
     TextEditingController? searchProviderController,
-
-    ProviderModel? selectedProvider,
-
-    ApiStatus? apiFetchTopupGameProductStatus,
-    String? apiFetchTopupGameProductMessage,
-    List<ProductModel>? topupGameProducts,
-
-    FocusNode? inputTujuanFocusNode,
-    bool? hasErrorInputTujuan,
-    String? errorMessageInputTujuan,
-    TextEditingController? inputTujuanController,
-    String? tujuan,
-
+    ApiStatus? apiFetchProductStatus,
+    String? apiFetchProductMessage,
+    List<ProductModel>? products,
+    ProductModel? selectedProduct,
     SortProductBy? sortProduct,
     String? searchProduct,
     TextEditingController? searchProductController,
-
-    ProductModel? selectedProduct,
-
+    String? tujuan,
+    FocusNode? tujuanFocusNode,
+    TextEditingController? tujuanController,
+    bool? tujuanHasError,
+    String? tujuanErrorMessage,
     bool? isCekAkun,
     String? titleForm,
     String? hintForm,
   }) {
     return TopupGameState(
-      apiFetchTopupGameProviderStatus:
-          apiFetchTopupGameProviderStatus ??
-          this.apiFetchTopupGameProviderStatus,
-      apiFetchTopupGameProviderMessage:
-          apiFetchTopupGameProviderMessage ??
-          this.apiFetchTopupGameProviderMessage,
-
+      apiFetchProviderStatus: apiFetchProviderStatus ?? this.apiFetchProviderStatus,
+      apiFetchProviderMessage: apiFetchProviderMessage ?? this.apiFetchProviderMessage,
       topupGameProviders: topupGameProviders ?? this.topupGameProviders,
       voucherGameProviders: voucherGameProviders ?? this.voucherGameProviders,
-
-      searchProvider: searchProvider ?? this.searchProvider,
-      searchProviderController:
-          searchProviderController ?? this.searchProviderController,
-
       selectedProvider: selectedProvider ?? this.selectedProvider,
-
-      apiFetchTopupGameProductStatus:
-          apiFetchTopupGameProductStatus ?? this.apiFetchTopupGameProductStatus,
-      apiFetchTopupGameProductMessage:
-          apiFetchTopupGameProductMessage ??
-          this.apiFetchTopupGameProductMessage,
-      topupGameProducts: topupGameProducts ?? this.topupGameProducts,
-
-      inputTujuanFocusNode: inputTujuanFocusNode ?? this.inputTujuanFocusNode,
-      hasErrorInputTujuan: hasErrorInputTujuan ?? this.hasErrorInputTujuan,
-      errorMessageInputTujuan:
-          errorMessageInputTujuan ?? this.errorMessageInputTujuan,
-      inputTujuanController:
-          inputTujuanController ?? this.inputTujuanController,
-      tujuan: tujuan ?? this.tujuan,
-
+      searchProvider: searchProvider ?? this.searchProvider,
+      searchProviderController: searchProviderController ?? this.searchProviderController,
+      apiFetchProductStatus: apiFetchProductStatus ?? this.apiFetchProductStatus,
+      apiFetchProductMessage: apiFetchProductMessage ?? this.apiFetchProductMessage,
+      products: products ?? this.products,
+      selectedProduct: selectedProduct ?? this.selectedProduct,
       sortProduct: sortProduct ?? this.sortProduct,
       searchProduct: searchProduct ?? this.searchProduct,
-      searchProductController:
-          searchProductController ?? this.searchProductController,
-
-      selectedProduct: selectedProduct ?? this.selectedProduct,
-
+      searchProductController: searchProductController ?? this.searchProductController,
+      tujuan: tujuan ?? this.tujuan,
+      tujuanFocusNode: tujuanFocusNode ?? this.tujuanFocusNode,
+      tujuanController: tujuanController ?? this.tujuanController,
+      tujuanHasError: tujuanHasError ?? this.tujuanHasError,
+      tujuanErrorMessage: tujuanErrorMessage ?? this.tujuanErrorMessage,
       isCekAkun: isCekAkun ?? this.isCekAkun,
       titleForm: titleForm ?? this.titleForm,
       hintForm: hintForm ?? this.hintForm,
@@ -152,328 +123,228 @@ class TopupGameState extends Equatable {
 
   @override
   List<Object?> get props => [
-    apiFetchTopupGameProviderStatus,
-    apiFetchTopupGameProviderMessage,
-
-    topupGameProviders,
-    voucherGameProviders,
-
-    searchProvider,
-    searchProviderController,
-
-    selectedProvider,
-
-    apiFetchTopupGameProductStatus,
-    apiFetchTopupGameProductMessage,
-    topupGameProducts,
-
-    inputTujuanFocusNode,
-    hasErrorInputTujuan,
-    errorMessageInputTujuan,
-    inputTujuanController,
-    tujuan,
-
-    sortProduct,
-    searchProduct,
-    searchProductController,
-
-    selectedProduct,
-
-    isCekAkun,
-    titleForm,
-    hintForm,
+    apiFetchProviderStatus, apiFetchProviderMessage, topupGameProviders,
+    voucherGameProviders, selectedProvider, searchProvider, searchProviderController,
+    apiFetchProductStatus, apiFetchProductMessage, products,
+    selectedProduct, sortProduct, searchProduct, searchProductController,
+    tujuan, tujuanFocusNode, tujuanController, tujuanHasError, tujuanErrorMessage,
+    isCekAkun, titleForm, hintForm,
   ];
 }
 
+// ============================================================
+// CUBIT
+// ============================================================
 class TopupGameProvider extends Cubit<TopupGameState> {
   final ProdukService _produkService = ProdukService();
 
-  TopupGameProvider()
-    : super(
-        TopupGameState(
-          inputTujuanFocusNode: FocusNode(),
-          inputTujuanController: TextEditingController(),
-          searchProviderController: TextEditingController(),
-          searchProductController: TextEditingController(),
-        ),
-      );
+  TopupGameProvider() : super(TopupGameState(
+    tujuanFocusNode: FocusNode(),
+    tujuanController: TextEditingController(),
+    searchProviderController: TextEditingController(),
+    searchProductController: TextEditingController(),
+  ));
 
-  void setSearchProvider(String val, {bool updateTextController = false}) {
-    if (updateTextController) {
-      state.searchProviderController?.text = val;
-    }
-    emit(state.copyWith(searchProvider: val));
+  @override
+  Future<void> close() {
+    state.tujuanFocusNode?.dispose();
+    state.tujuanController?.dispose();
+    state.searchProviderController?.dispose();
+    state.searchProductController?.dispose();
+    return super.close();
   }
 
-  void setSelectedProvider(
-    ProviderModel provider, {
-    String? titleForm,
-    String? hintForm,
-  }) {
-    emit(state.copyWith(selectedProvider: provider));
+  // ============================================================
+  // API CALLS
+  // ============================================================
+  Future<void> fetchProviders() async {
+    if (state.apiFetchProviderStatus.isLoading) return;
 
-    if (titleForm != null) {
-      emit(state.copyWith(titleForm: titleForm));
-    }
-
-    if (hintForm != null) {
-      emit(state.copyWith(hintForm: hintForm));
-    }
-
-    fetchTopupGameProducts();
-  }
-
-  void resetProduk() {
-    emit(
-      state.copyWith(
-        apiFetchTopupGameProductStatus: ApiStatus.initial,
-        apiFetchTopupGameProductMessage: '',
-        topupGameProducts: [],
-        selectedProvider: DEFAULT_PROVIDER,
-        sortProduct: SortProductBy.hargaTerendah,
-        searchProduct: '',
-        searchProductController: TextEditingController(),
-        selectedProduct: DEFAULT_PRODUCT,
-        isCekAkun: false,
-        titleForm: 'ID Game',
-        hintForm: 'Contoh : 123XXXXXXX',
-      ),
-    );
-  }
-
-  void resetState() {
-    emit(
-      TopupGameState(
-        inputTujuanFocusNode: FocusNode(),
-        inputTujuanController: TextEditingController(),
-        tujuan: '',
-        apiFetchTopupGameProviderStatus: ApiStatus.initial,
-        topupGameProviders: [],
-        voucherGameProviders: [],
-        searchProvider: '',
-        searchProviderController: TextEditingController(),
-        apiFetchTopupGameProductStatus: ApiStatus.initial,
-        apiFetchTopupGameProductMessage: '',
-        topupGameProducts: [],
-        selectedProvider: DEFAULT_PROVIDER,
-        sortProduct: SortProductBy.hargaTerendah,
-        searchProduct: '',
-        searchProductController: TextEditingController(),
-        selectedProduct: DEFAULT_PRODUCT,
-      ),
-    );
-  }
-
-  void fetchTopupGameProviders() async {
-    emit(
-      state.copyWith(
-        apiFetchTopupGameProviderStatus: ApiStatus.loading,
-        apiFetchTopupGameProviderMessage: '',
-      ),
-    );
+    emit(state.copyWith(
+      apiFetchProviderStatus: ApiStatus.loading,
+      apiFetchProviderMessage: '',
+    ));
 
     try {
       final result = await _produkService.getTopupGameGuestProviders();
-
       final data = result.data;
 
       if (data != null) {
-        emit(
-          state.copyWith(
-            apiFetchTopupGameProviderStatus: ApiStatus.success,
-            topupGameProviders: data.topupgame,
-            voucherGameProviders: data.vouchergame,
-          ),
-        );
+        emit(state.copyWith(
+          apiFetchProviderStatus: ApiStatus.success,
+          topupGameProviders: data.topupgame,
+          voucherGameProviders: data.vouchergame,
+        ));
       } else {
-        emit(
-          state.copyWith(
-            apiFetchTopupGameProviderStatus: ApiStatus.failure,
-            apiFetchTopupGameProviderMessage: 'Data provider kosong',
-          ),
-        );
+        emit(state.copyWith(
+          apiFetchProviderStatus: ApiStatus.failure,
+          apiFetchProviderMessage: 'Data provider topup game kosong',
+        ));
       }
     } on ServerException catch (e) {
-      debugPrint("SERVER EXCEPTION FETCH TOP UP GAME PROVIDERS: ${e.message}");
-
+      debugPrint("SERVER EXCEPTION FETCH PROVIDERS: ${e.message}");
       showWarningMessage(e.message);
-      emit(
-        state.copyWith(
-          apiFetchTopupGameProviderStatus: ApiStatus.failure,
-          apiFetchTopupGameProviderMessage: e.message,
-        ),
-      );
+      emit(state.copyWith(
+        apiFetchProviderStatus: ApiStatus.failure,
+        apiFetchProviderMessage: e.message,
+      ));
     }
   }
 
-  void setTujuan(String tujuan, {bool updateTextController = false}) {
-    emit(state.copyWith(tujuan: tujuan));
-
-    if (updateTextController) {
-      state.inputTujuanController?.text = tujuan;
-      state.inputTujuanController?.selection = TextSelection.fromPosition(
-        TextPosition(offset: tujuan.length),
-      );
-    }
-
-    if (state.tujuan == '') {
-      emit(
-        state.copyWith(hasErrorInputTujuan: false, errorMessageInputTujuan: ''),
-      );
-      return;
-    }
-
-    if (tujuan.length > 2) {
-      validateTujuan();
-    }
-  }
-
-  bool validateTujuan({ProviderModel selectedProvider = DEFAULT_PROVIDER}) {
-    emit(
-      state.copyWith(hasErrorInputTujuan: false, errorMessageInputTujuan: ''),
-    );
-
-    final tujuan = state.tujuan.trim();
-
-    if (tujuan.isEmpty) {
-      emit(
-        state.copyWith(
-          hasErrorInputTujuan: true,
-          errorMessageInputTujuan: 'Tujuan tidak boleh kosong',
-        ),
-      );
-
-      return false;
-    }
-
-    if (selectedProvider.idprovider != 0) {
-      final minLength = selectedProvider.mintujuan;
-      final maxLength = selectedProvider.maxtujuan;
-
-      if (tujuan.length < minLength || tujuan.length > maxLength) {
-        emit(
-          state.copyWith(
-            hasErrorInputTujuan: true,
-            errorMessageInputTujuan:
-                'Panjang tujuan harus antara $minLength hingga $maxLength karakter',
-          ),
-        );
-        return false;
-      }
-
-      final prefixList = selectedProvider.prefixList;
-      var valid = false;
-      for (var prefik in prefixList) {
-        var maxRange = state.tujuan.length < prefik.length
-            ? state.tujuan.length
-            : prefik.length;
-
-        if (prefik.startsWith(state.tujuan.substring(0, maxRange))) {
-          valid = true;
-          break;
-        }
-      }
-
-      if (!valid) {
-        emit(
-          state.copyWith(
-            hasErrorInputTujuan: true,
-            errorMessageInputTujuan:
-                'Tujuan tidak sesuai dengan prefix provider ${selectedProvider.namaprovider}',
-          ),
-        );
-        return false;
-      }
-
-      var validTipeInput = selectedProvider.inputTipe.isValid(state.tujuan);
-      if (!validTipeInput) {
-        emit(
-          state.copyWith(
-            hasErrorInputTujuan: true,
-            errorMessageInputTujuan:
-                selectedProvider.inputTipe.errorMessage,
-          ),
-        );
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  void fetchTopupGameProducts() async {
+  Future<void> fetchProducts() async {
     if (state.selectedProvider.idprovider == 0) return;
+    if (state.apiFetchProductStatus.isLoading) return;
 
-    if (state.apiFetchTopupGameProductStatus.isLoading) return;
-    emit(
-      state.copyWith(
-        apiFetchTopupGameProductStatus: ApiStatus.loading,
-        apiFetchTopupGameProductMessage: '',
-      ),
-    );
+    emit(state.copyWith(
+      apiFetchProductStatus: ApiStatus.loading,
+      apiFetchProductMessage: '',
+      products: [],
+    ));
 
     try {
       final result = await _produkService.getTopupGameGuestProducts(
         idProvider: state.selectedProvider.idprovider,
       );
-
       final data = result.data;
 
       if (data != null) {
-        emit(
-          state.copyWith(
-            apiFetchTopupGameProductStatus: ApiStatus.success,
-            topupGameProducts: data.productList,
-          ),
-        );
-
-        var isCekAkun = false;
-        for (var product in data.productList) {
-          if (product.kodeprodukcek != '') {
-            isCekAkun = true;
-            break;
-          }
-        }
-
-        emit(state.copyWith(isCekAkun: isCekAkun));
+        emit(state.copyWith(
+          apiFetchProductStatus: ApiStatus.success,
+          products: data.productList,
+          isCekAkun: data.productList.any((p) => p.kodeprodukcek.isNotEmpty),
+        ));
       } else {
-        emit(
-          state.copyWith(
-            apiFetchTopupGameProductStatus: ApiStatus.failure,
-            apiFetchTopupGameProductMessage: 'Data produk kosong',
-          ),
-        );
+        emit(state.copyWith(
+          apiFetchProductStatus: ApiStatus.failure,
+          apiFetchProductMessage: 'Data produk topup game kosong',
+        ));
       }
     } on ServerException catch (e) {
-      debugPrint("SERVER EXCEPTION FETCH TOP UP GAME PRODUCTS: ${e.message}");
-
+      debugPrint("SERVER EXCEPTION FETCH PRODUCTS: ${e.message}");
       showWarningMessage(e.message);
-      emit(
-        state.copyWith(
-          apiFetchTopupGameProductStatus: ApiStatus.failure,
-          apiFetchTopupGameProductMessage: e.message,
-        ),
-      );
+      emit(state.copyWith(
+        apiFetchProductStatus: ApiStatus.failure,
+        apiFetchProductMessage: e.message,
+      ));
     }
+  }
+
+  // ============================================================
+  // SETTERS
+  // ============================================================
+  void setSelectedProvider(ProviderModel provider, {String? titleForm, String? hintForm}) {
+    emit(state.copyWith(
+      selectedProvider: provider,
+      titleForm: titleForm,
+      hintForm: hintForm,
+    ));
+    fetchProducts();
+  }
+
+  void setSelectedProduct(ProductModel product) {
+    emit(state.copyWith(selectedProduct: product));
   }
 
   void setSortProduct(SortProductBy sortBy) {
     emit(state.copyWith(sortProduct: sortBy));
   }
 
-  void setSearchProduct(String search, {bool updateTextController = false}) {
+  void setSearchProduct(String search, {bool updateController = false}) {
     emit(state.copyWith(searchProduct: search));
-
-    if (updateTextController) {
-      state.searchProductController?.text = search;
-      state.searchProductController?.selection = TextSelection.fromPosition(
-        TextPosition(offset: search.length),
-      );
-    }
+    if (updateController) _updateController(state.searchProductController, search);
   }
 
-  void setSelectedProduct(ProductModel product) {
-    emit(state.copyWith(selectedProduct: product));
+  void setSearchProvider(String search, {bool updateController = false}) {
+    emit(state.copyWith(searchProvider: search));
+    if (updateController) _updateController(state.searchProviderController, search);
+  }
+
+  void setTujuan(String value, {bool updateController = false}) {
+    emit(state.copyWith(tujuan: value));
+    if (updateController) _updateController(state.tujuanController, value);
+  }
+
+  void _updateController(TextEditingController? controller, String value) {
+    controller?.text = value;
+    controller?.selection = TextSelection.fromPosition(
+      TextPosition(offset: value.length),
+    );
+  }
+
+  // ============================================================
+  // RESET METHODS
+  // ============================================================
+  void resetState() {
+    emit(TopupGameState(
+      tujuanFocusNode: FocusNode(),
+      tujuanController: TextEditingController(),
+      searchProviderController: TextEditingController(),
+      searchProductController: TextEditingController(),
+    ));
+  }
+
+  void resetProduct() {
+    emit(state.copyWith(
+      apiFetchProductStatus: ApiStatus.initial,
+      apiFetchProductMessage: '',
+      products: [],
+      selectedProvider: DEFAULT_PROVIDER,
+      selectedProduct: DEFAULT_PRODUCT,
+      sortProduct: SortProductBy.hargaTerendah,
+      searchProduct: '',
+      searchProductController: TextEditingController(),
+      isCekAkun: false,
+      titleForm: 'ID Game',
+      hintForm: 'Contoh : 123XXXXXXX',
+    ));
+  }
+
+  // ============================================================
+  // VALIDATION
+  // ============================================================
+  bool validateTujuan({ProviderModel? provider}) {
+    final selectedProvider = provider ?? state.selectedProvider;
+    final error = _validateTujuanValue(state.tujuan.trim(), selectedProvider);
+
+    emit(state.copyWith(
+      tujuanHasError: error != null,
+      tujuanErrorMessage: error ?? '',
+    ));
+
+    return error == null;
+  }
+
+  // ============================================================
+  // PRIVATE VALIDATION HELPER
+  // ============================================================
+  String? _validateTujuanValue(String tujuan, ProviderModel provider) {
+    if (tujuan.isEmpty) {
+      return 'Tujuan tidak boleh kosong';
+    }
+
+    if (provider.idprovider == 0) return null;
+
+    // Validasi panjang
+    if (tujuan.length < provider.mintujuan || tujuan.length > provider.maxtujuan) {
+      return 'Panjang tujuan harus antara ${provider.mintujuan} hingga ${provider.maxtujuan} karakter';
+    }
+
+    // Validasi prefix
+    final isValidPrefix = provider.prefixList.any((prefix) {
+      final maxRange = tujuan.length < prefix.length ? tujuan.length : prefix.length;
+      return prefix.startsWith(tujuan.substring(0, maxRange));
+    });
+
+    if (!isValidPrefix) {
+      return 'Tujuan tidak sesuai dengan prefix provider ${provider.namaprovider}';
+    }
+
+    // Validasi tipe input
+    if (!provider.inputTipe.isValid(tujuan)) {
+      return provider.inputTipe.errorMessage;
+    }
+
+    return null;
   }
 }
 
