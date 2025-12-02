@@ -23,8 +23,16 @@ class $AssetsAnimationsGen {
   /// File path: assets/animations/no-data.json
   String get noData => 'assets/animations/no-data.json';
 
+  /// File path: assets/animations/paket-cuan.json
+  String get paketCuan => 'assets/animations/paket-cuan.json';
+
   /// List of all assets
-  List<String> get values => [berandaPaketCuan, noConnection, noData];
+  List<String> get values => [
+    berandaPaketCuan,
+    noConnection,
+    noData,
+    paketCuan,
+  ];
 }
 
 class $AssetsImgGen {
