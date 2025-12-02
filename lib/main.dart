@@ -10,6 +10,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_prov
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/token_pln/token_pln_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
 import 'package:dmpku/widgets/dialog/offline_dialog.dart';
@@ -49,6 +50,7 @@ void main() {
           BlocProvider(create: (_) => PulsaProvider()),
           BlocProvider(create: (_) => TokenPlnProvider()),
           BlocProvider(create: (_) => TopupGameProvider()),
+          BlocProvider(create: (_) => WifiIdProvider()),
         ],
         child: MyApp(textScaleProvider: textScaleProvider),
       ),

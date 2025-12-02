@@ -1,4 +1,6 @@
 import 'package:dmpku/pages/guest/main_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_akitvasi_voucher_berurutan_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_akitvasi_voucher_satuan_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/guest_masa_aktif_produk_page.dart';
@@ -73,6 +75,10 @@ class AppRouter {
             child: const GuestAktivasiVoucherProviderPage());
       case GuestAktivasiVoucherProdukPage.routeName:
         return _customTransition(child: const GuestAktivasiVoucherProdukPage());
+      case GuestAkitvasiVoucherBerurutanPage.routeName:
+        return _customTransition(child: const GuestAkitvasiVoucherBerurutanPage());
+      case GuestAkitvasiVoucherSatuanPage.routeName:
+        return _customTransition(child: const GuestAkitvasiVoucherSatuanPage());
 
       /// ------  AKTIVASI VOUCHER ------ ///
       default:
