@@ -1,10 +1,8 @@
-import 'package:dmpku/core/helpers/encrypt_helper.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/guest_masa_aktif_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
@@ -18,6 +16,8 @@ import 'package:dmpku/pages/guest/produk/isiulang/token_pln/guest_token_pln_prod
 import 'package:dmpku/pages/guest/produk/isiulang/token_pln/token_pln_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/guest_topup_game_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -115,7 +115,7 @@ class _DashboardPageState extends State<DashboardPage> {
       "Pulsa",
       Assets.img.menuIsiUlang.iconPulsa.provider(),
       onTap: () {
-        getPulsaProvider(context).fetchPulsaProviders();
+        getPulsaProvider(context).fetchProviders();
         pushNamed(GuestPulsaProviderPage.routeName);
       },
     ),
@@ -123,7 +123,7 @@ class _DashboardPageState extends State<DashboardPage> {
       "Paket Data",
       Assets.img.menuIsiUlang.iconPaketData.provider(),
       onTap: () {
-        getPaketDataProvider(context).fetchPaketDataProviders();
+        getPaketDataProvider(context).fetchProviders();
         pushNamed(GuestPaketDataProviderPage.routeName);
       },
     ),
@@ -131,7 +131,7 @@ class _DashboardPageState extends State<DashboardPage> {
       "Paket SMS & Telepon",
       Assets.img.menuIsiUlang.iconPaketSmsTelepon.provider(),
       onTap: () {
-        getPaketNelponProvider(context).fetchPaketNelponProviders();
+        getPaketNelponProvider(context).fetchProviders();
         pushNamed(GuestPaketNelponProviderPage.routeName);
       },
     ),
@@ -139,7 +139,7 @@ class _DashboardPageState extends State<DashboardPage> {
       "Masa Aktif",
       Assets.img.menuIsiUlang.iconMasaAktif.provider(),
       onTap: () {
-        getMasaAktifProvider(context).fetchMasaAktifProviders();
+        getMasaAktifProvider(context).fetchProviders();
         pushNamed(GuestMasaAktifProviderPage.routeName);
       },
     ),
@@ -147,7 +147,7 @@ class _DashboardPageState extends State<DashboardPage> {
       "Topup Game",
       Assets.img.menuIsiUlang.iconTopupGame.provider(),
       onTap: () {
-        getTopupGameProvider(context).fetchTopupGameProviders();
+        getTopupGameProvider(context).fetchProviders();
         pushNamed(GuestTopupGameProviderPage.routeName);
       },
     ),
@@ -155,7 +155,7 @@ class _DashboardPageState extends State<DashboardPage> {
       "Token PLN",
       Assets.img.menuIsiUlang.iconTokenPln.provider(),
       onTap: () {
-        getTokenPlnProvider(context).fetchTokenPlnProducts();
+        getTokenPlnProvider(context).fetchProducts();
         pushNamed(GuestTokenPlnProdukPage.routeName);
       },
     ),
@@ -163,7 +163,7 @@ class _DashboardPageState extends State<DashboardPage> {
       "Aktivasi Voucher",
       Assets.img.menuIsiUlang.iconAktivasiVoucher.provider(),
       onTap: () {
-        getAktivasiVoucherProvider(context).fetchAktivasiVoucherProviders();
+        getAktivasiVoucherProvider(context).fetchProviders();
         pushNamed(GuestAktivasiVoucherProviderPage.routeName);
       },
     ),
@@ -189,7 +189,14 @@ class _DashboardPageState extends State<DashboardPage> {
       "Paket Streaming",
       Assets.img.menuIsiUlang.iconPaketStreaming.provider(),
     ),
-    MenuData("Wifi ID", Assets.img.menuIsiUlang.iconWifiId.provider()),
+    MenuData(
+      "Wifi ID",
+      Assets.img.menuIsiUlang.iconWifiId.provider(),
+      onTap: () {
+        getWifiIdProvider(context).fetchProducts();
+        pushNamed(GuestWifiIdProdukPage.routeName);
+      },
+    ),
   ];
 
   // ============================================================
