@@ -29,6 +29,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/voucher_data/guest_voucher_dat
 import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/guest_voucher_digital_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/guest_voucher_digital_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_page.dart';
+import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -161,6 +162,11 @@ class AppRouter {
         return _customTransition(child: const GuestCekStatusVoucherProdukPage());
 
       /// ------ CEK STATUS VOUCHER ------ ///
+
+      /// ------ PAKET CUAN ------ ///
+      case GuestPaketCuanProviderPage.routeName:
+        return _customTransition(child: const GuestPaketCuanProviderPage());
+      /// ------ PAKET CUAN ------ ///
 
       default:
         return null;
