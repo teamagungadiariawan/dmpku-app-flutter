@@ -2,20 +2,34 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/guest_aktivasi_perdana_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/guest_aktivasi_voucher_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/cek_status_voucher/cek_status_voucher_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/cek_status_voucher/guest_cek_status_voucher_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/info_kartu/guest_info_kartu_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/info_kartu/info_kartu_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/guest_masa_aktif_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_data/guest_paket_data_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/guest_paket_nelpon_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_streaming/guest_paket_streaming_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_streaming/paket_streaming_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_tv/guest_paket_tv_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_tv/paket_tv_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/guest_pulsa_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/token_pln/guest_token_pln_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/token_pln/token_pln_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/guest_topup_game_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/voucher_data/guest_voucher_data_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/voucher_data/voucher_data_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/guest_voucher_digital_provider_page.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
@@ -170,24 +184,58 @@ class _DashboardPageState extends State<DashboardPage> {
     MenuData(
       "Voucher Data",
       Assets.img.menuIsiUlang.iconVoucherData.provider(),
+      onTap: () {
+        getVoucherDataProvider(context).fetchProviders();
+        pushNamed(GuestVoucherDataProviderPage.routeName);
+      },
     ),
     MenuData(
       "Aktivasi Perdana",
       Assets.img.menuIsiUlang.iconAktivasiPerdana.provider(),
+      onTap: () {
+        getAktivasiPerdanaProvider(context).fetchProviders();
+        pushNamed(GuestAktivasiPerdanaProviderPage.routeName);
+      },
     ),
     MenuData(
       "Cek Status Voucher",
       Assets.img.menuIsiUlang.iconCekStatusVoucher.provider(),
+      onTap: () {
+        getCekStatusVoucherProvider(context).fetchProducts();
+        pushNamed(GuestCekStatusVoucherProviderPage.routeName);
+      },
     ),
-    MenuData("Info Kartu", Assets.img.menuIsiUlang.iconInfoKartu.provider()),
+    MenuData(
+      "Info Kartu",
+      Assets.img.menuIsiUlang.iconInfoKartu.provider(),
+      onTap: () {
+        getInfoKartuProvider(context).fetchProducts();
+        pushNamed(GuestInfoKartuProviderPage.routeName);
+      },
+    ),
     MenuData(
       "Voucher Digital",
       Assets.img.menuIsiUlang.iconVoucherDigital.provider(),
+      onTap: () {
+        getVoucherDigitalProvider(context).fetchProviders();
+        pushNamed(GuestVoucherDigitalProviderPage.routeName);
+      },
     ),
-    MenuData("Paket TV", Assets.img.menuIsiUlang.iconPaketTv.provider()),
+    MenuData(
+      "Paket TV",
+      Assets.img.menuIsiUlang.iconPaketTv.provider(),
+      onTap: () {
+        getPaketTvProvider(context).fetchProviders();
+        pushNamed(GuestPaketTvProviderPage.routeName);
+      },
+    ),
     MenuData(
       "Paket Streaming",
       Assets.img.menuIsiUlang.iconPaketStreaming.provider(),
+      onTap: () {
+        getPaketStreamingProvider(context).fetchProviders();
+        pushNamed(GuestPaketStreamingProviderPage.routeName);
+      },
     ),
     MenuData(
       "Wifi ID",
