@@ -14,7 +14,7 @@ class ProdukService {
   // -----------------------------------------------------------------------------
 
   Future<BaseResponse<ListProviderResponse>>
-      getAktivasiPerdanaGuestProviders() async {
+  getAktivasiPerdanaGuestProviders() async {
     try {
       final response = await _dio.post("guest/actperdana/provider", data: {});
 
@@ -66,7 +66,7 @@ class ProdukService {
   // -----------------------------------------------------------------------------
 
   Future<BaseResponse<ListProviderResponse>>
-      getAktivasiVoucherGuestProviders() async {
+  getAktivasiVoucherGuestProviders() async {
     try {
       final response = await _dio.post("guest/actvoucher/provider", data: {});
 
@@ -114,13 +114,42 @@ class ProdukService {
   }
 
   // -----------------------------------------------------------------------------
+  // CEK STATUS VOUCHER
+  // -----------------------------------------------------------------------------
+
+  Future<BaseResponse<ListProductResponse>>
+  getCekStatusVoucherProducts() async {
+    try {
+      final response = await _dio.post("guest/cekvoucher/product", data: {});
+
+      final result = BaseResponse<ListProductResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProductResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  // -----------------------------------------------------------------------------
   // DOMPET DIGITAL
   // -----------------------------------------------------------------------------
 
   Future<BaseResponse<ListProviderResponse>>
-      getDompetDigitalGuestProviders() async {
+  getDompetDigitalGuestProviders() async {
     try {
-      final response = await _dio.post("guest/dompetdigital/provider", data: {});
+      final response = await _dio.post(
+        "guest/dompetdigital/provider",
+        data: {},
+      );
 
       final result = BaseResponse<ListProviderResponse>.fromJson(
         response.data,
@@ -270,6 +299,31 @@ class ProdukService {
   }
 
   // -----------------------------------------------------------------------------
+  // INFO KARTU
+  // -----------------------------------------------------------------------------
+
+  Future<BaseResponse<ListProductResponse>> getInfoKartuProducts() async {
+    try {
+      final response = await _dio.post("guest/infokartu/product", data: {});
+
+      final result = BaseResponse<ListProductResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProductResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  // -----------------------------------------------------------------------------
   // PAKET NELPON
   // -----------------------------------------------------------------------------
 
@@ -377,9 +431,12 @@ class ProdukService {
   // -----------------------------------------------------------------------------
 
   Future<BaseResponse<ListProviderResponse>>
-      getStreamingGuestProviders() async {
+  getStreamingGuestProviders() async {
     try {
-      final response = await _dio.post("guest/paketstreaming/provider", data: {});
+      final response = await _dio.post(
+        "guest/paketstreaming/provider",
+        data: {},
+      );
 
       final result = BaseResponse<ListProviderResponse>.fromJson(
         response.data,
@@ -556,9 +613,12 @@ class ProdukService {
   // -----------------------------------------------------------------------------
 
   Future<BaseResponse<ListProviderResponse>>
-      getUangElektronikGuestProviders() async {
+  getUangElektronikGuestProviders() async {
     try {
-      final response = await _dio.post("guest/uangelektronik/provider", data: {});
+      final response = await _dio.post(
+        "guest/uangelektronik/provider",
+        data: {},
+      );
 
       final result = BaseResponse<ListProviderResponse>.fromJson(
         response.data,
@@ -608,7 +668,7 @@ class ProdukService {
   // -----------------------------------------------------------------------------
 
   Future<BaseResponse<ListProviderResponse>>
-      getVoucherDataGuestProviders() async {
+  getVoucherDataGuestProviders() async {
     try {
       final response = await _dio.post("guest/voucherdata/provider", data: {});
 
@@ -660,9 +720,12 @@ class ProdukService {
   // -----------------------------------------------------------------------------
 
   Future<BaseResponse<ListProviderResponse>>
-      getVoucherDigitalGuestProviders() async {
+  getVoucherDigitalGuestProviders() async {
     try {
-      final response = await _dio.post("guest/voucherdigital/provider", data: {});
+      final response = await _dio.post(
+        "guest/voucherdigital/provider",
+        data: {},
+      );
 
       final result = BaseResponse<ListProviderResponse>.fromJson(
         response.data,
