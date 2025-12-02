@@ -248,12 +248,30 @@ class $AssetsImgMenuPenjualanGen {
 class $AssetsImgProdukGen {
   const $AssetsImgProdukGen();
 
+  /// File path: assets/img/produk/ic_akitviasi_voucher_berurutan.png
+  AssetGenImage get icAkitviasiVoucherBerurutan => const AssetGenImage(
+    'assets/img/produk/ic_akitviasi_voucher_berurutan.png',
+  );
+
+  /// File path: assets/img/produk/ic_akitviasi_voucher_satuan.png
+  AssetGenImage get icAkitviasiVoucherSatuan =>
+      const AssetGenImage('assets/img/produk/ic_akitviasi_voucher_satuan.png');
+
   /// File path: assets/img/produk/ic_token_pln.png
   AssetGenImage get icTokenPln =>
       const AssetGenImage('assets/img/produk/ic_token_pln.png');
 
+  /// File path: assets/img/produk/ic_wifi_id.png
+  AssetGenImage get icWifiId =>
+      const AssetGenImage('assets/img/produk/ic_wifi_id.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [icTokenPln];
+  List<AssetGenImage> get values => [
+    icAkitviasiVoucherBerurutan,
+    icAkitviasiVoucherSatuan,
+    icTokenPln,
+    icWifiId,
+  ];
 }
 
 class Assets {
