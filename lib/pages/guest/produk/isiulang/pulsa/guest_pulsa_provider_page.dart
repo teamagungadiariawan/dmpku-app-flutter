@@ -42,7 +42,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
   }
 
   Future<void> _onRefresh() async {
-    getPulsaProvider(context).fetchPulsaProviders();
+    getPulsaProvider(context).fetchProviders();
   }
 
   void closePage() {
@@ -100,20 +100,23 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
 
   Widget _buildPhoneNumberCard(BuildContext context) {
     return BlocBuilder<PulsaProvider, PulsaState>(
+      buildWhen: (previous, current) =>
+          previous.tujuan != current.tujuan ||
+          previous.tujuanHasError != current.tujuanHasError,
       builder: (context, state) {
         return CardInputTujuanPulsa(
           tujuan: state.tujuan,
           label: 'No. Tujuan',
-          hasError: state.hasErrorInputTujuan,
-          errorMessage: state.errorMessageInputTujuan,
+          hasError: state.tujuanHasError,
+          errorMessage: state.tujuanErrorMessage,
           isEditable: true,
-          controller: state.inputTujuanController,
-          focusNode: state.inputTujuanFocusNode,
+          controller: state.tujuanController,
+          focusNode: state.tujuanFocusNode,
           onChanged: (value) {
             getPulsaProvider(context).setTujuan(value);
           },
           onClear: () {
-            getPulsaProvider(context).setTujuan('', updateTextController: true);
+            getPulsaProvider(context).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -132,11 +135,15 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
 
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<PulsaProvider, PulsaState>(
+      buildWhen: (previous, current) =>
+          previous.providers != current.providers ||
+          previous.tujuan != current.tujuan ||
+          previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
-        var providers = _filterProviders(state.pulsaProviders, state.tujuan);
+        var providers = _filterProviders(state.providers, state.tujuan);
         return RefreshableList(
           loadingWidget: CardProviderListShimmer(itemCount: 6),
-          isLoading: state.apiFetchPulsaProviderStatus.isLoading,
+          isLoading: state.apiFetchProviderStatus.isLoading,
           onRefresh: _onRefresh,
           items: providers,
           itemBuilder: (context, provider, index) {
@@ -147,7 +154,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
               onPressed: () {
                 var valid = getPulsaProvider(
                   context,
-                ).validateTujuan(selectedProvider: provider);
+                ).validateTujuan(provider: provider);
 
                 if (!valid) {
                   shakeKey.currentState?.shake();

@@ -47,7 +47,7 @@ class _GuestAktivasiVoucherProviderPageState
   }
 
   Future<void> _onRefresh() async {
-    getAktivasiVoucherProvider(context).fetchAktivasiVoucherProviders();
+    getAktivasiVoucherProvider(context).fetchProviders();
   }
 
   void closePage() {
@@ -109,14 +109,15 @@ class _GuestAktivasiVoucherProviderPageState
 
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+      buildWhen: (previous, current) =>
+          previous.providers != current.providers ||
+          previous.searchProvider != current.searchProvider ||
+          previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
-        var providers = _filterProviders(
-          state.aktivasiVoucherProviders,
-          state.searchProvider,
-        );
+        var providers = _filterProviders(state.providers, state.searchProvider);
         return RefreshableList(
           loadingWidget: CardProviderListShimmer(itemCount: 6),
-          isLoading: state.apiFetchAktivasiVoucherProviderStatus.isLoading,
+          isLoading: state.apiFetchProviderStatus.isLoading,
           onRefresh: _onRefresh,
           items: providers,
           itemBuilder: (context, provider, index) {
@@ -142,6 +143,8 @@ class _GuestAktivasiVoucherProviderPageState
 
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+      buildWhen: (previous, current) =>
+          previous.searchProvider != current.searchProvider,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -169,10 +172,7 @@ class _GuestAktivasiVoucherProviderPageState
                             onTap: () {
                               getAktivasiVoucherProvider(
                                 context,
-                              ).setSearchProvider(
-                                '',
-                                updateTextController: true,
-                              );
+                              ).setSearchProvider('', updateController: true);
                             },
                             child: Icon(
                               MdiIcons.close,

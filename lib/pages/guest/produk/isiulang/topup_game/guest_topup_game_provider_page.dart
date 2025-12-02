@@ -45,7 +45,7 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
   @override
   void initState() {
     super.initState();
-    getTopupGameProvider(context).fetchTopupGameProviders();
+    getTopupGameProvider(context).fetchProviders();
     _pageViewController = PageController();
     _tabController = CustomTabController(length: _tabs.length);
   }
@@ -67,7 +67,7 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
   }
 
   Future<void> _onRefresh() async {
-    getTopupGameProvider(context).fetchTopupGameProviders();
+    getTopupGameProvider(context).fetchProviders();
   }
 
   @override
@@ -192,6 +192,10 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
 
   Widget _buildListProviderTopupGame(BuildContext context) {
     return BlocBuilder<TopupGameProvider, TopupGameState>(
+      buildWhen: (previous, current) =>
+          previous.topupGameProviders != current.topupGameProviders ||
+          previous.searchProvider != current.searchProvider ||
+          previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
         var providers = _filterProviders(
           state.topupGameProviders,
@@ -204,7 +208,7 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
             aspectRatio: 0.8,
             mainAxisSpacing: 5,
           ),
-          isLoading: state.apiFetchTopupGameProviderStatus.isLoading,
+          isLoading: state.apiFetchProviderStatus.isLoading,
           onRefresh: _onRefresh,
           items: providers,
           crossAxisCount: 4,
@@ -227,6 +231,10 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
 
   Widget _buildListProviderVoucherGame(BuildContext context) {
     return BlocBuilder<TopupGameProvider, TopupGameState>(
+      buildWhen: (previous, current) =>
+          previous.voucherGameProviders != current.voucherGameProviders ||
+          previous.searchProvider != current.searchProvider ||
+          previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
         var providers = _filterProviders(
           state.voucherGameProviders,
@@ -239,7 +247,7 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
             aspectRatio: 0.8,
             mainAxisSpacing: 5,
           ),
-          isLoading: state.apiFetchTopupGameProviderStatus.isLoading,
+          isLoading: state.apiFetchProviderStatus.isLoading,
           onRefresh: _onRefresh,
           items: providers,
           crossAxisCount: 4,
@@ -266,6 +274,8 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
 
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<TopupGameProvider, TopupGameState>(
+      buildWhen: (previous, current) =>
+          previous.searchProvider != current.searchProvider,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -282,7 +292,7 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
               Expanded(
                 child: TextField(
                   controller: state.searchProviderController,
-                  onChanged: getTopupGameProvider(context).setSearchProvider,
+                  onChanged: (val) => getTopupGameProvider(context).setSearchProvider(val),
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Produk',
@@ -291,7 +301,7 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
                             onTap: () {
                               getTopupGameProvider(context).setSearchProvider(
                                 '',
-                                updateTextController: true,
+                                updateController: true,
                               );
                             },
                             child: Icon(

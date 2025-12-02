@@ -33,12 +33,12 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getTopupGameProvider(context).resetProduk();
+    getTopupGameProvider(context).resetProduct();
     pop();
   }
 
   Future<void> _onRefresh() async {
-    getTopupGameProvider(context).fetchTopupGameProducts();
+    getTopupGameProvider(context).fetchProducts();
   }
 
   List<ProductModel> _filterProducts(
@@ -96,13 +96,18 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
             ),
           ),
           bottomNavigationBar: BlocBuilder<TopupGameProvider, TopupGameState>(
+            buildWhen: (previous, current) =>
+                previous.selectedProduct != current.selectedProduct ||
+                previous.tujuanHasError != current.tujuanHasError ||
+                previous.tujuan != current.tujuan ||
+                previous.apiFetchProductStatus != current.apiFetchProductStatus,
             builder: (context, state) {
               return ButtonCheckout(
                 isDisabled:
                     state.selectedProduct.idproduk == 0 ||
-                    state.hasErrorInputTujuan ||
+                    state.tujuanHasError ||
                     state.tujuan.isEmpty ||
-                    state.apiFetchTopupGameProductStatus.isLoading,
+                    state.apiFetchProductStatus.isLoading,
                 selectedProduct: state.selectedProduct,
                 onContinue: () => BelumLoginDialog.show(context),
               );
@@ -115,23 +120,30 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
 
   Widget _buildIdAkunCard(BuildContext context) {
     return BlocBuilder<TopupGameProvider, TopupGameState>(
+      buildWhen: (previous, current) =>
+          previous.tujuan != current.tujuan ||
+          previous.tujuanHasError != current.tujuanHasError ||
+          previous.titleForm != current.titleForm ||
+          previous.hintForm != current.hintForm ||
+          previous.isCekAkun != current.isCekAkun ||
+          previous.selectedProvider != current.selectedProvider,
       builder: (context, state) {
         return CardInputTujuanTopupGame(
           tujuan: state.tujuan,
           label: state.titleForm,
-          hasError: state.hasErrorInputTujuan,
-          errorMessage: state.errorMessageInputTujuan,
+          hasError: state.tujuanHasError,
+          errorMessage: state.tujuanErrorMessage,
           isEditable: true,
           hintText: state.hintForm,
-          controller: state.inputTujuanController,
-          focusNode: state.inputTujuanFocusNode,
+          controller: state.tujuanController,
+          focusNode: state.tujuanFocusNode,
           onChanged: (value) {
             getTopupGameProvider(context).setTujuan(value);
           },
           onClear: () {
             getTopupGameProvider(
               context,
-            ).setTujuan('', updateTextController: true);
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -142,7 +154,7 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
             onResult: (val) {
               getTopupGameProvider(
                 context,
-              ).setTujuan(val, updateTextController: true);
+              ).setTujuan(val, updateController: true);
             },
           ),
           onFavoritResult: (val) {},
@@ -153,6 +165,8 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
 
   Widget _buildDetailProvider(BuildContext context) {
     return BlocBuilder<TopupGameProvider, TopupGameState>(
+      buildWhen: (previous, current) =>
+          previous.selectedProvider != current.selectedProvider,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,11 +188,14 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
 
   Widget _buildSortFilterProduct(BuildContext context) {
     return BlocBuilder<TopupGameProvider, TopupGameState>(
+      buildWhen: (previous, current) =>
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct,
       builder: (context, state) {
         return SortFilterProduct(
           searchController: state.searchProductController!,
           searchValue: state.searchProduct,
-          hasError: state.hasErrorInputTujuan,
+          hasError: state.tujuanHasError,
           selectedSort: state.sortProduct,
           onSearchChanged: (val) {
             getTopupGameProvider(context).setSearchProduct(val);
@@ -186,7 +203,7 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
           onClearSearch: () {
             getTopupGameProvider(
               context,
-            ).setSearchProduct('', updateTextController: true);
+            ).setSearchProduct('', updateController: true);
           },
           onSortSelected: (sortBy) {
             getTopupGameProvider(context).setSortProduct(sortBy);
@@ -198,16 +215,22 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
 
   Widget _buildListProduk(BuildContext context) {
     return BlocBuilder<TopupGameProvider, TopupGameState>(
+      buildWhen: (previous, current) =>
+          previous.products != current.products ||
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct ||
+          previous.selectedProduct != current.selectedProduct ||
+          previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
         var products = _filterProducts(
-          state.topupGameProducts,
+          state.products,
           state.searchProduct,
           state.sortProduct,
         );
 
         return RefreshableList(
           loadingWidget: CardProductPulsaListShimmer(itemCount: 6),
-          isLoading: state.apiFetchTopupGameProductStatus.isLoading,
+          isLoading: state.apiFetchProductStatus.isLoading,
           onRefresh: _onRefresh,
           items: products,
           itemBuilder: (context, provider, index) {

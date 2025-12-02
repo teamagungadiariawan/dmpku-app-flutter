@@ -39,12 +39,12 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getPulsaProvider(context).resetProduk();
+    getPulsaProvider(context).resetProduct();
     pop();
   }
 
   Future<void> _onRefresh() async {
-    getPulsaProvider(context).fetchPulsaProviders();
+    getPulsaProvider(context).fetchProviders();
   }
 
   List<ProductModel> _filterProducts(
@@ -102,13 +102,18 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
             ),
           ),
           bottomNavigationBar: BlocBuilder<PulsaProvider, PulsaState>(
+            buildWhen: (previous, current) =>
+                previous.selectedProduct != current.selectedProduct ||
+                previous.tujuanHasError != current.tujuanHasError ||
+                previous.tujuan != current.tujuan ||
+                previous.apiFetchProductStatus != current.apiFetchProductStatus,
             builder: (context, state) {
               return ButtonCheckout(
                 isDisabled:
                     state.selectedProduct.idproduk == 0 ||
-                    state.hasErrorInputTujuan ||
+                    state.tujuanHasError ||
                     state.tujuan.isEmpty ||
-                    state.apiFetchPulsaProductStatus.isLoading,
+                    state.apiFetchProductStatus.isLoading,
                 selectedProduct: state.selectedProduct,
                 onContinue: () => BelumLoginDialog.show(context),
               );
@@ -121,21 +126,24 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
 
   Widget _buildPhoneNumberCard(BuildContext context) {
     return BlocBuilder<PulsaProvider, PulsaState>(
+      buildWhen: (previous, current) =>
+          previous.tujuan != current.tujuan ||
+          previous.tujuanHasError != current.tujuanHasError,
       builder: (context, state) {
         return CardInputTujuanPulsa(
           tujuan: state.tujuan,
           label: 'No. Tujuan',
-          hasError: state.hasErrorInputTujuan,
-          errorMessage: state.errorMessageInputTujuan,
+          hasError: state.tujuanHasError,
+          errorMessage: state.tujuanErrorMessage,
           isEditable: false,
           hintText: 'Masukkan No. Tujuan',
-          controller: state.inputTujuanController,
-          focusNode: state.inputTujuanFocusNode,
+          controller: state.tujuanController,
+          focusNode: state.tujuanFocusNode,
           onChanged: (value) {
             getPulsaProvider(context).setTujuan(value);
           },
           onClear: () {
-            getPulsaProvider(context).setTujuan('', updateTextController: true);
+            getPulsaProvider(context).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -149,6 +157,8 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
 
   Widget _buildDetailProvider(BuildContext context) {
     return BlocBuilder<PulsaProvider, PulsaState>(
+      buildWhen: (previous, current) =>
+          previous.selectedProvider != current.selectedProvider,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,11 +180,14 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
 
   Widget _buildSortFilterProduct(BuildContext context) {
     return BlocBuilder<PulsaProvider, PulsaState>(
+      buildWhen: (previous, current) =>
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct,
       builder: (context, state) {
         return SortFilterProduct(
           searchController: state.searchProductController!,
           searchValue: state.searchProduct,
-          hasError: state.hasErrorInputTujuan,
+          hasError: state.tujuanHasError,
           selectedSort: state.sortProduct,
           onSearchChanged: (val) {
             getPulsaProvider(context).setSearchProduct(val);
@@ -182,7 +195,7 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
           onClearSearch: () {
             getPulsaProvider(
               context,
-            ).setSearchProduct('', updateTextController: true);
+            ).setSearchProduct('', updateController: true);
           },
           onSortSelected: (sortBy) {
             getPulsaProvider(context).setSortProduct(sortBy);
@@ -194,16 +207,22 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
 
   Widget _buildListProduk(BuildContext context) {
     return BlocBuilder<PulsaProvider, PulsaState>(
+      buildWhen: (previous, current) =>
+          previous.products != current.products ||
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct ||
+          previous.selectedProduct != current.selectedProduct ||
+          previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
         var products = _filterProducts(
-          state.pulsaProduct,
+          state.products,
           state.searchProduct,
           state.sortProduct,
         );
 
         return RefreshableList(
           loadingWidget: CardProductPulsaListShimmer(itemCount: 6),
-          isLoading: state.apiFetchPulsaProductStatus.isLoading,
+          isLoading: state.apiFetchProductStatus.isLoading,
           onRefresh: _onRefresh,
           items: products,
           itemBuilder: (context, provider, index) {

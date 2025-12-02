@@ -4,6 +4,7 @@ import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/widgets/pilih_metode_voucher_dialog.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan_pulsa.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
@@ -29,16 +30,17 @@ class GuestAktivasiVoucherProdukPage extends StatefulWidget {
       _GuestAktivasiVoucherProdukPageState();
 }
 
-class _GuestAktivasiVoucherProdukPageState extends State<GuestAktivasiVoucherProdukPage> {
+class _GuestAktivasiVoucherProdukPageState
+    extends State<GuestAktivasiVoucherProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getAktivasiVoucherProvider(context).resetProduk();
+    getAktivasiVoucherProvider(context).resetProduct();
     pop();
   }
 
   Future<void> _onRefresh() async {
-    getAktivasiVoucherProvider(context).fetchAktivasiVoucherProviders();
+    getAktivasiVoucherProvider(context).fetchProducts();
   }
 
   List<ProductModel> _filterProducts(
@@ -71,7 +73,7 @@ class _GuestAktivasiVoucherProdukPageState extends State<GuestAktivasiVoucherPro
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child:  WillPopScope(
+      child: WillPopScope(
         onWillPop: () async {
           debugPrint("WillPopScope: onWillPop");
           closePage();
@@ -94,25 +96,32 @@ class _GuestAktivasiVoucherProdukPageState extends State<GuestAktivasiVoucherPro
               ],
             ),
           ),
-          bottomNavigationBar: BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
-            builder: (context, state) {
-              return ButtonCheckout(
-                isDisabled:
-                    state.selectedProduct.idproduk == 0 ||
-                    state.apiFetchAktivasiVoucherProductStatus.isLoading,
-                selectedProduct: state.selectedProduct,
-                onContinue: () => BelumLoginDialog.show(context),
-              );
-            },
-          ),
+          bottomNavigationBar:
+              BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+                buildWhen: (previous, current) {
+                  return previous.selectedProduct != current.selectedProduct ||
+                      previous.apiFetchProductStatus !=
+                          current.apiFetchProductStatus;
+                },
+                builder: (context, state) {
+                  return ButtonCheckout(
+                    isDisabled:
+                        state.selectedProduct.idproduk == 0 ||
+                        state.apiFetchProductStatus.isLoading,
+                    selectedProduct: state.selectedProduct,
+                    onContinue: () => PilihMetodeVoucherDialog.show(context),
+                  );
+                },
+              ),
         ),
       ),
     );
   }
 
-
   Widget _buildDetailProvider(BuildContext context) {
     return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+      buildWhen: (previous, current) =>
+          previous.selectedProvider != current.selectedProvider,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,11 +143,15 @@ class _GuestAktivasiVoucherProdukPageState extends State<GuestAktivasiVoucherPro
 
   Widget _buildSortFilterProduct(BuildContext context) {
     return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+      buildWhen: (previous, current) =>
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct ||
+          previous.tujuanHasError != current.tujuanHasError,
       builder: (context, state) {
         return SortFilterProduct(
           searchController: state.searchProductController!,
           searchValue: state.searchProduct,
-          hasError: state.hasErrorInputTujuan,
+          hasError: state.tujuanHasError,
           selectedSort: state.sortProduct,
           onSearchChanged: (val) {
             getAktivasiVoucherProvider(context).setSearchProduct(val);
@@ -146,7 +159,7 @@ class _GuestAktivasiVoucherProdukPageState extends State<GuestAktivasiVoucherPro
           onClearSearch: () {
             getAktivasiVoucherProvider(
               context,
-            ).setSearchProduct('', updateTextController: true);
+            ).setSearchProduct('', updateController: true);
           },
           onSortSelected: (sortBy) {
             getAktivasiVoucherProvider(context).setSortProduct(sortBy);
@@ -158,16 +171,22 @@ class _GuestAktivasiVoucherProdukPageState extends State<GuestAktivasiVoucherPro
 
   Widget _buildListProduk(BuildContext context) {
     return BlocBuilder<AktivasiVoucherProvider, AktivasiVoucherState>(
+      buildWhen: (previous, current) =>
+          previous.products != current.products ||
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct ||
+          previous.apiFetchProductStatus != current.apiFetchProductStatus ||
+          previous.selectedProduct != current.selectedProduct,
       builder: (context, state) {
         var products = _filterProducts(
-          state.aktivasiVoucherProduct,
+          state.products,
           state.searchProduct,
           state.sortProduct,
         );
 
         return RefreshableList(
           loadingWidget: CardProductPulsaListShimmer(itemCount: 6),
-          isLoading: state.apiFetchAktivasiVoucherProductStatus.isLoading,
+          isLoading: state.apiFetchProductStatus.isLoading,
           onRefresh: _onRefresh,
           items: products,
           itemBuilder: (context, provider, index) {

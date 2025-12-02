@@ -42,7 +42,7 @@ class _GuestTokenPlnProdukPageState extends State<GuestTokenPlnProdukPage> {
   }
 
   Future<void> _onRefresh() async {
-    getTokenPlnProvider(context).fetchTokenPlnProducts();
+    getTokenPlnProvider(context).fetchProducts();
   }
 
   List<ProductModel> _filterProducts(
@@ -98,13 +98,18 @@ class _GuestTokenPlnProdukPageState extends State<GuestTokenPlnProdukPage> {
             ),
           ),
           bottomNavigationBar: BlocBuilder<TokenPlnProvider, TokenPlnState>(
+            buildWhen: (previous, current) =>
+                previous.selectedProduct != current.selectedProduct ||
+                previous.tujuanHasError != current.tujuanHasError ||
+                previous.tujuan != current.tujuan ||
+                previous.apiFetchProductStatus != current.apiFetchProductStatus,
             builder: (context, state) {
               return ButtonCheckout(
                 isDisabled:
                     state.selectedProduct.idproduk == 0 ||
-                    state.hasErrorInputTujuan ||
+                    state.tujuanHasError ||
                     state.tujuan.isEmpty ||
-                    state.apiFetchTokenPlnProductStatus.isLoading,
+                    state.apiFetchProductStatus.isLoading,
                 selectedProduct: state.selectedProduct,
                 onContinue: () => BelumLoginDialog.show(context),
               );
@@ -117,23 +122,26 @@ class _GuestTokenPlnProdukPageState extends State<GuestTokenPlnProdukPage> {
 
   Widget _buildIdAkunCard(BuildContext context) {
     return BlocBuilder<TokenPlnProvider, TokenPlnState>(
+      buildWhen: (previous, current) =>
+          previous.tujuan != current.tujuan ||
+          previous.tujuanHasError != current.tujuanHasError,
       builder: (context, state) {
         return CardInputTujuanTokenPln(
           tujuan: state.tujuan,
           label: "ID Pelanggan",
-          hasError: state.hasErrorInputTujuan,
-          errorMessage: state.errorMessageInputTujuan,
+          hasError: state.tujuanHasError,
+          errorMessage: state.tujuanErrorMessage,
           isEditable: true,
           hintText: "Contoh : 1234567890123",
-          controller: state.inputTujuanController,
-          focusNode: state.inputTujuanFocusNode,
+          controller: state.tujuanController,
+          focusNode: state.tujuanFocusNode,
           onChanged: (value) {
             getTokenPlnProvider(context).setTujuan(value);
           },
           onClear: () {
             getTokenPlnProvider(
               context,
-            ).setTujuan('', updateTextController: true);
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -144,7 +152,7 @@ class _GuestTokenPlnProdukPageState extends State<GuestTokenPlnProdukPage> {
             onResult: (val) {
               getTokenPlnProvider(
                 context,
-              ).setTujuan(val, updateTextController: true);
+              ).setTujuan(val, updateController: true);
             },
           ),
           onFavoritResult: (val) {},
@@ -155,6 +163,7 @@ class _GuestTokenPlnProdukPageState extends State<GuestTokenPlnProdukPage> {
 
   Widget _buildDetailProvider(BuildContext context) {
     return BlocBuilder<TokenPlnProvider, TokenPlnState>(
+      buildWhen: (previous, current) => false,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,11 +186,14 @@ class _GuestTokenPlnProdukPageState extends State<GuestTokenPlnProdukPage> {
 
   Widget _buildSortFilterProduct(BuildContext context) {
     return BlocBuilder<TokenPlnProvider, TokenPlnState>(
+      buildWhen: (previous, current) =>
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct,
       builder: (context, state) {
         return SortFilterProduct(
           searchController: state.searchProductController!,
           searchValue: state.searchProduct,
-          hasError: state.hasErrorInputTujuan,
+          hasError: state.tujuanHasError,
           selectedSort: state.sortProduct,
           onSearchChanged: (val) {
             getTokenPlnProvider(context).setSearchProduct(val);
@@ -189,7 +201,7 @@ class _GuestTokenPlnProdukPageState extends State<GuestTokenPlnProdukPage> {
           onClearSearch: () {
             getTokenPlnProvider(
               context,
-            ).setSearchProduct('', updateTextController: true);
+            ).setSearchProduct('', updateController: true);
           },
           onSortSelected: (sortBy) {
             getTokenPlnProvider(context).setSortProduct(sortBy);
@@ -201,16 +213,22 @@ class _GuestTokenPlnProdukPageState extends State<GuestTokenPlnProdukPage> {
 
   Widget _buildListProduk(BuildContext context) {
     return BlocBuilder<TokenPlnProvider, TokenPlnState>(
+      buildWhen: (previous, current) =>
+          previous.products != current.products ||
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct ||
+          previous.selectedProduct != current.selectedProduct ||
+          previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
         var products = _filterProducts(
-          state.tokenPlnProducts,
+          state.products,
           state.searchProduct,
           state.sortProduct,
         );
 
         return RefreshableList(
           loadingWidget: CardProductPulsaListShimmer(itemCount: 6),
-          isLoading: state.apiFetchTokenPlnProductStatus.isLoading,
+          isLoading: state.apiFetchProductStatus.isLoading,
           onRefresh: _onRefresh,
           items: products,
           itemBuilder: (context, provider, index) {

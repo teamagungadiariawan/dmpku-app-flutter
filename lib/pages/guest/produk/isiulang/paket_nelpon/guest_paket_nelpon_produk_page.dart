@@ -34,12 +34,12 @@ class _GuestPaketNelponProdukPageState
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getPaketNelponProvider(context).resetProduk();
+    getPaketNelponProvider(context).resetProduct();
     pop();
   }
 
   Future<void> _onRefresh() async {
-    getPaketNelponProvider(context).fetchPaketNelponProviders();
+    getPaketNelponProvider(context).fetchProviders();
   }
 
   List<ProductModel> _filterProducts(
@@ -98,13 +98,18 @@ class _GuestPaketNelponProdukPageState
           ),
           bottomNavigationBar:
               BlocBuilder<PaketNelponProvider, PaketNelponState>(
+                buildWhen: (previous, current) =>
+                    previous.selectedProduct != current.selectedProduct ||
+                    previous.tujuanHasError != current.tujuanHasError ||
+                    previous.tujuan != current.tujuan ||
+                    previous.apiFetchProductStatus != current.apiFetchProductStatus,
                 builder: (context, state) {
                   return ButtonCheckout(
                     isDisabled:
                         state.selectedProduct.idproduk == 0 ||
-                        state.hasErrorInputTujuan ||
+                        state.tujuanHasError ||
                         state.tujuan.isEmpty ||
-                        state.apiFetchPaketNelponProductStatus.isLoading,
+                        state.apiFetchProductStatus.isLoading,
                     selectedProduct: state.selectedProduct,
                     onContinue: () => BelumLoginDialog.show(context),
                   );
@@ -117,23 +122,26 @@ class _GuestPaketNelponProdukPageState
 
   Widget _buildPhoneNumberCard(BuildContext context) {
     return BlocBuilder<PaketNelponProvider, PaketNelponState>(
+      buildWhen: (previous, current) =>
+          previous.tujuan != current.tujuan ||
+          previous.tujuanHasError != current.tujuanHasError,
       builder: (context, state) {
         return CardInputTujuanPulsa(
           tujuan: state.tujuan,
           label: 'No. Tujuan',
-          hasError: state.hasErrorInputTujuan,
-          errorMessage: state.errorMessageInputTujuan,
+          hasError: state.tujuanHasError,
+          errorMessage: state.tujuanErrorMessage,
           isEditable: false,
           hintText: 'Masukkan No. Tujuan',
-          controller: state.inputTujuanController,
-          focusNode: state.inputTujuanFocusNode,
+          controller: state.tujuanController,
+          focusNode: state.tujuanFocusNode,
           onChanged: (value) {
             getPaketNelponProvider(context).setTujuan(value);
           },
           onClear: () {
             getPaketNelponProvider(
               context,
-            ).setTujuan('', updateTextController: true);
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -147,6 +155,8 @@ class _GuestPaketNelponProdukPageState
 
   Widget _buildDetailProvider(BuildContext context) {
     return BlocBuilder<PaketNelponProvider, PaketNelponState>(
+      buildWhen: (previous, current) =>
+          previous.selectedProvider != current.selectedProvider,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,11 +178,14 @@ class _GuestPaketNelponProdukPageState
 
   Widget _buildSortFilterProduct(BuildContext context) {
     return BlocBuilder<PaketNelponProvider, PaketNelponState>(
+      buildWhen: (previous, current) =>
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct,
       builder: (context, state) {
         return SortFilterProduct(
           searchController: state.searchProductController!,
           searchValue: state.searchProduct,
-          hasError: state.hasErrorInputTujuan,
+          hasError: state.tujuanHasError,
           selectedSort: state.sortProduct,
           onSearchChanged: (val) {
             getPaketNelponProvider(context).setSearchProduct(val);
@@ -180,7 +193,7 @@ class _GuestPaketNelponProdukPageState
           onClearSearch: () {
             getPaketNelponProvider(
               context,
-            ).setSearchProduct('', updateTextController: true);
+            ).setSearchProduct('', updateController: true);
           },
           onSortSelected: (sortBy) {
             getPaketNelponProvider(context).setSortProduct(sortBy);
@@ -192,16 +205,22 @@ class _GuestPaketNelponProdukPageState
 
   Widget _buildListProduk(BuildContext context) {
     return BlocBuilder<PaketNelponProvider, PaketNelponState>(
+      buildWhen: (previous, current) =>
+          previous.products != current.products ||
+          previous.searchProduct != current.searchProduct ||
+          previous.sortProduct != current.sortProduct ||
+          previous.selectedProduct != current.selectedProduct ||
+          previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
         var products = _filterProducts(
-          state.paketNelponProduct,
+          state.products,
           state.searchProduct,
           state.sortProduct,
         );
 
         return RefreshableList(
           loadingWidget: CardProductPulsaListShimmer(itemCount: 6),
-          isLoading: state.apiFetchPaketNelponProductStatus.isLoading,
+          isLoading: state.apiFetchProductStatus.isLoading,
           onRefresh: _onRefresh,
           items: products,
           itemBuilder: (context, provider, index) {

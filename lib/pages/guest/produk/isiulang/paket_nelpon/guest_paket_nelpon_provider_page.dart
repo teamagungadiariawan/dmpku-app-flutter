@@ -46,7 +46,7 @@ class _GuestPaketNelponProviderPageState
   }
 
   Future<void> _onRefresh() async {
-    getPaketNelponProvider(context).fetchPaketNelponProviders();
+    getPaketNelponProvider(context).fetchProviders();
   }
 
   void closePage() {
@@ -104,22 +104,25 @@ class _GuestPaketNelponProviderPageState
 
   Widget _buildPhoneNumberCard(BuildContext context) {
     return BlocBuilder<PaketNelponProvider, PaketNelponState>(
+      buildWhen: (previous, current) =>
+          previous.tujuan != current.tujuan ||
+          previous.tujuanHasError != current.tujuanHasError,
       builder: (context, state) {
         return CardInputTujuanPulsa(
           tujuan: state.tujuan,
           label: 'No. Tujuan',
-          hasError: state.hasErrorInputTujuan,
-          errorMessage: state.errorMessageInputTujuan,
+          hasError: state.tujuanHasError,
+          errorMessage: state.tujuanErrorMessage,
           isEditable: true,
-          controller: state.inputTujuanController,
-          focusNode: state.inputTujuanFocusNode,
+          controller: state.tujuanController,
+          focusNode: state.tujuanFocusNode,
           onChanged: (value) {
             getPaketNelponProvider(context).setTujuan(value);
           },
           onClear: () {
             getPaketNelponProvider(
               context,
-            ).setTujuan('', updateTextController: true);
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -138,14 +141,18 @@ class _GuestPaketNelponProviderPageState
 
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<PaketNelponProvider, PaketNelponState>(
+      buildWhen: (previous, current) =>
+          previous.providers != current.providers ||
+          previous.tujuan != current.tujuan ||
+          previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
         var providers = _filterProviders(
-          state.paketNelponProviders,
+          state.providers,
           state.tujuan,
         );
         return RefreshableList(
           loadingWidget: CardProviderListShimmer(itemCount: 6),
-          isLoading: state.apiFetchPaketNelponProviderStatus.isLoading,
+          isLoading: state.apiFetchProviderStatus.isLoading,
           onRefresh: _onRefresh,
           items: providers,
           itemBuilder: (context, provider, index) {
@@ -156,7 +163,7 @@ class _GuestPaketNelponProviderPageState
               onPressed: () {
                 var valid = getPaketNelponProvider(
                   context,
-                ).validateTujuan(selectedProvider: provider);
+                ).validateTujuan(provider: provider);
 
                 debugPrint('Is Valid Tujuan: $valid');
 
