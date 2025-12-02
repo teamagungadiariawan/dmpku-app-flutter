@@ -706,4 +706,29 @@ class ProdukService {
       throw ServerException.fromDio(e: e);
     }
   }
+
+  // -----------------------------------------------------------------------------
+  // WIFI ID
+  // -----------------------------------------------------------------------------
+
+  Future<BaseResponse<ListProductResponse>> getWifiIdGuestProducts() async {
+    try {
+      final response = await _dio.post("guest/wifiid/product", data: {});
+
+      final result = BaseResponse<ListProductResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => ListProductResponse.fromJson(json),
+      );
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
 }
