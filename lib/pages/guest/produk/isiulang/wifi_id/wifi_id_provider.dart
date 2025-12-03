@@ -206,11 +206,20 @@ class WifiIdProvider extends Cubit<WifiIdState> {
       return 'Panjang tujuan harus antara 10 hingga 20 karakter';
     }
 
-    // Validasi tipe input
-    if (!TipeInput.numericOnly.isValid(tujuan)) {
-      return TipeInput.numericOnly.errorMessage;
-    }
+    if (state.products.isNotEmpty) {
+      var firstProduct = state.products.first;
 
+      var minLength = firstProduct.mintujuan;
+      var maxLength = firstProduct.maxtujuan;
+      if (tujuan.length < minLength || tujuan.length > maxLength) {
+        return 'Panjang tujuan harus antara $minLength hingga $maxLength karakter';
+      }
+
+      // Tipe input
+      if (!firstProduct.inputTipe.isValid(tujuan)) {
+        return firstProduct.inputTipe.errorMessage;
+      }
+    }
     return null;
   }
 }
