@@ -1,6 +1,7 @@
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/pages/auth/login/request_otp_login_page.dart';
 import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/guest_aktivasi_perdana_provider_page.dart';
@@ -91,7 +92,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 SliverToBoxAdapter(
                   child: DashboardHeader(
                     salesMenus: _salesMenus,
-                    onPromoTap: _handlePromoTap,
+                    onPromoTap: _handleMasukTap,
                     onMenuTap: _handleMenuTap,
                   ),
                 ),
@@ -260,9 +261,8 @@ class _DashboardPageState extends State<DashboardPage> {
     BelumLoginDialog.show(context);
   }
 
-  void _handlePromoTap() {
-    debugPrint('Promo tapped');
-    // TODO: Navigate to login/register
+  void _handleMasukTap() {
+    pushNamed(RequestOtpLoginPage.routeName);
   }
 
   void _handlePaketCuanTap() {
