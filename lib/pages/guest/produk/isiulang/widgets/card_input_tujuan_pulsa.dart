@@ -122,6 +122,7 @@ class CardInputTujuanPulsa extends StatelessWidget {
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       onChanged: onChanged,
+      autofocus: true,
       decoration: InputDecoration(
         isDense: true,
         hintText: hintText,

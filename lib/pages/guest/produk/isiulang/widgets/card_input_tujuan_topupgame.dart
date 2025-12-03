@@ -150,6 +150,7 @@ class CardInputTujuanTopupGame extends StatelessWidget {
       keyboardType: tipeInput.keyboardType,
       inputFormatters: tipeInput.inputFormatters,
       onChanged: onChanged,
+      autofocus: true,
       decoration: InputDecoration(
         isDense: true,
         hintText: hintText,
