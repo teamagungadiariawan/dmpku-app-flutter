@@ -48,6 +48,13 @@ class $AssetsImgGen {
   /// Directory path: assets/img/bottom_nav
   $AssetsImgBottomNavGen get bottomNav => const $AssetsImgBottomNavGen();
 
+  /// File path: assets/img/img-login.png
+  AssetGenImage get imgLogin => const AssetGenImage('assets/img/img-login.png');
+
+  /// File path: assets/img/indonesian-flag.png
+  AssetGenImage get indonesianFlag =>
+      const AssetGenImage('assets/img/indonesian-flag.png');
+
   /// File path: assets/img/logo-text-white.png
   AssetGenImage get logoTextWhite =>
       const AssetGenImage('assets/img/logo-text-white.png');
@@ -70,6 +77,8 @@ class $AssetsImgGen {
   List<AssetGenImage> get values => [
     bgPattern,
     bgSplash,
+    imgLogin,
+    indonesianFlag,
     logoTextWhite,
     logoText,
   ];

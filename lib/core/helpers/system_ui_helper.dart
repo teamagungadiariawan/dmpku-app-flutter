@@ -9,6 +9,14 @@ SystemUiOverlayStyle getTransparentSystemUiOverlayStyle() {
     systemNavigationBarIconBrightness: Brightness.dark,
   );
 }
+SystemUiOverlayStyle getTransparentSystemUiOverlaDarkStyle() {
+  return const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+  );
+}
 
 void setupEdgeToEdge() {
   // Enable Edge-to-Edge on Android 10+

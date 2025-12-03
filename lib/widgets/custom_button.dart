@@ -17,6 +17,7 @@ class CustomButton extends StatefulWidget {
   final String? tooltip;
   final int? badge;
   final BadgePosition badgePosition;
+  final TextStyle? textStyle;
 
   final Color? foregroundColor;
   final Color? backgroundColor;
@@ -38,7 +39,7 @@ class CustomButton extends StatefulWidget {
     this.tooltip,
     this.badge,
     this.badgePosition = BadgePosition.topRight,
-
+    this.textStyle,
     this.foregroundColor,
     this.backgroundColor,
     this.borderColor,
@@ -56,7 +57,7 @@ class _CustomButtonState extends State<CustomButton> {
       context,
       isDarkMode,
     );
-    final (paddingValue, fontSize) = _getSize();
+    final (paddingValue, defaultFontSize) = _getSize();
     final isDisabled =
         widget.state == ButtonState.disabled || widget.onPressed == null;
 
@@ -89,23 +90,21 @@ class _CustomButtonState extends State<CustomButton> {
         ),
         child: widget.isLoading
             ? SizedBox(
-                height: fontSize,
-                width: fontSize,
+                height: defaultFontSize,
+                width: defaultFontSize,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation(foregroundColor),
                 ),
               )
-            : _buildButtonContent(fontSize, foregroundColor),
+            : _buildButtonContent(defaultFontSize, foregroundColor),
       ),
     );
 
-    // Wrap with badge if badge is provided
     final buttonWithBadge = widget.badge != null && widget.badge! > 0
         ? _buildButtonWithBadge(button)
         : button;
 
-    // Wrap with Tooltip if tooltip text is provided
     if (widget.tooltip != null && widget.tooltip!.isNotEmpty) {
       return Tooltip(message: widget.tooltip!, child: buttonWithBadge);
     }
@@ -113,50 +112,51 @@ class _CustomButtonState extends State<CustomButton> {
     return buttonWithBadge;
   }
 
-  Widget _buildButtonContent(double fontSize, Color foregroundColor) {
+  Widget _buildButtonContent(double defaultFontSize, Color foregroundColor) {
+    final effectiveTextStyle =
+        widget.textStyle ??
+        TextStyle(
+          fontSize: defaultFontSize,
+          fontWeight: FontWeight.w600,
+          color: foregroundColor,
+        );
+
+    final iconSize = widget.textStyle?.fontSize ?? defaultFontSize;
+
     if (widget.icon != null) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(widget.icon, size: fontSize),
-          widget.text != '' ? SizedBox(width: 8) : SizedBox.shrink(),
-          widget.text != ''
-              ? Text(
-                  widget.text,
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    fontWeight: FontWeight.w600,
-                  ),
-                )
-              : SizedBox.shrink(),
+          Icon(
+            widget.icon,
+            size: iconSize,
+            color: effectiveTextStyle.color ?? foregroundColor,
+          ),
+          if (widget.text.isNotEmpty) ...[
+            const SizedBox(width: 8),
+            Text(widget.text, style: effectiveTextStyle),
+          ],
         ],
       );
     }
 
-    return Text(
-      widget.text,
-      style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w600),
-    );
+    return Text(widget.text, style: effectiveTextStyle);
   }
 
   Widget _buildButtonWithBadge(Widget button) {
     final badgeCount = widget.badge!;
     final badgeText = badgeCount > 99 ? '99+' : '$badgeCount';
 
-    Alignment alignment;
     Offset offset;
 
     switch (widget.badgePosition) {
       case BadgePosition.topRight:
-        alignment = Alignment.topRight;
         offset = const Offset(8, -8);
         break;
       case BadgePosition.topLeft:
-        alignment = Alignment.topLeft;
         offset = const Offset(-8, -8);
         break;
       case BadgePosition.inline:
-        // For inline, we don't use Stack
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -232,7 +232,6 @@ class _CustomButtonState extends State<CustomButton> {
             : AppColors.lightPrimaryForeground;
         brColor = isDarkMode ? AppColors.darkPrimary : AppColors.lightPrimary;
         break;
-
       case ButtonVariant.secondary:
         bgColor = isDarkMode
             ? AppColors.darkSecondary
@@ -244,7 +243,6 @@ class _CustomButtonState extends State<CustomButton> {
             ? AppColors.darkSecondary
             : AppColors.lightSecondary;
         break;
-
       case ButtonVariant.destructive:
         bgColor = isDarkMode
             ? AppColors.lightDestructive
@@ -256,13 +254,11 @@ class _CustomButtonState extends State<CustomButton> {
             ? AppColors.lightDestructive
             : AppColors.lightDestructive;
         break;
-
       case ButtonVariant.outline:
         bgColor = Colors.transparent;
         fgColor = isDarkMode ? AppColors.darkPrimary : AppColors.lightPrimary;
         brColor = isDarkMode ? AppColors.darkPrimary : AppColors.lightPrimary;
         break;
-
       case ButtonVariant.ghost:
         bgColor = Colors.transparent;
         fgColor = isDarkMode
@@ -270,7 +266,6 @@ class _CustomButtonState extends State<CustomButton> {
             : AppColors.lightForeground;
         brColor = Colors.transparent;
         break;
-
       case ButtonVariant.border:
         bgColor = isDarkMode
             ? AppColors.darkBackground
@@ -282,22 +277,21 @@ class _CustomButtonState extends State<CustomButton> {
         break;
     }
 
-    // Override dengan custom color jika diberikan
     return (
       widget.backgroundColor ?? bgColor,
       widget.foregroundColor ?? fgColor,
-      widget.borderColor ?? brColor, // border color mengikuti foreground
+      widget.borderColor ?? brColor,
     );
   }
 
   (EdgeInsetsGeometry padding, double fontSize) _getSize() {
     switch (widget.size) {
       case ButtonSize.small:
-        return (const EdgeInsets.symmetric(horizontal: 12, vertical: 8), 12);
+        return (const EdgeInsets.symmetric(horizontal: 12, vertical: 8), 12.0);
       case ButtonSize.medium:
-        return (const EdgeInsets.symmetric(horizontal: 16, vertical: 12), 14);
+        return (const EdgeInsets.symmetric(horizontal: 16, vertical: 12), 14.0);
       case ButtonSize.large:
-        return (const EdgeInsets.symmetric(horizontal: 20, vertical: 14), 16);
+        return (const EdgeInsets.symmetric(horizontal: 20, vertical: 14), 16.0);
     }
   }
 }

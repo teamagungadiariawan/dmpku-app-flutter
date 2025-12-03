@@ -1,3 +1,4 @@
+import 'package:dmpku/pages/auth/login/request_otp_login_page.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/guest_aktivasi_perdana_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/guest_aktivasi_perdana_provider_page.dart';
@@ -40,6 +41,12 @@ class AppRouter {
     switch (settings.name) {
       case MainPage.routeName:
         return _customTransitionBottomToTop(child: const MainPage());
+
+      /// ------  AUTH LOGIN ------ ///
+      case RequestOtpLoginPage.routeName:
+        return _customTransition(child: const RequestOtpLoginPage());
+
+      /// ------  PULSA ------ ///
 
       /// ------  PULSA ------ ///
       case GuestPulsaProviderPage.routeName:
@@ -135,7 +142,9 @@ class AppRouter {
 
       /// ------ PAKET STREAMING ------ ///
       case GuestPaketStreamingProviderPage.routeName:
-        return _customTransition(child: const GuestPaketStreamingProviderPage());
+        return _customTransition(
+          child: const GuestPaketStreamingProviderPage(),
+        );
       case GuestPaketStreamingProdukPage.routeName:
         return _customTransition(child: const GuestPaketStreamingProdukPage());
 
@@ -143,7 +152,9 @@ class AppRouter {
 
       /// ------ VOUCHER DIGITAL ------ ///
       case GuestVoucherDigitalProviderPage.routeName:
-        return _customTransition(child: const GuestVoucherDigitalProviderPage());
+        return _customTransition(
+          child: const GuestVoucherDigitalProviderPage(),
+        );
       case GuestVoucherDigitalProdukPage.routeName:
         return _customTransition(child: const GuestVoucherDigitalProdukPage());
 
@@ -151,7 +162,9 @@ class AppRouter {
 
       /// ------ AKTIVASI PERDANA ------ ///
       case GuestAktivasiPerdanaProviderPage.routeName:
-        return _customTransition(child: const GuestAktivasiPerdanaProviderPage());
+        return _customTransition(
+          child: const GuestAktivasiPerdanaProviderPage(),
+        );
       case GuestAktivasiPerdanaProdukPage.routeName:
         return _customTransition(child: const GuestAktivasiPerdanaProdukPage());
 
@@ -159,9 +172,13 @@ class AppRouter {
 
       /// ------ CEK STATUS VOUCHER ------ ///
       case GuestCekStatusVoucherProviderPage.routeName:
-        return _customTransition(child: const GuestCekStatusVoucherProviderPage());
+        return _customTransition(
+          child: const GuestCekStatusVoucherProviderPage(),
+        );
       case GuestCekStatusVoucherProdukPage.routeName:
-        return _customTransition(child: const GuestCekStatusVoucherProdukPage());
+        return _customTransition(
+          child: const GuestCekStatusVoucherProdukPage(),
+        );
 
       /// ------ CEK STATUS VOUCHER ------ ///
 
@@ -172,6 +189,7 @@ class AppRouter {
         return _customTransition(child: const GuestPaketCuanSubProviderPage());
       case GuestPaketCuanProdukPage.routeName:
         return _customTransition(child: const GuestPaketCuanProdukPage());
+
       /// ------ PAKET CUAN ------ ///
 
       default:
