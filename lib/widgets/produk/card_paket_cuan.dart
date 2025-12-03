@@ -1,5 +1,6 @@
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class CardPaketCuan extends StatelessWidget {
@@ -27,7 +28,7 @@ class CardPaketCuan extends StatelessWidget {
     this.onTap,
     this.onButtonPressed,
     this.isImgLocal = false,
-    this.margin = const EdgeInsets.symmetric( vertical: 6),
+    this.margin = const EdgeInsets.symmetric(vertical: 6),
   });
 
   @override
@@ -148,19 +149,16 @@ class CardPaketCuan extends StatelessWidget {
   }
 
   Widget _buildButton(BuildContext context) {
-    return SizedBox(
-      height: 32,
-      child: ElevatedButton(
-        onPressed: onButtonPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: context.primary,
-          foregroundColor: context.primaryForeground,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          elevation: 0,
-        ),
-        child: Text(buttonText, style: context.buttonMedium),
-      ),
+    return CustomButton(
+      text: "Beli Disini",
+      height: 30,
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      variant: ButtonVariant.primary,
+      onPressed: () {
+        if (onButtonPressed != null) {
+          onButtonPressed!();
+        }
+      },
     );
   }
 }
