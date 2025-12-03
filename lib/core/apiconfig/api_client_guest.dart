@@ -9,34 +9,7 @@ import 'package:dmpku/core/helpers/location_helper.dart';
 import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:flutter/cupertino.dart';
 
-String _base() {
-  const sil = 'https://';
-  const ros = 'debug';
-  const mau = '.';
-  const sher = 'mit';
-  const fir = 'ra';
-  const rah = 'kon';
-  const bung = 'ter.';
-  const yun = 'com';
-  final bsrl = [sil, ros, mau, sher, fir, rah, bung, yun].join('');
-  return bsrl;
-}
-
-String _baseReg() {
-  const sil = 'https://';
-  const ros = 'regional';
-  const mau = '.';
-  const sher = 'mit';
-  const fir = 'ra';
-  const rah = 'kon';
-  const bung = 'ter.';
-  const yun = 'com';
-  final bsrl = [sil, ros, mau, sher, fir, rah, bung, yun].join('');
-  return bsrl;
-}
-
-final String baseUrl = _base();
-final String baseUrlCallback = _baseReg();
+import 'base_url.dart';
 
 String getPathAfterGuest(String url) {
   if (!url.contains('guest/')) return '';
