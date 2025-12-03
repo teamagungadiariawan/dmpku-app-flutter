@@ -279,6 +279,8 @@ class AktivasiPerdanaProvider extends Cubit<AktivasiPerdanaState> {
   void setTujuan(String value, {bool updateController = false}) {
     emit(state.copyWith(tujuan: value));
     if (updateController) _updateController(state.tujuanController, value);
+
+    validateTujuan();
   }
 
   void _updateController(TextEditingController? controller, String value) {
@@ -320,6 +322,7 @@ class AktivasiPerdanaProvider extends Cubit<AktivasiPerdanaState> {
   // VALIDATION
   // ============================================================
   bool validateTujuan({ProviderModel? provider}) {
+    debugPrint("Validating tujuan: ${state.tujuan.trim()}");
     final selectedProvider = provider ?? state.selectedProvider;
     final error = _validateTujuanValue(state.tujuan.trim(), selectedProvider);
 

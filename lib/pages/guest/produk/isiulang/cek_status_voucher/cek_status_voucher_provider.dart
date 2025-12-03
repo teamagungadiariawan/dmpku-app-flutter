@@ -196,6 +196,8 @@ class CekStatusVoucherProvider extends Cubit<CekStatusVoucherState> {
   void setTujuan(String value, {bool updateController = false}) {
     emit(state.copyWith(tujuan: value));
     if (updateController) _updateController(state.tujuanController, value);
+
+    validateTujuan();
   }
 
   void _updateController(TextEditingController? controller, String value) {
@@ -226,6 +228,10 @@ class CekStatusVoucherProvider extends Cubit<CekStatusVoucherState> {
         selectedProvider: DEFAULT_PROVIDER,
         selectedProduct: DEFAULT_PRODUCT,
         sortProduct: SortProductBy.hargaTerendah,
+        tujuan: '',
+        tujuanController: TextEditingController(),
+        tujuanHasError: false,
+        tujuanErrorMessage: '',
       ),
     );
   }
@@ -234,7 +240,10 @@ class CekStatusVoucherProvider extends Cubit<CekStatusVoucherState> {
   // VALIDATION
   // ============================================================
   bool validateTujuan() {
-    final error = _validateTujuanValue(state.tujuan.trim(),DEFAULT_PROVIDER);
+    final error = _validateTujuanValue(state.tujuan.trim(), DEFAULT_PROVIDER.copyWith(
+      mintujuan: state.selectedProduct.mintujuan,
+      maxtujuan: state.selectedProduct.maxtujuan,
+    ));
 
     emit(
       state.copyWith(
@@ -252,10 +261,6 @@ class CekStatusVoucherProvider extends Cubit<CekStatusVoucherState> {
   String? _validateTujuanValue(String tujuan, ProviderModel provider) {
     if (tujuan.isEmpty) {
       return 'Tujuan tidak boleh kosong';
-    }
-
-    if (!tujuan.startsWith('08')) {
-      return 'Tujuan harus diawali dengan 08';
     }
 
     if (provider.idprovider == 0) return null;
