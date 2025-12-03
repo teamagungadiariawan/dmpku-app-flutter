@@ -153,10 +153,13 @@ class _MyAppState extends State<MyApp> {
                         '=== SCALE: ${MediaQuery.textScalerOf(context).scale(0.8)}',
                       );
 
+                      // Ambil MediaQueryData yang sudah ada (termasuk viewInsets)
+                      final existingMediaQuery = MediaQuery.of(context);
+
                       return MediaQuery(
-                        data: MediaQueryData.fromView(
-                          View.of(context),
-                        ).copyWith(textScaler: const TextScaler.linear(0.8)),
+                        data: existingMediaQuery.copyWith(
+                          textScaler: const TextScaler.linear(0.8),
+                        ),
                         child: child ?? const SizedBox.shrink(),
                       );
                     },
