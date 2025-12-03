@@ -6,9 +6,7 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/token_pln/token_pln_provider.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan_tokenpln.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan_topupgame.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
@@ -126,13 +124,13 @@ class _GuestTokenPlnProdukPageState extends State<GuestTokenPlnProdukPage> {
           previous.tujuan != current.tujuan ||
           previous.tujuanHasError != current.tujuanHasError,
       builder: (context, state) {
-        return CardInputTujuanTokenPln(
+        return CardInputTujuan(
           tujuan: state.tujuan,
           label: "ID Pelanggan",
           hasError: state.tujuanHasError,
           errorMessage: state.tujuanErrorMessage,
           isEditable: true,
-          hintText: "Contoh : 1234567890123",
+          hintText: "Contoh : 123XXXXXXXXXX",
           controller: state.tujuanController,
           focusNode: state.tujuanFocusNode,
           onChanged: (value) {
