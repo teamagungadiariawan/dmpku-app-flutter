@@ -1,10 +1,12 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_subprovider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/widgets/promo_banner_paket_cuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
@@ -30,6 +32,11 @@ class GuestPaketCuanProviderPage extends StatefulWidget {
 
 class _GuestPaketCuanProviderPageState
     extends State<GuestPaketCuanProviderPage> {
+  void closePage() {
+    getPaketCuanProvider(context).resetState();
+    pop();
+  }
+
   Future<void> _onRefresh() async {
     getPaketCuanProvider(context).fetchProviders();
   }
@@ -41,13 +48,15 @@ class _GuestPaketCuanProviderPageState
       child: WillPopScope(
         onWillPop: () async {
           debugPrint("WillPopScope: onWillPop");
-
+          closePage();
           return true; // true = izinkan pop
         },
         child: Scaffold(
           appBar: CustomAppBar(
             title: "Paket Cuan Spesial",
-            onBackButtonPressed: () {},
+            onBackButtonPressed: () {
+              closePage();
+            },
           ),
           body: Padding(
             padding: paddingPage,
@@ -83,8 +92,14 @@ class _GuestPaketCuanProviderPageState
               title: provider.namaprovider,
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
-              onTap: () {},
-              onButtonPressed: () {},
+              onTap: () {
+                getPaketCuanProvider(context).setSelectedProvider(provider);
+                pushNamed(GuestPaketCuanSubProviderPage.routeName);
+              },
+              onButtonPressed: () {
+                getPaketCuanProvider(context).setSelectedProvider(provider);
+                pushNamed(GuestPaketCuanSubProviderPage.routeName);
+              },
             );
           },
           emptyTitle: 'Provider tidak ditemukan',
