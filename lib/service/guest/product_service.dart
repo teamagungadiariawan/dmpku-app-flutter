@@ -273,10 +273,14 @@ class ProdukService {
     }
   }
 
-  Future<BaseResponse<ListProductResponse>>
-  getPaketCuanGuestSubProviders() async {
+  Future<BaseResponse<ListProductResponse>> getPaketCuanGuestSubProviders({
+    required int idProvider,
+  }) async {
     try {
-      final response = await _dio.post("guest/paketcuan/subprovider", data: {});
+      final response = await _dio.post(
+        "guest/paketcuan/subprovider",
+        data: {'idprovider': idProvider},
+      );
 
       final result = BaseResponse<ListProductResponse>.fromJson(
         response.data,
@@ -295,10 +299,15 @@ class ProdukService {
     }
   }
 
-  Future<BaseResponse<ListProductCuanResponse>>
-  getPaketCuanGuestGuestProducts() async {
+  Future<BaseResponse<ListProductCuanResponse>> getPaketCuanGuestGuestProducts({
+    required String kodeproduk,
+    required String tujuan,
+  }) async {
     try {
-      final response = await _dio.post("guest/paketcuan/product", data: {});
+      final response = await _dio.post(
+        "guest/paketcuan/product",
+        data: {'kodeproduk': kodeproduk, 'tujuan': tujuan},
+      );
 
       final result = BaseResponse<ListProductCuanResponse>.fromJson(
         response.data,
