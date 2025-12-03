@@ -61,13 +61,16 @@ class TokenPlnState extends Equatable {
     String? tujuanErrorMessage,
   }) {
     return TokenPlnState(
-      apiFetchProductStatus: apiFetchProductStatus ?? this.apiFetchProductStatus,
-      apiFetchProductMessage: apiFetchProductMessage ?? this.apiFetchProductMessage,
+      apiFetchProductStatus:
+          apiFetchProductStatus ?? this.apiFetchProductStatus,
+      apiFetchProductMessage:
+          apiFetchProductMessage ?? this.apiFetchProductMessage,
       products: products ?? this.products,
       selectedProduct: selectedProduct ?? this.selectedProduct,
       sortProduct: sortProduct ?? this.sortProduct,
       searchProduct: searchProduct ?? this.searchProduct,
-      searchProductController: searchProductController ?? this.searchProductController,
+      searchProductController:
+          searchProductController ?? this.searchProductController,
       tujuan: tujuan ?? this.tujuan,
       tujuanFocusNode: tujuanFocusNode ?? this.tujuanFocusNode,
       tujuanController: tujuanController ?? this.tujuanController,
@@ -78,9 +81,18 @@ class TokenPlnState extends Equatable {
 
   @override
   List<Object?> get props => [
-    apiFetchProductStatus, apiFetchProductMessage, products,
-    selectedProduct, sortProduct, searchProduct, searchProductController,
-    tujuan, tujuanFocusNode, tujuanController, tujuanHasError, tujuanErrorMessage,
+    apiFetchProductStatus,
+    apiFetchProductMessage,
+    products,
+    selectedProduct,
+    sortProduct,
+    searchProduct,
+    searchProductController,
+    tujuan,
+    tujuanFocusNode,
+    tujuanController,
+    tujuanHasError,
+    tujuanErrorMessage,
   ];
 }
 
@@ -90,11 +102,14 @@ class TokenPlnState extends Equatable {
 class TokenPlnProvider extends Cubit<TokenPlnState> {
   final ProdukService _produkService = ProdukService();
 
-  TokenPlnProvider() : super(TokenPlnState(
-    tujuanFocusNode: FocusNode(),
-    tujuanController: TextEditingController(),
-    searchProductController: TextEditingController(),
-  ));
+  TokenPlnProvider()
+    : super(
+        TokenPlnState(
+          tujuanFocusNode: FocusNode(),
+          tujuanController: TextEditingController(),
+          searchProductController: TextEditingController(),
+        ),
+      );
 
   @override
   Future<void> close() {
@@ -110,33 +125,41 @@ class TokenPlnProvider extends Cubit<TokenPlnState> {
   Future<void> fetchProducts() async {
     if (state.apiFetchProductStatus.isLoading) return;
 
-    emit(state.copyWith(
-      apiFetchProductStatus: ApiStatus.loading,
-      apiFetchProductMessage: '',
-    ));
+    emit(
+      state.copyWith(
+        apiFetchProductStatus: ApiStatus.loading,
+        apiFetchProductMessage: '',
+      ),
+    );
 
     try {
       final result = await _produkService.getTokenPlnGuestProducts();
       final data = result.data;
 
       if (data != null) {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.success,
-          products: data.productList,
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.success,
+            products: data.productList,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.failure,
-          apiFetchProductMessage: 'Data produk token pln kosong',
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.failure,
+            apiFetchProductMessage: 'Data produk token pln kosong',
+          ),
+        );
       }
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION FETCH PRODUCTS: ${e.message}");
       showWarningMessage(e.message);
-      emit(state.copyWith(
-        apiFetchProductStatus: ApiStatus.failure,
-        apiFetchProductMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          apiFetchProductStatus: ApiStatus.failure,
+          apiFetchProductMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -153,7 +176,8 @@ class TokenPlnProvider extends Cubit<TokenPlnState> {
 
   void setSearchProduct(String search, {bool updateController = false}) {
     emit(state.copyWith(searchProduct: search));
-    if (updateController) _updateController(state.searchProductController, search);
+    if (updateController)
+      _updateController(state.searchProductController, search);
   }
 
   void setTujuan(String value, {bool updateController = false}) {
@@ -172,11 +196,13 @@ class TokenPlnProvider extends Cubit<TokenPlnState> {
   // RESET METHODS
   // ============================================================
   void resetState() {
-    emit(TokenPlnState(
-      tujuanFocusNode: FocusNode(),
-      tujuanController: TextEditingController(),
-      searchProductController: TextEditingController(),
-    ));
+    emit(
+      TokenPlnState(
+        tujuanFocusNode: FocusNode(),
+        tujuanController: TextEditingController(),
+        searchProductController: TextEditingController(),
+      ),
+    );
   }
 
   // ============================================================
@@ -185,10 +211,12 @@ class TokenPlnProvider extends Cubit<TokenPlnState> {
   bool validateTujuan() {
     final error = _validateTujuanValue(state.tujuan.trim());
 
-    emit(state.copyWith(
-      tujuanHasError: error != null,
-      tujuanErrorMessage: error ?? '',
-    ));
+    emit(
+      state.copyWith(
+        tujuanHasError: error != null,
+        tujuanErrorMessage: error ?? '',
+      ),
+    );
 
     return error == null;
   }
@@ -201,14 +229,24 @@ class TokenPlnProvider extends Cubit<TokenPlnState> {
       return 'Tujuan tidak boleh kosong';
     }
 
-    // Validasi panjang
-    if (tujuan.length < 10 || tujuan.length > 20) {
-      return 'Panjang tujuan harus antara 10 hingga 20 karakter';
-    }
-
     // Validasi tipe input
     if (!TipeInput.numericOnly.isValid(tujuan)) {
       return TipeInput.numericOnly.errorMessage;
+    }
+
+    if (state.products.isNotEmpty) {
+      var firstProduct = state.products.first;
+
+      var minLength = firstProduct.mintujuan;
+      var maxLength = firstProduct.maxtujuan;
+      if (tujuan.length < minLength || tujuan.length > maxLength) {
+        return 'Panjang tujuan harus antara $minLength hingga $maxLength karakter';
+      }
+
+      // Tipe input
+      if (!firstProduct.inputTipe.isValid(tujuan)) {
+        return firstProduct.inputTipe.errorMessage;
+      }
     }
 
     return null;

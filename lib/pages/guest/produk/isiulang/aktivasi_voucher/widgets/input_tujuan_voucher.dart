@@ -19,6 +19,7 @@ class InputTujuanVoucher extends StatelessWidget {
   final VoidCallback onClear;
   final TipeInput tipeInput;
   final String hintText;
+  final IconData icon = MdiIcons.ticket;
 
   // Parameter baru untuk tombol hapus
   final bool showDeleteButton;

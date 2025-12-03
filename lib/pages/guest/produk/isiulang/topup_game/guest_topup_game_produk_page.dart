@@ -4,7 +4,7 @@ import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan_topupgame.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
@@ -128,7 +128,7 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
           previous.isCekAkun != current.isCekAkun ||
           previous.selectedProvider != current.selectedProvider,
       builder: (context, state) {
-        return CardInputTujuanTopupGame(
+        return CardInputTujuan(
           tujuan: state.tujuan,
           label: state.titleForm,
           hasError: state.tujuanHasError,

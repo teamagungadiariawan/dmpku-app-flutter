@@ -2,8 +2,10 @@ import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/widgets/produk/button_favorit.dart';
 import 'package:dmpku/widgets/shake_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:gap/gap.dart';
 
@@ -20,6 +22,9 @@ class CardInputTujuan extends StatelessWidget {
   final VoidCallback? onClear;
   final Widget? suffixWidget;
   final GlobalKey<ShakeErrorWidgetState>? shakeKey;
+  final bool showFavoritButton;
+  final bool isGuest;
+  final ValueChanged<String>? onFavoritResult;
   final IconData? icon;
   final TipeInput tipeInput;
 
@@ -37,6 +42,9 @@ class CardInputTujuan extends StatelessWidget {
     this.onClear,
     this.suffixWidget,
     this.shakeKey,
+    this.showFavoritButton = true,
+    this.isGuest = false,
+    this.onFavoritResult,
     this.icon,
     this.tipeInput = TipeInput.numericOnly,
   });
@@ -62,6 +70,13 @@ class CardInputTujuan extends StatelessWidget {
                 style: context.bodySmall.withColor(context.destructive),
               ),
             ],
+            if (showFavoritButton) ...[
+              const Gap(8),
+              ButtonFavorit(
+                isGuest: isGuest,
+                onResult: onFavoritResult ?? (_) {},
+              ),
+            ],
             const Gap(5),
           ],
         ),
@@ -83,11 +98,8 @@ class CardInputTujuan extends StatelessWidget {
       padding: const EdgeInsets.all(6),
       child: Row(
         children: [
-          Icon(
-            icon ?? MdiIcons.cardAccountDetails,
-            size: 18,
-            color: context.foreground,
-          ),
+          Icon(icon ?? MdiIcons.clipboardAccount,
+              size: 18, color: context.foreground),
           const Gap(6),
           Expanded(
             child: isEditable
@@ -116,6 +128,7 @@ class CardInputTujuan extends StatelessWidget {
       keyboardType: tipeInput.keyboardType,
       inputFormatters: tipeInput.inputFormatters,
       onChanged: onChanged,
+      autofocus: true,
       decoration: InputDecoration(
         isDense: true,
         hintText: hintText,

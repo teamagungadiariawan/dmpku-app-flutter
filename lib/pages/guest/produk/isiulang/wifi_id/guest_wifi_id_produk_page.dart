@@ -6,7 +6,7 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
-import 'package:dmpku/widgets/card_input_tujuan.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
@@ -126,11 +126,11 @@ class _GuestWifiIdProdukPageState extends State<GuestWifiIdProdukPage> {
       builder: (context, state) {
         return CardInputTujuan(
           tujuan: state.tujuan,
-          label: "ID Pelanggan",
+          label: "No. Tujuan",
           hasError: state.tujuanHasError,
           errorMessage: state.tujuanErrorMessage,
           isEditable: true,
-          hintText: "Contoh : 1234567890123",
+          hintText: "Contoh : 081XXXXXXXXX",
           controller: state.tujuanController,
           focusNode: state.tujuanFocusNode,
           onChanged: (value) {

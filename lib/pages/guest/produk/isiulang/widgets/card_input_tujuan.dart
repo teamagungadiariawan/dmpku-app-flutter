@@ -1,15 +1,16 @@
+import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/widgets/custom_button.dart';
+import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_favorit.dart';
 import 'package:dmpku/widgets/shake_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:gap/gap.dart';
 
-class CardInputTujuanCekVoucher extends StatelessWidget {
+class CardInputTujuan extends StatelessWidget {
   final String label;
   final String labelButton;
   final String tujuan;
@@ -26,10 +27,14 @@ class CardInputTujuanCekVoucher extends StatelessWidget {
   final GlobalKey<ShakeErrorWidgetState>? shakeKey;
   final bool showFavoritButton;
   final bool isGuest;
+  final bool isCekAkun;
+  final bool addButtonLanjutkan;
   final bool isButtonDisabled;
   final ValueChanged<String>? onFavoritResult;
+  final IconData? icon;
+  final TipeInput tipeInput;
 
-  const CardInputTujuanCekVoucher({
+  const CardInputTujuan({
     super.key,
     this.label = 'No. Tujuan',
     this.labelButton = 'Lanjutkan',
@@ -47,8 +52,12 @@ class CardInputTujuanCekVoucher extends StatelessWidget {
     this.shakeKey,
     this.showFavoritButton = true,
     this.isGuest = false,
+    this.isCekAkun = false,
+    this.addButtonLanjutkan = false,
     this.isButtonDisabled = false,
     this.onFavoritResult,
+    this.icon,
+    this.tipeInput = TipeInput.numericOnly,
   });
 
   @override
@@ -72,6 +81,22 @@ class CardInputTujuanCekVoucher extends StatelessWidget {
                 style: context.bodySmall.withColor(context.destructive),
               ),
             ],
+
+            if (isCekAkun) ...[
+              const Gap(8),
+              CustomButton(
+                text: "Cek Akun",
+                onPressed: () {
+                  if (isGuest) {
+                    BelumLoginDialog.show(context);
+                  }
+                },
+                height: 25,
+                width: double.infinity,
+                padding: EdgeInsets.zero,
+              ),
+            ],
+
             if (showFavoritButton) ...[
               const Gap(8),
               ButtonFavorit(
@@ -80,15 +105,16 @@ class CardInputTujuanCekVoucher extends StatelessWidget {
               ),
             ],
             const Gap(5),
-            CustomButton(
-              text: labelButton,
-              width: double.infinity,
-              onPressed: onLanjutkan,
-              size: ButtonSize.large,
-              state: isButtonDisabled
-                  ? ButtonState.disabled
-                  : ButtonState.enabled,
-            ),
+            if (addButtonLanjutkan)
+              CustomButton(
+                text: labelButton,
+                width: double.infinity,
+                onPressed: onLanjutkan,
+                size: ButtonSize.large,
+                state: isButtonDisabled
+                    ? ButtonState.disabled
+                    : ButtonState.enabled,
+              ),
           ],
         ),
       ),
@@ -109,7 +135,11 @@ class CardInputTujuanCekVoucher extends StatelessWidget {
       padding: const EdgeInsets.all(6),
       child: Row(
         children: [
-          Icon(MdiIcons.clipboardAccount, size: 18, color: context.foreground),
+          Icon(
+            icon ?? MdiIcons.cardAccountDetails,
+            size: 18,
+            color: context.foreground,
+          ),
           const Gap(6),
           Expanded(
             child: isEditable
@@ -135,8 +165,8 @@ class CardInputTujuanCekVoucher extends StatelessWidget {
     return TextField(
       focusNode: focusNode,
       controller: controller,
-      keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      keyboardType: tipeInput.keyboardType,
+      inputFormatters: tipeInput.inputFormatters,
       onChanged: onChanged,
       autofocus: true,
       decoration: InputDecoration(
