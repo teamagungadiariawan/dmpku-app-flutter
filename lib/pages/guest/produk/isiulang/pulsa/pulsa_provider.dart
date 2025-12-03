@@ -221,6 +221,8 @@ class PulsaProvider extends Cubit<PulsaState> {
   void setTujuan(String value, {bool updateController = false}) {
     emit(state.copyWith(tujuan: value));
     if (updateController) _updateController(state.tujuanController, value);
+
+    validateTujuan();
   }
 
   void _updateController(TextEditingController? controller, String value) {
