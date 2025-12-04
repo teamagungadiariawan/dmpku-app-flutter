@@ -2,6 +2,7 @@ import 'package:dmpku/core/constants/app_info.dart';
 import 'package:dmpku/core/router/app_router.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/pages/auth/loading_splash_page.dart';
+import 'package:dmpku/pages/auth/login/login_provider.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
@@ -55,6 +56,7 @@ void main() {
           BlocProvider(create: (_) => AktivasiVoucherProvider()),
           BlocProvider(create: (_) => CekStatusVoucherProvider()),
           BlocProvider(create: (_) => InfoKartuProvider()),
+          BlocProvider(create: (_) => LoginProvider()),
           BlocProvider(create: (_) => MasaAktifProvider()),
           BlocProvider(create: (_) => PaketCuanProvider()),
           BlocProvider(create: (_) => PaketDataProvider()),
