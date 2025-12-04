@@ -1,4 +1,5 @@
 import 'package:dmpku/pages/auth/login/request_otp_login_page.dart';
+import 'package:dmpku/pages/auth/login/verify_otp_login_page.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/guest_aktivasi_perdana_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/guest_aktivasi_perdana_provider_page.dart';
@@ -45,6 +46,8 @@ class AppRouter {
       /// ------  AUTH LOGIN ------ ///
       case RequestOtpLoginPage.routeName:
         return _customTransition(child: const RequestOtpLoginPage());
+      case VerifyOtpLoginPage.routeName:
+        return _customTransition(child: const VerifyOtpLoginPage());
 
       /// ------  PULSA ------ ///
 

@@ -55,6 +55,10 @@ class $AssetsImgGen {
   AssetGenImage get indonesianFlag =>
       const AssetGenImage('assets/img/indonesian-flag.png');
 
+  /// File path: assets/img/lock-verify-otp.png
+  AssetGenImage get lockVerifyOtp =>
+      const AssetGenImage('assets/img/lock-verify-otp.png');
+
   /// File path: assets/img/logo-text-white.png
   AssetGenImage get logoTextWhite =>
       const AssetGenImage('assets/img/logo-text-white.png');
@@ -79,6 +83,7 @@ class $AssetsImgGen {
     bgSplash,
     imgLogin,
     indonesianFlag,
+    lockVerifyOtp,
     logoTextWhite,
     logoText,
   ];
