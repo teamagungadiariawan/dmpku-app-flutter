@@ -1,5 +1,12 @@
+import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/helpers/date_helper.dart';
+import 'package:dmpku/core/helpers/encrypt_helper.dart';
+import 'package:dmpku/pages/auth/login/login_provider.dart';
+import 'package:dmpku/widgets/produk/custom_popup_input_tujuan.dart';
+import 'package:dmpku/widgets/shake_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -21,45 +28,55 @@ class RequestOtpLoginPage extends StatefulWidget {
 }
 
 class _RequestOtpLoginPageState extends State<RequestOtpLoginPage> {
-  final _phoneController = TextEditingController();
-  final _focusNode = FocusNode();
   final _scrollController = ScrollController();
+  final _phoneInputKey = GlobalKey();
+  final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(_scrollToBottomOnFocus);
+    getLoginProvider(
+      context,
+    ).state.phoneFocusNode?.addListener(_scrollToPhoneInput);
   }
 
   @override
   void dispose() {
-    _phoneController.dispose();
-    _focusNode.removeListener(_scrollToBottomOnFocus);
-    _focusNode.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
-  void _scrollToBottomOnFocus() {
-    if (!_focusNode.hasFocus) return;
+  void _scrollToPhoneInput() {
+    if (!(getLoginProvider(context).state.phoneFocusNode?.hasFocus ?? false))
+      return;
 
     Future.delayed(const Duration(milliseconds: 300), () {
       if (!mounted) return;
+
+      final renderBox =
+          _phoneInputKey.currentContext?.findRenderObject() as RenderBox?;
+      if (renderBox == null) return;
+
+      final position = renderBox.localToGlobal(Offset.zero);
+      final scrollOffset = _scrollController.offset + position.dy - 150;
+
       _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
+        scrollOffset.clamp(0.0, _scrollController.position.maxScrollExtent),
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
       );
     });
   }
 
-  void _clearPhone() {
-    _phoneController.clear();
-    setState(() {});
-  }
-
   void _onLogin() {
-    // TODO: Implement login logic
+    var mdtest = EncryptHelper.md5Hash(
+      input:
+          "-7.9883485,112.5984481dmpku:95cdc59d49a9a5ab08815546178xs08815546178xudmpku:95cdc59d49a9a5abagung",
+    );
+    debugPrint("md5 test: $mdtest");
+
+    getLoginProvider(context).state.phoneFocusNode?.unfocus();
+    getLoginProvider(context).requestOtp();
   }
 
   void _onRegister() {
@@ -137,15 +154,20 @@ class _RequestOtpLoginPageState extends State<RequestOtpLoginPage> {
   }
 
   Widget _buildLoginButton(BuildContext context) {
-    return CustomButton(
-      text: 'Masuk',
-      height: 35,
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      textStyle: context.bodyLarge
-          .withColor(Colors.white)
-          .withWeight(FontWeight.w600),
-      onPressed: _onLogin,
-      width: double.infinity,
+    return BlocBuilder<LoginProvider, LoginState>(
+      builder: (context, state) {
+        return CustomButton(
+          isLoading: state.apiRequestOtpStatus.isLoading,
+          text: 'Masuk',
+          height: 35,
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          textStyle: context.bodyLarge
+              .withColor(Colors.white)
+              .withWeight(FontWeight.w600),
+          onPressed: _onLogin,
+          width: double.infinity,
+        );
+      },
     );
   }
 
@@ -229,44 +251,90 @@ class _RequestOtpLoginPageState extends State<RequestOtpLoginPage> {
   }
 
   Widget _buildPhoneInput(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: context.muted,
-        border: Border.all(color: context.border),
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: Row(
-        children: [
-          Assets.img.indonesianFlag.image(width: 25),
-          const Gap(8),
-          Text(
-            '+62',
-            style: context.bodyMedium
-                .withWeight(FontWeight.w500)
-                .withColor(context.foreground),
-          ),
-          const Gap(8),
-          Container(
-            width: 1,
-            height: 24,
-            decoration: BoxDecoration(
-              color: context.border,
-              borderRadius: const BorderRadius.all(Radius.circular(0.5)),
-            ),
-          ),
-          const Gap(8),
-          Expanded(child: _buildPhoneTextField(context)),
-        ],
-      ),
+    return BlocBuilder<LoginProvider, LoginState>(
+      builder: (context, state) {
+        return Column(
+          key: _phoneInputKey,
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: context.muted,
+                border: Border.all(
+                  color: state.phoneHasError
+                      ? context.destructive
+                      : context.border,
+                  width: 1,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              child: Row(
+                children: [
+                  Assets.img.indonesianFlag.image(width: 25),
+                  const Gap(8),
+                  Text(
+                    '+62',
+                    style: context.bodyMedium
+                        .withWeight(FontWeight.w500)
+                        .withColor(context.foreground),
+                  ),
+                  const Gap(8),
+                  Container(
+                    width: 1,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: context.border,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(0.5),
+                      ),
+                    ),
+                  ),
+                  const Gap(8),
+                  Expanded(child: _buildPhoneTextField(context, state)),
+                ],
+              ),
+            ).withErrorShake(hasError: state.phoneHasError, key: shakeKey),
+
+            if (state.phoneHasError)
+              Padding(
+                padding: const EdgeInsets.only(top: 6, left: 4),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    state.phoneErrorMessage,
+                    style: context.bodySmall
+                        .withColor(context.destructive)
+                        .withWeight(FontWeight.w500),
+                  ),
+                ),
+              ),
+
+            if (!state.otpResendDuration.isNegative)
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Kirim ulang kode OTP dalam '
+                    '${DateHelper.formatCountdownText(state.otpResendDuration)}',
+                    textAlign: TextAlign.center,
+                    style: context.bodySmall
+                        .withColor(context.destructive)
+                        .withWeight(FontWeight.w500),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 
-  Widget _buildPhoneTextField(BuildContext context) {
+  Widget _buildPhoneTextField(BuildContext context, LoginState state) {
     return TextField(
-      controller: _phoneController,
-      focusNode: _focusNode,
+      controller: state.phoneController,
+      focusNode: state.phoneFocusNode,
       keyboardType: TextInputType.phone,
       autofocus: true,
       style: context.bodyMedium.withColor(context.foreground),
@@ -274,23 +342,43 @@ class _RequestOtpLoginPageState extends State<RequestOtpLoginPage> {
         FilteringTextInputFormatter.digitsOnly,
         LengthLimitingTextInputFormatter(13),
       ],
-      onChanged: (_) => setState(() {}),
+      onChanged: (val) {
+        getLoginProvider(context).setPhone(val);
+      },
       decoration: InputDecoration(
         isDense: true,
         border: InputBorder.none,
         hintText: 'Contoh: 812XXXXXXXX',
         hintStyle: context.bodyMedium.withColor(context.mutedForeground),
         contentPadding: EdgeInsets.zero,
-        suffixIcon: _buildClearButton(context),
+        suffixIcon: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (_buildClearButton(context, state) != null)
+              _buildClearButton(context, state)!,
+            CustomPopupInputTujuan(
+              isTempel: true,
+              isContact: true,
+              isVoice: true,
+              onResult: (val) {
+                getLoginProvider(context).setPhone(val, updateController: true);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget? _buildClearButton(BuildContext context) {
-    if (_phoneController.text.isEmpty) return null;
+  Widget? _buildClearButton(BuildContext context, LoginState state) {
+    if (state.phone.isEmpty) return null;
 
     return InkWell(
-      onTap: _clearPhone,
+      onTap: () {
+        getLoginProvider(context).setPhone('', updateController: true);
+      },
       child: Icon(MdiIcons.close, size: 18, color: context.foreground),
     );
   }
