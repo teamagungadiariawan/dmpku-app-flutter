@@ -1,4 +1,5 @@
 import 'package:dmpku/core/constants/app_info.dart';
+import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:dmpku/core/router/app_router.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/pages/auth/loading_splash_page.dart';
@@ -20,6 +21,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/voucher_data/voucher_data_prov
 import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
+import 'package:dmpku/pages/member/member_main_page.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
 import 'package:dmpku/widgets/dialog/offline_dialog.dart';
@@ -47,8 +49,15 @@ void main() {
   final textScaleProvider = TextScaleProvider();
   final textScaleFuture = textScaleProvider.init();
   final informasiFuture = InformasiService().getInformasi();
+  final tokenFuture = SecureStorageHelper.instance.getToken();
 
-  Future.wait([servicesFuture, textScaleFuture, informasiFuture]).then((_) {
+  Future.wait([
+    servicesFuture,
+    textScaleFuture,
+    informasiFuture,
+    tokenFuture,
+  ]).then((results) {
+    final token = (results[3]  as String?) ?? '';
     runApp(
       MultiBlocProvider(
         providers: [
@@ -70,7 +79,7 @@ void main() {
           BlocProvider(create: (_) => VoucherDigitalProvider()),
           BlocProvider(create: (_) => WifiIdProvider()),
         ],
-        child: MyApp(textScaleProvider: textScaleProvider),
+        child: MyApp(textScaleProvider: textScaleProvider, token : token),
       ),
     );
   });
@@ -78,8 +87,9 @@ void main() {
 
 class MyApp extends StatefulWidget {
   final TextScaleProvider textScaleProvider;
+  final String token;
 
-  const MyApp({super.key, required this.textScaleProvider});
+  const MyApp({super.key, required this.textScaleProvider, required this.token});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -148,7 +158,9 @@ class _MyAppState extends State<MyApp> {
                     darkTheme: AppTheme.darkTheme,
                     themeMode: themeProvider.themeMode,
                     navigatorKey: navigatorKey,
-                    initialRoute: MainPage.routeName,
+                    initialRoute: widget.token.isNotEmpty
+                        ? MemberMainPage.routeName
+                        : MainPage.routeName,
                     supportedLocales: const [Locale('en'), Locale('id')],
                     builder: (context, child) {
                       debugPrint(
