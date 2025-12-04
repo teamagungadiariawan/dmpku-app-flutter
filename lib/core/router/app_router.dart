@@ -34,6 +34,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_p
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_subprovider_page.dart';
+import 'package:dmpku/pages/member/member_main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -194,6 +195,10 @@ class AppRouter {
         return _customTransition(child: const GuestPaketCuanProdukPage());
 
       /// ------ PAKET CUAN ------ ///
+
+      /// ------ MEMBER ------ ///
+      case MemberMainPage.routeName:
+        return _customTransitionBottomToTop(child: const MemberMainPage());
 
       default:
         return null;
