@@ -63,9 +63,13 @@ class _AppInterceptor extends QueuedInterceptor {
 
       var fmcUser = (await SecureStorageHelper.instance.getToken()) ?? '';
       var keteragan = await getKeterangan();
-      var location = await getLocation();
-      var part = getPathAfterMember(options.path);
 
+      var location = await getLocation();
+      if (dataMap.containsKey("location")) {
+        location = dataMap["location"];
+      }
+
+      var part = getPathAfterMember(options.path);
 
       debugPrint("type of dataMap: ${dataMap.runtimeType}");
 
@@ -82,6 +86,11 @@ class _AppInterceptor extends QueuedInterceptor {
       headers["ariawan"] = encData.a;
       headers["version"] = await getVersion();
       headers["time"] = DateHelper.currentIso8601StringZ();
+
+      var token = await SecureStorageHelper.instance.getToken();
+      if (token != null && token.isNotEmpty) {
+        headers["Authorization"] = "Bearer $token";
+      }
 
       var hslEnc = EncryptHelper.encrypt(dataMap);
 
