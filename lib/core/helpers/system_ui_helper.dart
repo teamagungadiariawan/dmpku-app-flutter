@@ -14,7 +14,7 @@ SystemUiOverlayStyle getTransparentSystemUiOverlaDarkStyle() {
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
     systemNavigationBarColor: Colors.transparent,
-    systemNavigationBarIconBrightness: Brightness.light,
+    systemNavigationBarIconBrightness: Brightness.dark,
   );
 }
 
