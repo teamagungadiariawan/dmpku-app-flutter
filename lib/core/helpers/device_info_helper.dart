@@ -30,7 +30,7 @@ Future<String> getAndroidId() async {
 
   try {
     final String androidId = await _channel.invokeMethod('getAndroidId');
-    return androidId;
+    return '$appshortname:${androidId ?? '-'}';
   } on PlatformException catch (e) {
     print('Failed to get Android ID: ${e.message}');
     return '';
