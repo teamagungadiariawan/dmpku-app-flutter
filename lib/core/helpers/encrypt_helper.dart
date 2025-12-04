@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encryptPlug;
+import 'package:flutter/cupertino.dart';
 import 'package:tuple/tuple.dart';
 
 class Encrypted {
@@ -204,6 +205,7 @@ class EncryptHelper {
   }) {
     final signs = longitude + uuid + nohpmember;
     final str = '${signs}xs${nohpmember}xu${uuid}agung';
+    debugPrint('otp login sign string: $str');
     return md5Hash(input: str);
   }
 
