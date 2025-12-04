@@ -6,6 +6,10 @@ class StorageKeys {
       "bDCMnwWOGQXk8s/IC4IiXuPWDfvwy/Wx4Y3jlAxSRCC8dsWgLdJjc1Ur6qerxA/8";
   static const location =
       "sLm05Q89J2YRKyJNGfzqIxvH/eFHuibnPNAphmos0l+8dsWgLdJjc1Ur6qerxA/8";
+  static const signmember =
+      "pYM+9wIfFMNpLFxOO1oyxdl+AD6d8/4O3HhEPRyyFSboP2F2HJu4DKWZu/P+EkaF";
+  static const refreshToken =
+      "1pGJt7if468W8mMir/Wj9/feMG0SF5U4acjtv68c3ywtMnjuAvKzXtaJLNfI3PzP";
   // Tambahkan keys lain di sini
 }
 

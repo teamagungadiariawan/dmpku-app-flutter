@@ -4,6 +4,10 @@ class BaseResponse<T> {
   final T? data;
   final String durasi;
   final String hashloginotp;
+  final String signmember;
+  final String token;
+  final String refresh;
+  final bool userstatus;
 
   const BaseResponse({
     required this.status,
@@ -11,6 +15,10 @@ class BaseResponse<T> {
     this.data,
     this.durasi = "",
     this.hashloginotp = "",
+    this.signmember = "",
+    this.token = "",
+    this.refresh = "",
+    this.userstatus = false,
   });
 
   factory BaseResponse.fromJson(
@@ -23,6 +31,10 @@ class BaseResponse<T> {
       data: fromJsonT != null ? fromJsonT(json["data"]) : json["data"],
       durasi: json["durasi"] ?? "",
       hashloginotp: json["hashloginotp"] ?? "",
+      signmember: json["signmember"] ?? "",
+      token: json["token"] ?? "",
+      refresh: json["refresh"] ?? "",
+      userstatus: json["userstatus"] ?? false,
     );
   }
 
@@ -33,6 +45,10 @@ class BaseResponse<T> {
       "data": data,
       "durasi": durasi,
       "hashloginotp": hashloginotp,
+      "signmember": signmember,
+      "token": token,
+      "refresh": refresh,
+      "userstatus": userstatus,
     };
   }
 }
