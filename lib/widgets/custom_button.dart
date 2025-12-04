@@ -18,6 +18,7 @@ class CustomButton extends StatefulWidget {
   final int? badge;
   final BadgePosition badgePosition;
   final TextStyle? textStyle;
+  final IconPosition iconPosition;
 
   final Color? foregroundColor;
   final Color? backgroundColor;
@@ -40,6 +41,7 @@ class CustomButton extends StatefulWidget {
     this.badge,
     this.badgePosition = BadgePosition.topRight,
     this.textStyle,
+    this.iconPosition = IconPosition.start,
     this.foregroundColor,
     this.backgroundColor,
     this.borderColor,
@@ -90,13 +92,13 @@ class _CustomButtonState extends State<CustomButton> {
         ),
         child: widget.isLoading
             ? SizedBox(
-                height: defaultFontSize,
-                width: defaultFontSize,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation(foregroundColor),
-                ),
-              )
+          height: defaultFontSize,
+          width: defaultFontSize,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation(foregroundColor),
+          ),
+        )
             : _buildButtonContent(defaultFontSize, foregroundColor),
       ),
     );
@@ -115,27 +117,39 @@ class _CustomButtonState extends State<CustomButton> {
   Widget _buildButtonContent(double defaultFontSize, Color foregroundColor) {
     final effectiveTextStyle =
         widget.textStyle ??
-        TextStyle(
-          fontSize: defaultFontSize,
-          fontWeight: FontWeight.w600,
-          color: foregroundColor,
-        );
+            TextStyle(
+              fontSize: defaultFontSize,
+              fontWeight: FontWeight.w600,
+              color: foregroundColor,
+            );
 
     final iconSize = widget.textStyle?.fontSize ?? defaultFontSize;
 
     if (widget.icon != null) {
+      final iconWidget = Icon(
+        widget.icon,
+        size: iconSize,
+        color: effectiveTextStyle.color ?? foregroundColor,
+      );
+
+      final textWidget = Text(widget.text, style: effectiveTextStyle);
+
+      if (widget.text.isEmpty) {
+        return iconWidget;
+      }
+
       return Row(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            widget.icon,
-            size: iconSize,
-            color: effectiveTextStyle.color ?? foregroundColor,
-          ),
-          if (widget.text.isNotEmpty) ...[
-            const SizedBox(width: 8),
-            Text(widget.text, style: effectiveTextStyle),
-          ],
+        children: widget.iconPosition == IconPosition.start
+            ? [
+          iconWidget,
+          const SizedBox(width: 8),
+          textWidget,
+        ]
+            : [
+          textWidget,
+          const SizedBox(width: 8),
+          iconWidget,
         ],
       );
     }
@@ -217,9 +231,9 @@ class _CustomButtonState extends State<CustomButton> {
   }
 
   (Color backgroundColor, Color foregroundColor, Color borderColor) _getColors(
-    BuildContext context,
-    bool isDarkMode,
-  ) {
+      BuildContext context,
+      bool isDarkMode,
+      ) {
     Color bgColor;
     Color fgColor;
     Color brColor;
@@ -278,9 +292,9 @@ class _CustomButtonState extends State<CustomButton> {
     }
 
     return (
-      widget.backgroundColor ?? bgColor,
-      widget.foregroundColor ?? fgColor,
-      widget.borderColor ?? brColor,
+    widget.backgroundColor ?? bgColor,
+    widget.foregroundColor ?? fgColor,
+    widget.borderColor ?? brColor,
     );
   }
 
@@ -303,3 +317,5 @@ enum ButtonVariant { primary, secondary, destructive, outline, ghost, border }
 enum ButtonState { enabled, disabled, loading }
 
 enum BadgePosition { topRight, topLeft, inline }
+
+enum IconPosition { start, end }
