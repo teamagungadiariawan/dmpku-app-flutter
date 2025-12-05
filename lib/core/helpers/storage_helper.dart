@@ -4,13 +4,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class StorageKeys {
   static const token =
       "bDCMnwWOGQXk8s/IC4IiXuPWDfvwy/Wx4Y3jlAxSRCC8dsWgLdJjc1Ur6qerxA/8";
+  static const tokenFcm =
+      "bDCMnwWOGQXk8s/IC4IiXuPWDfvwy/Wx4Y3jlAxSRCC8dsWgLdJjc1Ur6qdcmerxA/8";
   static const location =
       "sLm05Q89J2YRKyJNGfzqIxvH/eFHuibnPNAphmos0l+8dsWgLdJjc1Ur6qerxA/8";
   static const signmember =
       "pYM+9wIfFMNpLFxOO1oyxdl+AD6d8/4O3HhEPRyyFSboP2F2HJu4DKWZu/P+EkaF";
   static const refreshToken =
       "1pGJt7if468W8mMir/Wj9/feMG0SF5U4acjtv68c3ywtMnjuAvKzXtaJLNfI3PzP";
-  // Tambahkan keys lain di sini
+// Tambahkan keys lain di sini
 }
 
 class SecureStorageHelper {
@@ -59,3 +61,13 @@ class SecureStorageHelper {
 
   Future<void> clearToken() => delete(StorageKeys.token);
 }
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+//     .eyJrb2RlbWVtYmVyIjoiMTcxNzM0NzAzMSIsIm5hbWFtZW1iZXIiOiJPd25lciIsImVtYWlsIjoib3duZXJAZ21haWwuY29tIiwidGdsZGFmdGFyIjoiMjAyMy0xMC0zMFQwMDowMDowMCswNzowMCIsImlka2Vsb21wb2toYXJnYSI6MSwicGVyYW5na2F0IjoiOWQyOWI2NmQzZDUxOTYzMWNjZmYzMDNhY2ViNTVjOWUiLCJub2hwIjoiMDgyMjMzMjIyMTExIiwidXV4dCI6ImE5NjM1YTgxMjA4ZTdlMDBiMmQ1N2Q3Yzk4MjczYWRlIiwiZXhwIjoxNzY1MDAyMDc5fQ
+//     .kq5pSpx1j1TBFkPUw0H7ryb6TmyQ4yxIrdgpWsm9GvA
+//
+//
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+//     .eyJrb2RlbWVtYmVyIjoiMTcxNzM0NzAzMSIsIm5hbWFtZW1iZXIiOiJPd25lciIsImVtYWlsIjoib3duZXJAZ21haWwuY29tIiwidGdsZGFmdGFyIjoiMjAyMy0xMC0zMFQwMDowMDowMCswNzowMCIsImlka2Vsb21wb2toYXJnYSI6MSwicGVyYW5na2F0IjoiOWQyOWI2NmQzZDUxOTYzMWNjZmYzMDNhY2ViNTVjOWUiLCJub2hwIjoiMDgyMjMzMjIyMTExIiwidXV4dCI6ImE5NjM1YTgxMjA4ZTdlMDBiMmQ1N2Q3Yzk4MjczYWRlIiwiZXhwIjoxNzY3OTM5Njc5fQ
+//     .W95HbdS9Pc3FVBqvi3dGCtHXq_Akd0zQJe9j-IOYIww
+//
+// 70b6190757679bd57f061c1c6d446eca
