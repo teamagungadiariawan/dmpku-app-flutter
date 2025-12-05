@@ -96,9 +96,11 @@ flutter:
   assets:
     - assets/animations/
     - assets/img/
+    - assets/img/beranda/
     - assets/img/bottom_nav/
     - assets/img/menu_isi_ulang/
     - assets/img/menu_penjualan/
+    - assets/img/menu_ppob/
     - assets/img/produk/
 
   fonts:

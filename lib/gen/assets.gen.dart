@@ -38,6 +38,9 @@ class $AssetsAnimationsGen {
 class $AssetsImgGen {
   const $AssetsImgGen();
 
+  /// Directory path: assets/img/beranda
+  $AssetsImgBerandaGen get beranda => const $AssetsImgBerandaGen();
+
   /// File path: assets/img/bg-pattern.png
   AssetGenImage get bgPattern =>
       const AssetGenImage('assets/img/bg-pattern.png');
@@ -74,6 +77,9 @@ class $AssetsImgGen {
   $AssetsImgMenuPenjualanGen get menuPenjualan =>
       const $AssetsImgMenuPenjualanGen();
 
+  /// Directory path: assets/img/menu_ppob
+  $AssetsImgMenuPpobGen get menuPpob => const $AssetsImgMenuPpobGen();
+
   /// Directory path: assets/img/produk
   $AssetsImgProdukGen get produk => const $AssetsImgProdukGen();
 
@@ -87,6 +93,21 @@ class $AssetsImgGen {
     logoTextWhite,
     logoText,
   ];
+}
+
+class $AssetsImgBerandaGen {
+  const $AssetsImgBerandaGen();
+
+  /// File path: assets/img/beranda/img-isi-saldo.png
+  AssetGenImage get imgIsiSaldo =>
+      const AssetGenImage('assets/img/beranda/img-isi-saldo.png');
+
+  /// File path: assets/img/beranda/img-nobu.png
+  AssetGenImage get imgNobu =>
+      const AssetGenImage('assets/img/beranda/img-nobu.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [imgIsiSaldo, imgNobu];
 }
 
 class $AssetsImgBottomNavGen {
@@ -264,6 +285,84 @@ class $AssetsImgMenuPenjualanGen {
     icFavorit,
     icKalkulator,
     icKasir,
+  ];
+}
+
+class $AssetsImgMenuPpobGen {
+  const $AssetsImgMenuPpobGen();
+
+  /// File path: assets/img/menu_ppob/icon-bpjs-kesehatan.png
+  AssetGenImage get iconBpjsKesehatan =>
+      const AssetGenImage('assets/img/menu_ppob/icon-bpjs-kesehatan.png');
+
+  /// File path: assets/img/menu_ppob/icon-bpjs-tkn.png
+  AssetGenImage get iconBpjsTkn =>
+      const AssetGenImage('assets/img/menu_ppob/icon-bpjs-tkn.png');
+
+  /// File path: assets/img/menu_ppob/icon-dompet-digital.png
+  AssetGenImage get iconDompetDigital =>
+      const AssetGenImage('assets/img/menu_ppob/icon-dompet-digital.png');
+
+  /// File path: assets/img/menu_ppob/icon-ecommerce.png
+  AssetGenImage get iconEcommerce =>
+      const AssetGenImage('assets/img/menu_ppob/icon-ecommerce.png');
+
+  /// File path: assets/img/menu_ppob/icon-esamsat.png
+  AssetGenImage get iconEsamsat =>
+      const AssetGenImage('assets/img/menu_ppob/icon-esamsat.png');
+
+  /// File path: assets/img/menu_ppob/icon-hp-pasca.png
+  AssetGenImage get iconHpPasca =>
+      const AssetGenImage('assets/img/menu_ppob/icon-hp-pasca.png');
+
+  /// File path: assets/img/menu_ppob/icon-internet-tv.png
+  AssetGenImage get iconInternetTv =>
+      const AssetGenImage('assets/img/menu_ppob/icon-internet-tv.png');
+
+  /// File path: assets/img/menu_ppob/icon-pbb.png
+  AssetGenImage get iconPbb =>
+      const AssetGenImage('assets/img/menu_ppob/icon-pbb.png');
+
+  /// File path: assets/img/menu_ppob/icon-pdam.png
+  AssetGenImage get iconPdam =>
+      const AssetGenImage('assets/img/menu_ppob/icon-pdam.png');
+
+  /// File path: assets/img/menu_ppob/icon-pln-tagihan.png
+  AssetGenImage get iconPlnTagihan =>
+      const AssetGenImage('assets/img/menu_ppob/icon-pln-tagihan.png');
+
+  /// File path: assets/img/menu_ppob/icon-tagihan-gas.png
+  AssetGenImage get iconTagihanGas =>
+      const AssetGenImage('assets/img/menu_ppob/icon-tagihan-gas.png');
+
+  /// File path: assets/img/menu_ppob/icon-token-pertagas.png
+  AssetGenImage get iconTokenPertagas =>
+      const AssetGenImage('assets/img/menu_ppob/icon-token-pertagas.png');
+
+  /// File path: assets/img/menu_ppob/icon-token-pgn.png
+  AssetGenImage get iconTokenPgn =>
+      const AssetGenImage('assets/img/menu_ppob/icon-token-pgn.png');
+
+  /// File path: assets/img/menu_ppob/icon-uang-elektronik.png
+  AssetGenImage get iconUangElektronik =>
+      const AssetGenImage('assets/img/menu_ppob/icon-uang-elektronik.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+    iconBpjsKesehatan,
+    iconBpjsTkn,
+    iconDompetDigital,
+    iconEcommerce,
+    iconEsamsat,
+    iconHpPasca,
+    iconInternetTv,
+    iconPbb,
+    iconPdam,
+    iconPlnTagihan,
+    iconTagihanGas,
+    iconTokenPertagas,
+    iconTokenPgn,
+    iconUangElektronik,
   ];
 }
 
