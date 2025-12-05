@@ -9,6 +9,7 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
 import 'package:dmpku/pages/auth/login/verify_otp_login_page.dart';
+import 'package:dmpku/pages/member/member_main_page.dart';
 import 'package:dmpku/service/auth_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -277,6 +278,11 @@ class LoginProvider extends Cubit<LoginState> {
       );
 
       if (result.status) {
+
+        debugPrint("TOKEN MEMBER: ${result.token}");
+        debugPrint("REFRESH TOKEN MEMBER: ${result.refresh}");
+        debugPrint("SIGN MEMBER: ${result.signmember}");
+
         SecureStorageHelper.instance.write(
           StorageKeys.signmember,
           result.signmember,
@@ -286,6 +292,7 @@ class LoginProvider extends Cubit<LoginState> {
           StorageKeys.refreshToken,
           result.refresh,
         );
+        pushNamedAndRemoveUntil(MemberMainPage.routeName);
       }
 
       emit(

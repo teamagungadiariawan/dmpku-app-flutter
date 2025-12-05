@@ -1,3 +1,4 @@
+import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
@@ -255,16 +256,21 @@ class _VerifyOtpLoginPageState extends State<VerifyOtpLoginPage> {
   }
 
   Widget _buildVerifyButton() {
-    return CustomButton(
-      width: double.infinity,
-      size: ButtonSize.large,
-      iconPosition: IconPosition.end,
-      icon: LucideIcons.arrowRight600,
-      text: 'Verifikasi & Lanjutkan',
-      textStyle: context.bodyLarge
-          .withWeight(FontWeight.w600)
-          .withColor(context.primaryForeground),
-      onPressed: _verifyOtp,
+    return BlocBuilder<LoginProvider, LoginState>(
+      builder: (context, state) {
+        return CustomButton(
+          isLoading: state.apiVerifyOtpStatus.isLoading,
+          width: double.infinity,
+          size: ButtonSize.large,
+          iconPosition: IconPosition.end,
+          icon: LucideIcons.arrowRight600,
+          text: 'Verifikasi & Lanjutkan',
+          textStyle: context.bodyLarge
+              .withWeight(FontWeight.w600)
+              .withColor(context.primaryForeground),
+          onPressed: _verifyOtp,
+        );
+      },
     );
   }
 
