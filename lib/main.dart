@@ -22,6 +22,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digita
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
+import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
 import 'package:dmpku/widgets/dialog/offline_dialog.dart';
@@ -67,6 +68,7 @@ void main() {
           BlocProvider(create: (_) => InfoKartuProvider()),
           BlocProvider(create: (_) => LoginProvider()),
           BlocProvider(create: (_) => MasaAktifProvider()),
+          BlocProvider(create: (_) => MemberProvider()),
           BlocProvider(create: (_) => PaketCuanProvider()),
           BlocProvider(create: (_) => PaketDataProvider()),
           BlocProvider(create: (_) => PaketNelponProvider()),
