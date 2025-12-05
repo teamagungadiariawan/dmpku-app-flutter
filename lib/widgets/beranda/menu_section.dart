@@ -1,8 +1,8 @@
 import 'package:dmpku/core/themes/app_text_styles.dart';
+import 'package:dmpku/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import 'menu_button.dart';
 
 class IsiUlangSection extends StatelessWidget {
   final List<MenuData> menus;
