@@ -21,12 +21,12 @@ class ServiceInitializer {
     final token = await messaging.getToken();
 
     if (token != null) {
-      await SecureStorageHelper.instance.saveToken(token);
+      SecureStorageHelper.instance.write(StorageKeys.tokenFcm, token);
       debugPrint('FCM Token: $token');
     }
 
     messaging.onTokenRefresh.listen((newToken) {
-      SecureStorageHelper.instance.saveToken(newToken);
+      SecureStorageHelper.instance.write(StorageKeys.tokenFcm, newToken);
       debugPrint('Token refreshed: $newToken');
     });
   }

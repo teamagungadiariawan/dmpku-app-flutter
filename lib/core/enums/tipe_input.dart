@@ -14,7 +14,7 @@ enum TipeInput {
 
   static TipeInput fromValue(String? value) {
     return TipeInput.values.firstWhere(
-          (e) => e.value == value,
+      (e) => e.value == value,
       orElse: () => TipeInput.freeText,
     );
   }
@@ -64,11 +64,17 @@ enum TipeInput {
         return [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]'))];
       case TipeInput.extended:
         return [
-          FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@&=#\-. ]'))
+          FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@&=#\-. ]')),
         ];
       case TipeInput.freeText:
         return [];
     }
+  }
+
+  String filter(String text) {
+    final regex = pattern;
+    if (regex == null) return text;
+    return text.split('').where((char) => regex.hasMatch(char)).join();
   }
 
   bool isValid(String text) {

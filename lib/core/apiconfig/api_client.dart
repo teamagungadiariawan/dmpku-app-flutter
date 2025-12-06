@@ -6,7 +6,9 @@ import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/device_info_helper.dart';
 import 'package:dmpku/core/helpers/encrypt_helper.dart';
 import 'package:dmpku/core/helpers/location_helper.dart';
+import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/storage_helper.dart';
+import 'package:dmpku/pages/guest/main_page.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'base_url.dart';
@@ -142,7 +144,6 @@ class _AppInterceptor extends QueuedInterceptor {
         var enc = Encrypted(a: data["a"] as String);
         var decryptedData = EncryptHelper.decrypt(enc);
         debugPrint("Decrypted Response Data: $decryptedData");
-
         response.data = decryptedData;
       } else {
         debugPrint("No encrypted data found in response.");

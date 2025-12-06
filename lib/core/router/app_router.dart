@@ -35,6 +35,8 @@ import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_produk_page.
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_subprovider_page.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_produk_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -49,8 +51,6 @@ class AppRouter {
         return _customTransition(child: const RequestOtpLoginPage());
       case VerifyOtpLoginPage.routeName:
         return _customTransition(child: const VerifyOtpLoginPage());
-
-      /// ------  PULSA ------ ///
 
       /// ------  PULSA ------ ///
       case GuestPulsaProviderPage.routeName:
@@ -199,6 +199,14 @@ class AppRouter {
       /// ------ MEMBER ------ ///
       case MemberMainPage.routeName:
         return _customTransitionBottomToTop(child: const MemberMainPage());
+
+      /// ------  PULSA ------ ///
+      case MemberPulsaProviderPage.routeName:
+        return _customTransition(child: const MemberPulsaProviderPage());
+      case MemberPulsaProdukPage.routeName:
+        return _customTransition(child: const MemberPulsaProdukPage());
+
+      /// ------  PULSA ------ ///
 
       default:
         return null;

@@ -1,14 +1,17 @@
 import 'package:dmpku/core/themes/app_text_styles.dart';
+import 'package:dmpku/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import 'menu_button.dart';
-
-class IsiUlangSection extends StatelessWidget {
+class MenuSection extends StatelessWidget {
+  final String title;
+  final String subtitle;
   final List<MenuData> menus;
 
-  const IsiUlangSection({
+  const MenuSection({
     super.key,
+    this.title = 'Isi Ulang',
+    this.subtitle = 'Isi Ulang Produk Digital sesuai kebutuhan Anda',
     required this.menus,
   });
 
@@ -19,11 +22,8 @@ class IsiUlangSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Isi Ulang', style: context.labelMedium),
-          Text(
-            'Isi Ulang Produk Digital sesuai kebutuhan Anda',
-            style: context.bodySmall,
-          ),
+          Text(title, style: context.labelMedium),
+          Text(subtitle, style: context.captionMedium),
           const Gap(10),
           GridView.builder(
             padding: const EdgeInsets.symmetric(vertical: 2),
@@ -42,7 +42,7 @@ class IsiUlangSection extends StatelessWidget {
                 title: menu.title,
                 icon: menu.icon,
                 onTap: () => {
-                  if (menu.onTap != null) {menu.onTap!()}
+                  if (menu.onTap != null) {menu.onTap!()},
                 },
               );
             },

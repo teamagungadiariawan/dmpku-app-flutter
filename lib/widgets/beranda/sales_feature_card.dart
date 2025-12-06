@@ -1,9 +1,9 @@
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
+import 'package:dmpku/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import 'menu_button.dart';
 
 class SalesFeatureCard extends StatelessWidget {
   final List<MenuData> menus;
@@ -27,7 +27,7 @@ class SalesFeatureCard extends StatelessWidget {
             Text('Fitur Penjualan', style: context.labelMedium),
             Text(
               'Fitur pelengkap transaksi penjualan anda',
-              style: context.bodySmall,
+              style: context.captionMedium,
             ),
             Gap(5),
             GridView.builder(
@@ -38,7 +38,7 @@ class SalesFeatureCard extends StatelessWidget {
                 crossAxisCount: 5,
                 mainAxisSpacing: 5,
                 crossAxisSpacing: 0,
-                childAspectRatio: 1,
+                childAspectRatio: 1.1,
               ),
               itemCount: menus.length,
               itemBuilder: (context, index) {

@@ -17,8 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:gap/gap.dart';
-
-import '../widgets/card_input_tujuan.dart';
+import 'package:dmpku/widgets/card_input_tujuan.dart';
 
 class GuestPulsaProviderPage extends StatefulWidget {
   static const routeName = '/guest/produk/isiulang/pulsa/provider';

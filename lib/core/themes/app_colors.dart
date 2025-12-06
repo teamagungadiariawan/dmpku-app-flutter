@@ -214,6 +214,20 @@ const orange = {
   950: Color(0xFF431407),
 };
 
+const indigo = {
+  50: Color(0xFFEEF2FF),
+  100: Color(0xFFE0E7FF),
+  200: Color(0xFFC7D2FE),
+  300: Color(0xFFA5B4FC),
+  400: Color(0xFF818CF8),
+  500: Color(0xFF6366F1),
+  600: Color(0xFF4F46E5),
+  700: Color(0xFF4338CA),
+  800: Color(0xFF3730A3),
+  900: Color(0xFF312E81),
+  950: Color(0xFF1E1B4B),
+};
+
 const bgScreen = Color(0xFFf9fafb);
 const bgCard = Color(0xFFFFFFFF);
 const borderColor = Color(0xFFe5e7eb);

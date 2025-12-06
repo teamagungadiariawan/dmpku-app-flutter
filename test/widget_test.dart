@@ -17,7 +17,9 @@ void main() {
     // Initialize TextScaleProvider
     final textScaleProvider = TextScaleProvider();
     await textScaleProvider.init();
-    await tester.pumpWidget(MyApp(textScaleProvider: textScaleProvider));
+    await tester.pumpWidget(
+      MyApp(textScaleProvider: textScaleProvider, token: ""),
+    );
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

@@ -2,7 +2,6 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/auth/login/request_otp_login_page.dart';
-import 'package:dmpku/pages/guest/dashboard/widgets/menu_button.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/guest_aktivasi_perdana_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
@@ -35,14 +34,15 @@ import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_p
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
+import 'package:dmpku/widgets/beranda/menu_section.dart';
+import 'package:dmpku/widgets/beranda/paket_cuan_banner.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
+import 'package:dmpku/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'widgets/dashboard_app_bar.dart';
 import 'widgets/dashboard_header.dart';
-import 'widgets/isi_ulang_section.dart';
-import 'widgets/paket_cuan_banner.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -97,7 +97,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: IsiUlangSection(menus: _isiUlangMenus),
+                  child: MenuSection(menus: _isiUlangMenus),
                 ),
                 SliverToBoxAdapter(
                   child: InkWell(
