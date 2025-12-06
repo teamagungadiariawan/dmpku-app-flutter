@@ -1,7 +1,10 @@
+import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_app_bar.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_header.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/widgets/beranda/menu_section.dart';
 import 'package:dmpku/widgets/beranda/paket_cuan_banner.dart';
 import 'package:dmpku/widgets/menu_button.dart';
@@ -114,7 +117,10 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
     MenuData(
       "Pulsa",
       Assets.img.menuIsiUlang.iconPulsa.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberPulsaProviderPage.routeName);
+        getMemberPulsaProvider(context).fetchProviders();
+      },
     ),
     MenuData(
       "Paket Data",

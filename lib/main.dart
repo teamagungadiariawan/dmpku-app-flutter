@@ -22,6 +22,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digita
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
@@ -58,7 +59,7 @@ void main() {
     informasiFuture,
     tokenFuture,
   ]).then((results) {
-    final token = (results[3]  as String?) ?? '';
+    final token = (results[3] as String?) ?? '';
     runApp(
       MultiBlocProvider(
         providers: [
@@ -68,7 +69,6 @@ void main() {
           BlocProvider(create: (_) => InfoKartuProvider()),
           BlocProvider(create: (_) => LoginProvider()),
           BlocProvider(create: (_) => MasaAktifProvider()),
-          BlocProvider(create: (_) => MemberProvider()),
           BlocProvider(create: (_) => PaketCuanProvider()),
           BlocProvider(create: (_) => PaketDataProvider()),
           BlocProvider(create: (_) => PaketNelponProvider()),
@@ -80,8 +80,11 @@ void main() {
           BlocProvider(create: (_) => VoucherDataProvider()),
           BlocProvider(create: (_) => VoucherDigitalProvider()),
           BlocProvider(create: (_) => WifiIdProvider()),
+
+          BlocProvider(create: (_) => MemberProvider()),
+          BlocProvider(create: (_) => MemberPulsaProvider()),
         ],
-        child: MyApp(textScaleProvider: textScaleProvider, token : token),
+        child: MyApp(textScaleProvider: textScaleProvider, token: token),
       ),
     );
   });
@@ -91,7 +94,11 @@ class MyApp extends StatefulWidget {
   final TextScaleProvider textScaleProvider;
   final String token;
 
-  const MyApp({super.key, required this.textScaleProvider, required this.token});
+  const MyApp({
+    super.key,
+    required this.textScaleProvider,
+    required this.token,
+  });
 
   @override
   State<MyApp> createState() => _MyAppState();
