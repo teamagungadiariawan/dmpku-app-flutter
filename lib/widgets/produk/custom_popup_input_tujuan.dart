@@ -1,4 +1,8 @@
+import 'package:dmpku/core/helpers/permission_helper.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
+import 'package:dmpku/widgets/dialog/contact_picker_dialog.dart';
+import 'package:dmpku/widgets/dialog/record_audio_dialog.dart';
+import 'package:dmpku/widgets/dialog/scan_qr_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -40,7 +44,10 @@ class CustomPopupInputTujuan extends StatelessWidget {
     return methods;
   }
 
-  Future<void> _handleSelection(BuildContext context, InputMethod method) async {
+  Future<void> _handleSelection(
+    BuildContext context,
+    InputMethod method,
+  ) async {
     switch (method) {
       case InputMethod.scan:
         _handleScanQR(context);
@@ -58,31 +65,42 @@ class CustomPopupInputTujuan extends StatelessWidget {
   }
 
   void _handleScanQR(BuildContext context) {
-    // TODO: Implementasi scan QR
-    onResult('08123456789'); // Example
+    ScanQrDialog.show(
+      context,
+      onScanned: (scannedData) {
+        debugPrint("Scanned Data: $scannedData");
+
+        onResult(scannedData);
+      },
+    );
   }
 
-  void _handleVoiceInput(BuildContext context) {
-    // TODO: Implementasi voice input
-    onResult('08123456789'); // Example
+  void _handleVoiceInput(BuildContext context) async {
+    await requestMicrophonePermission();
+    RecordAudioDialog.show(
+      context,
+      onResult: (recognizedText) {
+        onResult(recognizedText);
+      },
+    );
   }
 
-  void _handleContactPicker(BuildContext context) {
-    // TODO: Implementasi contact picker
-    onResult('08123456789'); // Example
+  void _handleContactPicker(BuildContext context) async {
+    await requestContactsPermission();
+    ContactPickerDialog.show(
+      context,
+      onSelected: (contactData) {
+        onResult(contactData.phoneNumber);
+      },
+    );
   }
 
   Future<void> _handlePasteFromClipboard(BuildContext context) async {
     try {
       final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
       if (clipboardData?.text != null && clipboardData!.text!.isNotEmpty) {
-        // Filter hanya angka
-        final phoneNumber = clipboardData.text!.replaceAll(RegExp(r'[^0-9]'), '');
-        if (phoneNumber.isNotEmpty) {
-          onResult(phoneNumber);
-        } else {
-          _showSnackBar(context, 'Clipboard tidak berisi nomor telepon yang valid');
-        }
+        var textpasted = clipboardData.text!.trim();
+        onResult(textpasted);
       } else {
         _showSnackBar(context, 'Clipboard kosong');
       }
@@ -93,10 +111,7 @@ class CustomPopupInputTujuan extends StatelessWidget {
 
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-      ),
+      SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
     );
   }
 
@@ -111,15 +126,10 @@ class CustomPopupInputTujuan extends StatelessWidget {
       width: 18,
       child: PopupMenuButton<InputMethod>(
         icon: const Icon(Icons.more_vert, size: 18),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: EdgeInsets.zero,
         menuPadding: EdgeInsets.zero,
-        constraints: const BoxConstraints(
-          minWidth: 170,
-          maxWidth: 170,
-        ),
+        constraints: const BoxConstraints(minWidth: 170, maxWidth: 170),
         onSelected: (method) => _handleSelection(context, method),
         itemBuilder: (context) => _availableMethods
             .map((method) => _buildMenuItem(context, method))
@@ -129,9 +139,9 @@ class CustomPopupInputTujuan extends StatelessWidget {
   }
 
   PopupMenuItem<InputMethod> _buildMenuItem(
-      BuildContext context,
-      InputMethod method,
-      ) {
+    BuildContext context,
+    InputMethod method,
+  ) {
     return PopupMenuItem<InputMethod>(
       value: method,
       padding: const EdgeInsets.symmetric(horizontal: 10),
