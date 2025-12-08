@@ -35,6 +35,12 @@ import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_produk_page.
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_subprovider_page.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/member_masa_aktif_produk_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/member_masa_aktif_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/member_paket_data_produk_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/member_paket_data_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_produk_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider_page.dart';
 import 'package:flutter/material.dart';
@@ -207,6 +213,30 @@ class AppRouter {
         return _customTransition(child: const MemberPulsaProdukPage());
 
       /// ------  PULSA ------ ///
+
+      /// ------  PAKETDATA ------ ///
+      case MemberPaketDataProviderPage.routeName:
+        return _customTransition(child: const MemberPaketDataProviderPage());
+      case MemberPaketDataProdukPage.routeName:
+        return _customTransition(child: const MemberPaketDataProdukPage());
+
+      /// ------  PAKETDATA ------ ///
+
+      /// ------  MASA AKTIF ------ ///
+      case MemberMasaAktifProviderPage.routeName:
+        return _customTransition(child: const MemberMasaAktifProviderPage());
+      case MemberMasaAktifProdukPage.routeName:
+        return _customTransition(child: const MemberMasaAktifProdukPage());
+
+      /// ------  MASA AKTIF ------ ///
+
+      /// ------  PAKET NELPON ------ ///
+      case MemberPaketNelponProviderPage.routeName:
+        return _customTransition(child: const MemberPaketNelponProviderPage());
+      case MemberPaketNelponProdukPage.routeName:
+        return _customTransition(child: const MemberPaketNelponProdukPage());
+
+      /// ------  PAKET NELPON ------ ///
 
       default:
         return null;

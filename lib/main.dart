@@ -22,6 +22,9 @@ import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digita
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
@@ -50,16 +53,16 @@ void main() {
   final servicesFuture = ServiceInitializer.init();
   final textScaleProvider = TextScaleProvider();
   final textScaleFuture = textScaleProvider.init();
-  final informasiFuture = InformasiService().getInformasi();
+  // final informasiFuture = InformasiService().getInformasi();
   final tokenFuture = SecureStorageHelper.instance.getToken();
 
   Future.wait([
     servicesFuture,
     textScaleFuture,
-    informasiFuture,
+    // informasiFuture,
     tokenFuture,
   ]).then((results) {
-    final token = (results[3] as String?) ?? '';
+    final token = (results[2] as String?) ?? '';
     runApp(
       MultiBlocProvider(
         providers: [
@@ -81,7 +84,10 @@ void main() {
           BlocProvider(create: (_) => VoucherDigitalProvider()),
           BlocProvider(create: (_) => WifiIdProvider()),
 
+          BlocProvider(create: (_) => MemberMasaAktifProvider()),
           BlocProvider(create: (_) => MemberProvider()),
+          BlocProvider(create: (_) => MemberPaketDataProvider()),
+          BlocProvider(create: (_) => MemberPaketNelponProvider()),
           BlocProvider(create: (_) => MemberPulsaProvider()),
         ],
         child: MyApp(textScaleProvider: textScaleProvider, token: token),
