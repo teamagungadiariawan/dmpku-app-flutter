@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const paddingCard = EdgeInsets.symmetric(horizontal: 10, vertical: 8);
+const paddingCardSettingAkun = EdgeInsets.symmetric(horizontal: 10, vertical: 4);
 const paddinPageh = 16.0;
 const paddingPagev = 6.0;
 const paddingPage = EdgeInsets.symmetric(

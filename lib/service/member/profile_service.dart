@@ -21,7 +21,7 @@ class ProfileService {
           namamember: "John Doe",
           email: "johndoe@gmail.com",
           saldo: 150000,
-          verifikasi: 1,
+          verifikasi: 0,
           userstatus: 1,
           status: 1,
           isppob: 1,

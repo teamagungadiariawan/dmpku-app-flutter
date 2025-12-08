@@ -4,6 +4,7 @@ import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
+import 'package:dmpku/pages/member/akun/member_akun_page.dart';
 import 'package:dmpku/pages/member/dashboard/member_dashboard_page.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/custom_button.dart';
@@ -35,21 +36,7 @@ class _MemberMainPageState extends State<MemberMainPage> {
     const Center(child: Text("Promo Page")),
     // Placeholder for Official
     const Center(child: Text("Official Page")),
-    // Placeholder for Akun
-    Center(child:Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(Icons.account_circle, size: 100),
-        const SizedBox(height: 16),
-        const Text(
-          "Akun Page",
-        ),
-        const Gap(8),
-        CustomButton(text: "logout", variant: ButtonVariant.destructive, onPressed: () {
-          getMemberProvider(context).logout();
-        }),
-      ],
-    )),
+    MemberAkunPage(),
   ];
 
   @override

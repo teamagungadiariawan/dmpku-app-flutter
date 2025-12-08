@@ -292,6 +292,7 @@ class LoginProvider extends Cubit<LoginState> {
           StorageKeys.refreshToken,
           result.refresh,
         );
+        stopOtpCountdown();
         pushNamedAndRemoveUntil(MemberMainPage.routeName);
       }
 

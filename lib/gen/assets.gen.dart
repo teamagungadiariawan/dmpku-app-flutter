@@ -26,12 +26,16 @@ class $AssetsAnimationsGen {
   /// File path: assets/animations/paket-cuan.json
   String get paketCuan => 'assets/animations/paket-cuan.json';
 
+  /// File path: assets/animations/punya-pertanyaan.json
+  String get punyaPertanyaan => 'assets/animations/punya-pertanyaan.json';
+
   /// List of all assets
   List<String> get values => [
     berandaPaketCuan,
     noConnection,
     noData,
     paketCuan,
+    punyaPertanyaan,
   ];
 }
 
@@ -82,6 +86,9 @@ class $AssetsImgGen {
 
   /// Directory path: assets/img/produk
   $AssetsImgProdukGen get produk => const $AssetsImgProdukGen();
+
+  /// Directory path: assets/img/profile
+  $AssetsImgProfileGen get profile => const $AssetsImgProfileGen();
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -392,6 +399,64 @@ class $AssetsImgProdukGen {
     icAkitviasiVoucherSatuan,
     icTokenPln,
     icWifiId,
+  ];
+}
+
+class $AssetsImgProfileGen {
+  const $AssetsImgProfileGen();
+
+  /// File path: assets/img/profile/ic-detail-akun.png
+  AssetGenImage get icDetailAkun =>
+      const AssetGenImage('assets/img/profile/ic-detail-akun.png');
+
+  /// File path: assets/img/profile/ic-dmpku.png
+  AssetGenImage get icDmpku =>
+      const AssetGenImage('assets/img/profile/ic-dmpku.png');
+
+  /// File path: assets/img/profile/ic-favorit.png
+  AssetGenImage get icFavorit =>
+      const AssetGenImage('assets/img/profile/ic-favorit.png');
+
+  /// File path: assets/img/profile/ic-ganti-pin.png
+  AssetGenImage get icGantiPin =>
+      const AssetGenImage('assets/img/profile/ic-ganti-pin.png');
+
+  /// File path: assets/img/profile/ic-hapus-akun.png
+  AssetGenImage get icHapusAkun =>
+      const AssetGenImage('assets/img/profile/ic-hapus-akun.png');
+
+  /// File path: assets/img/profile/ic-isi-saldo.png
+  AssetGenImage get icIsiSaldo =>
+      const AssetGenImage('assets/img/profile/ic-isi-saldo.png');
+
+  /// File path: assets/img/profile/ic-logout.png
+  AssetGenImage get icLogout =>
+      const AssetGenImage('assets/img/profile/ic-logout.png');
+
+  /// File path: assets/img/profile/ic-manage-device.png
+  AssetGenImage get icManageDevice =>
+      const AssetGenImage('assets/img/profile/ic-manage-device.png');
+
+  /// File path: assets/img/profile/ic-playstore.png
+  AssetGenImage get icPlaystore =>
+      const AssetGenImage('assets/img/profile/ic-playstore.png');
+
+  /// File path: assets/img/profile/ic-reset-pin.png
+  AssetGenImage get icResetPin =>
+      const AssetGenImage('assets/img/profile/ic-reset-pin.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+    icDetailAkun,
+    icDmpku,
+    icFavorit,
+    icGantiPin,
+    icHapusAkun,
+    icIsiSaldo,
+    icLogout,
+    icManageDevice,
+    icPlaystore,
+    icResetPin,
   ];
 }
 

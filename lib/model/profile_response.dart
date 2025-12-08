@@ -56,6 +56,14 @@ class ProfileModel {
 
   String get formatSaldo => ToRupiah(saldo.toString());
 
+  bool get isVerified => verifikasi == 1;
+
+  bool get isActive => status == 1;
+
+  bool get hasPpobAccess => isppob == 1;
+
+  bool get isAgen => userstatus == 1;
+
   @override
   String toString() {
     return 'ProfileModel(kodemember: $kodemember, namamember: $namamember, email: $email, saldo: $saldo, verifikasi: $verifikasi, userstatus: $userstatus, status: $status, isppob: $isppob)';
