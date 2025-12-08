@@ -89,6 +89,8 @@ class MemberProvider extends Cubit<MemberState> {
 
       final data = result.data;
       if (data != null) {
+        SecureStorageHelper.instance.saveKodeMember(data.kodemember);
+
         emit(
           state.copyWith(apiGetMemberStatus: ApiStatus.success, profile: data),
         );
