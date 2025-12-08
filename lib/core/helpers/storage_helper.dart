@@ -12,7 +12,8 @@ class StorageKeys {
       "pYM+9wIfFMNpLFxOO1oyxdl+AD6d8/4O3HhEPRyyFSboP2F2HJu4DKWZu/P+EkaF";
   static const refreshToken =
       "1pGJt7if468W8mMir/Wj9/feMG0SF5U4acjtv68c3ywtMnjuAvKzXtaJLNfI3PzP";
-// Tambahkan keys lain di sini
+  static const kodeMember =
+      "ua1iuyCWdtULZ9/qa+v3i5sB8mJfPiQB7ZCaxDOf7EHJfPD9g8hDVQ4Qj0eXAwNz";
 }
 
 class SecureStorageHelper {
@@ -60,7 +61,16 @@ class SecureStorageHelper {
   Future<String?> getToken() => read(StorageKeys.token);
 
   Future<void> clearToken() => delete(StorageKeys.token);
+
+  // Kode Member
+  Future<void> saveKodeMember(String kodeMember) =>
+      write(StorageKeys.kodeMember, kodeMember);
+
+  Future<String?> getKodeMember() => read(StorageKeys.kodeMember);
+
+  Future<void> clearKodeMember() => delete(StorageKeys.kodeMember);
 }
+
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 //     .eyJrb2RlbWVtYmVyIjoiMTcxNzM0NzAzMSIsIm5hbWFtZW1iZXIiOiJPd25lciIsImVtYWlsIjoib3duZXJAZ21haWwuY29tIiwidGdsZGFmdGFyIjoiMjAyMy0xMC0zMFQwMDowMDowMCswNzowMCIsImlka2Vsb21wb2toYXJnYSI6MSwicGVyYW5na2F0IjoiOWQyOWI2NmQzZDUxOTYzMWNjZmYzMDNhY2ViNTVjOWUiLCJub2hwIjoiMDgyMjMzMjIyMTExIiwidXV4dCI6ImE5NjM1YTgxMjA4ZTdlMDBiMmQ1N2Q3Yzk4MjczYWRlIiwiZXhwIjoxNzY1MDAyMDc5fQ
 //     .kq5pSpx1j1TBFkPUw0H7ryb6TmyQ4yxIrdgpWsm9GvA

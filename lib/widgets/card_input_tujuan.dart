@@ -1,4 +1,5 @@
 import 'package:dmpku/core/enums/tipe_input.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
@@ -33,6 +34,7 @@ class CardInputTujuan extends StatelessWidget {
   final ValueChanged<String>? onFavoritResult;
   final IconData? icon;
   final TipeInput tipeInput;
+  final TipeProduk tipeProduk;
 
   const CardInputTujuan({
     super.key,
@@ -58,6 +60,7 @@ class CardInputTujuan extends StatelessWidget {
     this.onFavoritResult,
     this.icon,
     this.tipeInput = TipeInput.numericOnly,
+    this.tipeProduk = TipeProduk.all,
   });
 
   @override

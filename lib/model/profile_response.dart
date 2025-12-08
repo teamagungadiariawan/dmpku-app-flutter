@@ -32,6 +32,28 @@ class ProfileModel {
     isppob: json['isppob'] ?? 0,
   );
 
+  ProfileModel copyWith({
+    String? kodemember,
+    String? namamember,
+    String? email,
+    int? saldo,
+    int? verifikasi,
+    int? userstatus,
+    int? status,
+    int? isppob,
+  }) {
+    return ProfileModel(
+      kodemember: kodemember ?? this.kodemember,
+      namamember: namamember ?? this.namamember,
+      email: email ?? this.email,
+      saldo: saldo ?? this.saldo,
+      verifikasi: verifikasi ?? this.verifikasi,
+      userstatus: userstatus ?? this.userstatus,
+      status: status ?? this.status,
+      isppob: isppob ?? this.isppob,
+    );
+  }
+
   String get formatSaldo => ToRupiah(saldo.toString());
 
   @override

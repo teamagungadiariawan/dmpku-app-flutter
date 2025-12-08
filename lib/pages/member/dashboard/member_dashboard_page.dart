@@ -1,16 +1,17 @@
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
+import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_app_bar.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_header.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/beranda/menu_section.dart';
 import 'package:dmpku/widgets/beranda/paket_cuan_banner.dart';
 import 'package:dmpku/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gap/gap.dart';
 
 class MemberDashboardPage extends StatefulWidget {
   const MemberDashboardPage({super.key});
@@ -41,6 +42,10 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
     }
   }
 
+  Future<void> _onRefresh() async {
+    await getMemberProvider(context).getProfile();
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
@@ -54,41 +59,52 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
       child: Scaffold(
         body: Stack(
           children: [
-            CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                SliverToBoxAdapter(
-                  child: DashboardHeader(
-                    onPromoTap: () {},
-                    onMenuTap: _handleMenuTap,
-                    salesMenus: _salesMenus,
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: MenuSection(
-                    title: 'Isi Ulang',
-                    subtitle: 'Isi Ulang Produk Digital sesuai kebutuhan Anda',
-                    menus: _isiUlangMenus,
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: InkWell(
-                    onTap: _handlePaketCuanTap,
-                    child: PaketCuanBanner(onTap: _handlePaketCuanTap),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10, left: 0, right: 0),
-                    child: MenuSection(
-                      title: 'Top Up E-Wallet & Bayar Tagihan',
-                      subtitle:
-                          'Top Up E-Wallet dan Bayar Tagihan secara mudah dan cepat',
-                      menus: _ppobMenus,
+            RefreshIndicator(
+              onRefresh: _onRefresh,
+              color: context.primary,
+              backgroundColor: context.card,
+              edgeOffset: kToolbarHeight + MediaQuery.of(context).padding.top,
+              child: CustomScrollView(
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: DashboardHeader(
+                      onPromoTap: () {},
+                      onMenuTap: _handleMenuTap,
+                      salesMenus: _salesMenus,
                     ),
                   ),
-                ),
-              ],
+                  SliverToBoxAdapter(
+                    child: MenuSection(
+                      title: 'Isi Ulang',
+                      subtitle: 'Isi Ulang Produk Digital sesuai kebutuhan Anda',
+                      menus: _isiUlangMenus,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: InkWell(
+                      onTap: _handlePaketCuanTap,
+                      child: PaketCuanBanner(onTap: _handlePaketCuanTap),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10, left: 0, right: 0),
+                      child: MenuSection(
+                        title: 'Top Up E-Wallet & Bayar Tagihan',
+                        subtitle:
+                        'Top Up E-Wallet dan Bayar Tagihan secara mudah dan cepat',
+                        menus: _ppobMenus,
+                      ),
+                    ),
+                  ),
+                  // Extra space at bottom
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 24),
+                  ),
+                ],
+              ),
             ),
             DashboardAppBar(
               opacity: _opacity,
