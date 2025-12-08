@@ -106,6 +106,7 @@ flutter:
     - assets/img/menu_penjualan/
     - assets/img/menu_ppob/
     - assets/img/produk/
+    - assets/img/profile/
 
   fonts:
     - family: Poppins
