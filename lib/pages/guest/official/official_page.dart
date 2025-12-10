@@ -1,4 +1,5 @@
 import 'package:dmpku/core/helpers/device_info_helper.dart';
+import 'package:dmpku/core/helpers/launch_helper.dart';
 import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
@@ -87,28 +88,16 @@ class _OfficialPageState extends State<OfficialPage> {
   // Actions
   // --------------------------------------------------------------------------
 
-  Future<void> _launchUrl(
-    String? link, {
-    LaunchMode mode = LaunchMode.inAppWebView,
-  }) async {
-    if (link == null || link.isEmpty) return;
 
-    try {
-      await launchUrl(Uri.parse(link), mode: mode);
-    } catch (e, stackTrace) {
-      debugPrint('Error launching URL: $e');
-      debugPrintStack(stackTrace: stackTrace);
-    }
-  }
 
   Future<void> _openWhatsAppChannel() async {
     final link = await SecureStorageHelper.instance.getChannelWa();
-    await _launchUrl(link);
+    await launchUrlApp(link);
   }
 
   Future<void> _openWhatsAppCS() async {
     final link = await SecureStorageHelper.instance.getWacs();
-    await _launchUrl(link);
+    await launchUrlApp(link);
   }
 
   Future<void> _callCS() async {

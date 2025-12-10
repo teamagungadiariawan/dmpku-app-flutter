@@ -1,4 +1,6 @@
+import 'package:dmpku/core/helpers/launch_helper.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
+import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/auth/login/request_otp_login_page.dart';
@@ -97,9 +99,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     onMenuTap: _handleMenuTap,
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: MenuSection(menus: _isiUlangMenus),
-                ),
+                SliverToBoxAdapter(child: MenuSection(menus: _isiUlangMenus)),
                 SliverToBoxAdapter(
                   child: InkWell(
                     onTap: _handlePaketCuanTap,
@@ -271,14 +271,12 @@ class _DashboardPageState extends State<DashboardPage> {
     pushNamed(GuestPaketCuanProviderPage.routeName);
   }
 
-  void _handleNotificationTap() {
-    debugPrint('Notification tapped');
-    // TODO: Navigate to notifications
+  void _handleNotificationTap() async {
+    final link = await SecureStorageHelper.instance.getChannelWa();
+    await launchUrlApp(link);
   }
 
   void _handleHelpTap() {
-    debugPrint('Help tapped');
-    debugPrint("Tinggi AppBar: $kToolbarHeight");
-    InformasiService().getInformasi();
+    openBantuanWaGuest();
   }
 }
