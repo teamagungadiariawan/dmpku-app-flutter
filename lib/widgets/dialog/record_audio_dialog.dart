@@ -133,7 +133,9 @@ class _RecordAudioDialogState extends State<RecordAudioDialog>
   }
 
   void _saveResult() {
+    debugPrint('Recognized Text: $_recognizedText');
     if (_recognizedText.isNotEmpty && widget.onResult != null) {
+      debugPrint('Sending result back');
       widget.onResult!(_recognizedText);
     }
     pop();
