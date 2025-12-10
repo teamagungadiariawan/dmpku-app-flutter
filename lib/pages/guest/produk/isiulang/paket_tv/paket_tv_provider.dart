@@ -352,11 +352,6 @@ class PaketTvProvider extends Cubit<PaketTvState> {
     if (tujuan.isEmpty) {
       return 'Tujuan tidak boleh kosong';
     }
-
-    if (!tujuan.startsWith('08')) {
-      return 'Tujuan harus diawali dengan 08';
-    }
-
     if (provider.idprovider == 0) return null;
 
     // Validasi panjang
