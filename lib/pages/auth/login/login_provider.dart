@@ -336,6 +336,8 @@ class LoginProvider extends Cubit<LoginState> {
       fixPhone = phone.substring(2);
     }
 
+    fixPhone = TipeInput.numericOnly.filter(fixPhone);
+
     emit(state.copyWith(phone: fixPhone));
     if (updateController) {
       _updateController(state.phoneController, fixPhone);
@@ -407,6 +409,10 @@ class LoginProvider extends Cubit<LoginState> {
   String? _validatePhoneValue(String value) {
     if (value.isEmpty) {
       return 'Nomor telepon tidak boleh kosong';
+    }
+
+    if (!value.startsWith('08')) {
+      return 'Nomor telepon harus diawali dengan 8';
     }
 
     final regex = RegExp(r'^[0-9]+$');
