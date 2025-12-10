@@ -34,6 +34,7 @@ import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_p
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
+import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/widgets/beranda/menu_section.dart';
 import 'package:dmpku/widgets/beranda/paket_cuan_banner.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
@@ -277,6 +278,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   void _handleHelpTap() {
     debugPrint('Help tapped');
-    // TODO: Navigate to help/support
+    debugPrint("Tinggi AppBar: $kToolbarHeight");
+    InformasiService().getInformasi();
   }
 }
