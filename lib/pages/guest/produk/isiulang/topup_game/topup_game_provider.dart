@@ -96,20 +96,26 @@ class TopupGameState extends Equatable {
     String? hintForm,
   }) {
     return TopupGameState(
-      apiFetchProviderStatus: apiFetchProviderStatus ?? this.apiFetchProviderStatus,
-      apiFetchProviderMessage: apiFetchProviderMessage ?? this.apiFetchProviderMessage,
+      apiFetchProviderStatus:
+          apiFetchProviderStatus ?? this.apiFetchProviderStatus,
+      apiFetchProviderMessage:
+          apiFetchProviderMessage ?? this.apiFetchProviderMessage,
       topupGameProviders: topupGameProviders ?? this.topupGameProviders,
       voucherGameProviders: voucherGameProviders ?? this.voucherGameProviders,
       selectedProvider: selectedProvider ?? this.selectedProvider,
       searchProvider: searchProvider ?? this.searchProvider,
-      searchProviderController: searchProviderController ?? this.searchProviderController,
-      apiFetchProductStatus: apiFetchProductStatus ?? this.apiFetchProductStatus,
-      apiFetchProductMessage: apiFetchProductMessage ?? this.apiFetchProductMessage,
+      searchProviderController:
+          searchProviderController ?? this.searchProviderController,
+      apiFetchProductStatus:
+          apiFetchProductStatus ?? this.apiFetchProductStatus,
+      apiFetchProductMessage:
+          apiFetchProductMessage ?? this.apiFetchProductMessage,
       products: products ?? this.products,
       selectedProduct: selectedProduct ?? this.selectedProduct,
       sortProduct: sortProduct ?? this.sortProduct,
       searchProduct: searchProduct ?? this.searchProduct,
-      searchProductController: searchProductController ?? this.searchProductController,
+      searchProductController:
+          searchProductController ?? this.searchProductController,
       tujuan: tujuan ?? this.tujuan,
       tujuanFocusNode: tujuanFocusNode ?? this.tujuanFocusNode,
       tujuanController: tujuanController ?? this.tujuanController,
@@ -123,12 +129,28 @@ class TopupGameState extends Equatable {
 
   @override
   List<Object?> get props => [
-    apiFetchProviderStatus, apiFetchProviderMessage, topupGameProviders,
-    voucherGameProviders, selectedProvider, searchProvider, searchProviderController,
-    apiFetchProductStatus, apiFetchProductMessage, products,
-    selectedProduct, sortProduct, searchProduct, searchProductController,
-    tujuan, tujuanFocusNode, tujuanController, tujuanHasError, tujuanErrorMessage,
-    isCekAkun, titleForm, hintForm,
+    apiFetchProviderStatus,
+    apiFetchProviderMessage,
+    topupGameProviders,
+    voucherGameProviders,
+    selectedProvider,
+    searchProvider,
+    searchProviderController,
+    apiFetchProductStatus,
+    apiFetchProductMessage,
+    products,
+    selectedProduct,
+    sortProduct,
+    searchProduct,
+    searchProductController,
+    tujuan,
+    tujuanFocusNode,
+    tujuanController,
+    tujuanHasError,
+    tujuanErrorMessage,
+    isCekAkun,
+    titleForm,
+    hintForm,
   ];
 }
 
@@ -138,12 +160,15 @@ class TopupGameState extends Equatable {
 class TopupGameProvider extends Cubit<TopupGameState> {
   final ProdukService _produkService = ProdukService();
 
-  TopupGameProvider() : super(TopupGameState(
-    tujuanFocusNode: FocusNode(),
-    tujuanController: TextEditingController(),
-    searchProviderController: TextEditingController(),
-    searchProductController: TextEditingController(),
-  ));
+  TopupGameProvider()
+    : super(
+        TopupGameState(
+          tujuanFocusNode: FocusNode(),
+          tujuanController: TextEditingController(),
+          searchProviderController: TextEditingController(),
+          searchProductController: TextEditingController(),
+        ),
+      );
 
   @override
   Future<void> close() {
@@ -160,34 +185,42 @@ class TopupGameProvider extends Cubit<TopupGameState> {
   Future<void> fetchProviders() async {
     if (state.apiFetchProviderStatus.isLoading) return;
 
-    emit(state.copyWith(
-      apiFetchProviderStatus: ApiStatus.loading,
-      apiFetchProviderMessage: '',
-    ));
+    emit(
+      state.copyWith(
+        apiFetchProviderStatus: ApiStatus.loading,
+        apiFetchProviderMessage: '',
+      ),
+    );
 
     try {
       final result = await _produkService.getTopupGameGuestProviders();
       final data = result.data;
 
       if (data != null) {
-        emit(state.copyWith(
-          apiFetchProviderStatus: ApiStatus.success,
-          topupGameProviders: data.topupgame,
-          voucherGameProviders: data.vouchergame,
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProviderStatus: ApiStatus.success,
+            topupGameProviders: data.topupgame,
+            voucherGameProviders: data.vouchergame,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          apiFetchProviderStatus: ApiStatus.failure,
-          apiFetchProviderMessage: 'Data provider topup game kosong',
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProviderStatus: ApiStatus.failure,
+            apiFetchProviderMessage: 'Data provider topup game kosong',
+          ),
+        );
       }
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION FETCH PROVIDERS: ${e.message}");
       showWarningMessage(e.message);
-      emit(state.copyWith(
-        apiFetchProviderStatus: ApiStatus.failure,
-        apiFetchProviderMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          apiFetchProviderStatus: ApiStatus.failure,
+          apiFetchProviderMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -195,11 +228,13 @@ class TopupGameProvider extends Cubit<TopupGameState> {
     if (state.selectedProvider.idprovider == 0) return;
     if (state.apiFetchProductStatus.isLoading) return;
 
-    emit(state.copyWith(
-      apiFetchProductStatus: ApiStatus.loading,
-      apiFetchProductMessage: '',
-      products: [],
-    ));
+    emit(
+      state.copyWith(
+        apiFetchProductStatus: ApiStatus.loading,
+        apiFetchProductMessage: '',
+        products: [],
+      ),
+    );
 
     try {
       final result = await _produkService.getTopupGameGuestProducts(
@@ -208,36 +243,48 @@ class TopupGameProvider extends Cubit<TopupGameState> {
       final data = result.data;
 
       if (data != null) {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.success,
-          products: data.productList,
-          isCekAkun: data.productList.any((p) => p.kodeprodukcek.isNotEmpty),
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.success,
+            products: data.productList,
+            isCekAkun: data.productList.any((p) => p.kodeprodukcek.isNotEmpty),
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.failure,
-          apiFetchProductMessage: 'Data produk topup game kosong',
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.failure,
+            apiFetchProductMessage: 'Data produk topup game kosong',
+          ),
+        );
       }
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION FETCH PRODUCTS: ${e.message}");
       showWarningMessage(e.message);
-      emit(state.copyWith(
-        apiFetchProductStatus: ApiStatus.failure,
-        apiFetchProductMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          apiFetchProductStatus: ApiStatus.failure,
+          apiFetchProductMessage: e.message,
+        ),
+      );
     }
   }
 
   // ============================================================
   // SETTERS
   // ============================================================
-  void setSelectedProvider(ProviderModel provider, {String? titleForm, String? hintForm}) {
-    emit(state.copyWith(
-      selectedProvider: provider,
-      titleForm: titleForm,
-      hintForm: hintForm,
-    ));
+  void setSelectedProvider(
+    ProviderModel provider, {
+    String? titleForm,
+    String? hintForm,
+  }) {
+    emit(
+      state.copyWith(
+        selectedProvider: provider,
+        titleForm: titleForm,
+        hintForm: hintForm,
+      ),
+    );
     fetchProducts();
   }
 
@@ -251,17 +298,27 @@ class TopupGameProvider extends Cubit<TopupGameState> {
 
   void setSearchProduct(String search, {bool updateController = false}) {
     emit(state.copyWith(searchProduct: search));
-    if (updateController) _updateController(state.searchProductController, search);
+    if (updateController)
+      _updateController(state.searchProductController, search);
   }
 
   void setSearchProvider(String search, {bool updateController = false}) {
     emit(state.copyWith(searchProvider: search));
-    if (updateController) _updateController(state.searchProviderController, search);
+    if (updateController)
+      _updateController(state.searchProviderController, search);
   }
 
   void setTujuan(String value, {bool updateController = false}) {
-    emit(state.copyWith(tujuan: value));
-    if (updateController) _updateController(state.tujuanController, value);
+    var val = value.trim();
+
+    if (state.selectedProvider.idprovider != 0) {
+      val = state.selectedProvider.inputTipe.filter(val);
+    }
+
+    emit(state.copyWith(tujuan: val));
+    if (updateController) _updateController(state.tujuanController, val);
+
+    validateTujuan(provider: state.selectedProvider);
   }
 
   void _updateController(TextEditingController? controller, String value) {
@@ -275,28 +332,36 @@ class TopupGameProvider extends Cubit<TopupGameState> {
   // RESET METHODS
   // ============================================================
   void resetState() {
-    emit(TopupGameState(
-      tujuanFocusNode: FocusNode(),
-      tujuanController: TextEditingController(),
-      searchProviderController: TextEditingController(),
-      searchProductController: TextEditingController(),
-    ));
+    emit(
+      TopupGameState(
+        tujuanFocusNode: FocusNode(),
+        tujuanController: TextEditingController(),
+        searchProviderController: TextEditingController(),
+        searchProductController: TextEditingController(),
+      ),
+    );
   }
 
   void resetProduct() {
-    emit(state.copyWith(
-      apiFetchProductStatus: ApiStatus.initial,
-      apiFetchProductMessage: '',
-      products: [],
-      selectedProvider: DEFAULT_PROVIDER,
-      selectedProduct: DEFAULT_PRODUCT,
-      sortProduct: SortProductBy.hargaTerendah,
-      searchProduct: '',
-      searchProductController: TextEditingController(),
-      isCekAkun: false,
-      titleForm: 'ID Game',
-      hintForm: 'Contoh : 123XXXXXXX',
-    ));
+    emit(
+      state.copyWith(
+        apiFetchProductStatus: ApiStatus.initial,
+        apiFetchProductMessage: '',
+        products: [],
+        selectedProvider: DEFAULT_PROVIDER,
+        selectedProduct: DEFAULT_PRODUCT,
+        sortProduct: SortProductBy.hargaTerendah,
+        searchProduct: '',
+        searchProductController: TextEditingController(),
+        isCekAkun: false,
+        titleForm: 'ID Game',
+        hintForm: 'Contoh : 123XXXXXXX',
+        tujuan: '',
+        tujuanController: TextEditingController(),
+        tujuanHasError: false,
+        tujuanErrorMessage: '',
+      ),
+    );
   }
 
   // ============================================================
@@ -306,10 +371,12 @@ class TopupGameProvider extends Cubit<TopupGameState> {
     final selectedProvider = provider ?? state.selectedProvider;
     final error = _validateTujuanValue(state.tujuan.trim(), selectedProvider);
 
-    emit(state.copyWith(
-      tujuanHasError: error != null,
-      tujuanErrorMessage: error ?? '',
-    ));
+    emit(
+      state.copyWith(
+        tujuanHasError: error != null,
+        tujuanErrorMessage: error ?? '',
+      ),
+    );
 
     return error == null;
   }
@@ -325,13 +392,16 @@ class TopupGameProvider extends Cubit<TopupGameState> {
     if (provider.idprovider == 0) return null;
 
     // Validasi panjang
-    if (tujuan.length < provider.mintujuan || tujuan.length > provider.maxtujuan) {
+    if (tujuan.length < provider.mintujuan ||
+        tujuan.length > provider.maxtujuan) {
       return 'Panjang tujuan harus antara ${provider.mintujuan} hingga ${provider.maxtujuan} karakter';
     }
 
     // Validasi prefix
     final isValidPrefix = provider.prefixList.any((prefix) {
-      final maxRange = tujuan.length < prefix.length ? tujuan.length : prefix.length;
+      final maxRange = tujuan.length < prefix.length
+          ? tujuan.length
+          : prefix.length;
       return prefix.startsWith(tujuan.substring(0, maxRange));
     });
 

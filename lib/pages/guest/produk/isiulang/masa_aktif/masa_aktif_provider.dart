@@ -1,5 +1,6 @@
 import 'package:dmpku/core/apiconfig/server_exception.dart';
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/model/provider_response.dart';
@@ -219,8 +220,12 @@ class MasaAktifProvider extends Cubit<MasaAktifState> {
   }
 
   void setTujuan(String value, {bool updateController = false}) {
-    emit(state.copyWith(tujuan: value));
-    if (updateController) _updateController(state.tujuanController, value);
+    var val = TipeInput.numericOnly.filter(value);
+
+    emit(state.copyWith(tujuan: val));
+    if (updateController) _updateController(state.tujuanController, val);
+
+    validateTujuan();
   }
 
   void _updateController(TextEditingController? controller, String value) {

@@ -194,8 +194,14 @@ class MemberCekStatusVoucherProvider extends Cubit<MemberCekStatusVoucherState> 
   }
 
   void setTujuan(String value, {bool updateController = false}) {
-    emit(state.copyWith(tujuan: value));
-    if (updateController) _updateController(state.tujuanController, value);
+    var val = value.trim();
+
+    if (state.selectedProduct.idproduk != 0) {
+      val = state.selectedProduct.inputTipe.filter(val);
+    }
+
+    emit(state.copyWith(tujuan: val));
+    if (updateController) _updateController(state.tujuanController, val);
 
     validateTujuan();
   }

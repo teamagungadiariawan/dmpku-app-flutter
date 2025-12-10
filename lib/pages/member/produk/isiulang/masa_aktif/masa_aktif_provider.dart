@@ -262,10 +262,16 @@ class MemberMasaAktifProvider extends Cubit<MemberMasaAktifState> {
   }
 
   void setTujuan(String value, {bool updateController = false}) {
-    emit(state.copyWith(tujuan: value));
-    if (updateController) _updateController(state.tujuanController, value);
+    var val = value.trim();
 
-    validateTujuan();
+    if (state.selectedProvider.idprovider != 0) {
+      val = state.selectedProvider.inputTipe.filter(val);
+    }
+
+    emit(state.copyWith(tujuan: val));
+    if (updateController) _updateController(state.tujuanController, val);
+
+    validateTujuan(provider: state.selectedProvider);
   }
 
   void _updateController(TextEditingController? controller, String value) {
