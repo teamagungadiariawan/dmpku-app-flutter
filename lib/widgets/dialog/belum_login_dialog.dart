@@ -1,8 +1,10 @@
+import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/pages/auth/login/request_otp_login_page.dart';
 import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/dialog/top_divider_sheet.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +93,9 @@ class BelumLoginDialog extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       variant: ButtonVariant.primary,
                       text: "Login",
-                      onPressed: () {},
+                      onPressed: () {
+                        pushNamed(RequestOtpLoginPage.routeName);
+                      },
                     ),
                   ),
                   Gap(10),
