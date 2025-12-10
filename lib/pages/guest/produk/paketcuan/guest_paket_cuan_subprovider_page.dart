@@ -103,7 +103,11 @@ class _GuestPaketCuanSubProviderPageState
           showFavoritButton: true,
           isGuest: true,
           suffixWidget: CustomPopupInputTujuan(
-            onResult: (val) {},
+            onResult: (val) {
+              getPaketCuanProvider(
+                context,
+              ).setTujuan(val, updateController: true);
+            },
             isContact: true,
             isTempel: true,
             isVoice: true,
@@ -119,7 +123,8 @@ class _GuestPaketCuanSubProviderPageState
       buildWhen: (previous, current) =>
           previous.subProviders != current.subProviders ||
           previous.tujuan != current.tujuan ||
-          previous.apiFetchSubProviderStatus != current.apiFetchSubProviderStatus,
+          previous.apiFetchSubProviderStatus !=
+              current.apiFetchSubProviderStatus,
       builder: (context, state) {
         return RefreshableList(
           loadingWidget: CardProviderListShimmer(itemCount: 6),
@@ -132,9 +137,7 @@ class _GuestPaketCuanSubProviderPageState
               subtitle: product.deskripsiproduk,
               imageUrl: product.imgproduk,
               onPressed: () {
-                var valid = getPaketCuanProvider(
-                  context,
-                ).validateTujuan();
+                var valid = getPaketCuanProvider(context).validateTujuan();
 
                 if (!valid) {
                   shakeKey.currentState?.shake();
