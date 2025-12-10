@@ -138,7 +138,7 @@ class _GuestPaketStreamingProdukPageState
           hasError: state.tujuanHasError,
           errorMessage: state.tujuanErrorMessage,
           isEditable: true,
-          hintText: 'Contoh : 081XXXXXXXXX',
+          hintText: 'Contoh : 1234XXXXXXXXX',
           controller: state.tujuanController,
           focusNode: state.tujuanFocusNode,
           onChanged: (value) {
