@@ -122,7 +122,9 @@ class _GuestMasaAktifProviderPageState
           tipeInput: TipeInput.numericOnly,
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(
-            onResult: (val) {},
+            onResult: (val) {
+              getMasaAktifProvider(context).setTujuan(val, updateController: true);
+            },
             isTempel: true,
             isVoice: true,
             isContact: true,

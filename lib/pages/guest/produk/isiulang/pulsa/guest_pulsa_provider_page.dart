@@ -121,7 +121,9 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
           tipeInput: TipeInput.numericOnly,
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(
-            onResult: (val) {},
+            onResult: (val) {
+              getPulsaProvider(context).setTujuan(val, updateController: true);
+            },
             isTempel: true,
             isVoice: true,
             isContact: true,

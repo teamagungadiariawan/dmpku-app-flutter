@@ -122,7 +122,9 @@ class _GuestPaketNelponProviderPageState
           tipeInput: TipeInput.numericOnly,
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(
-            onResult: (val) {},
+            onResult: (val) {
+              getPaketNelponProvider(context).setTujuan(val, updateController: true);
+            },
             isTempel: true,
             isVoice: true,
             isContact: true,
