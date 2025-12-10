@@ -38,7 +38,7 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
   }
 
   Future<void> _onRefresh() async {
-    getPulsaProvider(context).fetchProviders();
+    getPulsaProvider(context).fetchProducts();
   }
 
   List<ProductModel> _filterProducts(
@@ -102,14 +102,19 @@ class _GuestPulsaProdukPageState extends State<GuestPulsaProdukPage> {
                 previous.tujuan != current.tujuan ||
                 previous.apiFetchProductStatus != current.apiFetchProductStatus,
             builder: (context, state) {
-              return ButtonCheckout(
-                isDisabled:
-                    state.selectedProduct.idproduk == 0 ||
-                    state.tujuanHasError ||
-                    state.tujuan.isEmpty ||
-                    state.apiFetchProductStatus.isLoading,
-                selectedProduct: state.selectedProduct,
-                onContinue: () => BelumLoginDialog.show(context),
+              final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
+              return Padding(
+                padding: EdgeInsets.only(bottom: bottomInset),
+                child: ButtonCheckout(
+                  isDisabled:
+                  state.selectedProduct.idproduk == 0 ||
+                      state.tujuanHasError ||
+                      state.tujuan.isEmpty ||
+                      state.apiFetchProductStatus.isLoading,
+                  selectedProduct: state.selectedProduct,
+                  onContinue: () => BelumLoginDialog.show(context),
+                ),
               );
             },
           ),

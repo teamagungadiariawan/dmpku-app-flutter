@@ -110,16 +110,12 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
                   padding: EdgeInsets.only(bottom: bottomInset),
                   child: ButtonCheckout(
                     isDisabled:
-                        state.selectedProduct.idproduk == 0 ||
+                    state.selectedProduct.idproduk == 0 ||
                         state.tujuanHasError ||
                         state.tujuan.isEmpty ||
                         state.apiFetchProductStatus.isLoading,
                     selectedProduct: state.selectedProduct,
-                    onContinue: () {
-                      // pushNamed(
-                      //   MemberTokenPlnKonfirmasiTransaksiPage.routeName,
-                      // );
-                    },
+                    onContinue: () {},
                   ),
                 );
               },
@@ -183,7 +179,6 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
               isGanti: false,
               isImgLocal: true,
               onPressed: () {
-                closePage();
               },
             ),
           ],

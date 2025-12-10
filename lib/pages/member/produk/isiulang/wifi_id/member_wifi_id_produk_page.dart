@@ -102,14 +102,19 @@ class _MemberWifiIdProdukPageState extends State<MemberWifiIdProdukPage> {
                 previous.tujuan != current.tujuan ||
                 previous.apiFetchProductStatus != current.apiFetchProductStatus,
             builder: (context, state) {
-              return ButtonCheckout(
-                isDisabled:
-                    state.selectedProduct.idproduk == 0 ||
-                    state.tujuanHasError ||
-                    state.tujuan.isEmpty ||
-                    state.apiFetchProductStatus.isLoading,
-                selectedProduct: state.selectedProduct,
-                onContinue: () => BelumLoginDialog.show(context),
+              final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
+              return Padding(
+                padding: EdgeInsets.only(bottom: bottomInset),
+                child: ButtonCheckout(
+                  isDisabled:
+                  state.selectedProduct.idproduk == 0 ||
+                      state.tujuanHasError ||
+                      state.tujuan.isEmpty ||
+                      state.apiFetchProductStatus.isLoading,
+                  selectedProduct: state.selectedProduct,
+                  onContinue: () {},
+                ),
               );
             },
           ),

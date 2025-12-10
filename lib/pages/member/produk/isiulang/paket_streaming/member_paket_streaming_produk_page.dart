@@ -104,20 +104,19 @@ class _MemberPaketStreamingProdukPageState
                     previous.apiFetchProductStatus !=
                         current.apiFetchProductStatus,
                 builder: (context, state) {
-                  return ButtonCheckout(
-                    isDisabled:
-                        state.selectedProduct.idproduk == 0 ||
-                        state.tujuanHasError ||
-                        state.tujuan.isEmpty ||
-                        state.apiFetchProductStatus.isLoading,
-                    selectedProduct: state.selectedProduct,
-                    onContinue: () {
-                      if (state.tujuan.isEmpty) {
-                        shakeKey.currentState?.shake();
-                        return;
-                      }
+                  final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-                    },
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: bottomInset),
+                    child: ButtonCheckout(
+                      isDisabled:
+                      state.selectedProduct.idproduk == 0 ||
+                          state.tujuanHasError ||
+                          state.tujuan.isEmpty ||
+                          state.apiFetchProductStatus.isLoading,
+                      selectedProduct: state.selectedProduct,
+                      onContinue: () {},
+                    ),
                   );
                 },
               ),

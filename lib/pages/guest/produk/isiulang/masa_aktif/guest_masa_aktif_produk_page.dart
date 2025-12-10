@@ -39,7 +39,7 @@ class _GuestMasaAktifProdukPageState extends State<GuestMasaAktifProdukPage> {
   }
 
   Future<void> _onRefresh() async {
-    getMasaAktifProvider(context).fetchProviders();
+    getMasaAktifProvider(context).fetchProducts();
   }
 
   List<ProductModel> _filterProducts(
@@ -103,14 +103,19 @@ class _GuestMasaAktifProdukPageState extends State<GuestMasaAktifProdukPage> {
                 previous.tujuan != current.tujuan ||
                 previous.apiFetchProductStatus != current.apiFetchProductStatus,
             builder: (context, state) {
-              return ButtonCheckout(
-                isDisabled:
-                    state.selectedProduct.idproduk == 0 ||
-                    state.tujuanHasError ||
-                    state.tujuan.isEmpty ||
-                    state.apiFetchProductStatus.isLoading,
-                selectedProduct: state.selectedProduct,
-                onContinue: () => BelumLoginDialog.show(context),
+              final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
+              return Padding(
+                padding: EdgeInsets.only(bottom: bottomInset),
+                child: ButtonCheckout(
+                  isDisabled:
+                  state.selectedProduct.idproduk == 0 ||
+                      state.tujuanHasError ||
+                      state.tujuan.isEmpty ||
+                      state.apiFetchProductStatus.isLoading,
+                  selectedProduct: state.selectedProduct,
+                  onContinue: () => BelumLoginDialog.show(context),
+                ),
               );
             },
           ),
@@ -130,7 +135,7 @@ class _GuestMasaAktifProdukPageState extends State<GuestMasaAktifProdukPage> {
           label: 'No. Tujuan',
           hasError: state.tujuanHasError,
           errorMessage: state.tujuanErrorMessage,
-          isEditable: true,
+          isEditable: false,
           hintText: 'Contoh : 081XXXXXXXXX',
           controller: state.tujuanController,
           focusNode: state.tujuanFocusNode,

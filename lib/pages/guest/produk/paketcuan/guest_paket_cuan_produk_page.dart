@@ -118,14 +118,19 @@ class _GuestPaketCuanProdukPageState extends State<GuestPaketCuanProdukPage> {
                 hargaproduk: state.selectedProduct.hargapaket,
               );
 
-              return ButtonCheckout(
-                isDisabled:
-                    prod.idproduk == 0 ||
-                    state.tujuanHasError ||
-                    state.tujuan.isEmpty ||
-                    state.apiFetchProductStatus.isLoading,
-                selectedProduct: prod,
-                onContinue: () => BelumLoginDialog.show(context),
+              final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
+              return Padding(
+                padding: EdgeInsets.only(bottom: bottomInset),
+                child: ButtonCheckout(
+                  isDisabled:
+                      prod.idproduk == 0 ||
+                      state.tujuanHasError ||
+                      state.tujuan.isEmpty ||
+                      state.apiFetchProductStatus.isLoading,
+                  selectedProduct: prod,
+                  onContinue: () => BelumLoginDialog.show(context),
+                ),
               );
             },
           ),
