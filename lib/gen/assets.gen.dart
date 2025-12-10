@@ -52,8 +52,19 @@ class $AssetsImgGen {
   /// File path: assets/img/bg-splash.png
   AssetGenImage get bgSplash => const AssetGenImage('assets/img/bg-splash.png');
 
+  /// File path: assets/img/border-bottom.png
+  AssetGenImage get borderBottom =>
+      const AssetGenImage('assets/img/border-bottom.png');
+
   /// Directory path: assets/img/bottom_nav
   $AssetsImgBottomNavGen get bottomNav => const $AssetsImgBottomNavGen();
+
+  /// File path: assets/img/ic-coin.png
+  AssetGenImage get icCoin => const AssetGenImage('assets/img/ic-coin.png');
+
+  /// File path: assets/img/ic-history.png
+  AssetGenImage get icHistory =>
+      const AssetGenImage('assets/img/ic-history.png');
 
   /// File path: assets/img/img-login.png
   AssetGenImage get imgLogin => const AssetGenImage('assets/img/img-login.png');
@@ -84,6 +95,9 @@ class $AssetsImgGen {
   /// Directory path: assets/img/menu_ppob
   $AssetsImgMenuPpobGen get menuPpob => const $AssetsImgMenuPpobGen();
 
+  /// Directory path: assets/img/official
+  $AssetsImgOfficialGen get official => const $AssetsImgOfficialGen();
+
   /// Directory path: assets/img/produk
   $AssetsImgProdukGen get produk => const $AssetsImgProdukGen();
 
@@ -94,6 +108,9 @@ class $AssetsImgGen {
   List<AssetGenImage> get values => [
     bgPattern,
     bgSplash,
+    borderBottom,
+    icCoin,
+    icHistory,
     imgLogin,
     indonesianFlag,
     lockVerifyOtp,
@@ -370,6 +387,53 @@ class $AssetsImgMenuPpobGen {
     iconTokenPertagas,
     iconTokenPgn,
     iconUangElektronik,
+  ];
+}
+
+class $AssetsImgOfficialGen {
+  const $AssetsImgOfficialGen();
+
+  /// File path: assets/img/official/banner-official.png
+  AssetGenImage get bannerOfficial =>
+      const AssetGenImage('assets/img/official/banner-official.png');
+
+  /// File path: assets/img/official/bimasakti.png
+  AssetGenImage get bimasakti =>
+      const AssetGenImage('assets/img/official/bimasakti.png');
+
+  /// File path: assets/img/official/logo-djp.png
+  AssetGenImage get logoDjp =>
+      const AssetGenImage('assets/img/official/logo-djp.png');
+
+  /// File path: assets/img/official/logo-kemenkumham.png
+  AssetGenImage get logoKemenkumham =>
+      const AssetGenImage('assets/img/official/logo-kemenkumham.png');
+
+  /// File path: assets/img/official/logo-komdigi.png
+  AssetGenImage get logoKomdigi =>
+      const AssetGenImage('assets/img/official/logo-komdigi.png');
+
+  /// File path: assets/img/official/logo-nib.png
+  AssetGenImage get logoNib =>
+      const AssetGenImage('assets/img/official/logo-nib.png');
+
+  /// File path: assets/img/official/nobu.png
+  AssetGenImage get nobu => const AssetGenImage('assets/img/official/nobu.png');
+
+  /// File path: assets/img/official/xendit.png
+  AssetGenImage get xendit =>
+      const AssetGenImage('assets/img/official/xendit.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+    bannerOfficial,
+    bimasakti,
+    logoDjp,
+    logoKemenkumham,
+    logoKomdigi,
+    logoNib,
+    nobu,
+    xendit,
   ];
 }
 

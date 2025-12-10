@@ -69,6 +69,8 @@ dependencies:
   qr_code_scanner_plus: ^2.0.14
   flutter_contacts: ^1.1.9+2
   speech_to_text: ^7.3.0
+  pinput: ^6.0.1
+  url_launcher: ^6.3.2
 
 
 
@@ -105,6 +107,7 @@ flutter:
     - assets/img/menu_isi_ulang/
     - assets/img/menu_penjualan/
     - assets/img/menu_ppob/
+    - assets/img/official/
     - assets/img/produk/
     - assets/img/profile/
 

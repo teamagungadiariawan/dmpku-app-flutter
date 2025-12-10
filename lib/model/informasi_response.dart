@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class Info {
   final String desc;
   final String icon;
@@ -46,7 +48,7 @@ class InformasiResponse {
     required this.status,
   });
 
-  factory InformasiResponse.fromJson(Map? json) {
+  factory InformasiResponse.fromJson(dynamic json) {
     var infoResponse = InformasiResponse(
       chanel: [],
       cs: [],

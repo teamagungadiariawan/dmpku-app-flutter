@@ -14,6 +14,15 @@ class StorageKeys {
       "1pGJt7if468W8mMir/Wj9/feMG0SF5U4acjtv68c3ywtMnjuAvKzXtaJLNfI3PzP";
   static const kodeMember =
       "ua1iuyCWdtULZ9/qa+v3i5sB8mJfPiQB7ZCaxDOf7EHJfPD9g8hDVQ4Qj0eXAwNz";
+
+
+  static const wacs = "wacs_key";
+  static const channelwa =
+      "channelwa_key";
+  static const callcenter =
+      "callcenter_key";
+  static const playstore =
+      "playstore_key";
 }
 
 class SecureStorageHelper {
@@ -69,6 +78,28 @@ class SecureStorageHelper {
   Future<String?> getKodeMember() => read(StorageKeys.kodeMember);
 
   Future<void> clearKodeMember() => delete(StorageKeys.kodeMember);
+
+
+  // wacs
+  Future<void> saveWacs(String wacs) => write(StorageKeys.wacs, wacs);
+  Future<String?> getWacs() => read(StorageKeys.wacs);
+  Future<void> clearWacs() => delete(StorageKeys.wacs);
+
+  // channelwa
+  Future<void> saveChannelWa(String channelwa) => write(StorageKeys.channelwa, channelwa);
+  Future<String?> getChannelWa() => read(StorageKeys.channelwa);
+  Future<void> clearChannelWa() => delete(StorageKeys.channelwa);
+
+
+  // callcenter
+  Future<void> saveCallCenter(String callcenter) => write(StorageKeys.callcenter, callcenter);
+  Future<String?> getCallCenter() => read(StorageKeys.callcenter);
+  Future<void> clearCallCenter() => delete(StorageKeys.callcenter);
+
+  // playstore
+  Future<void> savePlayStore(String playstore) => write(StorageKeys.playstore, playstore);
+  Future<String?> getPlayStore() => read(StorageKeys.playstore);
+  Future<void> clearPlayStore() => delete(StorageKeys.playstore);
 }
 
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9

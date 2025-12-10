@@ -8,6 +8,15 @@ extension DateTimeExtension on DateTime {
   Duration get durationFromNow => DateTime.now().difference(this);
 
   Duration get durationUntilNow => difference(DateTime.now());
+
+  String formatReg() {
+    return '${day.toString().padLeft(2, '0')}-'
+        '${month.toString().padLeft(2, '0')}-'
+        '${year} '
+        '${hour.toString().padLeft(2, '0')}:'
+        '${minute.toString().padLeft(2, '0')}:'
+        '${second.toString().padLeft(2, '0')}';
+  }
 }
 
 class DateHelper {
@@ -105,5 +114,15 @@ class DateHelper {
     if (seconds > 0 || parts.isEmpty) parts.add('${seconds}d');
 
     return parts.join(' ');
+  }
+
+  // Format DateTime ke string "dd-MM-yyyy HH:mm:ss"
+  static String formatDateTime(DateTime dt) {
+    return '${dt.day.toString().padLeft(2, '0')}-'
+        '${dt.month.toString().padLeft(2, '0')}-'
+        '${dt.year} '
+        '${dt.hour.toString().padLeft(2, '0')}:'
+        '${dt.minute.toString().padLeft(2, '0')}:'
+        '${dt.second.toString().padLeft(2, '0')}';
   }
 }

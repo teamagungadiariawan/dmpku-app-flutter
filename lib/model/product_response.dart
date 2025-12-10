@@ -1,5 +1,6 @@
 // dart
 import 'package:dmpku/core/enums/tipe_input.dart';
+import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:flutter/material.dart' show Icons, IconData;
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 
@@ -131,6 +132,8 @@ class ProductModel {
   bool get isGangguan => statusproduk == 0;
 
   TipeInput get inputTipe => TipeInput.fromValue(tipeinput.toString());
+
+  String get hargaFormmated => ToCurrency(hargaproduk.toString());
 
   @override
   String toString() {
