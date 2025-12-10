@@ -299,7 +299,7 @@ class ProdukService {
     }
   }
 
-  Future<BaseResponse<ListProductCuanResponse>> getPaketCuanMemberMemberProducts({
+  Future<BaseResponse<ListProductCuanResponse>> getPaketCuanMemberProducts({
     required String kodeproduk,
     required String tujuan,
   }) async {

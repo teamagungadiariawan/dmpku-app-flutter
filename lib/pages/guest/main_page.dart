@@ -1,6 +1,8 @@
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/pages/guest/belum_login_page.dart';
 import 'package:dmpku/pages/guest/dashboard/dashboard_page.dart';
+import 'package:dmpku/pages/guest/official/official_page.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -24,13 +26,13 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const DashboardPage(),
     // Placeholder for Riwayat
-    const Center(child: Text("Riwayat Page")),
+    const BelumLoginPage(title: "Riwayat"),
     // Placeholder for PROMO!
-    const Center(child: Text("Promo Page")),
+    const BelumLoginPage(title: "PROMO!"),
     // Placeholder for Official
-    const Center(child: Text("Official Page")),
+    const OfficialPage(),
     // Placeholder for Akun
-    const Center(child: Text("Akun Page")),
+    const BelumLoginPage(title: "Akun"),
   ];
 
   @override
@@ -40,7 +42,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _onItemTapped(int index) {
-    if (index != 0) {
+    if (index != 0 && index != 3) {
       BelumLoginDialog.show(context);
       return;
     }

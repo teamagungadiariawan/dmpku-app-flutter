@@ -22,10 +22,21 @@ import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digita
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/cek_status_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/info_kartu/info_kartu_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/paket_streaming_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_tv/paket_tv_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/token_pln/token_pln_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/topup_game/topup_game_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_data/voucher_data_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
@@ -53,16 +64,16 @@ void main() {
   final servicesFuture = ServiceInitializer.init();
   final textScaleProvider = TextScaleProvider();
   final textScaleFuture = textScaleProvider.init();
-  // final informasiFuture = InformasiService().getInformasi();
+  final informasiFuture = InformasiService().getInformasi();
   final tokenFuture = SecureStorageHelper.instance.getToken();
 
   Future.wait([
     servicesFuture,
     textScaleFuture,
-    // informasiFuture,
+    informasiFuture,
     tokenFuture,
   ]).then((results) {
-    final token = (results[2] as String?) ?? '';
+    final token = (results[3] as String?) ?? '';
     runApp(
       MultiBlocProvider(
         providers: [
@@ -84,11 +95,23 @@ void main() {
           BlocProvider(create: (_) => VoucherDigitalProvider()),
           BlocProvider(create: (_) => WifiIdProvider()),
 
-          BlocProvider(create: (_) => MemberMasaAktifProvider()),
           BlocProvider(create: (_) => MemberProvider()),
+
+          BlocProvider(create: (_) => MemberAktivasiPerdanaProvider()),
+          BlocProvider(create: (_) => MemberAktivasiVoucherProvider()),
+          BlocProvider(create: (_) => MemberCekStatusVoucherProvider()),
+          BlocProvider(create: (_) => MemberInfoKartuProvider()),
+          BlocProvider(create: (_) => MemberMasaAktifProvider()),
           BlocProvider(create: (_) => MemberPaketDataProvider()),
           BlocProvider(create: (_) => MemberPaketNelponProvider()),
+          BlocProvider(create: (_) => MemberPaketStreamingProvider()),
+          BlocProvider(create: (_) => MemberPaketTvProvider()),
           BlocProvider(create: (_) => MemberPulsaProvider()),
+          BlocProvider(create: (_) => MemberTokenPlnProvider()),
+          BlocProvider(create: (_) => MemberTopupGameProvider()),
+          BlocProvider(create: (_) => MemberVoucherDataProvider()),
+          BlocProvider(create: (_) => MemberVoucherDigitalProvider()),
+          BlocProvider(create: (_) => MemberWifiIdProvider()),
         ],
         child: MyApp(textScaleProvider: textScaleProvider, token: token),
       ),

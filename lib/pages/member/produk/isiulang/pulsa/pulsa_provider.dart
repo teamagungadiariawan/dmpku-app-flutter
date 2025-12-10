@@ -1,6 +1,10 @@
 import 'package:dmpku/core/apiconfig/server_exception.dart';
+import 'package:dmpku/core/helpers/date_helper.dart';
+import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
+import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/model/product_response.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/service/member/product_service.dart';
 
 // ============================================================
@@ -35,6 +39,11 @@ class MemberPulsaState extends Equatable {
   final bool tujuanHasError;
   final String tujuanErrorMessage;
 
+  // Konfirmasi State
+  final int totalPotongStok;
+  final KeyValueResponse detailTransaksi;
+  final KeyValueResponse detailPotongStok;
+
   const MemberPulsaState({
     // Provider API
     this.apiFetchProviderStatus = ApiStatus.initial,
@@ -57,6 +66,11 @@ class MemberPulsaState extends Equatable {
     this.tujuanController,
     this.tujuanHasError = false,
     this.tujuanErrorMessage = '',
+
+    // Konfirmasi State
+    this.totalPotongStok = 0,
+    this.detailTransaksi = DEFAULT_KEY_VALUE_RESPONSE,
+    this.detailPotongStok = DEFAULT_KEY_VALUE_RESPONSE,
   });
 
   MemberPulsaState copyWith({
@@ -81,6 +95,11 @@ class MemberPulsaState extends Equatable {
     TextEditingController? tujuanController,
     bool? tujuanHasError,
     String? tujuanErrorMessage,
+
+    // Konfirmasi State
+    int? totalPotongStok,
+    KeyValueResponse? detailTransaksi,
+    KeyValueResponse? detailPotongStok,
   }) {
     return MemberPulsaState(
       // Provider API
@@ -109,6 +128,11 @@ class MemberPulsaState extends Equatable {
       tujuanController: tujuanController ?? this.tujuanController,
       tujuanHasError: tujuanHasError ?? this.tujuanHasError,
       tujuanErrorMessage: tujuanErrorMessage ?? this.tujuanErrorMessage,
+
+      // Konfirmasi State
+      totalPotongStok: totalPotongStok ?? this.totalPotongStok,
+      detailTransaksi: detailTransaksi ?? this.detailTransaksi,
+      detailPotongStok: detailPotongStok ?? this.detailPotongStok,
     );
   }
 
@@ -133,6 +157,10 @@ class MemberPulsaState extends Equatable {
     tujuanController,
     tujuanHasError,
     tujuanErrorMessage,
+    // Konfirmasi State
+    totalPotongStok,
+    detailTransaksi,
+    detailPotongStok,
   ];
 }
 
@@ -207,11 +235,13 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
     if (state.selectedProvider.idprovider == 0) return;
     if (state.apiFetchProductStatus.isLoading) return;
 
-    emit(state.copyWith(
-      apiFetchProductStatus: ApiStatus.loading,
-      apiFetchProductMessage: '',
-      products: [],
-    ));
+    emit(
+      state.copyWith(
+        apiFetchProductStatus: ApiStatus.loading,
+        apiFetchProductMessage: '',
+        products: [],
+      ),
+    );
 
     try {
       final result = await _produkService.getPulsaMemberProducts(
@@ -220,23 +250,29 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
       final data = result.data;
 
       if (data != null) {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.success,
-          products: data.productList,
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.success,
+            products: data.productList,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.failure,
-          apiFetchProductMessage: 'Data produk pulsa kosong',
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.failure,
+            apiFetchProductMessage: 'Data produk pulsa kosong',
+          ),
+        );
       }
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION FETCH PRODUCTS: ${e.message}");
       showWarningMessage(e.message);
-      emit(state.copyWith(
-        apiFetchProductStatus: ApiStatus.failure,
-        apiFetchProductMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          apiFetchProductStatus: ApiStatus.failure,
+          apiFetchProductMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -258,7 +294,8 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
 
   void setSearchProduct(String search, {bool updateController = false}) {
     emit(state.copyWith(searchProduct: search));
-    if (updateController) _updateController(state.searchProductController, search);
+    if (updateController)
+      _updateController(state.searchProductController, search);
   }
 
   void setTujuan(String value, {bool updateController = false}) {
@@ -273,8 +310,45 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
     controller?.selection = TextSelection.fromPosition(
       TextPosition(offset: value.length),
     );
-  } // ============================================================
+  }
 
+  void setNewKonfirmasi() async {
+    var valid = validateTujuan(provider: state.selectedProvider);
+    if (!valid) return;
+
+    var dtlTransaksi = KeyValueResponse(items: []);
+
+    dtlTransaksi.addItem(
+      KeyValue(key: "Waktu", value: DateTime.now().formatReg()),
+    );
+    dtlTransaksi.addItem(
+      KeyValue(key: "Nama Produk", value: state.selectedProduct.namaproduk),
+    );
+    dtlTransaksi.addItem(
+      KeyValue(key: "Kode Produk", value: state.selectedProduct.kodeproduk),
+    );
+    dtlTransaksi.addItem(
+      KeyValue(key: "No. Tujuan", value: state.tujuan.trim()),
+    );
+
+    var dtlPotongStok = KeyValueResponse(items: []);
+    dtlPotongStok.addItem(
+      KeyValue(key: "Harga", value: state.selectedProduct.hargaFormmated),
+    );
+    dtlPotongStok.addItem(KeyValue(key: "Biaya Admin", value: "0"));
+
+    emit(
+      state.copyWith(
+        totalPotongStok: state.selectedProduct.hargaproduk,
+        detailTransaksi: dtlTransaksi,
+        detailPotongStok: dtlPotongStok,
+      ),
+    );
+
+    pushNamed(MemberPulsaKonfirmasiTransaksiPage.routeName);
+  }
+
+  // ============================================================
   // RESET METHODS
   // ============================================================
   void resetState() {
@@ -282,6 +356,32 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
       MemberPulsaState(
         tujuanFocusNode: FocusNode(),
         tujuanController: TextEditingController(),
+        searchProductController: TextEditingController(),
+      ),
+    );
+  }
+
+  void resetProduct() {
+    emit(
+      state.copyWith(
+        apiFetchProductStatus: ApiStatus.initial,
+        apiFetchProductMessage: '',
+        products: [],
+        selectedProvider: DEFAULT_PROVIDER,
+        selectedProduct: DEFAULT_PRODUCT,
+        sortProduct: SortProductBy.hargaTerendah,
+        searchProduct: '',
+        searchProductController: TextEditingController(),
+      ),
+    );
+  }
+
+  void resetKonfirmasi() {
+    emit(
+      state.copyWith(
+        totalPotongStok: 0,
+        detailTransaksi: DEFAULT_KEY_VALUE_RESPONSE,
+        detailPotongStok: DEFAULT_KEY_VALUE_RESPONSE,
       ),
     );
   }
@@ -302,20 +402,6 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
 
     return error == null;
   }
-
-  void resetProduct() {
-    emit(state.copyWith(
-      apiFetchProductStatus: ApiStatus.initial,
-      apiFetchProductMessage: '',
-      products: [],
-      selectedProvider: DEFAULT_PROVIDER,
-      selectedProduct: DEFAULT_PRODUCT,
-      sortProduct: SortProductBy.hargaTerendah,
-      searchProduct: '',
-      searchProductController: TextEditingController(),
-    ));
-  }
-
 
   // ============================================================
   // PRIVATE VALIDATION HELPER

@@ -9,12 +9,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final double height;
   final VoidCallback? onBackButtonPressed;
+  final bool showBackButton;
 
   const CustomAppBar({
     super.key,
     required this.title,
     this.height = 80,
     this.onBackButtonPressed,
+    this.showBackButton = true,
   });
 
   @override
@@ -36,7 +38,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Icon(LucideIcons.chevronLeft600, color: Colors.white, size: 18),
+            if (showBackButton)
+              Icon(LucideIcons.arrowLeft, size: 24, color: Colors.white),
             Gap(5),
             Text(
               title,

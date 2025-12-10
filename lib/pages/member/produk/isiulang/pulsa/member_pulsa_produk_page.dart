@@ -4,7 +4,8 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';import 'package:dmpku/widgets/card_input_tujuan.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
@@ -95,24 +96,28 @@ class _MemberPulsaProdukPageState extends State<MemberPulsaProdukPage> {
               ],
             ),
           ),
-          bottomNavigationBar: BlocBuilder<MemberPulsaProvider, MemberPulsaState>(
-            buildWhen: (previous, current) =>
-                previous.selectedProduct != current.selectedProduct ||
-                previous.tujuanHasError != current.tujuanHasError ||
-                previous.tujuan != current.tujuan ||
-                previous.apiFetchProductStatus != current.apiFetchProductStatus,
-            builder: (context, state) {
-              return ButtonCheckout(
-                isDisabled:
-                    state.selectedProduct.idproduk == 0 ||
-                    state.tujuanHasError ||
-                    state.tujuan.isEmpty ||
-                    state.apiFetchProductStatus.isLoading,
-                selectedProduct: state.selectedProduct,
-                onContinue: () => BelumLoginDialog.show(context),
-              );
-            },
-          ),
+          bottomNavigationBar:
+              BlocBuilder<MemberPulsaProvider, MemberPulsaState>(
+                buildWhen: (previous, current) =>
+                    previous.selectedProduct != current.selectedProduct ||
+                    previous.tujuanHasError != current.tujuanHasError ||
+                    previous.tujuan != current.tujuan ||
+                    previous.apiFetchProductStatus !=
+                        current.apiFetchProductStatus,
+                builder: (context, state) {
+                  return ButtonCheckout(
+                    isDisabled:
+                        state.selectedProduct.idproduk == 0 ||
+                        state.tujuanHasError ||
+                        state.tujuan.isEmpty ||
+                        state.apiFetchProductStatus.isLoading,
+                    selectedProduct: state.selectedProduct,
+                    onContinue: () {
+                      getMemberPulsaProvider(context).setNewKonfirmasi();
+                    },
+                  );
+                },
+              ),
         ),
       ),
     );
@@ -137,11 +142,13 @@ class _MemberPulsaProdukPageState extends State<MemberPulsaProdukPage> {
             getMemberPulsaProvider(context).setTujuan(value);
           },
           onClear: () {
-            getMemberPulsaProvider(context).setTujuan('', updateController: true);
+            getMemberPulsaProvider(
+              context,
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
-          isGuest : true,
+          isGuest: true,
           tipeInput: TipeInput.numericOnly,
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(

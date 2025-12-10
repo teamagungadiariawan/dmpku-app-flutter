@@ -4,8 +4,34 @@ import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_app_bar.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_header.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/cek_status_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/member_cek_status_voucher_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/info_kartu/info_kartu_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/info_kartu/member_info_kartu_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/member_masa_aktif_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/member_paket_data_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/member_paket_streaming_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/paket_streaming_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_tv/member_paket_tv_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_tv/paket_tv_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/token_pln/member_token_pln_produk_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/topup_game/topup_game_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_data/member_voucher_data_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_data/voucher_data_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/wifi_id/member_wifi_id_produk_page.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/beranda/menu_section.dart';
 import 'package:dmpku/widgets/beranda/paket_cuan_banner.dart';
@@ -78,7 +104,8 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
                   SliverToBoxAdapter(
                     child: MenuSection(
                       title: 'Isi Ulang',
-                      subtitle: 'Isi Ulang Produk Digital sesuai kebutuhan Anda',
+                      subtitle:
+                          'Isi Ulang Produk Digital sesuai kebutuhan Anda',
                       menus: _isiUlangMenus,
                     ),
                   ),
@@ -94,15 +121,13 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
                       child: MenuSection(
                         title: 'Top Up E-Wallet & Bayar Tagihan',
                         subtitle:
-                        'Top Up E-Wallet dan Bayar Tagihan secara mudah dan cepat',
+                            'Top Up E-Wallet dan Bayar Tagihan secara mudah dan cepat',
                         menus: _ppobMenus,
                       ),
                     ),
                   ),
                   // Extra space at bottom
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: 24),
-                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
                 ],
               ),
             ),
@@ -122,148 +147,189 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
   // ============================================================
 
   List<MenuData> get _salesMenus => [
-    MenuData('Kasir', Assets.img.menuPenjualan.icKasir.provider()),
-    MenuData('Catatan', Assets.img.menuPenjualan.icCatatan.provider()),
-    MenuData('Kalkulator', Assets.img.menuPenjualan.icKalkulator.provider()),
-    MenuData('Favorit', Assets.img.menuPenjualan.icFavorit.provider()),
-    MenuData('Banner', Assets.img.menuPenjualan.icBanner.provider()),
-  ];
+        MenuData('Kasir', Assets.img.menuPenjualan.icKasir.provider()),
+        MenuData('Catatan', Assets.img.menuPenjualan.icCatatan.provider()),
+        MenuData(
+            'Kalkulator', Assets.img.menuPenjualan.icKalkulator.provider()),
+        MenuData('Favorit', Assets.img.menuPenjualan.icFavorit.provider()),
+        MenuData('Banner', Assets.img.menuPenjualan.icBanner.provider()),
+      ];
 
   List<MenuData> get _isiUlangMenus => [
-    MenuData(
-      "Pulsa",
-      Assets.img.menuIsiUlang.iconPulsa.provider(),
-      onTap: () {
-        pushNamed(MemberPulsaProviderPage.routeName);
-        getMemberPulsaProvider(context).fetchProviders();
-      },
-    ),
-    MenuData(
-      "Paket Data",
-      Assets.img.menuIsiUlang.iconPaketData.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Paket SMS & Telepon",
-      Assets.img.menuIsiUlang.iconPaketSmsTelepon.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Masa Aktif",
-      Assets.img.menuIsiUlang.iconMasaAktif.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Topup Game",
-      Assets.img.menuIsiUlang.iconTopupGame.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Token PLN",
-      Assets.img.menuIsiUlang.iconTokenPln.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Aktivasi Voucher",
-      Assets.img.menuIsiUlang.iconAktivasiVoucher.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Voucher Data",
-      Assets.img.menuIsiUlang.iconVoucherData.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Aktivasi Perdana",
-      Assets.img.menuIsiUlang.iconAktivasiPerdana.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Cek Status Voucher",
-      Assets.img.menuIsiUlang.iconCekStatusVoucher.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Info Kartu",
-      Assets.img.menuIsiUlang.iconInfoKartu.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Voucher Digital",
-      Assets.img.menuIsiUlang.iconVoucherDigital.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Paket TV",
-      Assets.img.menuIsiUlang.iconPaketTv.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Paket Streaming",
-      Assets.img.menuIsiUlang.iconPaketStreaming.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Wifi ID",
-      Assets.img.menuIsiUlang.iconWifiId.provider(),
-      onTap: () {},
-    ),
-  ];
+        MenuData(
+          "Pulsa",
+          Assets.img.menuIsiUlang.iconPulsa.provider(),
+          onTap: () {
+            pushNamed(MemberPulsaProviderPage.routeName);
+            getMemberPulsaProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Paket Data",
+          Assets.img.menuIsiUlang.iconPaketData.provider(),
+          onTap: () {
+            pushNamed(MemberPaketDataProviderPage.routeName);
+            getMemberPaketDataProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Paket SMS & Telepon",
+          Assets.img.menuIsiUlang.iconPaketSmsTelepon.provider(),
+          onTap: () {
+            pushNamed(MemberPaketNelponProviderPage.routeName);
+            getMemberPaketNelponProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Masa Aktif",
+          Assets.img.menuIsiUlang.iconMasaAktif.provider(),
+          onTap: () {
+            pushNamed(MemberMasaAktifProviderPage.routeName);
+            getMemberMasaAktifProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Topup Game",
+          Assets.img.menuIsiUlang.iconTopupGame.provider(),
+          onTap: () {
+            pushNamed(MemberTopupGameProviderPage.routeName);
+            getMemberTopupGameProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Token PLN",
+          Assets.img.menuIsiUlang.iconTokenPln.provider(),
+          onTap: () {
+            pushNamed(MemberTokenPlnProdukPage.routeName);
+          },
+        ),
+        MenuData(
+          "Aktivasi Voucher",
+          Assets.img.menuIsiUlang.iconAktivasiVoucher.provider(),
+          onTap: () {
+            pushNamed(MemberAktivasiVoucherProviderPage.routeName);
+            getMemberAktivasiVoucherProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Voucher Data",
+          Assets.img.menuIsiUlang.iconVoucherData.provider(),
+          onTap: () {
+            pushNamed(MemberVoucherDataProviderPage.routeName);
+            getMemberVoucherDataProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Aktivasi Perdana",
+          Assets.img.menuIsiUlang.iconAktivasiPerdana.provider(),
+          onTap: () {
+            pushNamed(MemberAktivasiPerdanaProviderPage.routeName);
+            getMemberAktivasiPerdanaProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Cek Status Voucher",
+          Assets.img.menuIsiUlang.iconCekStatusVoucher.provider(),
+          onTap: () {
+            pushNamed(MemberCekStatusVoucherProviderPage.routeName);
+            getMemberCekStatusVoucherProvider(context).fetchProducts();
+          },
+        ),
+        MenuData(
+          "Info Kartu",
+          Assets.img.menuIsiUlang.iconInfoKartu.provider(),
+          onTap: () {
+            pushNamed(MemberInfoKartuProviderPage.routeName);
+            getMemberInfoKartuProvider(context).fetchProducts();
+          },
+        ),
+        MenuData(
+          "Voucher Digital",
+          Assets.img.menuIsiUlang.iconVoucherDigital.provider(),
+          onTap: () {
+            pushNamed(MemberVoucherDigitalProviderPage.routeName);
+            getMemberVoucherDigitalProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Paket TV",
+          Assets.img.menuIsiUlang.iconPaketTv.provider(),
+          onTap: () {
+            pushNamed(MemberPaketTvProviderPage.routeName);
+            getMemberPaketTvProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Paket Streaming",
+          Assets.img.menuIsiUlang.iconPaketStreaming.provider(),
+          onTap: () {
+            pushNamed(MemberPaketStreamingProviderPage.routeName);
+            getMemberPaketStreamingProvider(context).fetchProviders();
+          },
+        ),
+        MenuData(
+          "Wifi ID",
+          Assets.img.menuIsiUlang.iconWifiId.provider(),
+          onTap: () {
+            pushNamed(MemberWifiIdProdukPage.routeName);
+          },
+        ),
+      ];
 
   List<MenuData> get _ppobMenus => [
-    MenuData(
-      "Dompet Digital",
-      Assets.img.menuPpob.iconDompetDigital.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Uang Elektronik",
-      Assets.img.menuPpob.iconUangElektronik.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "PLN Tagihan",
-      Assets.img.menuPpob.iconPlnTagihan.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "HP Pasca",
-      Assets.img.menuPpob.iconHpPasca.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "Tagihan Gas",
-      Assets.img.menuPpob.iconTagihanGas.provider(),
-      onTap: () {},
-    ),
-    MenuData("PDAM", Assets.img.menuPpob.iconPdam.provider(), onTap: () {}),
-    MenuData(
-      "Internet & TV",
-      Assets.img.menuPpob.iconInternetTv.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "BPJS Kesehatan",
-      Assets.img.menuPpob.iconBpjsKesehatan.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "BPJS TKN",
-      Assets.img.menuPpob.iconBpjsTkn.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "E-Commerce",
-      Assets.img.menuPpob.iconEcommerce.provider(),
-      onTap: () {},
-    ),
-    MenuData(
-      "E-SAMSAT",
-      Assets.img.menuPpob.iconEsamsat.provider(),
-      onTap: () {},
-    ),
-    MenuData("PBB", Assets.img.menuPpob.iconPbb.provider(), onTap: () {}),
-  ];
+        MenuData(
+          "Dompet Digital",
+          Assets.img.menuPpob.iconDompetDigital.provider(),
+          onTap: () {},
+        ),
+        MenuData(
+          "Uang Elektronik",
+          Assets.img.menuPpob.iconUangElektronik.provider(),
+          onTap: () {},
+        ),
+        MenuData(
+          "PLN Tagihan",
+          Assets.img.menuPpob.iconPlnTagihan.provider(),
+          onTap: () {},
+        ),
+        MenuData(
+          "HP Pasca",
+          Assets.img.menuPpob.iconHpPasca.provider(),
+          onTap: () {},
+        ),
+        MenuData(
+          "Tagihan Gas",
+          Assets.img.menuPpob.iconTagihanGas.provider(),
+          onTap: () {},
+        ),
+        MenuData("PDAM", Assets.img.menuPpob.iconPdam.provider(), onTap: () {}),
+        MenuData(
+          "Internet & TV",
+          Assets.img.menuPpob.iconInternetTv.provider(),
+          onTap: () {},
+        ),
+        MenuData(
+          "BPJS Kesehatan",
+          Assets.img.menuPpob.iconBpjsKesehatan.provider(),
+          onTap: () {},
+        ),
+        MenuData(
+          "BPJS TKN",
+          Assets.img.menuPpob.iconBpjsTkn.provider(),
+          onTap: () {},
+        ),
+        MenuData(
+          "E-Commerce",
+          Assets.img.menuPpob.iconEcommerce.provider(),
+          onTap: () {},
+        ),
+        MenuData(
+          "E-SAMSAT",
+          Assets.img.menuPpob.iconEsamsat.provider(),
+          onTap: () {},
+        ),
+        MenuData("PBB", Assets.img.menuPpob.iconPbb.provider(), onTap: () {}),
+      ];
 
   // ============================================================
   // Event Handlers
@@ -279,5 +345,6 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
 
   void _handleHelpTap() {
     debugPrint('Help tapped');
+    debugPrint("Tinggi AppBar: $kToolbarHeight");
   }
 }

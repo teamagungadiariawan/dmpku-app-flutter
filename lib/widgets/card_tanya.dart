@@ -1,3 +1,4 @@
+import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
@@ -12,18 +13,24 @@ class CardTanya extends StatelessWidget {
   final String subtitle;
   final String buttonText;
   final VoidCallback onTap;
+  final Color borderColor;
 
   const CardTanya({
     super.key,
     this.title = "Punya Pertanyaan?",
-    this.subtitle = "Langsung chat degnan customer service kami",
+    this.subtitle = "Langsung chat dengan customer service kami",
     this.buttonText = "Tanya Sekarang",
+    this.borderColor = AppColors.lightBorder,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: borderColor),
+      ),
       child: Padding(
         padding: paddingCard,
         child: Row(

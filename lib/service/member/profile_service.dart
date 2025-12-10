@@ -11,22 +11,20 @@ class ProfileService {
 
   Future<BaseResponse<ProfileModel>> getProfile() async {
     try {
-
-
-      return BaseResponse(
-        status: true,
-        message: "Berhasil ambil profile",
-        data: DEFAULT_PROFILE.copyWith(
-          kodemember: "DM123456",
-          namamember: "John Doe",
-          email: "johndoe@gmail.com",
-          saldo: 150000,
-          verifikasi: 0,
-          userstatus: 1,
-          status: 1,
-          isppob: 1,
-        ),
-      );
+      // return BaseResponse(
+      //   status: true,
+      //   message: "Berhasil ambil profile",
+      //   data: DEFAULT_PROFILE.copyWith(
+      //     kodemember: "DM123456",
+      //     namamember: "John Doe",
+      //     email: "johndoe@gmail.com",
+      //     saldo: 150000,
+      //     verifikasi: 0,
+      //     userstatus: 1,
+      //     status: 1,
+      //     isppob: 1,
+      //   ),
+      // );
 
       final response = await _dio.post("member/profil/profil", data: {});
 
