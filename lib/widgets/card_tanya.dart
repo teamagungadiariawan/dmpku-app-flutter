@@ -41,7 +41,7 @@ class CardTanya extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: context.bodyMedium.withWeight(FontWeight.w800),
+                    style: context.bodyMedium.withWeight(FontWeight.w600),
                   ),
                   Text(
                     subtitle,

@@ -84,7 +84,7 @@ class _CustomButtonState extends State<CustomButton> {
           ),
           elevation: 0,
           disabledBackgroundColor: isDisabled && !widget.isLoading
-              ? (isDarkMode ? AppColors.darkMuted : AppColors.lightMuted)
+              ? (isDarkMode ? AppColors.darkMuted : stone[400])
               : backgroundColor,
           disabledForegroundColor: isDarkMode
               ? AppColors.darkMutedForeground
