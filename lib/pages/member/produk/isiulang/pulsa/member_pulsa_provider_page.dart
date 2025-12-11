@@ -132,7 +132,6 @@ class _MemberPulsaProviderPageState extends State<MemberPulsaProviderPage> {
             isTempel: true,
             isVoice: true,
             isContact: true,
-            isScan: true,
           ),
           onFavoritResult: (val) {},
         );
