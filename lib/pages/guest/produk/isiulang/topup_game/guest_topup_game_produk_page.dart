@@ -149,6 +149,7 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
               context,
             ).setTujuan('', updateController: true);
           },
+          isMobileLegend: state.selectedProvider.namaprovider.toLowerCase().contains("mobile legend"),
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: true,

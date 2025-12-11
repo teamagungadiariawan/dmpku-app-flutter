@@ -31,6 +31,8 @@ class CardInputTujuan extends StatelessWidget {
   final bool isCekAkun;
   final bool addButtonLanjutkan;
   final bool isButtonDisabled;
+  final bool isMobileLegend;
+
   final ValueChanged<String>? onFavoritResult;
   final IconData? icon;
   final TipeInput tipeInput;
@@ -57,6 +59,7 @@ class CardInputTujuan extends StatelessWidget {
     this.isCekAkun = false,
     this.addButtonLanjutkan = false,
     this.isButtonDisabled = false,
+    this.isMobileLegend = false,
     this.onFavoritResult,
     this.icon,
     this.tipeInput = TipeInput.numericOnly,
@@ -82,6 +85,37 @@ class CardInputTujuan extends StatelessWidget {
               Text(
                 errorMessage,
                 style: context.bodySmall.withColor(context.destructive),
+              ),
+            ],
+
+            if (isMobileLegend) ...[
+              const Gap(8),
+              Container(
+                padding: paddingCard,
+                decoration: BoxDecoration(
+                  color: context.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: context.primary, width: 1),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      MdiIcons.informationOutline,
+                      size: 18,
+                      color: context.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    const Gap(6),
+                    Expanded(
+                      child: Text(
+                        "Gabungkan ID Game dan Zone ID.\nContoh: ID Game 12345678 Dan ID Zone 1234 maka IDGAME : 123456781234.",
+                        style: context.bodySmall
+                            .withColor(context.primary)
+                            .withWeight(FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
 
