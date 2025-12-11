@@ -39,7 +39,7 @@ class _MemberPulsaProdukPageState extends State<MemberPulsaProdukPage> {
   }
 
   Future<void> _onRefresh() async {
-    getMemberPulsaProvider(context).fetchProviders();
+    getMemberPulsaProvider(context).fetchProducts();
   }
 
   List<ProductModel> _filterProducts(
@@ -116,7 +116,9 @@ class _MemberPulsaProdukPageState extends State<MemberPulsaProdukPage> {
                           state.tujuan.isEmpty ||
                           state.apiFetchProductStatus.isLoading,
                       selectedProduct: state.selectedProduct,
-                      onContinue: () {},
+                      onContinue: () {
+                        getMemberPulsaProvider(context).setNewKonfirmasi();
+                      },
                     ),
                   );
                 },
@@ -160,7 +162,9 @@ class _MemberPulsaProdukPageState extends State<MemberPulsaProdukPage> {
             isVoice: true,
             isContact: true,
           ),
-          onFavoritResult: (val) {},
+          onFavoritResult: (val) {
+
+          },
         );
       },
     );

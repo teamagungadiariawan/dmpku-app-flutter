@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:dmpku/core/apiconfig/api_client.dart';
 import 'package:dmpku/core/apiconfig/base_response.dart';
 import 'package:dmpku/core/apiconfig/server_exception.dart';
+import 'package:dmpku/core/enums/tipe_trx.dart';
+import 'package:dmpku/model/bayar_response.dart';
 import 'package:dmpku/model/product_cuan_response.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/model/provider_response.dart';
@@ -497,6 +499,40 @@ class ProdukService {
       if (!result.status) {
         throw ServerException.fromDio(r: response);
       }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<BaseResponse<BayarResponse>> bayarPulsaMember({
+    required String kodeproduk,
+    required String tujuan,
+    required String pintrx,
+    trxke = 1,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "member/pulsa/transaksi",
+        data: {
+          "kodeproduk": kodeproduk,
+          "tujuan": tujuan,
+          "tujuantambahan": 'kosong',
+          "jenistrx": TipeTrx.elektrik.value,
+          "pintrx": pintrx,
+          "trxke": trxke,
+          "kodebayar": 'kosong',
+          "nominaltrx": 0,
+        },
+      );
+
+      final result = BaseResponse<BayarResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => BayarResponse.fromJson(json),
+      );
 
       return result;
     } on DioException catch (e, stackTrace) {

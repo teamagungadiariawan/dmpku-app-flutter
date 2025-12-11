@@ -202,7 +202,10 @@ class _MemberPulsaKonfirmasiTransaksiPageState
 
                       SliverToBoxAdapter(
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 8,
+                          ),
                           margin: const EdgeInsets.only(top: 8),
                           decoration: BoxDecoration(
                             color: context.primary,
@@ -342,7 +345,9 @@ class _MemberPulsaKonfirmasiTransaksiPageState
               width: 150,
               padding: EdgeInsets.zero,
               text: "Lanjutkan",
-              onPressed: () {},
+              onPressed: () {
+                getMemberPulsaProvider(context).konfirmasiTrx(context);
+              },
               variant: ButtonVariant.border,
               backgroundColor: Colors.transparent,
               foregroundColor: Colors.white,
