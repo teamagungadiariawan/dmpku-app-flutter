@@ -63,7 +63,7 @@ class _AppInterceptor extends QueuedInterceptor {
 
       var headers = options.headers;
 
-      var fmcUser = (await SecureStorageHelper.instance.getToken()) ?? '';
+      var fmcUser = (await SecureStorageHelper.instance.read(StorageKeys.tokenFcm)) ?? '';
       var keteragan = await getKeterangan();
 
       var location = await getLocation();
