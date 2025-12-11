@@ -279,7 +279,7 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
       var tujuan = state.selectedProvider.inputTipe.filter(state.tujuan.trim());
       var pintrx = TipeInput.numericOnly.filter(pin);
 
-      final result = await _produkService.bayarPulsaMember(
+      final result = await _produkService.bayarPaketDataMember(
         kodeproduk: state.selectedProduct.kodeproduk,
         tujuan: tujuan,
         pintrx: pintrx,
