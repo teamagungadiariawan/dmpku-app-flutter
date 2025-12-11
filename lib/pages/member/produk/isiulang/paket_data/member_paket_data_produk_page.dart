@@ -113,7 +113,9 @@ class _MemberPaketDataProdukPageState extends State<MemberPaketDataProdukPage> {
                       state.tujuan.isEmpty ||
                       state.apiFetchProductStatus.isLoading,
                   selectedProduct: state.selectedProduct,
-                  onContinue: () {},
+                  onContinue: () {
+                    getMemberPaketDataProvider(context).setNewKonfirmasi();
+                  },
                 ),
               );
             },
