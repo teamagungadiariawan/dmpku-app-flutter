@@ -6,6 +6,7 @@ import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/main_page.dart';
 import 'package:dmpku/pages/member/akun/member_akun_page.dart';
 import 'package:dmpku/pages/member/dashboard/member_dashboard_page.dart';
+import 'package:dmpku/pages/member/official/member_official_page.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,7 @@ class _MemberMainPageState extends State<MemberMainPage> {
     const Center(child: Text("Riwayat Page")),
     // Placeholder for PROMO!
     const Center(child: Text("Promo Page")),
-    // Placeholder for Official
-    const Center(child: Text("Official Page")),
+    MemberOfficialPage(),
     MemberAkunPage(),
   ];
 
