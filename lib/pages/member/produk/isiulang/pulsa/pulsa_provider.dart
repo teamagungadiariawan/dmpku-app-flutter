@@ -472,6 +472,16 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
   }
 
   void setNewKonfirmasi() async {
+    if (state.selectedProvider.idprovider == 0) {
+      showWarningMessage('Provider tidak valid');
+      return;
+    }
+
+    if (state.selectedProduct.idproduk == 0) {
+      showWarningMessage('Produk tidak valid');
+      return;
+    }
+
     var valid = validateTujuan(provider: state.selectedProvider);
     if (!valid) return;
 
