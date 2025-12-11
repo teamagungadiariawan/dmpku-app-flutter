@@ -379,7 +379,7 @@ class _KonfirmasiPinDialogState<B extends BlocBase<S>, S>
           return Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            margin: const EdgeInsets.symmetric(horizontal: 4),
+            margin: const EdgeInsets.symmetric(horizontal: 4).copyWith(bottom: 8,),
             decoration: BoxDecoration(
               color: Colors.red.shade50,
               borderRadius: BorderRadius.circular(8),
