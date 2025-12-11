@@ -4,6 +4,7 @@ import 'package:dmpku/core/apiconfig/base_response.dart';
 import 'package:dmpku/core/apiconfig/server_exception.dart';
 import 'package:dmpku/core/enums/tipe_trx.dart';
 import 'package:dmpku/model/bayar_response.dart';
+import 'package:dmpku/model/cek_tagihan_response.dart';
 import 'package:dmpku/model/product_cuan_response.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/model/provider_response.dart';
@@ -249,6 +250,40 @@ class ProdukService {
     }
   }
 
+  Future<BaseResponse<BayarResponse>> bayarMasaAktifMember({
+    required String kodeproduk,
+    required String tujuan,
+    required String pintrx,
+    trxke = 1,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "member/pulsa/transaksi",
+        data: {
+          "kodeproduk": kodeproduk,
+          "tujuan": tujuan,
+          "tujuantambahan": 'kosong',
+          "jenistrx": TipeTrx.elektrik.value,
+          "pintrx": pintrx,
+          "trxke": trxke,
+          "kodebayar": 'kosong',
+          "nominaltrx": 0,
+        },
+      );
+
+      final result = BaseResponse<BayarResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => BayarResponse.fromJson(json),
+      );
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
   // -----------------------------------------------------------------------------
   // PAKET CUAN
   // -----------------------------------------------------------------------------
@@ -380,6 +415,40 @@ class ProdukService {
     }
   }
 
+  Future<BaseResponse<BayarResponse>> bayarPaketDataMember({
+    required String kodeproduk,
+    required String tujuan,
+    required String pintrx,
+    trxke = 1,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "member/paketdata/transaksi",
+        data: {
+          "kodeproduk": kodeproduk,
+          "tujuan": tujuan,
+          "tujuantambahan": 'kosong',
+          "jenistrx": TipeTrx.elektrik.value,
+          "pintrx": pintrx,
+          "trxke": trxke,
+          "kodebayar": 'kosong',
+          "nominaltrx": 0,
+        },
+      );
+
+      final result = BaseResponse<BayarResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => BayarResponse.fromJson(json),
+      );
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
   // -----------------------------------------------------------------------------
   // INFO KARTU
   // -----------------------------------------------------------------------------
@@ -448,6 +517,40 @@ class ProdukService {
       if (!result.status) {
         throw ServerException.fromDio(r: response);
       }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<BaseResponse<BayarResponse>> bayarPaketNelponMember({
+    required String kodeproduk,
+    required String tujuan,
+    required String pintrx,
+    trxke = 1,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "member/pulsa/transaksi",
+        data: {
+          "kodeproduk": kodeproduk,
+          "tujuan": tujuan,
+          "tujuantambahan": 'kosong',
+          "jenistrx": TipeTrx.elektrik.value,
+          "pintrx": pintrx,
+          "trxke": trxke,
+          "kodebayar": 'kosong',
+          "nominaltrx": 0,
+        },
+      );
+
+      final result = BaseResponse<BayarResponse>.fromJson(
+        response.data,
+        fromJsonT: (json) => BayarResponse.fromJson(json),
+      );
 
       return result;
     } on DioException catch (e, stackTrace) {
@@ -664,6 +767,31 @@ class ProdukService {
       if (!result.status) {
         throw ServerException.fromDio(r: response);
       }
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<CekTagihanResponse> cekAkunGame({
+    required String kodeproduk,
+    required String tujuan,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "member/game/cekakun",
+        data: {
+          'kodeproduk': kodeproduk,
+          'tujuan': tujuan,
+          "jenistrx": TipeTrx.cekAkun.value,
+          "tujuantambahan": 'kosong',
+        },
+      );
+
+      final result = CekTagihanResponse.fromJson(response.data);
 
       return result;
     } on DioException catch (e, stackTrace) {
