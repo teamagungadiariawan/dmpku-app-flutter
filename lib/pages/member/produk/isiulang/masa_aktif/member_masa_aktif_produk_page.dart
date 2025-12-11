@@ -113,7 +113,9 @@ class _MemberMasaAktifProdukPageState extends State<MemberMasaAktifProdukPage> {
                       state.tujuan.isEmpty ||
                       state.apiFetchProductStatus.isLoading,
                   selectedProduct: state.selectedProduct,
-                  onContinue: () {},
+                  onContinue: () {
+                    getMemberMasaAktifProvider(context).setNewKonfirmasi();
+                  },
                 ),
               );
             },
@@ -146,7 +148,7 @@ class _MemberMasaAktifProdukPageState extends State<MemberMasaAktifProdukPage> {
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
-          isGuest : true,
+          isGuest : false,
           tipeInput: TipeInput.numericOnly,
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(

@@ -4,6 +4,7 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/model/provider_response.dart';
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/member_masa_aktif_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
 import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
@@ -131,7 +132,6 @@ class _MemberMasaAktifProviderPageState extends State<MemberMasaAktifProviderPag
             isTempel: true,
             isVoice: true,
             isContact: true,
-            isScan: true,
           ),
           onFavoritResult: (val) {},
         );
@@ -166,8 +166,8 @@ class _MemberMasaAktifProviderPageState extends State<MemberMasaAktifProviderPag
                   shakeKey.currentState?.shake();
                   return;
                 } else {
-                  // pushNamed(GuestMasaAktifProdukPage.routeName);
-                  // getMemberMasaAktifProvider(context).setSelectedProvider(provider);
+                  pushNamed(MemberMasaAktifProdukPage.routeName);
+                  getMemberMasaAktifProvider(context).setSelectedProvider(provider);
                 }
               },
             );
