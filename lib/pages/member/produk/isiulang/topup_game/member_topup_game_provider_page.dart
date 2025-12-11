@@ -6,7 +6,7 @@ import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/provider_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_produk_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/topup_game/topup_game_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/card_provider_shimmer.dart';
 import 'package:dmpku/widgets/produk/grid_provider.dart';
