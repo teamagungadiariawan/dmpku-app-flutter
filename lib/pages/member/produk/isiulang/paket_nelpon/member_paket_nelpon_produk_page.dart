@@ -113,7 +113,9 @@ class _MemberPaketNelponProdukPageState extends State<MemberPaketNelponProdukPag
                       state.tujuan.isEmpty ||
                       state.apiFetchProductStatus.isLoading,
                   selectedProduct: state.selectedProduct,
-                  onContinue: () {},
+                  onContinue: () {
+                    getMemberPaketNelponProvider(context).setNewKonfirmasi();
+                  },
                 ),
               );
             },
