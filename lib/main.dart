@@ -26,14 +26,20 @@ import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/aktivasi_per
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/cek_status_voucher_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/info_kartu/info_kartu_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart'
+    as member_masa_aktif;
 import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart'
+    as member_paket_data;
 import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart'
+    as member_paket_nelpon;
 import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/paket_streaming_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_tv/paket_tv_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/token_pln/token_pln_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/topup_game/topup_game_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_data/voucher_data_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/wifi_id/wifi_id_provider.dart';
