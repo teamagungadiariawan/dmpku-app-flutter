@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
+
 import 'key_value_response.dart';
 
 class DataSplit {
-  final List<KeyValue> dataTransaksi;
-  final List<KeyValue> dataBiaya;
+  final List<KeyValue>? dataTransaksi;
+  final List<KeyValue>? dataBiaya;
 
   const DataSplit({required this.dataTransaksi, required this.dataBiaya});
 
@@ -25,8 +27,8 @@ class DataSplit {
   }
 
   Map<String, dynamic> toJson() => {
-    'data_transaksi': dataTransaksi.map((e) => e.toJson()).toList(),
-    'data_biaya': dataBiaya.map((e) => e.toJson()).toList(),
+    'data_transaksi': dataTransaksi?.map((e) => e.toJson()).toList(),
+    'data_biaya': dataBiaya?.map((e) => e.toJson()).toList(),
   };
 
   DataSplit copyWith({
@@ -247,8 +249,8 @@ class TransaksiData {
 }
 
 class CekTagihanResponse {
-  final TransaksiData data;
-  final DataSplit dataSplit;
+  final TransaksiData? data;
+  final DataSplit? dataSplit;
   final String message;
   final bool status;
 
@@ -261,6 +263,8 @@ class CekTagihanResponse {
 
   factory CekTagihanResponse.fromJson(Map<String, dynamic>? json) {
     if (json == null) return DEFAULT_CEK_TAGIHAN_RESPONSE;
+
+
     return CekTagihanResponse(
       data: TransaksiData.fromJson(json['data'] as Map<String, dynamic>?),
       dataSplit: DataSplit.fromJson(json['dataSplit'] as Map<String, dynamic>?),
@@ -270,8 +274,8 @@ class CekTagihanResponse {
   }
 
   Map<String, dynamic> toJson() => {
-    'data': data.toJson(),
-    'dataSplit': dataSplit.toJson(),
+    'data': data?.toJson(),
+    'dataSplit': dataSplit?.toJson(),
     'message': message,
     'status': status,
   };

@@ -1,3 +1,6 @@
+import 'package:dmpku/core/enums/tipe_input.dart';
+import 'package:flutter/cupertino.dart';
+
 class KeyValue {
   final String key;
   final String value;
@@ -5,7 +8,10 @@ class KeyValue {
   const KeyValue({required this.key, required this.value});
 
   factory KeyValue.fromJson(Map<String, dynamic> json) {
-    return KeyValue(key: json['key'] ?? '', value: json['value'] ?? '');
+    var key = json['key'] ?? json['Key'] ?? '';
+    var value = json['value'] ?? json['Value'] ?? '';
+
+    return KeyValue(key: key, value: value);
   }
 
   Map<String, dynamic> toJson() {
@@ -54,3 +60,16 @@ class KeyValueResponse {
 
 const DEFAULT_KEY_VALUE = KeyValue(key: '', value: '');
 const DEFAULT_KEY_VALUE_RESPONSE = KeyValueResponse(items: []);
+
+bool checkTujuanMatchResult(KeyValueResponse state, String tujuan) {
+  final matchedItem = state.items.firstWhere((item) {
+    final keyLower = TipeInput.alphanumeric
+        .filter(item.key)
+        .toLowerCase()
+        .replaceAll(' ', '');
+    return keyLower.contains('noakun') ||
+        keyLower.contains('notujuan') ||
+        keyLower.contains('idpelanggan');
+  }, orElse: () => const KeyValue(key: '', value: ''));
+  return tujuan == matchedItem.value.trim();
+}
