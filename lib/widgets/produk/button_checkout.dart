@@ -118,7 +118,9 @@ class ButtonCheckout extends StatelessWidget {
                           ? ToRupiah(selectedProduct.hargaproduk.toString())
                           : "-",
                       textAlign: TextAlign.end,
-                      style: context.bodyMedium.withColor(foregroundColor),
+                      style: context.bodyMedium
+                          .withColor(foregroundColor)
+                          .withWeight(FontWeight.w800),
                     ),
                   ),
                 ],

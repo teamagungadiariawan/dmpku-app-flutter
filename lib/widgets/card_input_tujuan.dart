@@ -24,6 +24,7 @@ class CardInputTujuan extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final VoidCallback? onClear;
   final VoidCallback? onLanjutkan;
+  final VoidCallback? onCekAkun;
   final Widget? suffixWidget;
   final GlobalKey<ShakeErrorWidgetState>? shakeKey;
   final bool showFavoritButton;
@@ -31,7 +32,7 @@ class CardInputTujuan extends StatelessWidget {
   final bool isCekAkun;
   final bool addButtonLanjutkan;
   final bool isButtonDisabled;
-  final bool isMobileLegend;
+  final bool isLoadingCekAkun = false;
 
   final ValueChanged<String>? onFavoritResult;
   final IconData? icon;
@@ -52,6 +53,7 @@ class CardInputTujuan extends StatelessWidget {
     this.onChanged,
     this.onClear,
     this.onLanjutkan,
+    this.onCekAkun,
     this.suffixWidget,
     this.shakeKey,
     this.showFavoritButton = true,
@@ -59,7 +61,6 @@ class CardInputTujuan extends StatelessWidget {
     this.isCekAkun = false,
     this.addButtonLanjutkan = false,
     this.isButtonDisabled = false,
-    this.isMobileLegend = false,
     this.onFavoritResult,
     this.icon,
     this.tipeInput = TipeInput.numericOnly,
@@ -88,37 +89,6 @@ class CardInputTujuan extends StatelessWidget {
               ),
             ],
 
-            if (isMobileLegend) ...[
-              const Gap(8),
-              Container(
-                padding: paddingCard,
-                decoration: BoxDecoration(
-                  color: context.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: context.primary, width: 1),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      MdiIcons.informationOutline,
-                      size: 18,
-                      color: context.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    const Gap(6),
-                    Expanded(
-                      child: Text(
-                        "Gabungkan ID Game dan Zone ID.\nContoh: ID Game 12345678 Dan ID Zone 1234 maka IDGAME : 123456781234.",
-                        style: context.bodySmall
-                            .withColor(context.primary)
-                            .withWeight(FontWeight.w600),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-
             if (isCekAkun) ...[
               const Gap(8),
               CustomButton(
@@ -126,8 +96,11 @@ class CardInputTujuan extends StatelessWidget {
                 onPressed: () {
                   if (isGuest) {
                     BelumLoginDialog.show(context);
+                  } else {
+                    onCekAkun?.call();
                   }
                 },
+                isLoading: isLoadingCekAkun,
                 height: 25,
                 width: double.infinity,
                 padding: EdgeInsets.zero,
@@ -205,7 +178,7 @@ class CardInputTujuan extends StatelessWidget {
       keyboardType: tipeInput.keyboardType,
       inputFormatters: tipeInput.inputFormatters,
       onChanged: onChanged,
-      autofocus: true,
+      autofocus: false,
       decoration: InputDecoration(
         isDense: true,
         hintText: hintText,
