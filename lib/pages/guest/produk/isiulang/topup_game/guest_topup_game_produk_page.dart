@@ -2,9 +2,13 @@ import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
+import 'package:dmpku/core/themes/app_text_styles.dart';
+import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';import 'package:dmpku/widgets/card_input_tujuan.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/topup_game/topup_game_provider.dart';
+import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
+import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
 import 'package:dmpku/widgets/produk/card_product.dart';
@@ -17,6 +21,8 @@ import 'package:dmpku/widgets/shake_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
+import 'package:gap/gap.dart';
 
 class GuestTopupGameProdukPage extends StatefulWidget {
   static const String routeName = '/guest/produk/isiulang/topup-game/produk';
@@ -88,6 +94,7 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
             child: Column(
               children: [
                 _buildIdAkunCard(context),
+                _buildCekAkunDetail(context),
                 _buildSortFilterProduct(context),
                 _buildDetailProvider(context),
                 Expanded(child: _buildListProduk(context)),
@@ -107,7 +114,7 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
                 padding: EdgeInsets.only(bottom: bottomInset),
                 child: ButtonCheckout(
                   isDisabled:
-                  state.selectedProduct.idproduk == 0 ||
+                      state.selectedProduct.idproduk == 0 ||
                       state.tujuanHasError ||
                       state.tujuan.isEmpty ||
                       state.apiFetchProductStatus.isLoading,
@@ -145,11 +152,8 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
             getTopupGameProvider(context).setTujuan(value);
           },
           onClear: () {
-            getTopupGameProvider(
-              context,
-            ).setTujuan('', updateController: true);
+            getTopupGameProvider(context).setTujuan('', updateController: true);
           },
-          isMobileLegend: state.selectedProvider.namaprovider.toLowerCase().contains("mobile legend"),
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: true,
@@ -163,6 +167,72 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
             },
           ),
           onFavoritResult: (val) {},
+        );
+      },
+    );
+  }
+
+  Widget _buildCekAkunDetail(BuildContext context) {
+    return BlocBuilder<TopupGameProvider, TopupGameState>(
+      buildWhen: (previous, current) =>
+          previous.selectedProvider != current.selectedProvider ||
+          previous.isCekAkun != current.isCekAkun,
+      builder: (context, state) {
+        if (!state.isCekAkun) {
+          return const SizedBox.shrink();
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (state.selectedProvider.namaprovider.toLowerCase().contains(
+              "mobile legend",
+            )) ...[
+              const Gap(4),
+              Container(
+                padding: paddingCard,
+                decoration: BoxDecoration(
+                  color: context.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: context.primary, width: 1),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      MdiIcons.informationOutline,
+                      size: 18,
+                      color: context.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    const Gap(6),
+                    Expanded(
+                      child: Text(
+                        "Gabungkan ID Game dan Zone ID.\nContoh: ID Game 12345678 Dan ID Zone 1234 maka IDGAME : 123456781234.",
+                        style: context.bodySmall
+                            .withColor(context.primary)
+                            .withWeight(FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+
+            if (state.isCekAkun) ...[
+              const Gap(6),
+              CustomButton(
+                text: "Cek Akun",
+                onPressed: () {
+                  BelumLoginDialog.show(context);
+                },
+                height: 25,
+                width: double.infinity,
+                padding: EdgeInsets.zero,
+              ),
+              const Gap(4),
+            ],
+
+          ],
         );
       },
     );

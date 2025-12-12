@@ -1,10 +1,19 @@
 import 'package:dmpku/core/apiconfig/server_exception.dart';
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_input.dart';
+import 'package:dmpku/core/helpers/date_helper.dart';
+import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
+import 'package:dmpku/model/bayar_response.dart';
 import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/model/provider_response.dart';
+import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/service/member/product_service.dart';
+import 'package:dmpku/widgets/dialog/konfirmasi_pin_dialog.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,6 +56,7 @@ class MemberTopupGameState extends Equatable {
   final ApiStatus apiCekAkunStatus;
   final String apiCekAkunMessage;
   final KeyValueResponse cekAkunResult;
+  final String kodeProdukCek;
 
   // Konfirmasi State
   final int totalPotongStok;
@@ -92,6 +102,7 @@ class MemberTopupGameState extends Equatable {
     this.apiCekAkunStatus = ApiStatus.initial,
     this.apiCekAkunMessage = '',
     this.cekAkunResult = DEFAULT_KEY_VALUE_RESPONSE,
+    this.kodeProdukCek = '',
 
     // Konfirmasi
     this.totalPotongStok = 0,
@@ -132,6 +143,7 @@ class MemberTopupGameState extends Equatable {
     ApiStatus? apiCekAkunStatus,
     String? apiCekAkunMessage,
     KeyValueResponse? cekAkunResult,
+    String? kodeProdukCek,
     int? totalPotongStok,
     KeyValueResponse? detailTransaksi,
     KeyValueResponse? detailPotongStok,
@@ -173,6 +185,7 @@ class MemberTopupGameState extends Equatable {
       apiCekAkunStatus: apiCekAkunStatus ?? this.apiCekAkunStatus,
       apiCekAkunMessage: apiCekAkunMessage ?? this.apiCekAkunMessage,
       cekAkunResult: cekAkunResult ?? this.cekAkunResult,
+      kodeProdukCek: kodeProdukCek ?? this.kodeProdukCek,
       totalPotongStok: totalPotongStok ?? this.totalPotongStok,
       detailTransaksi: detailTransaksi ?? this.detailTransaksi,
       detailPotongStok: detailPotongStok ?? this.detailPotongStok,
@@ -211,6 +224,7 @@ class MemberTopupGameState extends Equatable {
     apiCekAkunStatus,
     apiCekAkunMessage,
     cekAkunResult,
+    kodeProdukCek,
     totalPotongStok,
     detailTransaksi,
     detailPotongStok,
@@ -245,6 +259,143 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
     state.searchProviderController?.dispose();
     state.searchProductController?.dispose();
     return super.close();
+  }
+
+  // ============================================================
+  // KONFIRMASI METHODS
+  // ============================================================
+
+  void konfirmasiTrx(BuildContext context) async {
+    // Reset state sebelum show dialog
+    emit(
+      state.copyWith(
+        apiKonfirmasiStatus: ApiStatus.initial,
+        apiKonfirmasiMessage: '',
+        adaTrxSebelumnya: false,
+        detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
+        trxke: 0,
+      ),
+    );
+
+    KonfirmasiPinDialog.show<MemberTopupGameProvider, MemberTopupGameState>(
+      context,
+      // Title & Subtitle default
+      title: 'Konfirmasi Transaksi Pulsa ${state.selectedProduct.namaproduk}',
+      subtitle: 'Masukkan PIN untuk melanjutkan transaksi pulsa',
+      // Title & Subtitle jika ada trx sebelumnya
+      titleTrxSebelumnya: 'Konfirmasi Ulang Transaksi',
+      subtitleTrxSebelumnya:
+          'Transaksi serupa terdeteksi, harap konfirmasi ulang',
+      bloc: this,
+      isLoadingSelector: (state) => state.apiKonfirmasiStatus.isLoading,
+      errorMessageSelector: (state) => state.apiKonfirmasiMessage,
+      trxSebelumnyaSelector: (state) => TrxSebelumnyaState(
+        adaTrxSebelumnya: state.adaTrxSebelumnya,
+        detailTrxSebelumnya: state.detailTrxSebelumnya,
+      ),
+      onConfirm: (pin) => _prosesKonfirmasi(context, pin),
+    );
+  }
+
+  Future<void> _prosesKonfirmasi(BuildContext context, String pin) async {
+    if (state.selectedProvider.idprovider == 0) {
+      showWarningMessage('Provider tidak valid');
+      return;
+    }
+
+    if (state.selectedProduct.idproduk == 0) {
+      showWarningMessage('Produk tidak valid');
+      return;
+    }
+
+    if (state.apiKonfirmasiStatus.isLoading) return;
+
+    emit(
+      state.copyWith(
+        apiKonfirmasiStatus: ApiStatus.loading,
+        apiKonfirmasiMessage: '',
+      ),
+    );
+
+    try {
+      var tujuan = state.selectedProvider.inputTipe.filter(state.tujuan.trim());
+      var pintrx = TipeInput.numericOnly.filter(pin);
+
+      final result = await _produkService.bayarPulsaMember(
+        kodeproduk: state.selectedProduct.kodeproduk,
+        tujuan: tujuan,
+        pintrx: pintrx,
+        // Kirim trxke+1 jika ada trx sebelumnya (untuk konfirmasi ulang)
+        trxke: state.trxke > 0 ? state.trxke + 1 : 1,
+      );
+
+      final data = result.data;
+
+      debugPrint("DEBUG KONFIRMASI RESPONSE: $data");
+
+      if (data != null) {
+        // Cek apakah ada transaksi sebelumnya (trxket > 0 dan belum dikonfirmasi ulang)
+        // trxket > 0 menandakan sudah ada trx dengan data yang sama
+        debugPrint(
+          "DEBUG KONFIRMASI TRXKE: ${data.trxke} vs STATE TRXKE: ${state.trxke}",
+        );
+        if (data.trxke > 0 && state.trxke == 0) {
+          // Set data trx sebelumnya, dialog akan otomatis update
+          _setTrxSebelumnyaFromResponse(data);
+
+          // Set status kembali ke initial agar user bisa input PIN lagi
+          emit(
+            state.copyWith(
+              apiKonfirmasiStatus: ApiStatus.initial,
+              apiKonfirmasiMessage: '',
+            ),
+          );
+          return;
+        }
+
+        // Transaksi berhasil diproses
+        emit(state.copyWith(apiKonfirmasiStatus: ApiStatus.success));
+
+        if (context.mounted) {
+          getTransaksiProsesProvider(
+            context,
+          ).setImage(NetworkImage(state.selectedProduct.imgproduk));
+          getTransaksiProsesProvider(context).setProduct(state.selectedProduct);
+          getTransaksiProsesProvider(
+            context,
+          ).setPotongStok(state.totalPotongStok);
+          getTransaksiProsesProvider(context).setTujuan(state.tujuan.trim());
+          getTransaksiProsesProvider(
+            context,
+          ).setWaktuTransaksi(DateTime.now().formatReg());
+
+          pushNamedAndRemoveUntil(TransaksiProsesAltPage.routeName);
+        }
+      } else {
+        emit(
+          state.copyWith(
+            apiKonfirmasiStatus: ApiStatus.failure,
+            apiKonfirmasiMessage: 'Terjadi kesalahan, data kosong',
+          ),
+        );
+      }
+    } on ServerException catch (e) {
+      debugPrint("SERVER EXCEPTION KONFIRMASI: ${e.message}");
+      emit(
+        state.copyWith(
+          apiKonfirmasiStatus: ApiStatus.failure,
+          apiKonfirmasiMessage: e.message,
+        ),
+      );
+    } catch (e) {
+      debugPrint("EXCEPTION KONFIRMASI: $e");
+      emit(
+        state.copyWith(
+          apiKonfirmasiStatus: ApiStatus.failure,
+          apiKonfirmasiMessage: 'Terjadi kesalahan, silakan coba lagi',
+        ),
+      );
+    }
   }
 
   // ============================================================
@@ -316,6 +467,12 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
             apiFetchProductStatus: ApiStatus.success,
             products: data.productList,
             isCekAkun: data.productList.any((p) => p.kodeprodukcek.isNotEmpty),
+            kodeProdukCek: data.productList
+                .firstWhere(
+                  (p) => p.kodeprodukcek.isNotEmpty,
+                  orElse: () => DEFAULT_PRODUCT,
+                )
+                .kodeprodukcek,
           ),
         );
       } else {
@@ -333,6 +490,61 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
         state.copyWith(
           apiFetchProductStatus: ApiStatus.failure,
           apiFetchProductMessage: e.message,
+        ),
+      );
+    }
+  }
+
+  Future<void> cekAkunGame() async {
+    var valid = validateTujuan(provider: state.selectedProvider);
+    if (!valid) return;
+
+    if (state.apiCekAkunStatus.isLoading) return;
+
+    emit(
+      state.copyWith(
+        apiCekAkunStatus: ApiStatus.loading,
+        apiCekAkunMessage: '',
+      ),
+    );
+
+    try {
+      final result = await _produkService.cekAkunGame(
+        kodeproduk: state.kodeProdukCek,
+        tujuan: state.tujuan,
+      );
+      final data = result.data;
+
+      if (data != null) {
+        var dataTrx = result.dataSplit;
+
+        if (dataTrx != null) {
+          var dataTransaksi = dataTrx.dataTransaksi ?? [];
+
+          var res = KeyValueResponse(items: dataTransaksi);
+
+          emit(
+            state.copyWith(
+              apiCekAkunStatus: ApiStatus.success,
+              cekAkunResult: res,
+            ),
+          );
+        }
+      } else {
+        emit(
+          state.copyWith(
+            apiCekAkunStatus: ApiStatus.failure,
+            apiCekAkunMessage: 'Data cek akun kosong',
+          ),
+        );
+      }
+    } on ServerException catch (e) {
+      debugPrint("SERVER EXCEPTION CEK AKUN: ${e.message}");
+      showWarningMessage(e.message);
+      emit(
+        state.copyWith(
+          apiCekAkunStatus: ApiStatus.failure,
+          apiCekAkunMessage: e.message,
         ),
       );
     }
@@ -381,6 +593,8 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
 
     if (state.selectedProvider.idprovider != 0) {
       val = state.selectedProvider.inputTipe.filter(val);
+    } else {
+      val = TipeInput.alphanumeric.filter(val);
     }
 
     emit(state.copyWith(tujuan: val));
@@ -393,6 +607,81 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
     controller?.text = value;
     controller?.selection = TextSelection.fromPosition(
       TextPosition(offset: value.length),
+    );
+  }
+
+  void setNewKonfirmasi() async {
+    if (state.selectedProvider.idprovider == 0) {
+      showWarningMessage('Provider tidak valid');
+      return;
+    }
+
+    if (state.selectedProduct.idproduk == 0) {
+      showWarningMessage('Produk tidak valid');
+      return;
+    }
+
+    var valid = validateTujuan(provider: state.selectedProvider);
+    if (!valid) return;
+
+    var dtlTransaksi = KeyValueResponse(items: []);
+
+    dtlTransaksi.addItem(
+      KeyValue(key: "Waktu", value: DateTime.now().formatReg()),
+    );
+    dtlTransaksi.addItem(
+      KeyValue(key: "Nama Produk", value: state.selectedProduct.namaproduk),
+    );
+    dtlTransaksi.addItem(
+      KeyValue(key: "Kode Produk", value: state.selectedProduct.kodeproduk),
+    );
+
+    if (state.isCekAkun && state.cekAkunResult.items.isNotEmpty) {
+      for (var item in state.cekAkunResult.items) {
+        dtlTransaksi.addItem(KeyValue(key: item.key, value: item.value));
+      }
+    } else {
+      dtlTransaksi.addItem(
+        KeyValue(key: "No. Tujuan", value: state.tujuan.trim()),
+      );
+    }
+
+    var dtlPotongStok = KeyValueResponse(items: []);
+    dtlPotongStok.addItem(
+      KeyValue(key: "Harga", value: state.selectedProduct.hargaFormmated),
+    );
+    dtlPotongStok.addItem(KeyValue(key: "Biaya Admin", value: "0"));
+
+    emit(
+      state.copyWith(
+        totalPotongStok: state.selectedProduct.hargaproduk,
+        detailTransaksi: dtlTransaksi,
+        detailPotongStok: dtlPotongStok,
+      ),
+    );
+
+    pushNamed(MemberTopupGameKonfirmasiTransaksiPage.routeName);
+  }
+
+  void _setTrxSebelumnyaFromResponse(BayarResponse data) {
+    var detail = KeyValueResponse(items: []);
+
+    detail.addItem(KeyValue(key: 'Nama Produk', value: data.namaproduk));
+    detail.addItem(KeyValue(key: 'Kode Produk', value: data.kodeproduk));
+    detail.addItem(KeyValue(key: 'Tujuan', value: data.tujuan));
+    detail.addItem(
+      KeyValue(key: 'SN', value: data.sn.isNotEmpty ? data.sn : '-'),
+    );
+    detail.addItem(KeyValue(key: 'Transaksi Ke', value: data.trxke.toString()));
+    detail.addItem(KeyValue(key: 'Status', value: data.status));
+    detail.addItem(KeyValue(key: 'Waktu', value: data.waktutrx));
+
+    emit(
+      state.copyWith(
+        adaTrxSebelumnya: true,
+        detailTrxSebelumnya: detail,
+        trxke: data.trxke,
+      ),
     );
   }
 
@@ -424,6 +713,47 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
         isCekAkun: false,
         titleForm: 'ID Game',
         hintForm: 'Contoh : 123XXXXXXX',
+        apiCekAkunStatus: ApiStatus.initial,
+        apiCekAkunMessage: '',
+        cekAkunResult: DEFAULT_KEY_VALUE_RESPONSE,
+        kodeProdukCek: '',
+        totalPotongStok: 0,
+        detailTransaksi: DEFAULT_KEY_VALUE_RESPONSE,
+        detailPotongStok: DEFAULT_KEY_VALUE_RESPONSE,
+        apiKonfirmasiStatus: ApiStatus.initial,
+        apiKonfirmasiMessage: '',
+        adaTrxSebelumnya: false,
+        detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
+        trxke: 0,
+        tujuan: '',
+        tujuanHasError: false,
+        tujuanErrorMessage: '',
+        tujuanController: TextEditingController(),
+      ),
+    );
+  }
+
+  void resetKonfirmasi() {
+    emit(
+      state.copyWith(
+        totalPotongStok: 0,
+        detailTransaksi: DEFAULT_KEY_VALUE_RESPONSE,
+        detailPotongStok: DEFAULT_KEY_VALUE_RESPONSE,
+        apiKonfirmasiStatus: ApiStatus.initial,
+        apiKonfirmasiMessage: '',
+        adaTrxSebelumnya: false,
+        detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
+        trxke: 0,
+      ),
+    );
+  }
+
+  void resetTrxSebelumnya() {
+    emit(
+      state.copyWith(
+        adaTrxSebelumnya: false,
+        detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
+        trxke: 0,
       ),
     );
   }
