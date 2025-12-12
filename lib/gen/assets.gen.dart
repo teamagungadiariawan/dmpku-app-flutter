@@ -17,6 +17,12 @@ class $AssetsAnimationsGen {
   /// File path: assets/animations/beranda-paket-cuan.json
   String get berandaPaketCuan => 'assets/animations/beranda-paket-cuan.json';
 
+  /// File path: assets/animations/dalam-proses.json
+  String get dalamProses => 'assets/animations/dalam-proses.json';
+
+  /// File path: assets/animations/input-id.json
+  String get inputId => 'assets/animations/input-id.json';
+
   /// File path: assets/animations/no-connection.json
   String get noConnection => 'assets/animations/no-connection.json';
 
@@ -29,13 +35,27 @@ class $AssetsAnimationsGen {
   /// File path: assets/animations/punya-pertanyaan.json
   String get punyaPertanyaan => 'assets/animations/punya-pertanyaan.json';
 
+  /// File path: assets/animations/success-new.json
+  String get successNew => 'assets/animations/success-new.json';
+
+  /// File path: assets/animations/success.json
+  String get success => 'assets/animations/success.json';
+
+  /// File path: assets/animations/tts.json
+  String get tts => 'assets/animations/tts.json';
+
   /// List of all assets
   List<String> get values => [
     berandaPaketCuan,
+    dalamProses,
+    inputId,
     noConnection,
     noData,
     paketCuan,
     punyaPertanyaan,
+    successNew,
+    success,
+    tts,
   ];
 }
 
