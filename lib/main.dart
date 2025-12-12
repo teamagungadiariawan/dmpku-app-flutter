@@ -43,6 +43,7 @@ import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_
 import 'package:dmpku/pages/member/produk/isiulang/voucher_data/voucher_data_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/wifi_id/wifi_id_provider.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
@@ -102,6 +103,7 @@ void main() {
           BlocProvider(create: (_) => WifiIdProvider()),
 
           BlocProvider(create: (_) => MemberProvider()),
+          BlocProvider(create: (_) => TransaksiProsesProvider()),
 
           BlocProvider(create: (_) => MemberAktivasiPerdanaProvider()),
           BlocProvider(create: (_) => MemberAktivasiVoucherProvider()),
