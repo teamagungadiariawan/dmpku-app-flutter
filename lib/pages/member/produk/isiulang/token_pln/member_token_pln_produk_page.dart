@@ -8,6 +8,7 @@ import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/token_pln/token_pln_provider.dart';
 import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
+import 'package:dmpku/widgets/produk/button_cek_akun.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
 import 'package:dmpku/widgets/produk/card_product.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa_shimmer.dart';
@@ -88,6 +89,7 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
             child: Column(
               children: [
                 _buildIdAkunCard(context),
+                _buildCekAkunDetail(),
                 _buildSortFilterProduct(context),
                 _buildDetailProvider(context),
                 Expanded(child: _buildListProduk(context)),
@@ -110,12 +112,14 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
                   padding: EdgeInsets.only(bottom: bottomInset),
                   child: ButtonCheckout(
                     isDisabled:
-                    state.selectedProduct.idproduk == 0 ||
+                        state.selectedProduct.idproduk == 0 ||
                         state.tujuanHasError ||
                         state.tujuan.isEmpty ||
                         state.apiFetchProductStatus.isLoading,
                     selectedProduct: state.selectedProduct,
-                    onContinue: () {},
+                    onContinue: () {
+                      getMemberTokenPlnProvider(context).setNewKonfirmasi();
+                    },
                   ),
                 );
               },
@@ -145,12 +149,14 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
             getMemberTokenPlnProvider(context).setTujuan(value);
           },
           onClear: () {
-            getMemberTokenPlnProvider(context).setTujuan('', updateController: true);
+            getMemberTokenPlnProvider(
+              context,
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: false,
-          isCekAkun: true,
+          isCekAkun: false,
           tipeInput: TipeInput.numericOnly,
           suffixWidget: CustomPopupInputTujuan(
             onResult: (val) {
@@ -158,8 +164,36 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
                 context,
               ).setTujuan(val, updateController: true);
             },
+            isTempel: true,
+            isScan: true,
+            isVoice: true,
+            isContact: true,
           ),
           onFavoritResult: (val) {},
+        );
+      },
+    );
+  }
+
+  Widget _buildCekAkunDetail() {
+    return BlocBuilder<MemberTokenPlnProvider, MemberTokenPlnState>(
+      buildWhen: (prev, curr) =>
+          prev.selectedProduct != curr.selectedProduct ||
+          prev.apiCekAkunStatus != curr.apiCekAkunStatus ||
+          prev.tujuan != curr.tujuan,
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ButtonCekAkun(
+              onPressed: () {
+                getMemberTokenPlnProvider(context).cekAkun();
+              },
+              isLoading: state.apiCekAkunStatus.isLoading,
+              dataAkun: state.cekAkunResult,
+              tujuan: state.tujuan,
+            ),
+          ],
         );
       },
     );
@@ -178,8 +212,7 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
               subtitle: "Beli Token PLN mudah dan cepat",
               isGanti: false,
               isImgLocal: true,
-              onPressed: () {
-              },
+              onPressed: () {},
             ),
           ],
         );
