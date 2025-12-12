@@ -19,7 +19,8 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:gap/gap.dart';
 
 class MemberPaketNelponKonfirmasiTransaksiPage extends StatefulWidget {
-  static const routeName = '/member/produk/isiulang/paket_nelpon/konfirmasi-transaksi';
+  static const routeName =
+      '/member/produk/isiulang/paket_nelpon/konfirmasi-transaksi';
 
   const MemberPaketNelponKonfirmasiTransaksiPage({super.key});
 
@@ -46,7 +47,7 @@ class _MemberPaketNelponKonfirmasiTransaksiPageState
         child: Scaffold(
           backgroundColor: context.primary,
           appBar: CustomAppBar(
-            title: 'Konfirmasi Pembelian Pulsa',
+            title: 'Konfirmasi Pembelian Paket Nelpon',
             onBackButtonPressed: closePage,
           ),
           body: Padding(
@@ -202,14 +203,14 @@ class _MemberPaketNelponKonfirmasiTransaksiPageState
 
                       SliverToBoxAdapter(
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 8,
                           ),
                           margin: const EdgeInsets.only(top: 8),
                           decoration: BoxDecoration(
                             color: context.primary,
-                            borderRadius: BorderRadius.vertical(
+                            borderRadius: const BorderRadius.vertical(
                               bottom: Radius.circular(8),
                             ),
                           ),
@@ -252,7 +253,8 @@ class _MemberPaketNelponKonfirmasiTransaksiPageState
     );
   }
 
-  Widget _buildProductInfo(BuildContext context, MemberPaketNelponState state) {
+  Widget _buildProductInfo(
+      BuildContext context, MemberPaketNelponState state) {
     return Container(
       padding: paddingCard,
       decoration: BoxDecoration(

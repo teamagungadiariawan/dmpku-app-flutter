@@ -29,7 +29,8 @@ class MemberMasaAktifProviderPage extends StatefulWidget {
       _MemberMasaAktifProviderPageState();
 }
 
-class _MemberMasaAktifProviderPageState extends State<MemberMasaAktifProviderPage> {
+class _MemberMasaAktifProviderPageState
+    extends State<MemberMasaAktifProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
@@ -55,9 +56,8 @@ class _MemberMasaAktifProviderPageState extends State<MemberMasaAktifProviderPag
 
     return providers.where((provider) {
       return provider.prefixList.any((prefix) {
-        final maxRange = tujuan.length < prefix.length
-            ? tujuan.length
-            : prefix.length;
+        final maxRange =
+            tujuan.length < prefix.length ? tujuan.length : prefix.length;
         return prefix.startsWith(tujuan.substring(0, maxRange));
       });
     }).toList();
@@ -167,7 +167,8 @@ class _MemberMasaAktifProviderPageState extends State<MemberMasaAktifProviderPag
                   return;
                 } else {
                   pushNamed(MemberMasaAktifProdukPage.routeName);
-                  getMemberMasaAktifProvider(context).setSelectedProvider(provider);
+                  getMemberMasaAktifProvider(context)
+                      .setSelectedProvider(provider);
                 }
               },
             );

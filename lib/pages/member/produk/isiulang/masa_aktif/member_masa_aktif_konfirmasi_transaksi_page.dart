@@ -19,7 +19,8 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:gap/gap.dart';
 
 class MemberMasaAktifKonfirmasiTransaksiPage extends StatefulWidget {
-  static const routeName = '/member/produk/isiulang/masa_aktif/konfirmasi-transaksi';
+  static const routeName =
+      '/member/produk/isiulang/masa_aktif/konfirmasi-transaksi';
 
   const MemberMasaAktifKonfirmasiTransaksiPage({super.key});
 
@@ -46,7 +47,7 @@ class _MemberMasaAktifKonfirmasiTransaksiPageState
         child: Scaffold(
           backgroundColor: context.primary,
           appBar: CustomAppBar(
-            title: 'Konfirmasi Pembelian Pulsa',
+            title: 'Konfirmasi Pembelian Masa Aktif',
             onBackButtonPressed: closePage,
           ),
           body: Padding(
@@ -202,14 +203,14 @@ class _MemberMasaAktifKonfirmasiTransaksiPageState
 
                       SliverToBoxAdapter(
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 8,
                           ),
                           margin: const EdgeInsets.only(top: 8),
                           decoration: BoxDecoration(
                             color: context.primary,
-                            borderRadius: BorderRadius.vertical(
+                            borderRadius: const BorderRadius.vertical(
                               bottom: Radius.circular(8),
                             ),
                           ),

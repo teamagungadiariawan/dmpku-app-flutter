@@ -7,6 +7,8 @@ import 'package:dmpku/model/bayar_response.dart';
 import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/service/member/product_service.dart';
 
 // ============================================================
@@ -14,7 +16,8 @@ import 'package:dmpku/service/member/product_service.dart';
 // ============================================================
 import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/model/provider_response.dart';
-import 'package:dmpku/widgets/dialog/konfirmasi_pin_dialog.dart' show KonfirmasiPinDialog, TrxSebelumnyaState;
+import 'package:dmpku/widgets/dialog/konfirmasi_pin_dialog.dart'
+    show KonfirmasiPinDialog, TrxSebelumnyaState;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -169,36 +172,36 @@ class MemberPaketNelponState extends Equatable {
 
   @override
   List<Object?> get props => [
-    // Provider API
-    apiFetchProviderStatus,
-    apiFetchProviderMessage,
-    providers,
-    selectedProvider,
-    // Product API
-    apiFetchProductStatus,
-    apiFetchProductMessage,
-    products,
-    selectedProduct,
-    sortProduct,
-    searchProduct,
-    searchProductController,
-    // Single Tujuan
-    tujuan,
-    tujuanFocusNode,
-    tujuanController,
-    tujuanHasError,
-    tujuanErrorMessage,
-    // Konfirmasi State
-    totalPotongStok,
-    detailTransaksi,
-    detailPotongStok,
-    apiKonfirmasiStatus,
-    apiKonfirmasiMessage,
-    // Tambah untuk cek trx sebelumnya
-    adaTrxSebelumnya,
-    detailTrxSebelumnya,
-    trxke,
-  ];
+        // Provider API
+        apiFetchProviderStatus,
+        apiFetchProviderMessage,
+        providers,
+        selectedProvider,
+        // Product API
+        apiFetchProductStatus,
+        apiFetchProductMessage,
+        products,
+        selectedProduct,
+        sortProduct,
+        searchProduct,
+        searchProductController,
+        // Single Tujuan
+        tujuan,
+        tujuanFocusNode,
+        tujuanController,
+        tujuanHasError,
+        tujuanErrorMessage,
+        // Konfirmasi State
+        totalPotongStok,
+        detailTransaksi,
+        detailPotongStok,
+        apiKonfirmasiStatus,
+        apiKonfirmasiMessage,
+        // Tambah untuk cek trx sebelumnya
+        adaTrxSebelumnya,
+        detailTrxSebelumnya,
+        trxke,
+      ];
 }
 
 // ============================================================
@@ -208,13 +211,13 @@ class MemberPaketNelponProvider extends Cubit<MemberPaketNelponState> {
   final ProdukService _produkService = ProdukService();
 
   MemberPaketNelponProvider()
-    : super(
-        MemberPaketNelponState(
-          tujuanFocusNode: FocusNode(),
-          tujuanController: TextEditingController(),
-          searchProductController: TextEditingController(),
-        ),
-      );
+      : super(
+          MemberPaketNelponState(
+            tujuanFocusNode: FocusNode(),
+            tujuanController: TextEditingController(),
+            searchProductController: TextEditingController(),
+          ),
+        );
 
   @override
   Future<void> close() {
@@ -241,11 +244,13 @@ class MemberPaketNelponProvider extends Cubit<MemberPaketNelponState> {
     KonfirmasiPinDialog.show<MemberPaketNelponProvider, MemberPaketNelponState>(
       context,
       // Title & Subtitle default
-      title: 'Konfirmasi Transaksi Pulsa ${state.selectedProduct.namaproduk}',
-      subtitle: 'Masukkan PIN untuk melanjutkan transaksi pulsa',
+      title:
+          'Konfirmasi Transaksi Paket Nelpon ${state.selectedProduct.namaproduk}',
+      subtitle: 'Masukkan PIN untuk melanjutkan transaksi paket nelpon',
       // Title & Subtitle jika ada trx sebelumnya
       titleTrxSebelumnya: 'Konfirmasi Ulang Transaksi',
-      subtitleTrxSebelumnya: 'Transaksi serupa terdeteksi, harap konfirmasi ulang',
+      subtitleTrxSebelumnya:
+          'Transaksi serupa terdeteksi, harap konfirmasi ulang',
       bloc: this,
       isLoadingSelector: (state) => state.apiKonfirmasiStatus.isLoading,
       errorMessageSelector: (state) => state.apiKonfirmasiMessage,
@@ -294,16 +299,19 @@ class MemberPaketNelponProvider extends Cubit<MemberPaketNelponState> {
       if (data != null) {
         // Cek apakah ada transaksi sebelumnya (trxket > 0 dan belum dikonfirmasi ulang)
         // trxket > 0 menandakan sudah ada trx dengan data yang sama
-        debugPrint("DEBUG KONFIRMASI TRXKE: ${data.trxke} vs STATE TRXKE: ${state.trxke}");
+        debugPrint(
+            "DEBUG KONFIRMASI TRXKE: ${data.trxke} vs STATE TRXKE: ${state.trxke}");
         if (data.trxke > 0 && state.trxke == 0) {
           // Set data trx sebelumnya, dialog akan otomatis update
           _setTrxSebelumnyaFromResponse(data);
 
           // Set status kembali ke initial agar user bisa input PIN lagi
-          emit(state.copyWith(
-            apiKonfirmasiStatus: ApiStatus.initial,
-            apiKonfirmasiMessage: '',
-          ));
+          emit(
+            state.copyWith(
+              apiKonfirmasiStatus: ApiStatus.initial,
+              apiKonfirmasiMessage: '',
+            ),
+          );
           return;
         }
 
@@ -311,11 +319,16 @@ class MemberPaketNelponProvider extends Cubit<MemberPaketNelponState> {
         emit(state.copyWith(apiKonfirmasiStatus: ApiStatus.success));
 
         if (context.mounted) {
-          Navigator.of(context).pop(); // Tutup dialog
-          showSuccessMessage('Transaksi pulsa berhasil diproses!');
+          getTransaksiProsesProvider(
+            context,
+          ).setImage(NetworkImage(state.selectedProduct.imgproduk));
+          getTransaksiProsesProvider(context).setProduct(state.selectedProduct);
+          getTransaksiProsesProvider(
+            context,
+          ).setPotongStok(state.totalPotongStok);
+          getTransaksiProsesProvider(context).setTujuan(state.tujuan.trim());
 
-          // TODO: Navigate ke halaman sukses atau handle sesuai kebutuhan
-          // pushReplacementNamed(TransaksiSuksesPage.routeName);
+          pushNamedAndRemoveUntil(TransaksiProsesAltPage.routeName);
         }
       } else {
         emit(state.copyWith(
@@ -437,7 +450,8 @@ class MemberPaketNelponProvider extends Cubit<MemberPaketNelponState> {
 
   void setSearchProduct(String search, {bool updateController = false}) {
     emit(state.copyWith(searchProduct: search));
-    if (updateController) _updateController(state.searchProductController, search);
+    if (updateController)
+      _updateController(state.searchProductController, search);
   }
 
   void setTujuan(String value, {bool updateController = false}) {
@@ -514,7 +528,9 @@ class MemberPaketNelponProvider extends Cubit<MemberPaketNelponState> {
     detail.addItem(KeyValue(key: 'Nama Produk', value: data.namaproduk));
     detail.addItem(KeyValue(key: 'Kode Produk', value: data.kodeproduk));
     detail.addItem(KeyValue(key: 'Tujuan', value: data.tujuan));
-    detail.addItem(KeyValue(key: 'SN', value: data.sn.isNotEmpty ? data.sn : '-'));
+    detail.addItem(
+      KeyValue(key: 'SN', value: data.sn.isNotEmpty ? data.sn : '-'),
+    );
     detail.addItem(KeyValue(key: 'Transaksi Ke', value: data.trxke.toString()));
     detail.addItem(KeyValue(key: 'Status', value: data.status));
     detail.addItem(KeyValue(key: 'Waktu', value: data.waktutrx));
@@ -534,6 +550,7 @@ class MemberPaketNelponProvider extends Cubit<MemberPaketNelponState> {
       MemberPaketNelponState(
         tujuanFocusNode: FocusNode(),
         tujuanController: TextEditingController(),
+        searchProductController: TextEditingController(),
       ),
     );
   }
@@ -615,9 +632,8 @@ class MemberPaketNelponProvider extends Cubit<MemberPaketNelponState> {
 
     // Validasi prefix
     final isValidPrefix = provider.prefixList.any((prefix) {
-      final maxRange = tujuan.length < prefix.length
-          ? tujuan.length
-          : prefix.length;
+      final maxRange =
+          tujuan.length < prefix.length ? tujuan.length : prefix.length;
       return prefix.startsWith(tujuan.substring(0, maxRange));
     });
 

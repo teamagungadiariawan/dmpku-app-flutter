@@ -29,7 +29,8 @@ class MemberPaketDataProviderPage extends StatefulWidget {
       _MemberPaketDataProviderPageState();
 }
 
-class _MemberPaketDataProviderPageState extends State<MemberPaketDataProviderPage> {
+class _MemberPaketDataProviderPageState
+    extends State<MemberPaketDataProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
@@ -55,9 +56,8 @@ class _MemberPaketDataProviderPageState extends State<MemberPaketDataProviderPag
 
     return providers.where((provider) {
       return provider.prefixList.any((prefix) {
-        final maxRange = tujuan.length < prefix.length
-            ? tujuan.length
-            : prefix.length;
+        final maxRange =
+            tujuan.length < prefix.length ? tujuan.length : prefix.length;
         return prefix.startsWith(tujuan.substring(0, maxRange));
       });
     }).toList();
@@ -167,7 +167,8 @@ class _MemberPaketDataProviderPageState extends State<MemberPaketDataProviderPag
                   return;
                 } else {
                   pushNamed(MemberPaketDataProdukPage.routeName);
-                  getMemberPaketDataProvider(context).setSelectedProvider(provider);
+                  getMemberPaketDataProvider(context)
+                      .setSelectedProvider(provider);
                 }
               },
             );

@@ -7,6 +7,9 @@ import 'package:dmpku/model/bayar_response.dart';
 import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/service/member/product_service.dart';
 
 // ============================================================
@@ -230,13 +233,15 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
 
   void konfirmasiTrx(BuildContext context) async {
     // Reset state sebelum show dialog
-    emit(state.copyWith(
-      apiKonfirmasiStatus: ApiStatus.initial,
-      apiKonfirmasiMessage: '',
-      adaTrxSebelumnya: false,
-      detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
-      trxke: 0,
-    ));
+    emit(
+      state.copyWith(
+        apiKonfirmasiStatus: ApiStatus.initial,
+        apiKonfirmasiMessage: '',
+        adaTrxSebelumnya: false,
+        detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
+        trxke: 0,
+      ),
+    );
 
     KonfirmasiPinDialog.show<MemberPulsaProvider, MemberPulsaState>(
       context,
@@ -245,7 +250,8 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
       subtitle: 'Masukkan PIN untuk melanjutkan transaksi pulsa',
       // Title & Subtitle jika ada trx sebelumnya
       titleTrxSebelumnya: 'Konfirmasi Ulang Transaksi',
-      subtitleTrxSebelumnya: 'Transaksi serupa terdeteksi, harap konfirmasi ulang',
+      subtitleTrxSebelumnya:
+          'Transaksi serupa terdeteksi, harap konfirmasi ulang',
       bloc: this,
       isLoadingSelector: (state) => state.apiKonfirmasiStatus.isLoading,
       errorMessageSelector: (state) => state.apiKonfirmasiMessage,
@@ -270,10 +276,12 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
 
     if (state.apiKonfirmasiStatus.isLoading) return;
 
-    emit(state.copyWith(
-      apiKonfirmasiStatus: ApiStatus.loading,
-      apiKonfirmasiMessage: '',
-    ));
+    emit(
+      state.copyWith(
+        apiKonfirmasiStatus: ApiStatus.loading,
+        apiKonfirmasiMessage: '',
+      ),
+    );
 
     try {
       var tujuan = state.selectedProvider.inputTipe.filter(state.tujuan.trim());
@@ -294,16 +302,20 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
       if (data != null) {
         // Cek apakah ada transaksi sebelumnya (trxket > 0 dan belum dikonfirmasi ulang)
         // trxket > 0 menandakan sudah ada trx dengan data yang sama
-        debugPrint("DEBUG KONFIRMASI TRXKE: ${data.trxke} vs STATE TRXKE: ${state.trxke}");
+        debugPrint(
+          "DEBUG KONFIRMASI TRXKE: ${data.trxke} vs STATE TRXKE: ${state.trxke}",
+        );
         if (data.trxke > 0 && state.trxke == 0) {
           // Set data trx sebelumnya, dialog akan otomatis update
           _setTrxSebelumnyaFromResponse(data);
 
           // Set status kembali ke initial agar user bisa input PIN lagi
-          emit(state.copyWith(
-            apiKonfirmasiStatus: ApiStatus.initial,
-            apiKonfirmasiMessage: '',
-          ));
+          emit(
+            state.copyWith(
+              apiKonfirmasiStatus: ApiStatus.initial,
+              apiKonfirmasiMessage: '',
+            ),
+          );
           return;
         }
 
@@ -311,30 +323,41 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
         emit(state.copyWith(apiKonfirmasiStatus: ApiStatus.success));
 
         if (context.mounted) {
-          Navigator.of(context).pop(); // Tutup dialog
-          showSuccessMessage('Transaksi pulsa berhasil diproses!');
+          getTransaksiProsesProvider(
+            context,
+          ).setImage(NetworkImage(state.selectedProduct.imgproduk));
+          getTransaksiProsesProvider(context).setProduct(state.selectedProduct);
+          getTransaksiProsesProvider(
+            context,
+          ).setPotongStok(state.totalPotongStok);
+          getTransaksiProsesProvider(context).setTujuan(state.tujuan.trim());
 
-          // TODO: Navigate ke halaman sukses atau handle sesuai kebutuhan
-          // pushReplacementNamed(TransaksiSuksesPage.routeName);
+          pushNamedAndRemoveUntil(TransaksiProsesAltPage.routeName);
         }
       } else {
-        emit(state.copyWith(
-          apiKonfirmasiStatus: ApiStatus.failure,
-          apiKonfirmasiMessage: 'Terjadi kesalahan, data kosong',
-        ));
+        emit(
+          state.copyWith(
+            apiKonfirmasiStatus: ApiStatus.failure,
+            apiKonfirmasiMessage: 'Terjadi kesalahan, data kosong',
+          ),
+        );
       }
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION KONFIRMASI: ${e.message}");
-      emit(state.copyWith(
-        apiKonfirmasiStatus: ApiStatus.failure,
-        apiKonfirmasiMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          apiKonfirmasiStatus: ApiStatus.failure,
+          apiKonfirmasiMessage: e.message,
+        ),
+      );
     } catch (e) {
       debugPrint("EXCEPTION KONFIRMASI: $e");
-      emit(state.copyWith(
-        apiKonfirmasiStatus: ApiStatus.failure,
-        apiKonfirmasiMessage: 'Terjadi kesalahan, silakan coba lagi',
-      ));
+      emit(
+        state.copyWith(
+          apiKonfirmasiStatus: ApiStatus.failure,
+          apiKonfirmasiMessage: 'Terjadi kesalahan, silakan coba lagi',
+        ),
+      );
     }
   }
 
@@ -523,16 +546,20 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
     detail.addItem(KeyValue(key: 'Nama Produk', value: data.namaproduk));
     detail.addItem(KeyValue(key: 'Kode Produk', value: data.kodeproduk));
     detail.addItem(KeyValue(key: 'Tujuan', value: data.tujuan));
-    detail.addItem(KeyValue(key: 'SN', value: data.sn.isNotEmpty ? data.sn : '-'));
+    detail.addItem(
+      KeyValue(key: 'SN', value: data.sn.isNotEmpty ? data.sn : '-'),
+    );
     detail.addItem(KeyValue(key: 'Transaksi Ke', value: data.trxke.toString()));
     detail.addItem(KeyValue(key: 'Status', value: data.status));
     detail.addItem(KeyValue(key: 'Waktu', value: data.waktutrx));
 
-    emit(state.copyWith(
-      adaTrxSebelumnya: true,
-      detailTrxSebelumnya: detail,
-      trxke: data.trxke,
-    ));
+    emit(
+      state.copyWith(
+        adaTrxSebelumnya: true,
+        detailTrxSebelumnya: detail,
+        trxke: data.trxke,
+      ),
+    );
   }
 
   // ============================================================
@@ -564,16 +591,18 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
   }
 
   void resetKonfirmasi() {
-    emit(state.copyWith(
-      totalPotongStok: 0,
-      detailTransaksi: DEFAULT_KEY_VALUE_RESPONSE,
-      detailPotongStok: DEFAULT_KEY_VALUE_RESPONSE,
-      apiKonfirmasiStatus: ApiStatus.initial,
-      apiKonfirmasiMessage: '',
-      adaTrxSebelumnya: false,
-      detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
-      trxke: 0,
-    ));
+    emit(
+      state.copyWith(
+        totalPotongStok: 0,
+        detailTransaksi: DEFAULT_KEY_VALUE_RESPONSE,
+        detailPotongStok: DEFAULT_KEY_VALUE_RESPONSE,
+        apiKonfirmasiStatus: ApiStatus.initial,
+        apiKonfirmasiMessage: '',
+        adaTrxSebelumnya: false,
+        detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
+        trxke: 0,
+      ),
+    );
   }
 
   void resetTrxSebelumnya() {

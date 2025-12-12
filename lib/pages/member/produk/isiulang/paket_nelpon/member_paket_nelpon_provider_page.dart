@@ -29,7 +29,8 @@ class MemberPaketNelponProviderPage extends StatefulWidget {
       _MemberPaketNelponProviderPageState();
 }
 
-class _MemberPaketNelponProviderPageState extends State<MemberPaketNelponProviderPage> {
+class _MemberPaketNelponProviderPageState
+    extends State<MemberPaketNelponProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
@@ -55,9 +56,8 @@ class _MemberPaketNelponProviderPageState extends State<MemberPaketNelponProvide
 
     return providers.where((provider) {
       return provider.prefixList.any((prefix) {
-        final maxRange = tujuan.length < prefix.length
-            ? tujuan.length
-            : prefix.length;
+        final maxRange =
+            tujuan.length < prefix.length ? tujuan.length : prefix.length;
         return prefix.startsWith(tujuan.substring(0, maxRange));
       });
     }).toList();
@@ -167,7 +167,8 @@ class _MemberPaketNelponProviderPageState extends State<MemberPaketNelponProvide
                   return;
                 } else {
                   pushNamed(MemberPaketNelponProdukPage.routeName);
-                  getMemberPaketNelponProvider(context).setSelectedProvider(provider);
+                  getMemberPaketNelponProvider(context)
+                      .setSelectedProvider(provider);
                 }
               },
             );
