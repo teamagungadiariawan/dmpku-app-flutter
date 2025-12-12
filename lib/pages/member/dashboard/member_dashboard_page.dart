@@ -4,6 +4,7 @@ import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_app_bar.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_header.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
@@ -14,12 +15,15 @@ import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/cek_status
 import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/member_cek_status_voucher_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/info_kartu/info_kartu_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/info_kartu/member_info_kartu_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart' as member_masa_aktif;
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart'
+    as member_masa_aktif;
 import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/member_masa_aktif_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_data/member_paket_data_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart' as member_paket_data;
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart'
+    as member_paket_data;
 import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart' as member_paket_nelpon;
+import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart'
+    as member_paket_nelpon;
 import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/member_paket_streaming_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/paket_streaming_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_tv/member_paket_tv_provider_page.dart';
@@ -27,6 +31,7 @@ import 'package:dmpku/pages/member/produk/isiulang/paket_tv/paket_tv_provider.da
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/token_pln/member_token_pln_produk_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/token_pln/token_pln_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_data/member_voucher_data_provider_page.dart';
@@ -34,6 +39,9 @@ import 'package:dmpku/pages/member/produk/isiulang/voucher_data/voucher_data_pro
 import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/wifi_id/member_wifi_id_produk_page.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/beranda/menu_section.dart';
 import 'package:dmpku/widgets/beranda/paket_cuan_banner.dart';
@@ -178,7 +186,9 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
       Assets.img.menuIsiUlang.iconPaketSmsTelepon.provider(),
       onTap: () {
         pushNamed(MemberPaketNelponProviderPage.routeName);
-        member_paket_nelpon.getMemberPaketNelponProvider(context).fetchProviders();
+        member_paket_nelpon
+            .getMemberPaketNelponProvider(context)
+            .fetchProviders();
       },
     ),
     MenuData(
@@ -202,6 +212,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
       Assets.img.menuIsiUlang.iconTokenPln.provider(),
       onTap: () {
         pushNamed(MemberTokenPlnProdukPage.routeName);
+        getMemberTokenPlnProvider(context).fetchProducts();
       },
     ),
     MenuData(
@@ -348,4 +359,5 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
   void _handleHelpTap(BuildContext context) async {
     await openBantuanWa(context);
   }
+
 }
