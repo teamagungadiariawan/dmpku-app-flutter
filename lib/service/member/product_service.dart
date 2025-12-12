@@ -725,6 +725,31 @@ class ProdukService {
     }
   }
 
+  Future<CekTagihanResponse> cekAkunTokenPln({
+    required String kodeproduk,
+    required String tujuan,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "member/tokenpln/cekakun",
+        data: {
+          'kodeproduk': kodeproduk,
+          'tujuan': tujuan,
+          "jenistrx": TipeTrx.cekAkun.value,
+          "tujuantambahan": 'kosong',
+        },
+      );
+
+      final result = CekTagihanResponse.fromJson(response.data);
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION PRODUK SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
   // -----------------------------------------------------------------------------
   // TOPUP GAME
   // -----------------------------------------------------------------------------
