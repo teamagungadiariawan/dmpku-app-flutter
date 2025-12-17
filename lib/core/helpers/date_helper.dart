@@ -125,4 +125,61 @@ class DateHelper {
         '${dt.minute.toString().padLeft(2, '0')}:'
         '${dt.second.toString().padLeft(2, '0')}';
   }
+
+
+  // Format DateTime ke string "yyyy-MM-dd"
+  static String formatDate(DateTime dt) {
+    return '${dt.year}-'
+        '${dt.month.toString().padLeft(2, '0')}-'
+        '${dt.day.toString().padLeft(2, '0')}';
+  }
+
+  // --- Tambahan untuk Gabung Tanggal ---
+
+  // Daftar nama bulan pendek (Sesuaikan kalau mau Inggris: Jan, Feb, Mar...)
+  static const List<String> _shortMonths = [
+    '', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+    'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
+  ];
+
+  static String _getShortMonth(int month) {
+    if (month < 1 || month > 12) return '';
+    return _shortMonths[month];
+  }
+
+  static String formatSimpleDate(DateTime dt) {
+    // jika hari ini return "Hari ini"
+    final now = DateTime.now();
+    if (dt.year == now.year && dt.month == now.month && dt.day == now.day) {
+      return 'Hari ini';
+    }
+
+    return '${dt.day} ${_getShortMonth(dt.month)} ${dt.year}';
+  }
+
+  /// Menggabungkan dua tanggal menjadi range string
+  /// Logic:
+  /// - Sama Tahun & Bulan: "10 - 12 Jan 2025"
+  /// - Sama Tahun, Beda Bulan: "10 Jan - 12 Feb 2025"
+  /// - Beda Tahun: "10 Des 2024 - 10 Jan 2025"
+  static String joinDateRange(DateTime date1, DateTime date2) {
+    if (date1.year == date2.year) {
+      if (date1.month == date2.month) {
+        // Case: Bulan & Tahun sama
+        return '${date1.day} - ${date2.day} ${_getShortMonth(date1.month)} ${date1.year}';
+      }
+      // Case: Tahun sama, Bulan beda
+      return '${date1.day} ${_getShortMonth(date1.month)} - ${date2.day} ${_getShortMonth(date2.month)} ${date1.year}';
+    }
+
+    // Case: Beda Tahun
+    return '${date1.day} ${_getShortMonth(date1.month)} ${date1.year} - ${date2.day} ${_getShortMonth(date2.month)} ${date2.year}';
+  }
+
+  // Format hanya waktu "HH:mm"
+  static String formatTime(DateTime dt) {
+    return '${dt.hour.toString().padLeft(2, '0')}:'
+        '${dt.minute.toString().padLeft(2, '0')}';
+  }
+
 }

@@ -32,7 +32,7 @@ class CardInputTujuan extends StatelessWidget {
   final bool isCekAkun;
   final bool addButtonLanjutkan;
   final bool isButtonDisabled;
-  final bool isLoadingCekAkun = false;
+  final bool isLoadingCekAkun ;
 
   final ValueChanged<String>? onFavoritResult;
   final IconData? icon;
@@ -65,6 +65,7 @@ class CardInputTujuan extends StatelessWidget {
     this.icon,
     this.tipeInput = TipeInput.numericOnly,
     this.tipeProduk = TipeProduk.all,
+    this.isLoadingCekAkun = false,
   });
 
   @override
@@ -101,7 +102,7 @@ class CardInputTujuan extends StatelessWidget {
                   }
                 },
                 isLoading: isLoadingCekAkun,
-                height: 25,
+                height: 35,
                 width: double.infinity,
                 padding: EdgeInsets.zero,
               ),
@@ -117,6 +118,9 @@ class CardInputTujuan extends StatelessWidget {
             const Gap(5),
             if (addButtonLanjutkan)
               CustomButton(
+                height: 35,
+                isLoading: isLoadingCekAkun,
+                padding: EdgeInsets.zero,
                 text: labelButton,
                 width: double.infinity,
                 onPressed: onLanjutkan,

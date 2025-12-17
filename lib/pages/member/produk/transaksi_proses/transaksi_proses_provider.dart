@@ -3,12 +3,32 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class ProsesTrxBanyak {
+  final String tujuan;
+  final bool success;
+
+  const ProsesTrxBanyak({required this.tujuan, required this.success});
+
+  ProsesTrxBanyak copyWith({String? tujuan, bool? success}) {
+    return ProsesTrxBanyak(
+      tujuan: tujuan ?? this.tujuan,
+      success: success ?? this.success,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ProsesTrxBanyak(tujuan: $tujuan, success: $success)';
+  }
+}
+
 class TransaksiProsesState extends Equatable {
   final ImageProvider? image;
   final ProductModel product;
   final int potongStok;
   final String tujuan;
   final String waktuTransaksi;
+  final List<ProsesTrxBanyak> tujuanHistory;
 
   TransaksiProsesState({
     this.image,
@@ -16,6 +36,7 @@ class TransaksiProsesState extends Equatable {
     this.potongStok = 0,
     this.tujuan = '',
     this.waktuTransaksi = '',
+    this.tujuanHistory = const [],
   });
 
   TransaksiProsesState copyWith({
@@ -24,6 +45,7 @@ class TransaksiProsesState extends Equatable {
     int? potongStok,
     String? tujuan,
     String? waktuTransaksi,
+    List<ProsesTrxBanyak>? tujuanHistory,
   }) {
     return TransaksiProsesState(
       image: image ?? this.image,
@@ -31,6 +53,7 @@ class TransaksiProsesState extends Equatable {
       potongStok: potongStok ?? this.potongStok,
       tujuan: tujuan ?? this.tujuan,
       waktuTransaksi: waktuTransaksi ?? this.waktuTransaksi,
+      tujuanHistory: tujuanHistory ?? this.tujuanHistory,
     );
   }
 
@@ -41,6 +64,7 @@ class TransaksiProsesState extends Equatable {
     potongStok,
     tujuan,
     waktuTransaksi,
+    tujuanHistory,
   ];
 }
 
@@ -70,6 +94,10 @@ class TransaksiProsesProvider extends Cubit<TransaksiProsesState> {
 
   void setWaktuTransaksi(String waktuTransaksi) {
     emit(state.copyWith(waktuTransaksi: waktuTransaksi));
+  }
+
+  void setTujuanHistory(List<ProsesTrxBanyak> tujuanHistory) {
+    emit(state.copyWith(tujuanHistory: tujuanHistory));
   }
 }
 

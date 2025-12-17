@@ -163,6 +163,7 @@ class ListProductResponse {
   }
 }
 
+
 const ProductModel DEFAULT_PRODUCT = ProductModel(
   idproduk: 0,
   idprovider: 0,

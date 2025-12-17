@@ -5,7 +5,7 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/provider_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_produk_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/card_provider.dart';
 import 'package:dmpku/widgets/produk/card_provider_shimmer.dart';

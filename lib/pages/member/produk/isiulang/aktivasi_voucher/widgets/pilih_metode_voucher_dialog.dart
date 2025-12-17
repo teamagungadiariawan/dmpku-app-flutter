@@ -5,7 +5,7 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
-import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_akitvasi_voucher_berurutan_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_akitvasi_voucher_satuan_page.dart';
 import 'package:dmpku/widgets/dialog/top_divider_sheet.dart';

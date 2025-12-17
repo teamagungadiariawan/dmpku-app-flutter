@@ -6,7 +6,7 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
-import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/card_informasi.dart';
 import 'package:dmpku/widgets/card_tanya.dart';
@@ -226,7 +226,7 @@ class _MemberPulsaKonfirmasiTransaksiPageState
                               Text(
                                 ToCurrency(state.totalPotongStok.toString()),
                                 style: context.bodyMedium
-                                    .withWeight(FontWeight.w400)
+                                    .withWeight(FontWeight.w800)
                                     .withColor(Colors.white),
                               ),
                             ],
@@ -234,6 +234,7 @@ class _MemberPulsaKonfirmasiTransaksiPageState
                         ),
                       ),
 
+                      const SliverToBoxAdapter(child: Gap(4)),
                       SliverToBoxAdapter(child: CardInformasi()),
                       SliverToBoxAdapter(
                         child: CardTanya(onTap: () {}, title: "Ada kendala?"),
@@ -307,9 +308,14 @@ class _MemberPulsaKonfirmasiTransaksiPageState
               ),
             ),
           ),
-          Text(
-            item.value,
-            style: context.bodyMedium.withWeight(FontWeight.w400),
+
+          Container(
+            constraints:  BoxConstraints(maxWidth: 150),
+            child: Text(
+              item.value,
+              textAlign: TextAlign.end,
+              style: context.bodyMedium.withWeight(FontWeight.w400),
+            ),
           ),
         ],
       ),

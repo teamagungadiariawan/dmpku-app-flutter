@@ -5,6 +5,7 @@ import 'package:dmpku/core/helpers/connection_helper.dart';
 import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/device_info_helper.dart';
 import 'package:dmpku/core/helpers/encrypt_helper.dart';
+import 'package:dmpku/core/helpers/keyboard_helper.dart';
 import 'package:dmpku/core/helpers/location_helper.dart';
 import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,17 +50,15 @@ class ApiClientGuest {
 class _AppInterceptor extends QueuedInterceptor {
   @override
   void onRequest(
-      RequestOptions options,
-      RequestInterceptorHandler handler,
-      ) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     try {
       final isOnline = await ConnectivityService().checkConnection();
-
+      closeKeyBoard();
       // Ubah ini - hapus casting ke Map<dynamic, dynamic>
       // dan buat map baru dengan tipe yang benar
-      final dataMap = Map<String, dynamic>.from(
-          (options.data as Map?) ?? {}
-      );
+      final dataMap = Map<String, dynamic>.from((options.data as Map?) ?? {});
 
       var headers = options.headers;
 

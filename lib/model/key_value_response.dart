@@ -69,6 +69,9 @@ bool checkTujuanMatchResult(KeyValueResponse state, String tujuan) {
         .replaceAll(' ', '');
     return keyLower.contains('noakun') ||
         keyLower.contains('notujuan') ||
+        keyLower.contains('nomor') ||
+        keyLower.contains('noseri') ||
+        keyLower.contains('serialnumber') ||
         keyLower.contains('idpelanggan');
   }, orElse: () => const KeyValue(key: '', value: ''));
   return tujuan == matchedItem.value.trim();

@@ -71,7 +71,7 @@ class _TransaksiProsesAltPageState extends State<TransaksiProsesAltPage> {
                             Gap(12),
 
                             Text(
-                              "Trasnsaksi sedang di proses",
+                              "Transaksi sedang di proses",
                               style: context.pageTitle
                                   .withColor(context.primary)
                                   .withWeight(FontWeight.w600),
@@ -102,7 +102,7 @@ class _TransaksiProsesAltPageState extends State<TransaksiProsesAltPage> {
                                       image: state.image!,
                                       width: 30,
                                       height: 30,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.contain,
                                     ),
                                   ),
                                   Gap(12),
@@ -221,6 +221,7 @@ class _TransaksiProsesAltPageState extends State<TransaksiProsesAltPage> {
                                     onPressed: () {
                                       pushNamedAndRemoveUntil(
                                         MemberMainPage.routeName,
+                                        arguments: 1, // 1 = Index tab Riwayat
                                       );
                                     },
                                   ),

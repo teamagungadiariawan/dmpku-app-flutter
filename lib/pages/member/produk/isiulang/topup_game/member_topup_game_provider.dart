@@ -199,41 +199,41 @@ class MemberTopupGameState extends Equatable {
 
   @override
   List<Object?> get props => [
-    apiFetchProviderStatus,
-    apiFetchProviderMessage,
-    topupGameProviders,
-    voucherGameProviders,
-    selectedProvider,
-    searchProvider,
-    searchProviderController,
-    apiFetchProductStatus,
-    apiFetchProductMessage,
-    products,
-    selectedProduct,
-    sortProduct,
-    searchProduct,
-    searchProductController,
-    tujuan,
-    tujuanFocusNode,
-    tujuanController,
-    tujuanHasError,
-    tujuanErrorMessage,
-    isCekAkun,
-    titleForm,
-    hintForm,
-    apiCekAkunStatus,
-    apiCekAkunMessage,
-    cekAkunResult,
-    kodeProdukCek,
-    totalPotongStok,
-    detailTransaksi,
-    detailPotongStok,
-    apiKonfirmasiStatus,
-    apiKonfirmasiMessage,
-    adaTrxSebelumnya,
-    detailTrxSebelumnya,
-    trxke,
-  ];
+        apiFetchProviderStatus,
+        apiFetchProviderMessage,
+        topupGameProviders,
+        voucherGameProviders,
+        selectedProvider,
+        searchProvider,
+        searchProviderController,
+        apiFetchProductStatus,
+        apiFetchProductMessage,
+        products,
+        selectedProduct,
+        sortProduct,
+        searchProduct,
+        searchProductController,
+        tujuan,
+        tujuanFocusNode,
+        tujuanController,
+        tujuanHasError,
+        tujuanErrorMessage,
+        isCekAkun,
+        titleForm,
+        hintForm,
+        apiCekAkunStatus,
+        apiCekAkunMessage,
+        cekAkunResult,
+        kodeProdukCek,
+        totalPotongStok,
+        detailTransaksi,
+        detailPotongStok,
+        apiKonfirmasiStatus,
+        apiKonfirmasiMessage,
+        adaTrxSebelumnya,
+        detailTrxSebelumnya,
+        trxke,
+      ];
 }
 
 // ============================================================
@@ -243,14 +243,14 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
   final ProdukService _produkService = ProdukService();
 
   MemberTopupGameProvider()
-    : super(
-        MemberTopupGameState(
-          tujuanFocusNode: FocusNode(),
-          tujuanController: TextEditingController(),
-          searchProviderController: TextEditingController(),
-          searchProductController: TextEditingController(),
-        ),
-      );
+      : super(
+          MemberTopupGameState(
+            tujuanFocusNode: FocusNode(),
+            tujuanController: TextEditingController(),
+            searchProviderController: TextEditingController(),
+            searchProductController: TextEditingController(),
+          ),
+        );
 
   @override
   Future<void> close() {
@@ -280,8 +280,9 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
     KonfirmasiPinDialog.show<MemberTopupGameProvider, MemberTopupGameState>(
       context,
       // Title & Subtitle default
-      title: 'Konfirmasi Transaksi Pulsa ${state.selectedProduct.namaproduk}',
-      subtitle: 'Masukkan PIN untuk melanjutkan transaksi pulsa',
+      title:
+          'Konfirmasi Transaksi Topup Game ${state.selectedProduct.namaproduk}',
+      subtitle: 'Masukkan PIN untuk melanjutkan transaksi',
       // Title & Subtitle jika ada trx sebelumnya
       titleTrxSebelumnya: 'Konfirmasi Ulang Transaksi',
       subtitleTrxSebelumnya:
@@ -321,7 +322,7 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
       var tujuan = state.selectedProvider.inputTipe.filter(state.tujuan.trim());
       var pintrx = TipeInput.numericOnly.filter(pin);
 
-      final result = await _produkService.bayarPulsaMember(
+      final result = await _produkService.bayarTopupGameMember(
         kodeproduk: state.selectedProduct.kodeproduk,
         tujuan: tujuan,
         pintrx: pintrx,
@@ -330,30 +331,29 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
       );
 
       final data = result.data;
-
-      debugPrint("DEBUG KONFIRMASI RESPONSE: $data");
-
-      if (data != null) {
-        // Cek apakah ada transaksi sebelumnya (trxket > 0 dan belum dikonfirmasi ulang)
-        // trxket > 0 menandakan sudah ada trx dengan data yang sama
-        debugPrint(
-          "DEBUG KONFIRMASI TRXKE: ${data.trxke} vs STATE TRXKE: ${state.trxke}",
+      if (!result.status) {
+        emit(
+          state.copyWith(
+            apiKonfirmasiStatus: ApiStatus.failure,
+            apiKonfirmasiMessage: result.message,
+          ),
         );
-        if (data.trxke > 0 && state.trxke == 0) {
-          // Set data trx sebelumnya, dialog akan otomatis update
-          _setTrxSebelumnyaFromResponse(data);
 
-          // Set status kembali ke initial agar user bisa input PIN lagi
-          emit(
-            state.copyWith(
-              apiKonfirmasiStatus: ApiStatus.initial,
-              apiKonfirmasiMessage: '',
-            ),
-          );
-          return;
+        if (data != null) {
+          if (data.trxke > 0 && state.trxke == 0) {
+            _setTrxSebelumnyaFromResponse(data);
+            emit(
+              state.copyWith(
+                apiKonfirmasiStatus: ApiStatus.initial,
+                apiKonfirmasiMessage: '',
+              ),
+            );
+            return;
+          }
         }
 
-        // Transaksi berhasil diproses
+        return;
+      } else {
         emit(state.copyWith(apiKonfirmasiStatus: ApiStatus.success));
 
         if (context.mounted) {
@@ -368,16 +368,10 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
           getTransaksiProsesProvider(
             context,
           ).setWaktuTransaksi(DateTime.now().formatReg());
+          resetState();
 
           pushNamedAndRemoveUntil(TransaksiProsesAltPage.routeName);
         }
-      } else {
-        emit(
-          state.copyWith(
-            apiKonfirmasiStatus: ApiStatus.failure,
-            apiKonfirmasiMessage: 'Terjadi kesalahan, data kosong',
-          ),
-        );
       }
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION KONFIRMASI: ${e.message}");
@@ -413,6 +407,16 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
 
     try {
       final result = await _produkService.getTopupGameMemberProviders();
+      if (!result.status) {
+        emit(
+          state.copyWith(
+            apiFetchProviderStatus: ApiStatus.failure,
+            apiFetchProviderMessage: result.message,
+          ),
+        );
+        showWarningMessage(result.message);
+        return;
+      }
       final data = result.data;
 
       if (data != null) {
@@ -459,6 +463,16 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
       final result = await _produkService.getTopupGameMemberProducts(
         idProvider: state.selectedProvider.idprovider,
       );
+      if (!result.status) {
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.failure,
+            apiFetchProductMessage: result.message,
+          ),
+        );
+        showWarningMessage(result.message);
+        return;
+      }
       final data = result.data;
 
       if (data != null) {
@@ -513,6 +527,16 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
         kodeproduk: state.kodeProdukCek,
         tujuan: state.tujuan,
       );
+      if (!result.status) {
+        emit(
+          state.copyWith(
+            apiCekAkunStatus: ApiStatus.failure,
+            apiCekAkunMessage: result.message,
+          ),
+        );
+        showWarningMessage(result.message);
+        return;
+      }
       final data = result.data;
 
       if (data != null) {
@@ -793,9 +817,8 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
 
     // Validasi prefix
     final isValidPrefix = provider.prefixList.any((prefix) {
-      final maxRange = tujuan.length < prefix.length
-          ? tujuan.length
-          : prefix.length;
+      final maxRange =
+          tujuan.length < prefix.length ? tujuan.length : prefix.length;
       return prefix.startsWith(tujuan.substring(0, maxRange));
     });
 

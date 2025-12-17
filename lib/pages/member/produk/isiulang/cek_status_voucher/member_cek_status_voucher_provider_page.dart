@@ -6,7 +6,7 @@ import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/model/provider_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/member_cek_status_voucher_produk_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/cek_status_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/member_cek_status_voucher_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/card_provider.dart';
 import 'package:dmpku/widgets/produk/card_provider_shimmer.dart';

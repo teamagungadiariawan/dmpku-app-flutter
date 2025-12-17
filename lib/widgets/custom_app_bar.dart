@@ -10,6 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
   final VoidCallback? onBackButtonPressed;
   final bool showBackButton;
+  final Color? backgroundColor;
 
   const CustomAppBar({
     super.key,
@@ -17,6 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.height = 80,
     this.onBackButtonPressed,
     this.showBackButton = true,
+    this.backgroundColor,
   });
 
   @override
@@ -25,7 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       height: height,
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-      decoration: BoxDecoration(color: context.primary),
+      decoration: BoxDecoration(color: backgroundColor ?? context.primary),
       child: InkWell(
         onTap: () {
           if (onBackButtonPressed != null) {
@@ -39,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             if (showBackButton)
-              Icon(LucideIcons.arrowLeft, size: 24, color: Colors.white),
+              Icon(LucideIcons.chevronLeft, size: 22, color: Colors.white),
             Gap(5),
             Text(
               title,

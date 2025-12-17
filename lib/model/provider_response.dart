@@ -1,4 +1,5 @@
 import 'package:dmpku/core/enums/tipe_input.dart';
+import 'package:dmpku/model/product_response.dart';
 import 'package:flutter/widgets.dart';
 
 class ProviderModel {
@@ -174,6 +175,125 @@ class TopupGameProviderResponse {
         "vouchergame": vouchergame.map((e) => e.toJson()).toList(),
       },
     };
+  }
+}
+
+class DompetDigitalResponse {
+  final List<ProviderModel> nominalpilihan;
+  final List<ProductModel> nominalbebas;
+
+  DompetDigitalResponse({
+    required this.nominalpilihan,
+    required this.nominalbebas,
+  });
+
+  factory DompetDigitalResponse.fromJson(Map<String, dynamic>? json) {
+    final List<ProviderModel> nominalpilihanList = [];
+    final List<ProductModel> nominalbebasList = [];
+
+    if (json != null) {
+      if (json["nominalpilihan"] is List) {
+        for (final el in json["nominalpilihan"]) {
+          nominalpilihanList.add(ProviderModel.fromJson(el));
+        }
+      }
+
+      if (json["nominalbebas"] is List) {
+        for (final el in json["nominalbebas"]) {
+          nominalbebasList.add(ProductModel.fromJson(el));
+        }
+      }
+    }
+
+    return DompetDigitalResponse(
+      nominalpilihan: nominalpilihanList,
+      nominalbebas: nominalbebasList,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "data": {
+        "nominalpilihan": nominalpilihan.map((e) => e.toJson()).toList(),
+        "nominalbebas": nominalbebas.map((e) => e.toJson()).toList(),
+      },
+    };
+  }
+}
+
+class PlnTagihanResponse {
+  final ProductModel plnnontaglist;
+  final ProductModel plnpasca;
+
+  const PlnTagihanResponse({
+    required this.plnnontaglist,
+    required this.plnpasca,
+  });
+
+  factory PlnTagihanResponse.fromJson(Map<String, dynamic>? json) {
+    return PlnTagihanResponse(
+      plnnontaglist: ProductModel.fromJson(json?['plnnontaglist'] ?? {}),
+      plnpasca: ProductModel.fromJson(json?['plnpasca'] ?? {}),
+    );
+  }
+
+  PlnTagihanResponse copyWith({
+    ProductModel? plnnontaglist,
+    ProductModel? plnpasca,
+  }) {
+    return PlnTagihanResponse(
+      plnnontaglist: plnnontaglist ?? this.plnnontaglist,
+      plnpasca: plnpasca ?? this.plnpasca,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "plnnontaglist": plnnontaglist.toJson(),
+      "plnpasca": plnpasca.toJson(),
+    };
+  }
+
+  String toString() {
+    return 'PlnTagihanResponse(plnnontaglist: $plnnontaglist, plnpasca: $plnpasca)';
+  }
+}
+
+class TagihanGasResponse {
+  final ProductModel pertagaspasca;
+  final ProductModel pgnpasca;
+
+  const TagihanGasResponse({
+    required this.pertagaspasca,
+    required this.pgnpasca,
+  });
+
+  factory TagihanGasResponse.fromJson(Map<String, dynamic>? json) {
+    return TagihanGasResponse(
+      pertagaspasca: ProductModel.fromJson(json?['pertagaspasca'] ?? {}),
+      pgnpasca: ProductModel.fromJson(json?['pgnpasca'] ?? {}),
+    );
+  }
+
+  TagihanGasResponse copyWith({
+    ProductModel? pertagaspasca,
+    ProductModel? pgnpasca,
+  }) {
+    return TagihanGasResponse(
+      pertagaspasca: pertagaspasca ?? this.pertagaspasca,
+      pgnpasca: pgnpasca ?? this.pgnpasca,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "plnnontaglist": pertagaspasca.toJson(),
+      "plnpasca": pgnpasca.toJson(),
+    };
+  }
+
+  String toString() {
+    return 'TagihanGasResponse(plnnontaglist: $pertagaspasca, plnpasca: $pgnpasca)';
   }
 }
 

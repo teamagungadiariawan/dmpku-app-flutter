@@ -22,28 +22,36 @@ import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digita
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/cek_status_voucher_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/info_kartu/info_kartu_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart'
-    as member_masa_aktif;
-import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart'
-    as member_paket_data;
-import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart'
-    as member_paket_nelpon;
-import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/paket_streaming_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_tv/paket_tv_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/token_pln/token_pln_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/member_cek_status_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/info_kartu/member_info_kartu_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/member_masa_aktif_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/member_paket_data_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/member_paket_streaming_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_tv/member_paket_tv_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/token_pln/member_token_pln_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/voucher_data/voucher_data_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/wifi_id/wifi_id_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_data/member_voucher_data_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/wifi_id/member_wifi_id_provider.dart';
+import 'package:dmpku/pages/member/produk/paketcuan/paket_cuan_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_kesehatan/member_bpjs_kesehatan_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_tkn/member_bpjs_tkn_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/dompet_digital/member_dompet_digital_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_commerce/member_e_commerce_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_samsat/member_e_samsat_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/hp_pasca/member_hp_pasca_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/internet_tv/member_internet_tv_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/pbb/member_pbb_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/pdam/member_pdam_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/pln_tagihan/member_pln_tagihan_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/tagihan_gas/member_tagihan_gas_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/uang_elektronik/member_uang_elektronik_provider.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
+import 'package:dmpku/pages/member/riwayat/member_riwayat_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
 import 'package:dmpku/service_init.dart';
@@ -104,19 +112,33 @@ void main() {
 
           BlocProvider(create: (_) => MemberProvider()),
           BlocProvider(create: (_) => TransaksiProsesProvider()),
+          BlocProvider(create: (_) => MemberRiwayatProvider()),
 
           BlocProvider(create: (_) => MemberAktivasiPerdanaProvider()),
           BlocProvider(create: (_) => MemberAktivasiVoucherProvider()),
+          BlocProvider(create: (_) => MemberBpjsKesehatanProvider()),
+          BlocProvider(create: (_) => MemberBpjsTknProvider()),
           BlocProvider(create: (_) => MemberCekStatusVoucherProvider()),
+          BlocProvider(create: (_) => MemberDompetDigitalProvider()),
+          BlocProvider(create: (_) => MemberECommerceProvider()),
+          BlocProvider(create: (_) => MemberESamsatProvider()),
+          BlocProvider(create: (_) => MemberHpPascaProvider()),
           BlocProvider(create: (_) => MemberInfoKartuProvider()),
+          BlocProvider(create: (_) => MemberInternetTvProvider()),
           BlocProvider(create: (_) => MemberMasaAktifProvider()),
+          BlocProvider(create: (_) => MemberPaketCuanProvider()),
           BlocProvider(create: (_) => MemberPaketDataProvider()),
           BlocProvider(create: (_) => MemberPaketNelponProvider()),
           BlocProvider(create: (_) => MemberPaketStreamingProvider()),
           BlocProvider(create: (_) => MemberPaketTvProvider()),
+          BlocProvider(create: (_) => MemberPbbProvider()),
+          BlocProvider(create: (_) => MemberPdamProvider()),
+          BlocProvider(create: (_) => MemberPlnTagihanProvider()),
           BlocProvider(create: (_) => MemberPulsaProvider()),
+          BlocProvider(create: (_) => MemberTagihanGasProvider()),
           BlocProvider(create: (_) => MemberTokenPlnProvider()),
           BlocProvider(create: (_) => MemberTopupGameProvider()),
+          BlocProvider(create: (_) => MemberUangElektronikProvider()),
           BlocProvider(create: (_) => MemberVoucherDataProvider()),
           BlocProvider(create: (_) => MemberVoucherDigitalProvider()),
           BlocProvider(create: (_) => MemberWifiIdProvider()),

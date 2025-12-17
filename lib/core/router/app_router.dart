@@ -35,10 +35,12 @@ import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_produk_page.
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_subprovider_page.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_akitvasi_voucher_berurutan_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_akitvasi_voucher_satuan_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/member_cek_status_voucher_produk_page.dart';
@@ -54,8 +56,10 @@ import 'package:dmpku/pages/member/produk/isiulang/paket_data/member_paket_data_
 import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/member_paket_streaming_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/member_paket_streaming_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/member_paket_streaming_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_tv/member_paket_tv_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_tv/member_paket_tv_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_tv/member_paket_tv_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_konfirmasi_transaksi_page.dart';
@@ -66,12 +70,58 @@ import 'package:dmpku/pages/member/produk/isiulang/token_pln/member_token_pln_pr
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_data/member_voucher_data_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_data/member_voucher_data_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_data/member_voucher_data_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_produk_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/wifi_id/member_wifi_id_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/wifi_id/member_wifi_id_produk_page.dart';
+import 'package:dmpku/pages/member/produk/paketcuan/member_paket_cuan_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/paketcuan/member_paket_cuan_produk_page.dart';
+import 'package:dmpku/pages/member/produk/paketcuan/member_paket_cuan_provider_page.dart';
+import 'package:dmpku/pages/member/produk/paketcuan/member_paket_cuan_subprovider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_kesehatan/member_bpjs_kesehatan_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_kesehatan/member_bpjs_kesehatan_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_kesehatan/member_bpjs_kesehatan_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_tkn/member_bpjs_tkn_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_tkn/member_bpjs_tkn_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_tkn/member_bpjs_tkn_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/dompet_digital/member_dompet_digital_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/dompet_digital/member_dompet_digital_nominal_bebas_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/dompet_digital/member_dompet_digital_produk_nominal_bebas_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/dompet_digital/member_dompet_digital_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/dompet_digital/member_dompet_digital_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_commerce/member_e_commerce_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_commerce/member_e_commerce_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_commerce/member_e_commerce_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_samsat/member_e_samsat_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_samsat/member_e_samsat_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_samsat/member_e_samsat_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/hp_pasca/member_hp_pasca_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/hp_pasca/member_hp_pasca_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/hp_pasca/member_hp_pasca_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/internet_tv/member_internet_tv_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/internet_tv/member_internet_tv_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/internet_tv/member_internet_tv_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pbb/member_pbb_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pbb/member_pbb_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pbb/member_pbb_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pdam/member_pdam_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pdam/member_pdam_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pdam/member_pdam_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pln_tagihan/member_pln_tagihan_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pln_tagihan/member_pln_tagihan_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pln_tagihan/member_pln_tagihan_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/tagihan_gas/member_tagihan_gas_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/tagihan_gas/member_tagihan_gas_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/tagihan_gas/member_tagihan_gas_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/uang_elektronik/member_uang_elektronik_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/uang_elektronik/member_uang_elektronik_produk_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/uang_elektronik/member_uang_elektronik_provider_page.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_aktivasi_voucher.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -203,13 +253,18 @@ class AppRouter {
 
       // Member
       case MemberMainPage.routeName:
-        return _customTransitionBottomToTop(child: const MemberMainPage());
+        final args = settings.arguments as int?;
+        return _customTransitionBottomToTop(
+          child: MemberMainPage(initialIndex: args ?? 0),
+        );
 
       // Member Transaksi Proses
       case TransaksiProsesPage.routeName:
         return _customTransition(child: TransaksiProsesPage());
       case TransaksiProsesAltPage.routeName:
         return _customTransition(child: TransaksiProsesAltPage());
+      case TransaksiProsesAktivasiVoucherPage.routeName:
+        return _customTransition(child: TransaksiProsesAktivasiVoucherPage());
 
       // Member Pulsa
       case MemberPulsaProviderPage.routeName:
@@ -257,17 +312,27 @@ class AppRouter {
       case MemberTopupGameProdukPage.routeName:
         return _customTransition(child: const MemberTopupGameProdukPage());
       case MemberTopupGameKonfirmasiTransaksiPage.routeName:
-        return _customTransition(child: const MemberTopupGameKonfirmasiTransaksiPage());
+        return _customTransition(
+          child: const MemberTopupGameKonfirmasiTransaksiPage(),
+        );
 
       // Member Wifi ID
       case MemberWifiIdProdukPage.routeName:
         return _customTransition(child: const MemberWifiIdProdukPage());
+      case MemberWifiIdKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberWifiIdKonfirmasiTransaksiPage(),
+        );
 
       // Member Paket TV
       case MemberPaketTvProviderPage.routeName:
         return _customTransition(child: const MemberPaketTvProviderPage());
       case MemberPaketTvProdukPage.routeName:
         return _customTransition(child: const MemberPaketTvProdukPage());
+      case MemberPaketTvKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberPaketTvKonfirmasiTransaksiPage(),
+        );
 
       // Member Token PLN
       case MemberTokenPlnProdukPage.routeName:
@@ -292,6 +357,10 @@ class AppRouter {
         return _customTransition(
           child: const MemberAktivasiPerdanaProdukPage(),
         );
+      case MemberAktivasiPerdanaKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberAktivasiPerdanaKonfirmasiTransaksiPage(),
+        );
 
       // Member Aktivasi Voucher
       case MemberAktivasiVoucherProviderPage.routeName:
@@ -311,6 +380,11 @@ class AppRouter {
           child: const MemberAkitvasiVoucherSatuanPage(),
         );
 
+      case MemberAktivasiVoucherKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberAktivasiVoucherKonfirmasiTransaksiPage(),
+        );
+
       // Member Cek Status Voucher
       case MemberCekStatusVoucherProviderPage.routeName:
         return _customTransition(
@@ -328,12 +402,20 @@ class AppRouter {
         );
       case MemberPaketStreamingProdukPage.routeName:
         return _customTransition(child: const MemberPaketStreamingProdukPage());
+      case MemberPaketStreamingKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberPaketStreamingKonfirmasiTransaksiPage(),
+        );
 
       // Member Voucher Data
       case MemberVoucherDataProviderPage.routeName:
         return _customTransition(child: const MemberVoucherDataProviderPage());
       case MemberVoucherDataProdukPage.routeName:
         return _customTransition(child: const MemberVoucherDataProdukPage());
+      case MemberVoucherDataKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberVoucherDataKonfirmasiTransaksiPage(),
+        );
 
       // Member Voucher Digital
       case MemberVoucherDigitalProviderPage.routeName:
@@ -342,6 +424,157 @@ class AppRouter {
         );
       case MemberVoucherDigitalProdukPage.routeName:
         return _customTransition(child: const MemberVoucherDigitalProdukPage());
+      case MemberVoucherDigitalKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberVoucherDigitalKonfirmasiTransaksiPage(),
+        );
+
+      // Member hp pasca
+      case MemberHpPascaProviderPage.routeName:
+        return _customTransition(child: const MemberHpPascaProviderPage());
+      case MemberHpPascaProdukPage.routeName:
+        return _customTransition(child: const MemberHpPascaProdukPage());
+      case MemberHpPascaKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberHpPascaKonfirmasiTransaksiPage(),
+        );
+
+      // Member Pln Tagihan
+      case MemberPlnTagihanProviderPage.routeName:
+        return _customTransition(child: const MemberPlnTagihanProviderPage());
+      case MemberPlnTagihanProdukPage.routeName:
+        return _customTransition(child: const MemberPlnTagihanProdukPage());
+      case MemberPlnTagihanKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberPlnTagihanKonfirmasiTransaksiPage(),
+        );
+
+      // Member Uang Elektronik
+      case MemberUangElektronikProviderPage.routeName:
+        return _customTransition(
+          child: const MemberUangElektronikProviderPage(),
+        );
+      case MemberUangElektronikProdukPage.routeName:
+        return _customTransition(child: const MemberUangElektronikProdukPage());
+      case MemberUangElektronikKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberUangElektronikKonfirmasiTransaksiPage(),
+        );
+
+      // Member Dompet Digital
+      case MemberDompetDigitalProviderPage.routeName:
+        return _customTransition(
+          child: const MemberDompetDigitalProviderPage(),
+        );
+      case MemberDompetDigitalProdukPage.routeName:
+        return _customTransition(child: const MemberDompetDigitalProdukPage());
+      case MemberDompetDigitalProdukNominalBebasPage.routeName:
+        return _customTransition(
+          child: const MemberDompetDigitalProdukNominalBebasPage(),
+        );
+      case MemberDompetDigitalKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberDompetDigitalKonfirmasiTransaksiPage(),
+        );
+
+      case MemberDompetDigitalNominalBebasKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberDompetDigitalNominalBebasKonfirmasiTransaksiPage(),
+        );
+
+      // Member BPJS Kesehatan
+      case MemberBpjsKesehatanProviderPage.routeName:
+        return _customTransition(
+          child: const MemberBpjsKesehatanProviderPage(),
+        );
+      case MemberBpjsKesehatanProdukPage.routeName:
+        return _customTransition(child: const MemberBpjsKesehatanProdukPage());
+      case MemberBpjsKesehatanKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberBpjsKesehatanKonfirmasiTransaksiPage(),
+        );
+
+      // Member BPJS TKN
+      case MemberBpjsTknProviderPage.routeName:
+        return _customTransition(child: const MemberBpjsTknProviderPage());
+      case MemberBpjsTknProdukPage.routeName:
+        return _customTransition(child: const MemberBpjsTknProdukPage());
+      case MemberBpjsTknKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberBpjsTknKonfirmasiTransaksiPage(),
+        );
+
+      // Member E-Commerce
+      case MemberECommerceProviderPage.routeName:
+        return _customTransition(child: const MemberECommerceProviderPage());
+      case MemberECommerceProdukPage.routeName:
+        return _customTransition(child: const MemberECommerceProdukPage());
+      case MemberECommerceKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberECommerceKonfirmasiTransaksiPage(),
+        );
+
+      // Member E-Samsat
+      case MemberESamsatProviderPage.routeName:
+        return _customTransition(child: const MemberESamsatProviderPage());
+      case MemberESamsatProdukPage.routeName:
+        return _customTransition(child: const MemberESamsatProdukPage());
+      case MemberESamsatKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberESamsatKonfirmasiTransaksiPage(),
+        );
+
+      // Member Internet & TV
+      case MemberInternetTvProviderPage.routeName:
+        return _customTransition(child: const MemberInternetTvProviderPage());
+      case MemberInternetTvProdukPage.routeName:
+        return _customTransition(child: const MemberInternetTvProdukPage());
+      case MemberInternetTvKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberInternetTvKonfirmasiTransaksiPage(),
+        );
+
+      // Member PBB
+      case MemberPbbProviderPage.routeName:
+        return _customTransition(child: const MemberPbbProviderPage());
+      case MemberPbbProdukPage.routeName:
+        return _customTransition(child: const MemberPbbProdukPage());
+      case MemberPbbKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberPbbKonfirmasiTransaksiPage(),
+        );
+
+      // Member PDAM
+      case MemberPdamProviderPage.routeName:
+        return _customTransition(child: const MemberPdamProviderPage());
+      case MemberPdamProdukPage.routeName:
+        return _customTransition(child: const MemberPdamProdukPage());
+      case MemberPdamKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberPdamKonfirmasiTransaksiPage(),
+        );
+
+      // Member Tagihan Gas
+      case MemberTagihanGasProviderPage.routeName:
+        return _customTransition(child: const MemberTagihanGasProviderPage());
+      case MemberTagihanGasProdukPage.routeName:
+        return _customTransition(child: const MemberTagihanGasProdukPage());
+      case MemberTagihanGasKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberTagihanGasKonfirmasiTransaksiPage(),
+        );
+
+      // Member Paket Cuan
+      case MemberPaketCuanProviderPage.routeName:
+        return _customTransition(child: const MemberPaketCuanProviderPage());
+      case MemberPaketCuanSubProviderPage.routeName:
+        return _customTransition(child: const MemberPaketCuanSubProviderPage());
+      case MemberPaketCuanProdukPage.routeName:
+        return _customTransition(child: const MemberPaketCuanProdukPage());
+      case MemberPaketCuanKonfirmasiTransaksiPage.routeName:
+        return _customTransition(
+          child: const MemberPaketCuanKonfirmasiTransaksiPage(),
+        );
 
       default:
         return null;

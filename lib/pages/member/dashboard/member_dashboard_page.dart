@@ -7,40 +7,63 @@ import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_app_bar.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_header.dart';
-import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/cek_status_voucher_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/member_cek_status_voucher_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/member_cek_status_voucher_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/info_kartu/info_kartu_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/info_kartu/member_info_kartu_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/info_kartu/member_info_kartu_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/masa_aktif_provider.dart'
-    as member_masa_aktif;
+import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/member_masa_aktif_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/masa_aktif/member_masa_aktif_provider_page.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/member_paket_data_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_data/member_paket_data_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart'
-    as member_paket_data;
+import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/member_paket_nelpon_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart'
-    as member_paket_nelpon;
 import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/member_paket_streaming_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/paket_streaming_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/member_paket_streaming_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_tv/member_paket_tv_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_tv/member_paket_tv_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_tv/paket_tv_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/pulsa/pulsa_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/token_pln/member_token_pln_produk_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/token_pln/token_pln_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/token_pln/member_token_pln_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_data/member_voucher_data_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_data/member_voucher_data_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/voucher_data/voucher_data_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_provider_page.dart';
-import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/voucher_digital/member_voucher_digital_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/wifi_id/member_wifi_id_produk_page.dart';
-import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page.dart';
-import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
+import 'package:dmpku/pages/member/produk/isiulang/wifi_id/member_wifi_id_provider.dart';
+import 'package:dmpku/pages/member/produk/paketcuan/member_paket_cuan_provider_page.dart';
+import 'package:dmpku/pages/member/produk/paketcuan/paket_cuan_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_kesehatan/member_bpjs_kesehatan_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_kesehatan/member_bpjs_kesehatan_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_tkn/member_bpjs_tkn_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/bpjs_tkn/member_bpjs_tkn_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/dompet_digital/member_dompet_digital_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/dompet_digital/member_dompet_digital_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_commerce/member_e_commerce_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_commerce/member_e_commerce_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_samsat/member_e_samsat_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/e_samsat/member_e_samsat_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/hp_pasca/member_hp_pasca_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/hp_pasca/member_hp_pasca_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/internet_tv/member_internet_tv_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/internet_tv/member_internet_tv_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pbb/member_pbb_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/pbb/member_pbb_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pdam/member_pdam_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/pdam/member_pdam_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/pln_tagihan/member_pln_tagihan_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/pln_tagihan/member_pln_tagihan_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/tagihan_gas/member_tagihan_gas_provider.dart';
+import 'package:dmpku/pages/member/produk/ppob/tagihan_gas/member_tagihan_gas_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/uang_elektronik/member_uang_elektronik_provider_page.dart';
+import 'package:dmpku/pages/member/produk/ppob/uang_elektronik/member_uang_elektronik_provider.dart';
+import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_aktivasi_voucher.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/beranda/menu_section.dart';
@@ -178,7 +201,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
       Assets.img.menuIsiUlang.iconPaketData.provider(),
       onTap: () {
         pushNamed(MemberPaketDataProviderPage.routeName);
-        member_paket_data.getMemberPaketDataProvider(context).fetchProviders();
+        getMemberPaketDataProvider(context).fetchProviders();
       },
     ),
     MenuData(
@@ -186,9 +209,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
       Assets.img.menuIsiUlang.iconPaketSmsTelepon.provider(),
       onTap: () {
         pushNamed(MemberPaketNelponProviderPage.routeName);
-        member_paket_nelpon
-            .getMemberPaketNelponProvider(context)
-            .fetchProviders();
+        getMemberPaketNelponProvider(context).fetchProviders();
       },
     ),
     MenuData(
@@ -196,7 +217,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
       Assets.img.menuIsiUlang.iconMasaAktif.provider(),
       onTap: () {
         pushNamed(MemberMasaAktifProviderPage.routeName);
-        member_masa_aktif.getMemberMasaAktifProvider(context).fetchProviders();
+        getMemberMasaAktifProvider(context).fetchProviders();
       },
     ),
     MenuData(
@@ -284,6 +305,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
       Assets.img.menuIsiUlang.iconWifiId.provider(),
       onTap: () {
         pushNamed(MemberWifiIdProdukPage.routeName);
+        getMemberWifiIdProvider(context).fetchProducts();
       },
     ),
   ];
@@ -292,55 +314,99 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
     MenuData(
       "Dompet Digital",
       Assets.img.menuPpob.iconDompetDigital.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberDompetDigitalProviderPage.routeName);
+        getMemberDompetDigitalProvider(context).fetchProviders();
+      },
     ),
     MenuData(
       "Uang Elektronik",
       Assets.img.menuPpob.iconUangElektronik.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberUangElektronikProviderPage.routeName);
+        getMemberUangElektronikProvider(context).fetchProviders();
+      },
     ),
     MenuData(
       "PLN Tagihan",
       Assets.img.menuPpob.iconPlnTagihan.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberPlnTagihanProviderPage.routeName);
+        getMemberPlnTagihanProvider(context).fetchProducts();
+      },
     ),
     MenuData(
       "HP Pasca",
       Assets.img.menuPpob.iconHpPasca.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberHpPascaProviderPage.routeName);
+        getMemberHpPascaProvider(context).fetchProducts();
+      },
     ),
     MenuData(
       "Tagihan Gas",
       Assets.img.menuPpob.iconTagihanGas.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberTagihanGasProviderPage.routeName);
+        getMemberTagihanGasProvider(context).fetchProducts();
+      },
     ),
-    MenuData("PDAM", Assets.img.menuPpob.iconPdam.provider(), onTap: () {}),
+    MenuData(
+      "PDAM",
+      Assets.img.menuPpob.iconPdam.provider(),
+      onTap: () {
+        pushNamed(MemberPdamProviderPage.routeName);
+        getMemberPdamProvider(context).fetchProducts();
+      },
+    ),
     MenuData(
       "Internet & TV",
       Assets.img.menuPpob.iconInternetTv.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberInternetTvProviderPage.routeName);
+        getMemberInternetTvProvider(context).fetchProducts();
+      },
     ),
     MenuData(
       "BPJS Kesehatan",
       Assets.img.menuPpob.iconBpjsKesehatan.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberBpjsKesehatanProviderPage.routeName);
+        getMemberBpjsKesehatanProvider(context).fetchProducts();
+      },
     ),
     MenuData(
       "BPJS TKN",
       Assets.img.menuPpob.iconBpjsTkn.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberBpjsTknProviderPage.routeName);
+        getMemberBpjsTknProvider(context).fetchProducts();
+      },
     ),
     MenuData(
       "E-Commerce",
       Assets.img.menuPpob.iconEcommerce.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberECommerceProviderPage.routeName);
+        getMemberECommerceProvider(context).fetchProducts();
+      },
     ),
     MenuData(
       "E-SAMSAT",
       Assets.img.menuPpob.iconEsamsat.provider(),
-      onTap: () {},
+      onTap: () {
+        pushNamed(MemberESamsatProviderPage.routeName);
+        getMemberESamsatProvider(context).fetchProducts();
+      },
     ),
-    MenuData("PBB", Assets.img.menuPpob.iconPbb.provider(), onTap: () {}),
+    MenuData(
+      "PBB",
+      Assets.img.menuPpob.iconPbb.provider(),
+      onTap: () {
+        pushNamed(MemberPbbProviderPage.routeName);
+        getMemberPbbProvider(context).fetchProducts();
+      },
+    ),
   ];
 
   // ============================================================
@@ -349,7 +415,10 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
 
   void _handleMenuTap(String menuTitle) {}
 
-  void _handlePaketCuanTap() {}
+  void _handlePaketCuanTap() {
+    pushNamed(MemberPaketCuanProviderPage.routeName);
+    getMemberPaketCuanProvider(context).fetchProviders();
+  }
 
   void _handleNotificationTap() async {
     final link = await SecureStorageHelper.instance.getChannelWa();
@@ -357,7 +426,25 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
   }
 
   void _handleHelpTap(BuildContext context) async {
-    await openBantuanWa(context);
-  }
+    // await openBantuanWa(context);
 
+    getTransaksiProsesProvider(
+      context,
+    ).setImage(Assets.img.produk.icTokenPln.provider());
+    getTransaksiProsesProvider(context).setProduct(
+      DEFAULT_PRODUCT.copyWith(
+        namaproduk: "Token PLN 20.000",
+        hargaproduk: 20000,
+        kodeproduk: "PLN20K",
+      ),
+    );
+    getTransaksiProsesProvider(context).setPotongStok(20000);
+    getTransaksiProsesProvider(context).setTujuanHistory([
+      ProsesTrxBanyak(tujuan: "081234567890", success: true),
+      ProsesTrxBanyak(tujuan: "089876543210", success: false),
+      ProsesTrxBanyak(tujuan: "082112345678", success: true),
+    ]);
+    getTransaksiProsesProvider(context).setWaktuTransaksi("12 Mei 2024 14:30");
+    pushNamed(TransaksiProsesAktivasiVoucherPage.routeName);
+  }
 }

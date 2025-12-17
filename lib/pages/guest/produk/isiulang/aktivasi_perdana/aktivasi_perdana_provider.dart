@@ -174,6 +174,18 @@ class AktivasiPerdanaProvider extends Cubit<AktivasiPerdanaState> {
 
     try {
       final result = await _produkService.getAktivasiPerdanaGuestProviders();
+      if (!result.status) {
+        emit(
+          state.copyWith(
+            apiFetchProviderStatus: ApiStatus.failure,
+            apiFetchProviderMessage: result.message,
+          ),
+        );
+        showWarningMessage(result.message);
+        return;
+      }
+
+
       final data = result.data;
 
       if (data != null) {
@@ -219,6 +231,16 @@ class AktivasiPerdanaProvider extends Cubit<AktivasiPerdanaState> {
       final result = await _produkService.getAktivasiPerdanaGuestProducts(
         idProvider: state.selectedProvider.idprovider,
       );
+      if (!result.status) {
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.failure,
+            apiFetchProductMessage: result.message,
+          ),
+        );
+        showWarningMessage(result.message);
+        return;
+      }
       final data = result.data;
 
       if (data != null) {

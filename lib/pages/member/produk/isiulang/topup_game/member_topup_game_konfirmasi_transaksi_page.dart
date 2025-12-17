@@ -226,7 +226,7 @@ class _MemberTopupGameKonfirmasiTransaksiPageState
                               Text(
                                 ToCurrency(state.totalPotongStok.toString()),
                                 style: context.bodyMedium
-                                    .withWeight(FontWeight.w400)
+                                    .withWeight(FontWeight.w800)
                                     .withColor(Colors.white),
                               ),
                             ],
@@ -234,6 +234,7 @@ class _MemberTopupGameKonfirmasiTransaksiPageState
                         ),
                       ),
 
+                      const SliverToBoxAdapter(child: Gap(4)),
                       SliverToBoxAdapter(child: CardInformasi()),
                       SliverToBoxAdapter(
                         child: CardTanya(onTap: () {}, title: "Ada kendala?"),
@@ -307,9 +308,14 @@ class _MemberTopupGameKonfirmasiTransaksiPageState
               ),
             ),
           ),
-          Text(
-            item.value,
-            style: context.bodyMedium.withWeight(FontWeight.w400),
+
+          Container(
+            constraints:  BoxConstraints(maxWidth: 150),
+            child: Text(
+              item.value,
+              textAlign: TextAlign.end,
+              style: context.bodyMedium.withWeight(FontWeight.w400),
+            ),
           ),
         ],
       ),

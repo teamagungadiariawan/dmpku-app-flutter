@@ -34,3 +34,9 @@ String obfuscatePhone(
 
   return '$start${'*' * hiddenLength}$end';
 }
+
+
+// remove non alphanumeric characters from string
+String removeNonAlphanumeric(String input) {
+  return input.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase().replaceAll(" ", "");
+}

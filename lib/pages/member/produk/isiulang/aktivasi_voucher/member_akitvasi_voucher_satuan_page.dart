@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
-import 'aktivasi_voucher_provider.dart';
+import 'member_aktivasi_voucher_provider.dart';
 import 'widgets/input_tujuan_voucher.dart';
 
 class MemberAkitvasiVoucherSatuanPage extends StatefulWidget {
@@ -51,81 +51,94 @@ class _MemberAkitvasiVoucherSatuanPageState
           ),
           body: Padding(
             padding: paddingPage,
-            child: BlocBuilder<MemberAktivasiVoucherProvider, MemberAktivasiVoucherState>(
-              buildWhen: (previous, current) =>
-                  previous.selectedProduct != current.selectedProduct,
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    CardProductVoucher(product: state.selectedProduct),
-                    _buildWarningMaxVoucher(context),
-                    Expanded(child: _buildFormInputTujuanVoucher(context)),
-                  ],
-                );
-              },
-            ),
+            child:
+                BlocBuilder<
+                  MemberAktivasiVoucherProvider,
+                  MemberAktivasiVoucherState
+                >(
+                  buildWhen: (previous, current) =>
+                      previous.selectedProduct != current.selectedProduct,
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        CardProductVoucher(product: state.selectedProduct),
+                        _buildWarningMaxVoucher(context),
+                        Expanded(child: _buildFormInputTujuanVoucher(context)),
+                      ],
+                    );
+                  },
+                ),
           ),
           bottomNavigationBar: Padding(
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            child: BlocBuilder<MemberAktivasiVoucherProvider, MemberAktivasiVoucherState>(
-              buildWhen: (previous, current) =>
-                  previous.listTujuan != current.listTujuan ||
-                  previous.tujuanAkhirHasError != current.tujuanAkhirHasError ||
-                  previous.tujuanAwalHasError != current.tujuanAwalHasError ||
-                  previous.selectedProduct != current.selectedProduct,
-              builder: (context, state) {
-                debugPrint("Rebuild Bottom Navigation Bar");
-                debugPrint("Jumlah Voucher: ${state.listTujuan.length}");
+            child:
+                BlocBuilder<
+                  MemberAktivasiVoucherProvider,
+                  MemberAktivasiVoucherState
+                >(
+                  buildWhen: (previous, current) =>
+                      previous.listTujuan != current.listTujuan ||
+                      previous.tujuanAkhirHasError !=
+                          current.tujuanAkhirHasError ||
+                      previous.tujuanAwalHasError !=
+                          current.tujuanAwalHasError ||
+                      previous.selectedProduct != current.selectedProduct,
+                  builder: (context, state) {
+                    debugPrint("Rebuild Bottom Navigation Bar");
+                    debugPrint("Jumlah Voucher: ${state.listTujuan.length}");
 
-                return Container(
-                  padding: EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 8,
-                    bottom: 2 + MediaQuery.paddingOf(context).bottom,
-                  ),
-                  decoration: BoxDecoration(
-                    color: context.background,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
+                    return Container(
+                      padding: EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        top: 8,
+                        bottom: 2 + MediaQuery.paddingOf(context).bottom,
                       ),
-                    ],
-                    border: Border(
-                      top: BorderSide(color: context.border, width: 1),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Gap(6),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Gap(8),
-                          Text("Total Voucher : ", style: context.bodyMedium),
-                          Expanded(
-                            child: Text(
-                              state.listTujuan.length.toString(),
-                              textAlign: TextAlign.end,
-                              style: context.bodyMedium.withWeight(
-                                FontWeight.w600,
-                              ),
-                            ),
+                      decoration: BoxDecoration(
+                        color: context.background,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
                           ),
-                          const Gap(8),
+                        ],
+                        border: Border(
+                          top: BorderSide(color: context.border, width: 1),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Gap(6),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Gap(8),
+                              Text(
+                                "Total Voucher : ",
+                                style: context.bodyMedium,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  state.listTujuan.length.toString(),
+                                  textAlign: TextAlign.end,
+                                  style: context.bodyMedium.withWeight(
+                                    FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              const Gap(8),
+                            ],
+                          ),
+                          const Gap(5),
+                          _buildContinueButton(context, state),
                         ],
                       ),
-                      const Gap(5),
-                      _buildContinueButton(context, state),
-                    ],
-                  ),
-                );
-              },
-            ),
+                    );
+                  },
+                ),
           ),
         ),
       ),
@@ -150,7 +163,7 @@ class _MemberAkitvasiVoucherSatuanPageState
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: ()  {
+        onPressed: () {
           debugPrint("Lanjutkan Ke Pembelian Ditekan");
           var valid = getMemberAktivasiVoucherProvider(
             context,
@@ -159,7 +172,8 @@ class _MemberAkitvasiVoucherSatuanPageState
           if (!valid) {
             return;
           }
-          // TODO: Implement checkout
+
+          getMemberAktivasiVoucherProvider(context).setNewKonfirmasi();
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
@@ -186,7 +200,9 @@ class _MemberAkitvasiVoucherSatuanPageState
                       )
                     : "-",
                 textAlign: TextAlign.end,
-                style: context.bodyMedium.withColor(foregroundColor),
+                style: context.bodyMedium
+                    .withColor(foregroundColor)
+                    .withWeight(FontWeight.w600),
               ),
             ),
           ],
@@ -196,7 +212,10 @@ class _MemberAkitvasiVoucherSatuanPageState
   }
 
   Widget _buildFormInputTujuanVoucher(BuildContext context) {
-    return BlocBuilder<MemberAktivasiVoucherProvider, MemberAktivasiVoucherState>(
+    return BlocBuilder<
+      MemberAktivasiVoucherProvider,
+      MemberAktivasiVoucherState
+    >(
       buildWhen: (oldState, newState) =>
           oldState.listTujuan != newState.listTujuan ||
           oldState.listTujuanHasError != newState.listTujuanHasError ||
@@ -258,7 +277,9 @@ class _MemberAkitvasiVoucherSatuanPageState
                       CustomButton(
                         text: "Tambah Voucher",
                         onPressed: () {
-                          getMemberAktivasiVoucherProvider(context).addMultiTujuan();
+                          getMemberAktivasiVoucherProvider(
+                            context,
+                          ).addMultiTujuan();
                         },
                       ),
                     ],

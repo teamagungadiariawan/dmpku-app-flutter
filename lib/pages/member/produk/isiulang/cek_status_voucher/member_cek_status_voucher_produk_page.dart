@@ -1,7 +1,14 @@
+import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/helpers/keyboard_helper.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
-import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/cek_status_voucher_provider.dart';import 'package:dmpku/widgets/card_input_tujuan.dart';
+import 'package:dmpku/core/themes/app_text_styles.dart';
+import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/model/key_value_response.dart';
+import 'package:dmpku/pages/member/produk/isiulang/cek_status_voucher/member_cek_status_voucher_provider.dart';
+import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/card_provider.dart';
 import 'package:dmpku/widgets/produk/custom_popup_input_tujuan.dart';
@@ -10,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
+import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
 
 class MemberCekStatusVoucherProdukPage extends StatefulWidget {
   static const routeName = '/member/produk/isiulang/cek-status-voucher/produk';
@@ -53,6 +62,7 @@ class _MemberCekStatusVoucherProdukPageState
               children: [
                 _buildPhoneNumberCard(context),
                 _buildDetailProvider(context),
+                _buildInfoCek(context),
               ],
             ),
           ),
@@ -61,12 +71,85 @@ class _MemberCekStatusVoucherProdukPageState
     );
   }
 
-  Widget _buildPhoneNumberCard(BuildContext context) {
-    return BlocBuilder<MemberCekStatusVoucherProvider, MemberCekStatusVoucherState>(
+  Widget _buildInfoCek(BuildContext context) {
+    return BlocBuilder<
+      MemberCekStatusVoucherProvider,
+      MemberCekStatusVoucherState
+    >(
       buildWhen: (previous, current) =>
           previous.tujuan != current.tujuan ||
+          previous.tujuanHasError != current.tujuanHasError ||
+          previous.apiCekAkunStatus != current.apiCekAkunStatus ||
+          previous.cekAkunResult != current.cekAkunResult,
+      builder: (context, state) {
+        debugPrint("Cek akun result : ${state.cekAkunResult.items.length}");
+        debugPrint("cek tujuan : ${checkTujuanMatchResult(state.cekAkunResult, state.tujuan)}");
+        debugPrint("apiCekAkunStatus : ${state.apiCekAkunStatus.isSuccess}");
+
+        if (state.cekAkunResult.items.isEmpty || !checkTujuanMatchResult(state.cekAkunResult, state.tujuan) || !state.apiCekAkunStatus.isSuccess) {
+          return Expanded(
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Gap(50),
+                  Lottie.asset(Assets.animations.inputId, height: 200),
+                  Gap(10),
+                  Text(
+                    "Masukan Kode Voucher",
+                    style: context.bodyLarge
+                        .withColor(context.primary)
+                        .withWeight(FontWeight.w800),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return Card(
+          child: Padding(
+            padding: paddingCard,
+            child: ListView.builder(
+              itemCount: state.cekAkunResult.items.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final item = state.cekAkunResult.items[index];
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        item.key,
+                        style: context.bodyMedium.withWeight(FontWeight.w600),
+                      ),
+                    ),
+                    Text(
+                      item.value,
+                      style: context.bodyMedium.withWeight(FontWeight.w400),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPhoneNumberCard(BuildContext context) {
+    return BlocBuilder<
+      MemberCekStatusVoucherProvider,
+      MemberCekStatusVoucherState
+    >(
+      buildWhen: (previous, current) =>
+          previous.tujuan != current.tujuan ||
+              previous.apiCekAkunStatus != current.apiCekAkunStatus ||
           previous.tujuanHasError != current.tujuanHasError,
       builder: (context, state) {
+        debugPrint("Rebuild Card Input Tujuan");
         return CardInputTujuan(
           tujuan: state.tujuan,
           label: 'Kode Voucher',
@@ -85,18 +168,23 @@ class _MemberCekStatusVoucherProdukPageState
             ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
-          showFavoritButton: true,
+          showFavoritButton: false,
           isGuest: false,
           addButtonLanjutkan: true,
           onLanjutkan: () {
-            var valid = getMemberCekStatusVoucherProvider(context).validateTujuan();
+            closeKeyBoard();
+            var valid = getMemberCekStatusVoucherProvider(
+              context,
+            ).validateTujuan();
             if (!valid) {
               shakeKey.currentState?.shake();
             } else {
-              // TODO: Implement checkout
+              debugPrint("Lanjutkan Cek Status Voucher");
+             getMemberCekStatusVoucherProvider(context).cekStatucVoucher();
             }
           },
           labelButton: "Cek Status Voucher",
+          isLoadingCekAkun: state.apiCekAkunStatus.isLoading,
           isButtonDisabled: state.tujuanHasError,
           onFavoritResult: (val) {
             getMemberCekStatusVoucherProvider(
@@ -120,7 +208,10 @@ class _MemberCekStatusVoucherProdukPageState
   }
 
   Widget _buildDetailProvider(BuildContext context) {
-    return BlocBuilder<MemberCekStatusVoucherProvider, MemberCekStatusVoucherState>(
+    return BlocBuilder<
+      MemberCekStatusVoucherProvider,
+      MemberCekStatusVoucherState
+    >(
       buildWhen: (previous, current) =>
           previous.selectedProduct != current.selectedProduct,
       builder: (context, state) {

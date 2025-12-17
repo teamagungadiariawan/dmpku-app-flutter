@@ -139,16 +139,17 @@ class _CustomButtonState extends State<CustomButton> {
       }
 
       return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: widget.iconPosition == IconPosition.start
             ? [
           iconWidget,
-          const SizedBox(width: 8),
+          const SizedBox(width: 5),
           textWidget,
         ]
             : [
           textWidget,
-          const SizedBox(width: 8),
+          const SizedBox(width: 5),
           iconWidget,
         ],
       );

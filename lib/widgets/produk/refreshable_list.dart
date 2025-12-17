@@ -129,3 +129,221 @@ class SliverRefreshableList<T> extends StatelessWidget {
     );
   }
 }
+
+
+class LoadMoreRefreshableList<T> extends StatelessWidget {
+  final Future<void> Function() onRefresh;
+  final List<T> items;
+  final Widget Function(BuildContext context, T item, int index) itemBuilder;
+
+  // State Loading Awal
+  final bool isLoading;
+  final Widget? loadingWidget;
+
+  // State Empty
+  final String emptyTitle;
+  final String emptySubtitle;
+  final String? emptyAnimationAsset;
+  final Widget? emptyActionWidget;
+
+  // Config List
+  final ScrollPhysics? physics;
+  final EdgeInsetsGeometry? padding;
+  final Widget? separatorBuilder;
+
+  // State Load More
+  final VoidCallback? onLoadMore;
+  final bool canLoadMore;
+  final bool isLoadingMore;
+
+  const LoadMoreRefreshableList({
+    super.key,
+    required this.onRefresh,
+    required this.items,
+    required this.itemBuilder,
+    this.isLoading = false,
+    this.loadingWidget,
+    this.emptyTitle = 'Data tidak ditemukan',
+    this.emptySubtitle = 'Tarik ke bawah untuk refresh',
+    this.emptyAnimationAsset,
+    this.emptyActionWidget,
+    this.physics,
+    this.padding,
+    this.separatorBuilder,
+    this.onLoadMore,
+    this.canLoadMore = false,
+    this.isLoadingMore = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // 1. Handle Initial Loading
+    if (isLoading) {
+      return loadingWidget ?? const Center(child: CircularProgressIndicator());
+    }
+
+    // 2. Handle Empty State
+    if (items.isEmpty && !isLoading) {
+      return RefreshIndicator(
+        onRefresh: onRefresh,
+        color: context.primary,
+        backgroundColor: context.card,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: EmptyStateWidget(
+                title: emptyTitle,
+                subtitle: emptySubtitle,
+                animationAsset: emptyAnimationAsset ?? Assets.animations.noData,
+                actionWidget: emptyActionWidget,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // 3. Hitung total item (+1 kalau tombol load more muncul)
+    final bool showLoadMore = canLoadMore || isLoadingMore;
+    final int totalCount = items.length + (showLoadMore ? 1 : 0);
+
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      color: context.primary,
+      backgroundColor: context.card,
+      child: ListView.separated(
+        physics: physics ?? const AlwaysScrollableScrollPhysics(),
+        padding: padding,
+        itemCount: totalCount,
+        separatorBuilder: (context, index) {
+          // Kalau ada separator custom, pake itu.
+          // Jangan kasih separator di atas tombol load more biar rapi.
+          if (separatorBuilder != null && index < items.length - 1) {
+            return separatorBuilder!;
+          }
+          return const SizedBox(height: 12); // Default jarak antar item
+        },
+        itemBuilder: (context, index) {
+          // Render Item Data
+          if (index < items.length) {
+            return itemBuilder(context, items[index], index);
+          }
+
+          // Render Tombol Load More / Loading Bawah
+          return _buildLoadMoreIndicator(context);
+        },
+      ),
+    );
+  }
+
+  Widget _buildLoadMoreIndicator(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Center(
+        child: isLoadingMore
+            ? const SizedBox(
+          width: 24,
+          height: 24,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        )
+            : OutlinedButton.icon(
+          onPressed: onLoadMore,
+          icon: const Icon(Icons.download_rounded, size: 18),
+          label: const Text("Muat Lebih Banyak"),
+          style: OutlinedButton.styleFrom(
+            shape: const StadiumBorder(),
+            side: BorderSide(color: context.primary),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Versi Sliver buat Load More (Dipake di dalam CustomScrollView)
+class SliverLoadMoreList<T> extends StatelessWidget {
+  final Future<void> Function() onRefresh;
+  final List<T> items;
+  final Widget Function(BuildContext context, T item, int index) itemBuilder;
+  final bool isLoading;
+  final Widget? loadingWidget;
+  final String emptyTitle;
+  final String emptySubtitle;
+
+  // State Load More
+  final VoidCallback? onLoadMore;
+  final bool canLoadMore;
+  final bool isLoadingMore;
+
+  const SliverLoadMoreList({
+    super.key,
+    required this.onRefresh,
+    required this.items,
+    required this.itemBuilder,
+    this.isLoading = false,
+    this.loadingWidget,
+    this.emptyTitle = 'Data tidak ditemukan',
+    this.emptySubtitle = 'Tarik ke bawah untuk refresh',
+    this.onLoadMore,
+    this.canLoadMore = false,
+    this.isLoadingMore = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return SliverFillRemaining(
+        child: loadingWidget ?? const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (items.isEmpty) {
+      return SliverFillRemaining(
+        hasScrollBody: false,
+        child: EmptyStateWidget(title: emptyTitle, subtitle: emptySubtitle),
+      );
+    }
+
+    return SliverMainAxisGroup(
+      slivers: [
+        // List Item
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+                (context, index) => itemBuilder(context, items[index], index),
+            childCount: items.length,
+          ),
+        ),
+
+        // Tombol Load More di Bawah
+        if (canLoadMore || isLoadingMore)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24.0),
+              child: Center(
+                child: isLoadingMore
+                    ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+                    : OutlinedButton.icon(
+                  onPressed: onLoadMore,
+                  icon: const Icon(Icons.download_rounded, size: 18),
+                  label: const Text("Muat Lebih Banyak"),
+                  style: OutlinedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    side: BorderSide(color: context.primary),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+        // Spacer Bawah biar gak mepet
+        const SliverToBoxAdapter(child: SizedBox(height: 24)),
+      ],
+    );
+  }
+}

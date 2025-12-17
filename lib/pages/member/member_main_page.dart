@@ -7,6 +7,8 @@ import 'package:dmpku/pages/guest/main_page.dart';
 import 'package:dmpku/pages/member/akun/member_akun_page.dart';
 import 'package:dmpku/pages/member/dashboard/member_dashboard_page.dart';
 import 'package:dmpku/pages/member/official/member_official_page.dart';
+import 'package:dmpku/pages/member/riwayat/member_riwayat_page.dart';
+import 'package:dmpku/pages/member/riwayat/member_riwayat_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,11 @@ import 'package:gap/gap.dart';
 class MemberMainPage extends StatefulWidget {
   static const routeName = '/member/main';
 
-  const MemberMainPage({super.key});
+  // 1. Tambahkan variabel ini untuk nangkep index awal
+  final int initialIndex;
+
+  // 2. Pasang di constructor, defaultnya 0 (Home)
+  const MemberMainPage({super.key, this.initialIndex = 0});
 
   @override
   State<MemberMainPage> createState() => _MemberMainPageState();
@@ -26,13 +32,12 @@ class _MemberMainPageState extends State<MemberMainPage> {
   final double _iconSize = 30;
 
   // PageController untuk smooth transition
-  final PageController _pageController = PageController();
+  late PageController _pageController;
 
   // List of pages - state akan tetap terjaga
   late final List<Widget> _pages = [
     const MemberDashboardPage(),
-    // Placeholder for Riwayat
-    const Center(child: Text("Riwayat Page")),
+    MemberRiwayatPage(),
     // Placeholder for PROMO!
     const Center(child: Text("Promo Page")),
     MemberOfficialPage(),
@@ -41,8 +46,15 @@ class _MemberMainPageState extends State<MemberMainPage> {
 
   @override
   void initState() {
-    getMemberProvider(context).getProfile();
     super.initState();
+    _currentIndex = widget.initialIndex;
+    _pageController = PageController(initialPage: widget.initialIndex);
+    getMemberProvider(context).getProfile();
+
+    getMemberRiwayatProvider(context).fetchRiwayatToday();
+    getMemberRiwayatProvider(context).fetchRiwayatHistory();
+    getMemberRiwayatProvider(context).fetchMutasiStok();
+    getMemberRiwayatProvider(context).fetchRekapTransaksi();
   }
 
   @override

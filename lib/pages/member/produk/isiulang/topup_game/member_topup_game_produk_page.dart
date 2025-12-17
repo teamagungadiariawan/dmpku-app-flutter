@@ -233,50 +233,6 @@ class _MemberTopupGameProdukPageState extends State<MemberTopupGameProdukPage> {
     );
   }
 
-  Widget _buildCekAkunButton(MemberTopupGameState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: CustomButton(
-        text: 'Cek Akun',
-        onPressed: () => _provider.cekAkunGame(),
-        isLoading: state.apiCekAkunStatus.isLoading,
-        height: 25,
-        width: double.infinity,
-        padding: EdgeInsets.zero,
-      ),
-    );
-  }
-
-  Widget _buildCekAkunResultCard(MemberTopupGameState state) {
-    return Card(
-      child: Padding(
-        padding: paddingPage,
-        child: ListView.builder(
-          itemCount: state.cekAkunResult.items.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            final item = state.cekAkunResult.items[index];
-            return Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    item.key,
-                    style: context.bodyMedium.withWeight(FontWeight.w600),
-                  ),
-                ),
-                Text(
-                  item.value,
-                  style: context.bodyMedium.withWeight(FontWeight.w400),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-
   Widget _buildDetailProvider() {
     return BlocBuilder<MemberTopupGameProvider, MemberTopupGameState>(
       buildWhen: (prev, curr) => prev.selectedProvider != curr.selectedProvider,

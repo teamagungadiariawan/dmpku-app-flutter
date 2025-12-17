@@ -6,8 +6,7 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
-import 'package:dmpku/pages/member/produk/isiulang/token_pln/token_pln_provider.dart';
-import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/token_pln/member_token_pln_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/card_informasi.dart';
 import 'package:dmpku/widgets/card_tanya.dart';
@@ -228,7 +227,7 @@ class _MemberTokenPlnKonfirmasiTransaksiPageState
                               Text(
                                 ToCurrency(state.totalPotongStok.toString()),
                                 style: context.bodyMedium
-                                    .withWeight(FontWeight.w400)
+                                    .withWeight(FontWeight.w800)
                                     .withColor(Colors.white),
                               ),
                             ],
@@ -236,6 +235,7 @@ class _MemberTokenPlnKonfirmasiTransaksiPageState
                         ),
                       ),
 
+                      const SliverToBoxAdapter(child: Gap(4)),
                       SliverToBoxAdapter(child: CardInformasi()),
                       SliverToBoxAdapter(
                         child: CardTanya(onTap: () {}, title: "Ada kendala?"),
@@ -305,9 +305,14 @@ class _MemberTokenPlnKonfirmasiTransaksiPageState
               ),
             ),
           ),
-          Text(
-            item.value,
-            style: context.bodyMedium.withWeight(FontWeight.w400),
+
+          Container(
+            constraints:  BoxConstraints(maxWidth: 150),
+            child: Text(
+              item.value,
+              textAlign: TextAlign.end,
+              style: context.bodyMedium.withWeight(FontWeight.w400),
+            ),
           ),
         ],
       ),

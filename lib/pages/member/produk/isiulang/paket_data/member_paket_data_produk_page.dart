@@ -4,7 +4,8 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_data/paket_data_provider.dart';import 'package:dmpku/widgets/card_input_tujuan.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_data/member_paket_data_provider.dart';
+import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
@@ -26,7 +27,8 @@ class MemberPaketDataProdukPage extends StatefulWidget {
   const MemberPaketDataProdukPage({super.key});
 
   @override
-  State<MemberPaketDataProdukPage> createState() => _MemberPaketDataProdukPageState();
+  State<MemberPaketDataProdukPage> createState() =>
+      _MemberPaketDataProdukPageState();
 }
 
 class _MemberPaketDataProdukPageState extends State<MemberPaketDataProdukPage> {
@@ -95,31 +97,33 @@ class _MemberPaketDataProdukPageState extends State<MemberPaketDataProdukPage> {
               ],
             ),
           ),
-          bottomNavigationBar: BlocBuilder<MemberPaketDataProvider, MemberPaketDataState>(
-            buildWhen: (previous, current) =>
-                previous.selectedProduct != current.selectedProduct ||
-                previous.tujuanHasError != current.tujuanHasError ||
-                previous.tujuan != current.tujuan ||
-                previous.apiFetchProductStatus != current.apiFetchProductStatus,
-            builder: (context, state) {
-              final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+          bottomNavigationBar:
+              BlocBuilder<MemberPaketDataProvider, MemberPaketDataState>(
+                buildWhen: (previous, current) =>
+                    previous.selectedProduct != current.selectedProduct ||
+                    previous.tujuanHasError != current.tujuanHasError ||
+                    previous.tujuan != current.tujuan ||
+                    previous.apiFetchProductStatus !=
+                        current.apiFetchProductStatus,
+                builder: (context, state) {
+                  final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-              return Padding(
-                padding: EdgeInsets.only(bottom: bottomInset),
-                child: ButtonCheckout(
-                  isDisabled:
-                  state.selectedProduct.idproduk == 0 ||
-                      state.tujuanHasError ||
-                      state.tujuan.isEmpty ||
-                      state.apiFetchProductStatus.isLoading,
-                  selectedProduct: state.selectedProduct,
-                  onContinue: () {
-                    getMemberPaketDataProvider(context).setNewKonfirmasi();
-                  },
-                ),
-              );
-            },
-          ),
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: bottomInset),
+                    child: ButtonCheckout(
+                      isDisabled:
+                          state.selectedProduct.idproduk == 0 ||
+                          state.tujuanHasError ||
+                          state.tujuan.isEmpty ||
+                          state.apiFetchProductStatus.isLoading,
+                      selectedProduct: state.selectedProduct,
+                      onContinue: () {
+                        getMemberPaketDataProvider(context).setNewKonfirmasi();
+                      },
+                    ),
+                  );
+                },
+              ),
         ),
       ),
     );
@@ -144,11 +148,13 @@ class _MemberPaketDataProdukPageState extends State<MemberPaketDataProdukPage> {
             getMemberPaketDataProvider(context).setTujuan(value);
           },
           onClear: () {
-            getMemberPaketDataProvider(context).setTujuan('', updateController: true);
+            getMemberPaketDataProvider(
+              context,
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
-          isGuest : true,
+          isGuest: true,
           tipeInput: TipeInput.numericOnly,
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(

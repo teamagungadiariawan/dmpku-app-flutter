@@ -3,7 +3,7 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/paket_streaming_provider.dart';
+import 'package:dmpku/pages/member/produk/isiulang/paket_streaming/member_paket_streaming_provider.dart';
 import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
@@ -115,7 +115,9 @@ class _MemberPaketStreamingProdukPageState
                           state.tujuan.isEmpty ||
                           state.apiFetchProductStatus.isLoading,
                       selectedProduct: state.selectedProduct,
-                      onContinue: () {},
+                      onContinue: () {
+                        getMemberPaketStreamingProvider(context).setNewKonfirmasi();
+                      },
                     ),
                   );
                 },
