@@ -1,5 +1,6 @@
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/produk/empty_state_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -130,7 +131,6 @@ class SliverRefreshableList<T> extends StatelessWidget {
   }
 }
 
-
 class LoadMoreRefreshableList<T> extends StatelessWidget {
   final Future<void> Function() onRefresh;
   final List<T> items;
@@ -213,18 +213,10 @@ class LoadMoreRefreshableList<T> extends StatelessWidget {
       onRefresh: onRefresh,
       color: context.primary,
       backgroundColor: context.card,
-      child: ListView.separated(
+      child: ListView.builder(
         physics: physics ?? const AlwaysScrollableScrollPhysics(),
         padding: padding,
         itemCount: totalCount,
-        separatorBuilder: (context, index) {
-          // Kalau ada separator custom, pake itu.
-          // Jangan kasih separator di atas tombol load more biar rapi.
-          if (separatorBuilder != null && index < items.length - 1) {
-            return separatorBuilder!;
-          }
-          return const SizedBox(height: 12); // Default jarak antar item
-        },
         itemBuilder: (context, index) {
           // Render Item Data
           if (index < items.length) {
@@ -244,19 +236,18 @@ class LoadMoreRefreshableList<T> extends StatelessWidget {
       child: Center(
         child: isLoadingMore
             ? const SizedBox(
-          width: 24,
-          height: 24,
-          child: CircularProgressIndicator(strokeWidth: 2),
-        )
-            : OutlinedButton.icon(
-          onPressed: onLoadMore,
-          icon: const Icon(Icons.download_rounded, size: 18),
-          label: const Text("Muat Lebih Banyak"),
-          style: OutlinedButton.styleFrom(
-            shape: const StadiumBorder(),
-            side: BorderSide(color: context.primary),
-          ),
-        ),
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : CustomButton(
+                height: 30,
+                width: MediaQuery.of(context).size.width * 0.7,
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                onPressed: onLoadMore,
+                text: "Muat Lebih Banyak",
+                variant: ButtonVariant.primary,
+              ),
       ),
     );
   }
@@ -295,7 +286,9 @@ class SliverLoadMoreList<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isLoading) {
       return SliverFillRemaining(
-        child: loadingWidget ?? const Center(child: CircularProgressIndicator()),
+        hasScrollBody: false,
+        child:
+            loadingWidget ?? const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -311,7 +304,7 @@ class SliverLoadMoreList<T> extends StatelessWidget {
         // List Item
         SliverList(
           delegate: SliverChildBuilderDelegate(
-                (context, index) => itemBuilder(context, items[index], index),
+            (context, index) => itemBuilder(context, items[index], index),
             childCount: items.length,
           ),
         ),
@@ -320,23 +313,22 @@ class SliverLoadMoreList<T> extends StatelessWidget {
         if (canLoadMore || isLoadingMore)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
+              padding: const EdgeInsets.symmetric(vertical: 5.0),
               child: Center(
                 child: isLoadingMore
                     ? const SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-                    : OutlinedButton.icon(
-                  onPressed: onLoadMore,
-                  icon: const Icon(Icons.download_rounded, size: 18),
-                  label: const Text("Muat Lebih Banyak"),
-                  style: OutlinedButton.styleFrom(
-                    shape: const StadiumBorder(),
-                    side: BorderSide(color: context.primary),
-                  ),
-                ),
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : CustomButton(
+                        height: 30,
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        onPressed: onLoadMore,
+                        text: "Muat Lebih Banyak",
+                        variant: ButtonVariant.primary,
+                      ),
               ),
             ),
           ),

@@ -123,6 +123,15 @@ import 'package:dmpku/pages/member/produk/ppob/uang_elektronik/member_uang_elekt
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_aktivasi_voucher.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_elektrik/member_bagikan_elektrik_page.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_elektrik/member_cetak_struk_elektrik_page.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_nominal/member_bagikan_nominal_bebas_page.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_nominal/member_cetak_struk_nominal_bebas_page.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_1/member_bagikan_ppob_1_page.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_1/member_cetak_struk_ppob_1_page.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_2/member_bagikan_ppob_2_page.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_2/member_cetak_struk_ppob_2_page.dart';
+import 'package:dmpku/pages/member/riwayat/detail_riwayat/member_detail_riwayat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -257,6 +266,28 @@ class AppRouter {
         return _customTransitionBottomToTop(
           child: MemberMainPage(initialIndex: args ?? 0),
         );
+
+      case MemberDetailRiwayatPage.routeName:
+        return _customTransition(child: MemberDetailRiwayatPage());
+
+      case CetakStrukElektrikPage.routeName:
+        return _customTransition(child: CetakStrukElektrikPage());
+      case BagikanElektrikPage.routeName:
+        return _customTransition(child: BagikanElektrikPage());
+
+      case CetakStrukNominalBebasPage.routeName:
+        return _customTransition(child: CetakStrukNominalBebasPage());
+      case BagikanNominalBebasPage.routeName:
+        return _customTransition(child: BagikanNominalBebasPage());
+
+      case MemberCetakStrukPpob1Page.routeName:
+        return _customTransition(child: MemberCetakStrukPpob1Page());
+      case BagikanPpob1Page.routeName:
+        return _customTransition(child: BagikanPpob1Page());
+      case MemberCetakStrukPpob2Page.routeName:
+        return _customTransition(child: MemberCetakStrukPpob2Page());
+      case BagikanPpob2Page.routeName:
+        return _customTransition(child: BagikanPpob2Page());
 
       // Member Transaksi Proses
       case TransaksiProsesPage.routeName:

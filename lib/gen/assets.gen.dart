@@ -124,6 +124,9 @@ class $AssetsImgGen {
   /// Directory path: assets/img/profile
   $AssetsImgProfileGen get profile => const $AssetsImgProfileGen();
 
+  /// Directory path: assets/img/status
+  $AssetsImgStatusGen get status => const $AssetsImgStatusGen();
+
   /// List of all assets
   List<AssetGenImage> get values => [
     bgPattern,
@@ -541,6 +544,29 @@ class $AssetsImgProfileGen {
     icManageDevice,
     icPlaystore,
     icResetPin,
+  ];
+}
+
+class $AssetsImgStatusGen {
+  const $AssetsImgStatusGen();
+
+  /// File path: assets/img/status/ic-status-gagal.png
+  AssetGenImage get icStatusGagal =>
+      const AssetGenImage('assets/img/status/ic-status-gagal.png');
+
+  /// File path: assets/img/status/ic-status-pending.png
+  AssetGenImage get icStatusPending =>
+      const AssetGenImage('assets/img/status/ic-status-pending.png');
+
+  /// File path: assets/img/status/ic-status-sukses.png
+  AssetGenImage get icStatusSukses =>
+      const AssetGenImage('assets/img/status/ic-status-sukses.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+    icStatusGagal,
+    icStatusPending,
+    icStatusSukses,
   ];
 }
 

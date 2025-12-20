@@ -14,4 +14,14 @@ enum TipeTrx {
   static TipeTrx? fromValue(int value) {
     return TipeTrx.values.where((e) => e.value == value).firstOrNull;
   }
+
+  bool get isElektrik => this == TipeTrx.elektrik;
+
+  bool get isNominalBebas => this == TipeTrx.nominalBebas;
+
+  bool get isCekTagihan => this == TipeTrx.cekTagihan;
+
+  bool get isBayarTagihan => this == TipeTrx.bayarTagihan;
+
+  bool get isCekAkun => this == TipeTrx.cekAkun;
 }

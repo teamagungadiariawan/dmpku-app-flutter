@@ -29,19 +29,18 @@ void _showMessage({
 }) {
   toastification.show(
     type: type,
-    style: ToastificationStyle.fillColored,
+    style: ToastificationStyle.flatColored,
     title: Text(title),
     description: Text(
       message,
       style: FontSizeTextStyles.smallMedium.copyWith(
-        color: Colors.white,
         fontWeight: FontWeight.w800,
       ),
     ),
     alignment: Alignment.bottomCenter,
     autoCloseDuration: const Duration(seconds: 4),
     boxShadow: highModeShadow,
-    showProgressBar: true,
+    showProgressBar: false,
     dragToClose: true,
   );
 }

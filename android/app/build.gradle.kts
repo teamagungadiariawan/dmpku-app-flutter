@@ -41,4 +41,6 @@ flutter {
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))  // Tambahkan ini
+    implementation("com.github.mazenrashed:Printooth:1.3.1")
+    implementation("com.google.code.gson:gson:2.13.2")
 }

@@ -14,6 +14,7 @@ class CardRiwayatTransaksi extends StatelessWidget {
   final TrxStatus status;
   final DateTime waktuTrx;
   final String imgProduk;
+  final Function()? onTap;
 
   const CardRiwayatTransaksi({
     super.key,
@@ -23,6 +24,7 @@ class CardRiwayatTransaksi extends StatelessWidget {
     required this.status,
     required this.waktuTrx,
     required this.imgProduk,
+    this.onTap,
   });
 
   @override
@@ -33,17 +35,22 @@ class CardRiwayatTransaksi extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(color: context.border, width: 0.5),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12), // Padding standard card
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center, // Align top biar rapi
-          children: [
-            _buildImage(context),
-            const Gap(12), // Kasih jarak napas dikit
-            Expanded(child: _buildMainInfo(context)),
-            const Gap(8),
-            _buildTrailing(context),
-          ],
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(12), // Padding standard card
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            // Align top biar rapi
+            children: [
+              _buildImage(context),
+              const Gap(12), // Kasih jarak napas dikit
+              Expanded(child: _buildMainInfo(context)),
+              const Gap(8),
+              _buildTrailing(context),
+            ],
+          ),
         ),
       ),
     );

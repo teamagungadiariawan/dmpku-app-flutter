@@ -1,6 +1,8 @@
 import 'package:dmpku/core/enums/status_trx.dart';
+import 'package:dmpku/core/enums/tipe_trx.dart';
 import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
+import 'package:dmpku/model/cek_tagihan_response.dart';
 
 class RiwayatModel {
   final int idtransaksiprod;
@@ -301,4 +303,175 @@ const RekapTransaksiModel DEFAULT_REKAP_TRANSAKSI_MODEL = RekapTransaksiModel(
   totaldebet: 0,
 );
 
+class DetailTransaksiModel {
+  final int idtransaksiprod;
+  final String waktutrx;
+  final String kodeproduk;
+  final String namaproduk;
+  final String keteranganproduk;
+  final String imgproduk;
+  final int status;
+  final String tujuan;
+  final String tujuantambahan;
+  final int jenistrx;
+  final int nominaltrx;
+  final int totaltagihan;
+  final int feeppob;
+  final int potongansaldotagihan;
+  final int totalharga;
+  final String sn;
+  final String datatrx;
 
+  const DetailTransaksiModel({
+    required this.idtransaksiprod,
+    required this.waktutrx,
+    required this.kodeproduk,
+    required this.namaproduk,
+    required this.keteranganproduk,
+    required this.imgproduk,
+    required this.status,
+    required this.tujuan,
+    required this.tujuantambahan,
+    required this.jenistrx,
+    required this.nominaltrx,
+    required this.totaltagihan,
+    required this.feeppob,
+    required this.potongansaldotagihan,
+    required this.totalharga,
+    required this.sn,
+    required this.datatrx,
+  });
+
+  factory DetailTransaksiModel.fromJson(Map<String, dynamic>? json) {
+    return DetailTransaksiModel(
+      idtransaksiprod: json?['idtransaksiprod'] ?? 0,
+      waktutrx: json?['waktutrx'] ?? '',
+      kodeproduk: json?['kodeproduk'] ?? '',
+      namaproduk: json?['namaproduk'] ?? '',
+      keteranganproduk: json?['keteranganproduk'] ?? '',
+      imgproduk: json?['imgproduk'] ?? '',
+      status: json?['status'] ?? 0,
+      tujuan: json?['tujuan'] ?? '',
+      tujuantambahan: json?['tujuantambahan'] ?? '',
+      jenistrx: json?['jenistrx'] ?? 0,
+      nominaltrx: json?['nominaltrx'] ?? 0,
+      totaltagihan: json?['totaltagihan'] ?? 0,
+      feeppob: json?['feeppob'] ?? 0,
+      potongansaldotagihan: json?['potongansaldotagihan'] ?? 0,
+      totalharga: json?['totalharga'] ?? 0,
+      sn: json?['sn'] ?? '',
+      datatrx: json?['datatrx'] ?? '',
+    );
+  }
+
+  DetailTransaksiModel copyWith({
+    int? idtransaksiprod,
+    String? waktutrx,
+    String? kodeproduk,
+    String? namaproduk,
+    String? keteranganproduk,
+    String? imgproduk,
+    int? status,
+    String? tujuan,
+    String? tujuantambahan,
+    int? jenistrx,
+    int? nominaltrx,
+    int? totaltagihan,
+    int? feeppob,
+    int? potongansaldotagihan,
+    int? totalharga,
+    String? sn,
+    String? datatrx,
+  }) {
+    return DetailTransaksiModel(
+      idtransaksiprod: idtransaksiprod ?? this.idtransaksiprod,
+      waktutrx: waktutrx ?? this.waktutrx,
+      kodeproduk: kodeproduk ?? this.kodeproduk,
+      namaproduk: namaproduk ?? this.namaproduk,
+      keteranganproduk: keteranganproduk ?? this.keteranganproduk,
+      imgproduk: imgproduk ?? this.imgproduk,
+      status: status ?? this.status,
+      tujuan: tujuan ?? this.tujuan,
+      tujuantambahan: tujuantambahan ?? this.tujuantambahan,
+      jenistrx: jenistrx ?? this.jenistrx,
+      nominaltrx: nominaltrx ?? this.nominaltrx,
+      totaltagihan: totaltagihan ?? this.totaltagihan,
+      feeppob: feeppob ?? this.feeppob,
+      potongansaldotagihan: potongansaldotagihan ?? this.potongansaldotagihan,
+      totalharga: totalharga ?? this.totalharga,
+      sn: sn ?? this.sn,
+      datatrx: datatrx ?? this.datatrx,
+    );
+  }
+
+  TipeTrx get tipeTrx => TipeTrx.fromValue(jenistrx) ?? TipeTrx.elektrik;
+
+  TrxStatus get statusTrx => TrxStatus.fromId(status);
+
+  String get nominalTrxFormatted => ToCurrency(nominaltrx.toString());
+
+  String get totalHargaFormatted => ToCurrency(totalharga.toString());
+
+  String get totalTagihanFormatted => ToCurrency(totaltagihan.toString());
+
+  String get feePpobFormatted => ToCurrency(feeppob.toString());
+
+  String get potonganSaldoTagihanFormatted =>
+      ToCurrency(potongansaldotagihan.toString());
+
+  DateTime get waktuTrx => DateTime.parse(waktutrx);
+
+  @override
+  String toString() {
+    return 'DetailTransaksiModel(idtransaksiprod: $idtransaksiprod, waktutrx: $waktutrx, kodeproduk: $kodeproduk, namaproduk: $namaproduk, keteranganproduk: $keteranganproduk, imgproduk: $imgproduk, status: $status, tujuan: $tujuan, tujuantambahan: $tujuantambahan, jenistrx: $jenistrx, nominaltrx: $nominaltrx, totaltagihan: $totaltagihan, feeppob: $feeppob, potongansaldotagihan: $potongansaldotagihan, totalharga: $totalharga, sn: $sn, datatrx: $datatrx)';
+  }
+}
+
+const DetailTransaksiModel DEFAULT_DETAIL_TRANSAKSI_MODEL =
+    DetailTransaksiModel(
+      idtransaksiprod: 0,
+      waktutrx: '',
+      kodeproduk: '',
+      namaproduk: '',
+      keteranganproduk: '',
+      imgproduk: '',
+      status: 0,
+      tujuan: '',
+      tujuantambahan: '',
+      jenistrx: 0,
+      nominaltrx: 0,
+      totaltagihan: 0,
+      feeppob: 0,
+      potongansaldotagihan: 0,
+      totalharga: 0,
+      sn: '',
+      datatrx: '',
+    );
+
+class DetailTransaksiResponse {
+  final String message;
+  final bool status;
+  final DataSplit? dataSplit;
+  final DetailTransaksiModel? data;
+
+  const DetailTransaksiResponse({
+    required this.message,
+    required this.status,
+    required this.dataSplit,
+    required this.data,
+  });
+
+  factory DetailTransaksiResponse.fromJson(Map<String, dynamic>? json) {
+    return DetailTransaksiResponse(
+      message: json?['message'] ?? '',
+      status: json?['status'] ?? false,
+      dataSplit: DataSplit.fromJson(json?['dataSplit']),
+      data: DetailTransaksiModel.fromJson(json?['data']),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'DetailTransaksiResponse(message: $message, status: $status, dataSplit: $dataSplit, data: $data)';
+  }
+}

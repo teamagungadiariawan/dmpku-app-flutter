@@ -142,9 +142,19 @@ class DateHelper {
     'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
   ];
 
+  static const List<String> _fullMonths = [
+    '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ];
+
   static String _getShortMonth(int month) {
     if (month < 1 || month > 12) return '';
     return _shortMonths[month];
+  }
+
+  static String _getFullMonth(int month) {
+    if (month < 1 || month > 12) return '';
+    return _fullMonths[month];
   }
 
   static String formatSimpleDate(DateTime dt) {
@@ -155,6 +165,10 @@ class DateHelper {
     }
 
     return '${dt.day} ${_getShortMonth(dt.month)} ${dt.year}';
+  }
+
+  static String formatFullDate(DateTime dt) {
+    return '${dt.day} ${_getFullMonth(dt.month)} ${dt.year}';
   }
 
   /// Menggabungkan dua tanggal menjadi range string

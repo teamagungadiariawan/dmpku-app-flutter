@@ -71,6 +71,9 @@ dependencies:
   speech_to_text: ^7.3.0
   pinput: ^6.0.1
   url_launcher: ^6.3.2
+  screenshot: ^3.0.0
+  path_provider: ^2.1.5
+  share_plus: ^12.0.1
 
 
 
@@ -110,6 +113,7 @@ flutter:
     - assets/img/official/
     - assets/img/produk/
     - assets/img/profile/
+    - assets/img/status/
 
   fonts:
     - family: Poppins

@@ -51,6 +51,11 @@ import 'package:dmpku/pages/member/produk/ppob/pln_tagihan/member_pln_tagihan_pr
 import 'package:dmpku/pages/member/produk/ppob/tagihan_gas/member_tagihan_gas_provider.dart';
 import 'package:dmpku/pages/member/produk/ppob/uang_elektronik/member_uang_elektronik_provider.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_elektrik/member_cetak_struk_elektrik_provider.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_nominal/member_cetak_struk_nominal_bebas_provider.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_1/member_cetak_struk_ppob_1_provider.dart';
+import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_2/member_cetak_struk_ppob_2_provider.dart';
+import 'package:dmpku/pages/member/riwayat/detail_riwayat/member_detail_riwayat_provider.dart';
 import 'package:dmpku/pages/member/riwayat/member_riwayat_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/service/guest/informasi_service.dart';
@@ -112,6 +117,11 @@ void main() {
 
           BlocProvider(create: (_) => MemberProvider()),
           BlocProvider(create: (_) => TransaksiProsesProvider()),
+          BlocProvider(create: (_) => MemberCetakStrukElektrikProvider()),
+          BlocProvider(create: (_) => MemberCetakStrukNominalBebasProvider()),
+          BlocProvider(create: (_) => MemberCetakStrukPpob1Provider()),
+          BlocProvider(create: (_) => MemberCetakStrukPpob2Provider()),
+          BlocProvider(create: (_) => MemberDetailRiwayatProvider()),
           BlocProvider(create: (_) => MemberRiwayatProvider()),
 
           BlocProvider(create: (_) => MemberAktivasiPerdanaProvider()),

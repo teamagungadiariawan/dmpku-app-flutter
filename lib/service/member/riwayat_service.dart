@@ -145,14 +145,10 @@ class RiwayatService {
       waktu = DateHelper.formatDate(waktuAwal);
     }
 
-
     try {
       final response = await _dio.post(
         "member/riwayat/riwayatrekaptransaksi",
-        data: {
-          "waktu": waktu,
-          "tujuan": tujuan,
-        },
+        data: {"waktu": waktu, "tujuan": tujuan},
       );
 
       final result = BaseResponse<ListRekapTransaksiResponse>.fromJson(
@@ -168,6 +164,44 @@ class RiwayatService {
     } on DioException catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
       debugPrint("DIO EXCEPTION RIWAYAT SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<DetailTransaksiResponse> getDetailTransaksiToday({
+    required int idtransaksiprod,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "member/riwayat/transaksitoday/detail",
+        data: {"idtransaksiprod": idtransaksiprod},
+      );
+
+      final result = DetailTransaksiResponse.fromJson(response.data);
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION DETAIL TRANSAKSI SERVICE: $e");
+      throw ServerException.fromDio(e: e);
+    }
+  }
+
+  Future<DetailTransaksiResponse> getDetailTransaksiHistory({
+    required int idtransaksiprod,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "member/riwayat/transaksihistory/detail",
+        data: {"idtransaksiprod": idtransaksiprod},
+      );
+
+      final result = DetailTransaksiResponse.fromJson(response.data);
+
+      return result;
+    } on DioException catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      debugPrint("DIO EXCEPTION DETAIL TRANSAKSI SERVICE: $e");
       throw ServerException.fromDio(e: e);
     }
   }

@@ -269,6 +269,17 @@ class _CustomButtonState extends State<CustomButton> {
             ? AppColors.lightDestructive
             : AppColors.lightDestructive;
         break;
+        case ButtonVariant.warning:
+        bgColor = isDarkMode
+            ? AppColors.darkWarning
+            : AppColors.lightWarning;
+        fgColor = isDarkMode
+            ? AppColors.darkWarningForeground
+            : AppColors.lightWarningForeground;
+        brColor = isDarkMode
+            ? AppColors.darkWarning
+            : AppColors.lightWarning;
+        break;
       case ButtonVariant.outline:
         bgColor = Colors.transparent;
         fgColor = isDarkMode ? AppColors.darkPrimary : AppColors.lightPrimary;
@@ -313,7 +324,7 @@ class _CustomButtonState extends State<CustomButton> {
 
 enum ButtonSize { small, medium, large }
 
-enum ButtonVariant { primary, secondary, destructive, outline, ghost, border }
+enum ButtonVariant { primary, secondary, destructive, outline, ghost, border, warning }
 
 enum ButtonState { enabled, disabled, loading }
 

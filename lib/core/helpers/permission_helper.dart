@@ -10,6 +10,7 @@ Future<void> requestPermissions() async {
   await requestContactsPermission();
   await requestMicrophonePermission();
   await requestSpeechPermission();
+  await requestBluetoothPermission(); // <-- TAMBAHAN BARU
 }
 
 Future<void> requestLocationPermission() async {
@@ -50,6 +51,17 @@ Future<void> requestSpeechPermission() async {
   await Permission.speech.request();
 }
 
+// --- NEW BLUETOOTH REQUEST ---
+Future<void> requestBluetoothPermission() async {
+  // Kita request semua varian biar aman di Android lama & baru (Android 12+)
+  await [
+    Permission.bluetooth,          // Legacy
+    Permission.bluetoothScan,      // Android 12+
+    Permission.bluetoothConnect,   // Android 12+
+    Permission.bluetoothAdvertise, // Android 12+
+  ].request();
+}
+
 // --- Check Methods ---
 
 Future<Map<Permission, PermissionStatus>> checkPermissions() async {
@@ -61,6 +73,7 @@ Future<Map<Permission, PermissionStatus>> checkPermissions() async {
   statuses[Permission.contacts] = await checkContactsPermission();
   statuses[Permission.microphone] = await checkMicrophonePermission();
   statuses[Permission.speech] = await checkSpeechPermission();
+  statuses[Permission.bluetooth] = await checkBluetoothPermission(); // <-- TAMBAHAN BARU
   return statuses;
 }
 
@@ -90,4 +103,11 @@ Future<PermissionStatus> checkMicrophonePermission() async {
 
 Future<PermissionStatus> checkSpeechPermission() async {
   return Permission.speech.status;
+}
+
+// --- NEW BLUETOOTH CHECK ---
+Future<PermissionStatus> checkBluetoothPermission() async {
+  // Cek 'bluetoothConnect' biasanya jadi indikator utama buat Android 12+
+  // Kalau mau lebih spesifik bisa cek satu-satu, tapi ini general check-nya.
+  return Permission.bluetoothConnect.status;
 }

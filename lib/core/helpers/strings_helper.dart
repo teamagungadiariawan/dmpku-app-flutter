@@ -16,6 +16,15 @@ String ToCurrency(String amount) {
   }
 }
 
+int FromCurrency(String amount) {
+  try {
+    final number = int.parse(amount.replaceAll(RegExp(r'[^0-9]'), ''));
+    return number;
+  } catch (e) {
+    return 0;
+  }
+}
+
 String obfuscatePhone(
   String phone, {
   int visibleStart = 3,
@@ -35,8 +44,10 @@ String obfuscatePhone(
   return '$start${'*' * hiddenLength}$end';
 }
 
-
 // remove non alphanumeric characters from string
 String removeNonAlphanumeric(String input) {
-  return input.replaceAll(RegExp(r'[^\w\s]'), '').toLowerCase().replaceAll(" ", "");
+  return input
+      .replaceAll(RegExp(r'[^\w\s]'), '')
+      .toLowerCase()
+      .replaceAll(" ", "");
 }

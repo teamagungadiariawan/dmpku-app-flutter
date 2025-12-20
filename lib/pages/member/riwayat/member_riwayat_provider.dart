@@ -299,9 +299,9 @@ class MemberRiwayatState extends Equatable {
           waktuAwalRekapTransaksi ?? this.waktuAwalRekapTransaksi,
       kataKunciRekapTransaksi:
           kataKunciRekapTransaksi ?? this.kataKunciRekapTransaksi,
-      kataKunciRekapTransaksiController: kataKunciRekapTransaksiController ??
+      kataKunciRekapTransaksiController:
+          kataKunciRekapTransaksiController ??
           this.kataKunciRekapTransaksiController,
-
     );
   }
 
@@ -380,15 +380,17 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
         MemberRiwayatState(
           kataKunciTodayController: TextEditingController(),
           kataKunciHistoryController: TextEditingController(),
-          waktuAwalHistory: DateTime.now().subtract(const Duration(days: 5)),
-          waktuAkhirHistory: DateTime.now(),
+          waktuAwalHistory: DateTime.now().subtract(const Duration(days: 4)),
+          waktuAkhirHistory: DateTime.now().subtract(const Duration(days: 1)),
 
           kataKunciMutasiStokController: TextEditingController(),
           kataKunciRekapTransaksiController: TextEditingController(),
 
-          waktuAwalMutasiStok: DateTime.now().subtract(const Duration(days: 5)),
+          waktuAwalMutasiStok: DateTime.now().subtract(const Duration(days: 4)),
           waktuAkhirMutasiStok: DateTime.now(),
-          waktuAwalRekapTransaksi: DateTime.now(),
+          waktuAwalRekapTransaksi: DateTime.now().subtract(
+            const Duration(days: 3),
+          ),
         ),
       );
 
@@ -470,6 +472,16 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
     fetchRiwayatToday();
   }
 
+  void resetSearchRiwayatToday() {
+    emit(
+      state.copyWith(
+        kataKunciToday: '',
+        jenisFilterToday: JenisFilterRiwayat.tujuan,
+      ),
+    );
+    _updateController(state.kataKunciTodayController, '');
+  }
+
   // ============================================================
   // Riwayat Today
   // SETTERS
@@ -479,8 +491,12 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
     emit(state.copyWith(jenisFilterToday: jenisFilter));
   }
 
-  void setKataKunciToday(String kataKunci) {
+  void setKataKunciToday(String kataKunci, {bool updateController = false}) {
     emit(state.copyWith(kataKunciToday: kataKunci));
+
+    if (updateController) {
+      _updateController(state.kataKunciTodayController, kataKunci);
+    }
   }
 
   // ============================================================
@@ -583,6 +599,18 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
     fetchRiwayatHistory();
   }
 
+  void resetSearchRiwayatHistory() {
+    emit(
+      state.copyWith(
+        waktuAwalHistory: DateTime.now().subtract(const Duration(days: 4)),
+        waktuAkhirHistory: DateTime.now().subtract(const Duration(days: 1)),
+        kataKunciHistory: '',
+        jenisFilterHistory: JenisFilterRiwayat.tujuan,
+      ),
+    );
+    _updateController(state.kataKunciHistoryController, '');
+  }
+
   // ============================================================
   // Riwayat History
   // SETTERS
@@ -592,15 +620,25 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
     emit(state.copyWith(jenisFilterHistory: jenisFilter));
   }
 
-  void setKataKunciHistory(String kataKunci) {
+  void setKataKunciHistory(String kataKunci, {bool updateController = false}) {
     emit(state.copyWith(kataKunciHistory: kataKunci));
+
+    if (updateController) {
+      _updateController(state.kataKunciHistoryController, kataKunci);
+    }
+  }
+
+  void setRangeWaktu(DateTime awal, DateTime akhir) {
+    emit(state.copyWith(waktuAwalHistory: awal, waktuAkhirHistory: akhir));
+
+    validateWaktuRange();
   }
 
   void setWaktuAwalHistory(DateTime waktuAwal) {
     emit(
       state.copyWith(
         waktuAwalHistory: waktuAwal,
-        waktuAkhirHistory: waktuAwal.add(const Duration(days: 2)),
+        waktuAkhirHistory: waktuAwal.add(const Duration(days: 3)),
       ),
     );
 
@@ -618,7 +656,7 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
   // VALIDATORS
   // ============================================================
 
-  void validateWaktuRange() {
+  bool validateWaktuRange() {
     if (state.waktuAwalHistory != null && state.waktuAkhirHistory != null) {
       final difference = state.waktuAkhirHistory!
           .difference(state.waktuAwalHistory!)
@@ -626,10 +664,13 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
 
       if (difference < 0) {
         showWarningMessage("Waktu Akhir tidak boleh sebelum Waktu Awal.");
+        return false;
       } else if (difference > 7) {
         showWarningMessage("Rentang waktu maksimal adalah 7 hari.");
+        return false;
       }
     }
+    return true;
   }
 
   // ============================================================
@@ -671,7 +712,7 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
 
           emit(
             state.copyWith(
-              canLoadMoreMutasiStok: true,
+              canLoadMoreMutasiStok: data.mutasiSaldoList.length >= 30,
               mutasiStokList: updatedList,
             ),
           );
@@ -706,13 +747,31 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
     fetchMutasiStok();
   }
 
+  void resetSearchMutasiStok() {
+    emit(
+      state.copyWith(
+        kataKunciMutasiStok: '',
+        waktuAwalMutasiStok: DateTime.now().subtract(const Duration(days: 4)),
+        waktuAkhirMutasiStok: DateTime.now(),
+      ),
+    );
+    _updateController(state.kataKunciMutasiStokController, '');
+  }
+
   // ============================================================
   // Mutasi Stok
   // SETTERS
   // ============================================================
 
-  void setKataKunciMutasiStok(String kataKunci) {
+  void setKataKunciMutasiStok(
+    String kataKunci, {
+    bool updateController = false,
+  }) {
     emit(state.copyWith(kataKunciMutasiStok: kataKunci));
+
+    if (updateController) {
+      _updateController(state.kataKunciMutasiStokController, kataKunci);
+    }
   }
 
   void setWaktuAwalMutasiStok(DateTime waktuAwal) {
@@ -732,12 +791,20 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
     validateWaktuRangeMutasiStok();
   }
 
+  void setRangeWaktuMutasiStok(DateTime awal, DateTime akhir) {
+    emit(
+      state.copyWith(waktuAwalMutasiStok: awal, waktuAkhirMutasiStok: akhir),
+    );
+
+    validateWaktuRangeMutasiStok();
+  }
+
   // ============================================================
   // Mutasi Stok
   // VALIDATORS
   // ============================================================
 
-  void validateWaktuRangeMutasiStok() {
+  bool validateWaktuRangeMutasiStok() {
     if (state.waktuAwalMutasiStok != null &&
         state.waktuAkhirMutasiStok != null) {
       final difference = state.waktuAkhirMutasiStok!
@@ -746,10 +813,13 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
 
       if (difference < 0) {
         showWarningMessage("Waktu Akhir tidak boleh sebelum Waktu Awal.");
+        return false;
       } else if (difference > 7) {
         showWarningMessage("Rentang waktu maksimal adalah 7 hari.");
+        return false;
       }
     }
+    return true;
   }
 
   // ============================================================
@@ -810,8 +880,15 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
   // SETTERS
   // ============================================================
 
-  void setKataKunciRekapTransaksi(String kataKunci) {
+  void setKataKunciRekapTransaksi(
+    String kataKunci, {
+    bool updateController = false,
+  }) {
     emit(state.copyWith(kataKunciRekapTransaksi: kataKunci));
+
+    if (updateController) {
+      _updateController(state.kataKunciRekapTransaksiController, kataKunci);
+    }
   }
 
   void setWaktuAwalRekapTransaksi(DateTime waktuAwal) {
@@ -820,21 +897,47 @@ class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
     validateWaktuRangeRekapTransaksi();
   }
 
+  void resetSearchRekapTransaksi() {
+    emit(
+      state.copyWith(
+        kataKunciRekapTransaksi: '',
+        waktuAwalRekapTransaksi: DateTime.now(),
+      ),
+    );
+    _updateController(state.kataKunciRekapTransaksiController, '');
+  }
+
   // ============================================================
   // Rekap Transaksi
   // VALIDATORS
   // ============================================================
 
-  void validateWaktuRangeRekapTransaksi() {
+  bool validateWaktuRangeRekapTransaksi() {
     if (state.waktuAwalRekapTransaksi != null) {
       final difference = DateTime.now()
           .difference(state.waktuAwalRekapTransaksi!)
           .inDays;
 
-      if (difference > 1) {
+      // Note: Di kode awal kamu tertulis > 1 tapi pesannya "maksimal 7 hari".
+      // Gue tetep ikutin logic > 1 sesuai code asal, tapi pastiin ini udah bener ya.
+      if (difference > 31) {
+        // Contoh kalau mau sebulan, atau sesuaikan kebutuhan.
         showWarningMessage("Rentang waktu maksimal adalah 7 hari.");
+        return false;
       }
     }
+    return true;
+  }
+
+  // ============================================================
+  // Global SETTERS
+  // ============================================================
+
+  void _updateController(TextEditingController? controller, String value) {
+    controller?.text = value;
+    controller?.selection = TextSelection.fromPosition(
+      TextPosition(offset: value.length),
+    );
   }
 }
 

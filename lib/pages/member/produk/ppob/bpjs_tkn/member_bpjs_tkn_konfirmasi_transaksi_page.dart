@@ -354,7 +354,7 @@ class _MemberBpjsTknKonfirmasiTransaksiPageState
               padding: EdgeInsets.zero,
               text: "Lanjutkan",
               onPressed: () {
-                // getMemberBpjsTknProvider(context).konfirmasiTrx(context);
+                getMemberBpjsTknProvider(context).konfirmasiTrx(context);
               },
               variant: ButtonVariant.border,
               backgroundColor: Colors.transparent,

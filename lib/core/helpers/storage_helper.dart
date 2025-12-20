@@ -15,14 +15,17 @@ class StorageKeys {
   static const kodeMember =
       "ua1iuyCWdtULZ9/qa+v3i5sB8mJfPiQB7ZCaxDOf7EHJfPD9g8hDVQ4Qj0eXAwNz";
 
-
   static const wacs = "wacs_key";
-  static const channelwa =
-      "channelwa_key";
-  static const callcenter =
-      "callcenter_key";
-  static const playstore =
-      "playstore_key";
+  static const channelwa = "channelwa_key";
+  static const callcenter = "callcenter_key";
+  static const playstore = "playstore_key";
+
+  static const printerName = "printer_name_key";
+  static const printerMacAddress = "printer_mac_address_key";
+
+  static const namaKios = "nama_kios_key";
+  static const alamatKios = "alamat_kios_key";
+  static const footerKios = "footer_kios_key";
 }
 
 class SecureStorageHelper {
@@ -79,36 +82,75 @@ class SecureStorageHelper {
 
   Future<void> clearKodeMember() => delete(StorageKeys.kodeMember);
 
-
   // wacs
   Future<void> saveWacs(String wacs) => write(StorageKeys.wacs, wacs);
+
   Future<String?> getWacs() => read(StorageKeys.wacs);
+
   Future<void> clearWacs() => delete(StorageKeys.wacs);
 
   // channelwa
-  Future<void> saveChannelWa(String channelwa) => write(StorageKeys.channelwa, channelwa);
+  Future<void> saveChannelWa(String channelwa) =>
+      write(StorageKeys.channelwa, channelwa);
+
   Future<String?> getChannelWa() => read(StorageKeys.channelwa);
+
   Future<void> clearChannelWa() => delete(StorageKeys.channelwa);
 
-
   // callcenter
-  Future<void> saveCallCenter(String callcenter) => write(StorageKeys.callcenter, callcenter);
+  Future<void> saveCallCenter(String callcenter) =>
+      write(StorageKeys.callcenter, callcenter);
+
   Future<String?> getCallCenter() => read(StorageKeys.callcenter);
+
   Future<void> clearCallCenter() => delete(StorageKeys.callcenter);
 
   // playstore
-  Future<void> savePlayStore(String playstore) => write(StorageKeys.playstore, playstore);
-  Future<String?> getPlayStore() => read(StorageKeys.playstore);
-  Future<void> clearPlayStore() => delete(StorageKeys.playstore);
-}
+  Future<void> savePlayStore(String playstore) =>
+      write(StorageKeys.playstore, playstore);
 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-//     .eyJrb2RlbWVtYmVyIjoiMTcxNzM0NzAzMSIsIm5hbWFtZW1iZXIiOiJPd25lciIsImVtYWlsIjoib3duZXJAZ21haWwuY29tIiwidGdsZGFmdGFyIjoiMjAyMy0xMC0zMFQwMDowMDowMCswNzowMCIsImlka2Vsb21wb2toYXJnYSI6MSwicGVyYW5na2F0IjoiOWQyOWI2NmQzZDUxOTYzMWNjZmYzMDNhY2ViNTVjOWUiLCJub2hwIjoiMDgyMjMzMjIyMTExIiwidXV4dCI6ImE5NjM1YTgxMjA4ZTdlMDBiMmQ1N2Q3Yzk4MjczYWRlIiwiZXhwIjoxNzY1MDAyMDc5fQ
-//     .kq5pSpx1j1TBFkPUw0H7ryb6TmyQ4yxIrdgpWsm9GvA
-//
-//
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-//     .eyJrb2RlbWVtYmVyIjoiMTcxNzM0NzAzMSIsIm5hbWFtZW1iZXIiOiJPd25lciIsImVtYWlsIjoib3duZXJAZ21haWwuY29tIiwidGdsZGFmdGFyIjoiMjAyMy0xMC0zMFQwMDowMDowMCswNzowMCIsImlka2Vsb21wb2toYXJnYSI6MSwicGVyYW5na2F0IjoiOWQyOWI2NmQzZDUxOTYzMWNjZmYzMDNhY2ViNTVjOWUiLCJub2hwIjoiMDgyMjMzMjIyMTExIiwidXV4dCI6ImE5NjM1YTgxMjA4ZTdlMDBiMmQ1N2Q3Yzk4MjczYWRlIiwiZXhwIjoxNzY3OTM5Njc5fQ
-//     .W95HbdS9Pc3FVBqvi3dGCtHXq_Akd0zQJe9j-IOYIww
-//
-// 70b6190757679bd57f061c1c6d446eca
+  Future<String?> getPlayStore() => read(StorageKeys.playstore);
+
+  Future<void> clearPlayStore() => delete(StorageKeys.playstore);
+
+  // printerName
+  Future<void> savePrinterName(String printerName) =>
+      write(StorageKeys.printerName, printerName);
+
+  Future<String?> getPrinterName() => read(StorageKeys.printerName);
+
+  Future<void> clearPrinterName() => delete(StorageKeys.printerName);
+
+  // printerMacAddress
+  Future<void> savePrinterMacAddress(String printerMacAddress) =>
+      write(StorageKeys.printerMacAddress, printerMacAddress);
+
+  Future<String?> getPrinterMacAddress() => read(StorageKeys.printerMacAddress);
+
+  Future<void> clearPrinterMacAddress() =>
+      delete(StorageKeys.printerMacAddress);
+
+  // namaKios
+  Future<void> saveNamaKios(String namaKios) =>
+      write(StorageKeys.namaKios, namaKios);
+
+  Future<String?> getNamaKios() => read(StorageKeys.namaKios);
+
+  Future<void> clearNamaKios() => delete(StorageKeys.namaKios);
+
+  // alamatKios
+  Future<void> saveAlamatKios(String alamatKios) =>
+      write(StorageKeys.alamatKios, alamatKios);
+
+  Future<String?> getAlamatKios() => read(StorageKeys.alamatKios);
+
+  Future<void> clearAlamatKios() => delete(StorageKeys.alamatKios);
+
+  // footerKios
+  Future<void> saveFooterKios(String footerKios) =>
+      write(StorageKeys.footerKios, footerKios);
+
+  Future<String?> getFooterKios() => read(StorageKeys.footerKios);
+
+  Future<void> clearFooterKios() => delete(StorageKeys.footerKios);
+}

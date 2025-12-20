@@ -1,5 +1,7 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/jenis_filter_riwayat.dart';
 import 'package:dmpku/core/helpers/date_helper.dart';
+import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
@@ -7,10 +9,19 @@ import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/riwayat_response.dart';
+import 'package:dmpku/pages/member/riwayat/detail_riwayat/member_detail_riwayat_page.dart';
+import 'package:dmpku/pages/member/riwayat/detail_riwayat/member_detail_riwayat_provider.dart';
 import 'package:dmpku/pages/member/riwayat/member_riwayat_provider.dart';
 import 'package:dmpku/pages/member/riwayat/widgets/card_riwayat_transaksi.dart';
 import 'package:dmpku/pages/member/riwayat/widgets/card_riwayat_transaksi_shimmer.dart';
+import 'package:dmpku/pages/member/riwayat/widgets/filter_mutasi_stok_dialog.dart';
+import 'package:dmpku/pages/member/riwayat/widgets/filter_rekap_transaksi_dialog.dart';
+import 'package:dmpku/pages/member/riwayat/widgets/filter_riwayat_history_dialog.dart';
+import 'package:dmpku/pages/member/riwayat/widgets/filter_riwayat_today_dialog.dart';
 import 'package:dmpku/pages/member/riwayat/widgets/item_mutasi_stok.dart';
+import 'package:dmpku/pages/member/riwayat/widgets/item_mutasi_stok_shimmer.dart';
+import 'package:dmpku/pages/member/riwayat/widgets/item_rekap_transaksi.dart';
+import 'package:dmpku/pages/member/riwayat/widgets/item_rekap_transaksi_shimmer.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/custom_button.dart';
@@ -130,7 +141,7 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
                 Expanded(child: _buildListHariIni(context)),
                 Expanded(child: _buildListKemarin(context)),
                 Expanded(child: _buildListMutasiStok(context)),
-                Center(child: Text("Content Rekap Transaksi")),
+                Expanded(child: _buildListRekapTransaksi(context)),
               ],
             ),
           ),
@@ -143,6 +154,7 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
     return BlocBuilder<MemberRiwayatProvider, MemberRiwayatState>(
       buildWhen: (prev, curr) =>
           prev.apiFetchRiwayatTodayStatus != curr.apiFetchRiwayatTodayStatus ||
+          prev.canLoadMoreRiwayatToday != curr.canLoadMoreRiwayatToday ||
           prev.riwayatTodayList != curr.riwayatTodayList,
       builder: (context, state) {
         return LoadMoreRefreshableList<RiwayatModel>(
@@ -151,7 +163,7 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
           isLoading:
               state.apiFetchRiwayatTodayStatus.isLoading &&
               state.pageRiwayatToday == 1,
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
           onRefresh: () async =>
               context.read<MemberRiwayatProvider>().resetPageRiwayatToday(),
           loadingWidget: CardRiwayatTransaksiListShimmer(
@@ -168,6 +180,12 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
               status: item.statusTrx,
               waktuTrx: DateHelper.tryParse(item.waktutrx) ?? DateTime.now(),
               imgProduk: item.imgproduk,
+              onTap: () {
+                pushNamed(MemberDetailRiwayatPage.routeName);
+                getMemberDetailRiwayatProvider(
+                  context,
+                ).setSelectedTransaksi(item, true);
+              },
             );
           },
 
@@ -189,6 +207,7 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
       buildWhen: (prev, curr) =>
           prev.apiFetchRiwayatHistoryStatus !=
               curr.apiFetchRiwayatHistoryStatus ||
+          prev.canLoadMoreRiwayatHistory != curr.canLoadMoreRiwayatHistory ||
           prev.riwayatHistoryListGrouped != curr.riwayatHistoryListGrouped,
       builder: (context, state) {
         return GroupedRefreshableList<GroupedRiwayatModel, RiwayatModel>(
@@ -259,6 +278,13 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
               status: item.statusTrx,
               waktuTrx: DateHelper.tryParse(item.waktutrx) ?? DateTime.now(),
               imgProduk: item.imgproduk,
+              onTap: () {
+                pushNamed(MemberDetailRiwayatPage.routeName);
+                getMemberDetailRiwayatProvider(
+                  context,
+                ).setSelectedTransaksi(item, false);
+
+              },
             );
           },
 
@@ -344,17 +370,26 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
           Expanded(
             child: Container(
               child: BlocBuilder<MemberRiwayatProvider, MemberRiwayatState>(
+                buildWhen: (prev, curr) =>
+                    prev.apiFetchMutasiStokStatus !=
+                        curr.apiFetchMutasiStokStatus ||
+                    prev.pageMutasiStok != curr.pageMutasiStok ||
+                    prev.mutasiStokList != curr.mutasiStokList ||
+                    prev.canLoadMoreMutasiStok != curr.canLoadMoreMutasiStok,
                 builder: (context, state) {
-                  return RefreshableList(
+                  return LoadMoreRefreshableList<MutasiSaldoModel>(
                     padding: EdgeInsets.zero,
-                    isLoading: state.apiFetchMutasiStokStatus.isLoading,
+                    isLoading:
+                        state.apiFetchMutasiStokStatus.isLoading &&
+                        state.pageMutasiStok == 1,
+                    loadingWidget: ItemMutasiStokListShimmer(itemCount: 6),
                     onRefresh: () async {
                       getMemberRiwayatProvider(context).resetPageMutasiStok();
                     },
                     items: state.mutasiStokList,
                     itemBuilder: (context, stok, index) {
                       var isMinus = stok.mutasi < 0;
-                      debugPrint("Building Mutasi Stok Item: ${stok.mutasi} cek isMinus: $isMinus");
+
                       return ItemMutasiStok(
                         waktu: stok.waktuMutasi,
                         keterangan: stok.keterangan
@@ -362,11 +397,20 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
                             .replaceAll("saldo", "stok"),
                         potongan: stok.mutasi,
                         stok: stok.saldo,
-                        isOdd:  index % 2 == 1,
+                        isOdd: index % 2 == 1,
                         isMinus: isMinus,
                       );
                     },
                     emptyTitle: 'Data mutasi stok tidak ditemukan',
+                    canLoadMore: state.canLoadMoreMutasiStok,
+                    isLoadingMore:
+                        state.apiFetchMutasiStokStatus.isLoading &&
+                        state.pageMutasiStok > 1,
+                    onLoadMore: () {
+                      context
+                          .read<MemberRiwayatProvider>()
+                          .nextPageMutasiStok();
+                    },
                   );
                 },
               ),
@@ -377,6 +421,7 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
             decoration: BoxDecoration(
               color: context.card,
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+              border: Border(top: BorderSide(color: context.border, width: 1)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -404,21 +449,435 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
     );
   }
 
-  Widget _buildFilterSection(BuildContext context) {
-    return Card(
-      margin: paddingPage,
-      child: Padding(
-        padding: paddingCard,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (_selectedTabIndex == 0) _filterTransaksiToday(context),
-            if (_selectedTabIndex == 1) _filterTransaksiHis(context),
-            if (_selectedTabIndex == 2) _filterMutasiStok(context),
-            if (_selectedTabIndex == 3) _filterRekapTransaksi(context),
-          ],
-        ),
+  Widget _buildListRekapTransaksi(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      height: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.all(color: context.border, width: 1),
+        borderRadius: BorderRadius.circular(12),
       ),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: context.primary,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(right: 4),
+                  width: 30,
+                  child: Text(
+                    'No',
+                    textAlign: TextAlign.start,
+                    style: context.bodySmall
+                        .withColor(Colors.white)
+                        .withWeight(FontWeight.w600),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(right: 4),
+                    child: Text(
+                      'Produk',
+                      style: context.bodySmall
+                          .withColor(Colors.white)
+                          .withWeight(FontWeight.w600),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(right: 2),
+                  width: 100,
+                  child: Text(
+                    'Jml trx',
+                    textAlign: TextAlign.end,
+                    style: context.bodySmall
+                        .withColor(Colors.white)
+                        .withWeight(FontWeight.w600),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(right: 4),
+                  width: 100,
+                  child: Text(
+                    'Total',
+                    textAlign: TextAlign.end,
+                    style: context.bodySmall
+                        .withColor(Colors.white)
+                        .withWeight(FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              child: BlocBuilder<MemberRiwayatProvider, MemberRiwayatState>(
+                buildWhen: (prev, curr) =>
+                    prev.apiFetchRekapTransaksiStatus !=
+                        curr.apiFetchRekapTransaksiStatus ||
+                    prev.rekapTransaksiList != curr.rekapTransaksiList,
+                builder: (context, state) {
+                  return LoadMoreRefreshableList<RekapTransaksiModel>(
+                    padding: EdgeInsets.zero,
+                    isLoading: state.apiFetchRekapTransaksiStatus.isLoading,
+                    loadingWidget: ItemRekapTransaksiListShimmer(itemCount: 6),
+                    onRefresh: () async {
+                      getMemberRiwayatProvider(context).fetchRekapTransaksi();
+                    },
+                    items: state.rekapTransaksiList,
+                    itemBuilder: (context, stok, index) {
+                      return ItemRekapTransaksi(
+                        no: index + 1,
+                        produk: stok.kodeproduk,
+                        jmlTrx: stok.jumlahtrx,
+                        total: stok.totaldebet,
+                        isOdd: index % 2 == 1,
+                      );
+                    },
+                    emptyTitle: 'Data rekap transaksi tidak ditemukan',
+                    canLoadMore: false,
+                  );
+                },
+              ),
+            ),
+          ),
+          BlocBuilder<MemberRiwayatProvider, MemberRiwayatState>(
+            buildWhen: (prev, curr) =>
+                prev.totalJumlahTrx != curr.totalJumlahTrx ||
+                prev.totalNominalTrx != curr.totalNominalTrx,
+            builder: (context, state) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: context.card,
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(12),
+                  ),
+                  border: Border(
+                    top: BorderSide(color: context.border, width: 1),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Total",
+                        style: context.bodySmall.withWeight(FontWeight.w600),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 4),
+                      width: 100,
+                      child: Text(
+                        ToCurrency(state.totalJumlahTrx.toString()),
+                        textAlign: TextAlign.end,
+                        style: context.bodySmall.withColor(context.primary),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 4),
+                      width: 100,
+                      child: Text(
+                        ToCurrency(state.totalNominalTrx.toString()),
+                        textAlign: TextAlign.end,
+                        style: context.bodySmall.withColor(context.primary),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterSection(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Card(
+          margin: paddingPage,
+          child: Padding(
+            padding: paddingCard,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (_selectedTabIndex == 0) _filterTransaksiToday(context),
+                if (_selectedTabIndex == 1) _filterTransaksiHis(context),
+                if (_selectedTabIndex == 2) _filterMutasiStok(context),
+                if (_selectedTabIndex == 3) _filterRekapTransaksi(context),
+              ],
+            ),
+          ),
+        ),
+        _buildKetFilter(context),
+      ],
+    );
+  }
+
+  Widget _buildKetFilter(BuildContext context) {
+    return Column(
+      children: [
+        // Keterangan Filter Today
+        ...[
+          BlocBuilder<MemberRiwayatProvider, MemberRiwayatState>(
+            buildWhen: (prev, curr) =>
+                prev.jenisFilterToday != curr.jenisFilterToday ||
+                prev.kataKunciToday != curr.kataKunciToday,
+            builder: (context, state) {
+              if (_selectedTabIndex == 0 && state.kataKunciToday.isNotEmpty) {
+                return Padding(
+                  padding: paddingPage.copyWith(left: 18, right: 18),
+                  child: Row(
+                    children: [
+                      Text(
+                        "FILTER: ",
+                        style: context.bodyMedium
+                            .withColor(context.mutedForeground)
+                            .withWeight(FontWeight.w600),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: context.isDarkMode
+                              ? context.primary.withOpacity(0.1)
+                              : context.primary.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          "${state.jenisFilterToday.label} : \"${state.kataKunciToday}\"",
+                          style: context.bodySmall
+                              .withColor(context.primary)
+                              .withWeight(FontWeight.w600),
+                        ),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          getMemberRiwayatProvider(
+                            context,
+                          ).resetSearchRiwayatToday();
+                          getMemberRiwayatProvider(
+                            context,
+                          ).resetPageRiwayatToday();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: context.destructive.withOpacity(0.2),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Hapus",
+                                style: context.bodySmall.withColor(
+                                  context.destructive,
+                                ),
+                              ),
+                              Gap(4),
+                              Icon(
+                                LucideIcons.x,
+                                size: 16,
+                                color: context.destructive,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return SizedBox.shrink();
+            },
+          ),
+        ],
+        // End Keterangan Filter Today
+        // Keterangan Filter History
+        ...[
+          BlocBuilder<MemberRiwayatProvider, MemberRiwayatState>(
+            buildWhen: (prev, curr) =>
+                prev.jenisFilterHistory != curr.jenisFilterHistory ||
+                prev.kataKunciHistory != curr.kataKunciHistory,
+            builder: (context, state) {
+              if (_selectedTabIndex == 1 && state.kataKunciHistory.isNotEmpty) {
+                return Padding(
+                  padding: paddingPage.copyWith(left: 18, right: 18),
+                  child: Row(
+                    children: [
+                      Text(
+                        "FILTER: ",
+                        style: context.bodyMedium
+                            .withColor(context.mutedForeground)
+                            .withWeight(FontWeight.w600),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: context.isDarkMode
+                              ? context.primary.withOpacity(0.1)
+                              : context.primary.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          "${state.jenisFilterHistory.label} : \"${state.kataKunciHistory}\"",
+                          style: context.bodySmall
+                              .withColor(context.primary)
+                              .withWeight(FontWeight.w600),
+                        ),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          getMemberRiwayatProvider(
+                            context,
+                          ).resetSearchRiwayatHistory();
+                          getMemberRiwayatProvider(
+                            context,
+                          ).resetPageRiwayatHistory();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: context.destructive.withOpacity(0.2),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Hapus",
+                                style: context.bodySmall.withColor(
+                                  context.destructive,
+                                ),
+                              ),
+                              Gap(4),
+                              Icon(
+                                LucideIcons.x,
+                                size: 16,
+                                color: context.destructive,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return SizedBox.shrink();
+            },
+          ),
+        ],
+        // End Keterangan Filter History
+        // Keterangan Mutasi Stok
+        ...[
+          BlocBuilder<MemberRiwayatProvider, MemberRiwayatState>(
+            buildWhen: (prev, curr) =>
+                prev.kataKunciMutasiStok != curr.kataKunciMutasiStok,
+            builder: (context, state) {
+              if (_selectedTabIndex == 1 &&
+                  state.kataKunciMutasiStok.isNotEmpty) {
+                return Padding(
+                  padding: paddingPage.copyWith(left: 18, right: 18),
+                  child: Row(
+                    children: [
+                      Text(
+                        "FILTER: ",
+                        style: context.bodyMedium
+                            .withColor(context.mutedForeground)
+                            .withWeight(FontWeight.w600),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: context.isDarkMode
+                              ? context.primary.withOpacity(0.1)
+                              : context.primary.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          "KET : \"${state.kataKunciMutasiStok}\"",
+                          style: context.bodySmall
+                              .withColor(context.primary)
+                              .withWeight(FontWeight.w600),
+                        ),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          getMemberRiwayatProvider(
+                            context,
+                          ).resetSearchMutasiStok();
+                          getMemberRiwayatProvider(
+                            context,
+                          ).resetPageMutasiStok();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: context.destructive.withOpacity(0.2),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Hapus",
+                                style: context.bodySmall.withColor(
+                                  context.destructive,
+                                ),
+                              ),
+                              Gap(4),
+                              Icon(
+                                LucideIcons.x,
+                                size: 16,
+                                color: context.destructive,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return SizedBox.shrink();
+            },
+          ),
+        ],
+        // End Keterangan Mutasi Stok
+      ],
     );
   }
 
@@ -461,7 +920,13 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
                   .withWeight(FontWeight.w600)
                   .withColor(context.primaryForeground),
               icon: LucideIcons.filter,
-              onPressed: () {},
+              onPressed: () {
+                FilterRiwayatTodayDialog.show(
+                  context,
+                  initialFilter: state.jenisFilterToday,
+                  initialSearch: state.kataKunciToday,
+                );
+              },
             ),
             Gap(5),
 
@@ -532,7 +997,15 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
                   .withWeight(FontWeight.w600)
                   .withColor(context.primaryForeground),
               icon: LucideIcons.filter,
-              onPressed: () {},
+              onPressed: () {
+                FilterRiwayatHistoryDialog.show(
+                  context,
+                  initialFilter: state.jenisFilterHistory,
+                  initialSearch: state.kataKunciHistory,
+                  waktuAwal: state.waktuAwalHistory!,
+                  waktuAkhir: state.waktuAkhirHistory!,
+                );
+              },
             ),
             Gap(5),
 
@@ -601,7 +1074,9 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
                   .withWeight(FontWeight.w600)
                   .withColor(context.primaryForeground),
               icon: LucideIcons.filter,
-              onPressed: () {},
+              onPressed: () {
+                FilterMutasiStokDialog.show(context);
+              },
             ),
             Gap(5),
 
@@ -614,7 +1089,9 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
                   .withWeight(FontWeight.w600)
                   .withColor(context.primaryForeground),
               icon: LucideIcons.refreshCcw,
-              onPressed: () {},
+              onPressed: () {
+                getMemberRiwayatProvider(context).resetPageMutasiStok();
+              },
             ),
           ],
         );
@@ -662,7 +1139,13 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
                   .withWeight(FontWeight.w600)
                   .withColor(context.primaryForeground),
               icon: LucideIcons.filter,
-              onPressed: () {},
+              onPressed: () {
+                FilterRekapTransaksiDialog.show(
+                  context,
+                  waktuAwal: state.waktuAwalRekapTransaksi,
+                  initialSearch: state.kataKunciRekapTransaksi,
+                );
+              },
             ),
             Gap(5),
 
@@ -675,7 +1158,9 @@ class _MemberRiwayatPageState extends State<MemberRiwayatPage> {
                   .withWeight(FontWeight.w600)
                   .withColor(context.primaryForeground),
               icon: LucideIcons.refreshCcw,
-              onPressed: () {},
+              onPressed: () {
+                getMemberRiwayatProvider(context).fetchRekapTransaksi();
+              },
             ),
           ],
         );

@@ -140,6 +140,7 @@ class CardRiwayatTransaksiListShimmer extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
+      padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
         return CardRiwayatTransaksiShimmer(margin: itemMargin);
       },

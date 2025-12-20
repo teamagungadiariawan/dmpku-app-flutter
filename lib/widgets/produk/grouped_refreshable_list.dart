@@ -1,5 +1,6 @@
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/produk/empty_state_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -111,7 +112,7 @@ class GroupedRefreshableList<G, I> extends StatelessWidget {
           if (canLoadMore || isLoadingMore)
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: Center(
                   child: isLoadingMore
                       ? const SizedBox(
@@ -119,14 +120,13 @@ class GroupedRefreshableList<G, I> extends StatelessWidget {
                     height: 24,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                      : OutlinedButton.icon(
+                      : CustomButton(
+                    height: 30,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    padding: EdgeInsets.symmetric(horizontal: 15),
                     onPressed: onLoadMore,
-                    icon: const Icon(Icons.download_rounded, size: 18),
-                    label: const Text("Muat Lebih Banyak"),
-                    style: OutlinedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      side: BorderSide(color: context.primary),
-                    ),
+                    text: "Muat Lebih Banyak",
+                    variant: ButtonVariant.primary,
                   ),
                 ),
               ),
