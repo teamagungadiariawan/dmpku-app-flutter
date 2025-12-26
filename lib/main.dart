@@ -21,6 +21,8 @@ import 'package:dmpku/pages/guest/produk/isiulang/voucher_data/voucher_data_prov
 import 'package:dmpku/pages/guest/produk/isiulang/voucher_digital/voucher_digital_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
+import 'package:dmpku/pages/member/akun/favorit/member_favorit_provider.dart';
+import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_provider.dart';
@@ -116,6 +118,7 @@ void main() {
           BlocProvider(create: (_) => WifiIdProvider()),
 
           BlocProvider(create: (_) => MemberProvider()),
+          BlocProvider(create: (_) => MemberFavoritProvider()),
           BlocProvider(create: (_) => TransaksiProsesProvider()),
           BlocProvider(create: (_) => MemberCetakStrukElektrikProvider()),
           BlocProvider(create: (_) => MemberCetakStrukNominalBebasProvider()),
@@ -123,6 +126,8 @@ void main() {
           BlocProvider(create: (_) => MemberCetakStrukPpob2Provider()),
           BlocProvider(create: (_) => MemberDetailRiwayatProvider()),
           BlocProvider(create: (_) => MemberRiwayatProvider()),
+
+          BlocProvider(create: (_) => MemberIsiStokProvider()),
 
           BlocProvider(create: (_) => MemberAktivasiPerdanaProvider()),
           BlocProvider(create: (_) => MemberAktivasiVoucherProvider()),

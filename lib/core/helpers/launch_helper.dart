@@ -58,3 +58,15 @@ Future<void> openBantuanWa(BuildContext context) async {
     showErrorMessage('Gagal membuka WhatsApp');
   }
 }
+
+Future<void> openMapByQuery(String query) async {
+  final String encodedQuery = Uri.encodeComponent(query);
+  final Uri url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$encodedQuery');
+
+  if (!await launchUrl(
+    url,
+    mode: LaunchMode.externalApplication,
+  )) {
+    throw Exception('Gagal buka maps buat: $query');
+  }
+}

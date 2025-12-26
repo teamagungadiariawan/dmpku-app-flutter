@@ -50,11 +50,13 @@ class _MemberMainPageState extends State<MemberMainPage> {
     _currentIndex = widget.initialIndex;
     _pageController = PageController(initialPage: widget.initialIndex);
     getMemberProvider(context).getProfile();
+    getMemberProvider(context).getProfileDetail();
 
     getMemberRiwayatProvider(context).fetchRiwayatToday();
     getMemberRiwayatProvider(context).fetchRiwayatHistory();
     getMemberRiwayatProvider(context).fetchMutasiStok();
     getMemberRiwayatProvider(context).fetchRekapTransaksi();
+
   }
 
   @override

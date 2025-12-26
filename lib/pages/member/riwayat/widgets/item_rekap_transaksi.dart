@@ -1,4 +1,3 @@
-import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
@@ -24,12 +23,12 @@ class ItemRekapTransaksi extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: isOdd ? context.secondary : Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           Container(
-            padding: EdgeInsets.only(left: 2),
+            padding: const EdgeInsets.only(left: 2),
             width: 30,
             child: Text(
               no.toString(),
@@ -41,7 +40,7 @@ class ItemRekapTransaksi extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.only(right: 2),
+              padding: const EdgeInsets.only(right: 2),
               child: Text(
                 produk,
                 style: context.captionMedium
@@ -51,7 +50,7 @@ class ItemRekapTransaksi extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(right: 4),
+            padding: const EdgeInsets.only(right: 4),
             width: 100,
             child: Text(
               ToCurrency(jmlTrx.toString()),
@@ -60,7 +59,7 @@ class ItemRekapTransaksi extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(right: 4),
+            padding: const EdgeInsets.only(right: 4),
             width: 100,
             child: Text(
               ToCurrency(total.toString()),

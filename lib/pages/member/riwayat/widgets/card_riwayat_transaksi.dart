@@ -1,6 +1,5 @@
 import 'package:dmpku/core/enums/status_trx.dart';
 import 'package:dmpku/core/helpers/date_helper.dart';
-import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:flutter/cupertino.dart';
@@ -97,7 +96,7 @@ class CardRiwayatTransaksi extends StatelessWidget {
 
         Row(
           children: [
-            Container(
+            SizedBox(
               width: 45,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +114,7 @@ class CardRiwayatTransaksi extends StatelessWidget {
                 ],
               ),
             ),
-            Gap(4),
+            const Gap(4),
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 8,

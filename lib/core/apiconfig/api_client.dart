@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dmpku/core/apiconfig/base_response.dart';
 import 'package:dmpku/core/helpers/connection_helper.dart';
 import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/device_info_helper.dart';
@@ -126,7 +127,7 @@ class _AppInterceptor extends QueuedInterceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
     try {
       debugPrint("Response Status Code: ${response.statusCode}");
 
@@ -141,11 +142,45 @@ class _AppInterceptor extends QueuedInterceptor {
       }
 
       var data = response.data;
+      var code = response.statusCode ?? 0;
 
       if (data["a"] != null) {
         var enc = Encrypted(a: data["a"] as String);
         var decryptedData = EncryptHelper.decrypt(enc);
         debugPrint("Decrypted Response Data: $decryptedData");
+
+        // get message from decrypted data if exists
+        var message = decryptedData["message"] ?? '';
+        // remove nonalphanumeric characters from message
+        message = message.replaceAll(RegExp(r'[^a-zA-Z0-9 ]'), '');
+        //remove spaces from message
+        message = message.replaceAll(' ', '').toLowerCase();
+
+        if (code == 401) {
+          if (message.contains('tokeninvalid'))  {
+            var refreshed = await refreshToken();
+            if (!refreshed) {
+              await SecureStorageHelper.instance.clearToken();
+              await SecureStorageHelper.instance.clearRefreshToken();
+              debugPrint("Token tidak valid. Token telah dihapus dari penyimpanan.");
+              pushNamedAndRemoveUntil(MainPage.routeName);
+            } else {
+              // Retry the original request
+              final options = response.requestOptions;
+              final cloneReq = await ApiClient.dio.request(
+                options.path,
+                options: Options(
+                  method: options.method,
+                  headers: options.headers,
+                ),
+                data: options.data,
+                queryParameters: options.queryParameters,
+              );
+              return handler.resolve(cloneReq);
+            }
+          }
+        }
+
         response.data = decryptedData;
       } else {
         debugPrint("No encrypted data found in response.");
@@ -159,6 +194,44 @@ class _AppInterceptor extends QueuedInterceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+
+    debugPrint("Dio Error: ${err.message}");
+
     super.onError(err, handler);
+  }
+}
+
+Future<bool> refreshToken() async {
+  try {
+
+    var token = await SecureStorageHelper.instance.getToken();
+    var refreshToken = await SecureStorageHelper.instance.getRefreshToken();
+    var kodeMember = await SecureStorageHelper.instance.read(StorageKeys.kodeMember);
+    var uuid = await getDeviceId2();
+    var fmcUser = await SecureStorageHelper.instance.read(StorageKeys.tokenFcm);
+
+    final response = await ApiClient.dio.post("login/refreshtoken", data: {
+      "token": token,
+      "refreshtoken": refreshToken,
+      "kodemember": kodeMember,
+      "uuid": uuid,
+      "fmcuser": fmcUser,
+    });
+
+    final result = BaseResponse.fromJson(response.data);
+
+    if (result.status) {
+      await SecureStorageHelper.instance.saveToken(result.token);
+      await SecureStorageHelper.instance.saveRefreshToken(result.refresh);
+      await SecureStorageHelper.instance.write(StorageKeys.signmember, result.signmember);
+      return true;
+    } else {
+      return false;
+    }
+
+  } on DioException catch (e, stackTrace) {
+    debugPrintStack(stackTrace: stackTrace);
+    debugPrint("DIO EXCEPTION AUTH SERVICE: $e");
+    return false;
   }
 }

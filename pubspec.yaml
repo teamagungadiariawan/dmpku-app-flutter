@@ -74,6 +74,7 @@ dependencies:
   screenshot: ^3.0.0
   path_provider: ^2.1.5
   share_plus: ^12.0.1
+  google_fonts: ^6.3.3
 
 
 
@@ -105,6 +106,7 @@ flutter:
   assets:
     - assets/animations/
     - assets/img/
+    - assets/img/bank/
     - assets/img/beranda/
     - assets/img/bottom_nav/
     - assets/img/menu_isi_ulang/
@@ -114,6 +116,7 @@ flutter:
     - assets/img/produk/
     - assets/img/profile/
     - assets/img/status/
+    - assets/img/stok/
 
   fonts:
     - family: Poppins

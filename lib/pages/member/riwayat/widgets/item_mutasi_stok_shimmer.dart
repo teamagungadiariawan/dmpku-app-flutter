@@ -48,39 +48,38 @@ class ItemMutasiStokShimmer extends StatelessWidget {
 
             // 2. Keterangan (Expanded)
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: context.muted,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: context.muted,
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  const SizedBox(height: 4),
-                  Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: context.muted,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: context.muted,
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  const SizedBox(height: 4),
-                  Container(
-                    width: 40,
-                    margin: const EdgeInsets.only(right: 8),
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: context.muted,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  width: 40,
+                  margin: const EdgeInsets.only(right: 8),
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: context.muted,
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                ],
-              )
-            ),
+                ),
+              ],
+            )),
 
             // 3. Potongan (Width: 60)
             Container(

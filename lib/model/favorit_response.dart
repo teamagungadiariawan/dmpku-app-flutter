@@ -1,3 +1,5 @@
+import 'package:dmpku/core/enums/kategori_favorit.dart';
+
 class FavoritModel {
   final int idfavorit;
   final String kodemember;
@@ -42,6 +44,12 @@ class FavoritModel {
       idkategori: idkategori ?? this.idkategori,
       namakategori: namakategori ?? this.namakategori,
     );
+  }
+
+  Kategori get kategori {
+    var kat = Kategori.fromId(idkategori) ?? Kategori.all;
+
+    return kat;
   }
 
   Map<String, dynamic> toJson() {

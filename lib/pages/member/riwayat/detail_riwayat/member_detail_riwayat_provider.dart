@@ -93,6 +93,20 @@ class MemberDetailRiwayatProvider extends Cubit<MemberDetailRiwayatState> {
   }
 
   void fetchDetailTransaksiToday() async {
+    await _fetchDetailTransaksi(
+      (id) => _riwayatService.getDetailTransaksiToday(idtransaksiprod: id),
+    );
+  }
+
+  void fetchDetailTransaksiHistory() async {
+    await _fetchDetailTransaksi(
+      (id) => _riwayatService.getDetailTransaksiHistory(idtransaksiprod: id),
+    );
+  }
+
+  Future<void> _fetchDetailTransaksi(
+    Future<DetailTransaksiResponse> Function(int) fetchMethod,
+  ) async {
     if (state.selectedTransaksi.idtransaksiprod == 0) return;
 
     if (state.detailTransaksiStatus.isLoading) return;
@@ -105,49 +119,10 @@ class MemberDetailRiwayatProvider extends Cubit<MemberDetailRiwayatState> {
     );
 
     try {
-      final result = await _riwayatService.getDetailTransaksiToday(
-        idtransaksiprod: state.selectedTransaksi.idtransaksiprod,
-      );
-
-      var dataSp = result.dataSplit ?? DEFAULT_DATA_SPLIT_RESPONSE;
-      var detailTrx = result.data ?? DEFAULT_DETAIL_TRANSAKSI_MODEL;
-
-      var dataTrx = dataSp.dataTransaksi
-          ?.where((d) => d.value != '-' || d.value != '')
-          .toList();
-      var dataBiaya = dataSp.dataBiaya
-          ?.where(
-            (d) =>
-        d.value != '-' ||
-            d.value != '' &&
-                removeNonAlphanumeric(d.key).trim().toLowerCase() !=
-                    'totalbayar',
-      )
-          .toList();
-
-      dataSp = dataSp.copyWith(dataTransaksi: dataTrx, dataBiaya: dataBiaya);
-
-      if (detailTrx.idtransaksiprod != 0) {
-        emit(
-          state.copyWith(
-            detailTransaksiStatus: ApiStatus.success,
-            detailTransaksiMessage: 'Berhasil memuat detail transaksi.',
-            dataSplit: dataSp,
-            detailTransaksi: detailTrx,
-          ),
-        );
-      } else {
-        emit(
-          state.copyWith(
-            detailTransaksiStatus: ApiStatus.failure,
-            detailTransaksiMessage: 'Data detail transaksi tidak ditemukan.',
-          ),
-        );
-        showErrorMessage('Data detail transaksi tidak ditemukan.');
-        pop();
-      }
+      final result = await fetchMethod(state.selectedTransaksi.idtransaksiprod);
+      _handleDetailTransaksiResult(result);
     } on ServerException catch (e) {
-      debugPrint("SERVER EXCEPTION FETCH DETAIL TRANSAKSI TODAY: $e");
+      debugPrint("SERVER EXCEPTION FETCH DETAIL TRANSAKSI: $e");
       showWarningMessage(e.message);
       emit(
         state.copyWith(
@@ -158,69 +133,45 @@ class MemberDetailRiwayatProvider extends Cubit<MemberDetailRiwayatState> {
     }
   }
 
-  void fetchDetailTransaksiHistory() async {
-    if (state.selectedTransaksi.idtransaksiprod == 0) return;
+  void _handleDetailTransaksiResult(DetailTransaksiResponse result) {
+    var dataSp = result.dataSplit ?? DEFAULT_DATA_SPLIT_RESPONSE;
+    var detailTrx = result.data ?? DEFAULT_DETAIL_TRANSAKSI_MODEL;
 
-    if (state.detailTransaksiStatus.isLoading) return;
+    var dataTrx =
+        dataSp.dataTransaksi
+            ?.where((d) => d.value != '-' || d.value != '')
+            .toList();
+    var dataBiaya =
+        dataSp.dataBiaya
+            ?.where(
+              (d) =>
+                  d.value != '-' ||
+                  d.value != '' &&
+                      removeNonAlphanumeric(d.key).trim().toLowerCase() !=
+                          'totalbayar',
+            )
+            .toList();
 
-    emit(
-      state.copyWith(
-        detailTransaksiStatus: ApiStatus.loading,
-        detailTransaksiMessage: '',
-      ),
-    );
+    dataSp = dataSp.copyWith(dataTransaksi: dataTrx, dataBiaya: dataBiaya);
 
-    try {
-      final result = await _riwayatService.getDetailTransaksiHistory(
-        idtransaksiprod: state.selectedTransaksi.idtransaksiprod,
+    if (detailTrx.idtransaksiprod != 0) {
+      emit(
+        state.copyWith(
+          detailTransaksiStatus: ApiStatus.success,
+          detailTransaksiMessage: 'Berhasil memuat detail transaksi.',
+          dataSplit: dataSp,
+          detailTransaksi: detailTrx,
+        ),
       );
-
-      var dataSp = result.dataSplit ?? DEFAULT_DATA_SPLIT_RESPONSE;
-      var detailTrx = result.data ?? DEFAULT_DETAIL_TRANSAKSI_MODEL;
-
-      var dataTrx = dataSp.dataTransaksi
-          ?.where((d) => d.value != '-' || d.value != '')
-          .toList();
-      var dataBiaya = dataSp.dataBiaya
-          ?.where(
-            (d) =>
-                d.value != '-' ||
-                d.value != '' &&
-                    removeNonAlphanumeric(d.key).trim().toLowerCase() !=
-                        'totalbayar',
-          )
-          .toList();
-
-      dataSp = dataSp.copyWith(dataTransaksi: dataTrx, dataBiaya: dataBiaya);
-
-      if (detailTrx.idtransaksiprod != 0) {
-        emit(
-          state.copyWith(
-            detailTransaksiStatus: ApiStatus.success,
-            detailTransaksiMessage: 'Berhasil memuat detail transaksi.',
-            dataSplit: dataSp,
-            detailTransaksi: detailTrx,
-          ),
-        );
-      } else {
-        emit(
-          state.copyWith(
-            detailTransaksiStatus: ApiStatus.failure,
-            detailTransaksiMessage: 'Data detail transaksi tidak ditemukan.',
-          ),
-        );
-        showErrorMessage('Data detail transaksi tidak ditemukan.');
-        pop();
-      }
-    } on ServerException catch (e) {
-      debugPrint("SERVER EXCEPTION FETCH DETAIL TRANSAKSI HISTORY: $e");
-      showWarningMessage(e.message);
+    } else {
       emit(
         state.copyWith(
           detailTransaksiStatus: ApiStatus.failure,
-          detailTransaksiMessage: e.message,
+          detailTransaksiMessage: 'Data detail transaksi tidak ditemukan.',
         ),
       );
+      showErrorMessage('Data detail transaksi tidak ditemukan.');
+      pop();
     }
   }
 }

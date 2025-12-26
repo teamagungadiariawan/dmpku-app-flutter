@@ -34,6 +34,20 @@ import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_p
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_subprovider_page.dart';
+import 'package:dmpku/pages/member/akun/daftar_devices/member_daftar_devices.dart';
+import 'package:dmpku/pages/member/akun/detail_akun/member_detail_akun_page.dart';
+import 'package:dmpku/pages/member/akun/favorit/member_daftar_favorit_page.dart';
+import 'package:dmpku/pages/member/isistok/alfamart/buat_tiket_alfamart_page.dart';
+import 'package:dmpku/pages/member/isistok/alfamart/detail_tiket_alfamart_page.dart';
+import 'package:dmpku/pages/member/isistok/bank_transfer/buat_tiket_bank_transfer_page.dart';
+import 'package:dmpku/pages/member/isistok/bank_transfer/detail_tiket_bank_transfer_page.dart';
+import 'package:dmpku/pages/member/isistok/indomaret/buat_tiket_indomaret_page.dart';
+import 'package:dmpku/pages/member/isistok/indomaret/detail_tiket_indomaret_page.dart';
+import 'package:dmpku/pages/member/isistok/member_isi_stok_page.dart';
+import 'package:dmpku/pages/member/isistok/qris/buat_tiket_qris_page.dart';
+import 'package:dmpku/pages/member/isistok/qris/detail_tiket_qris_page.dart';
+import 'package:dmpku/pages/member/isistok/va/buat_tiket_va_page.dart';
+import 'package:dmpku/pages/member/isistok/va/detail_tiket_va_page.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_produk_page.dart';
@@ -267,8 +281,39 @@ class AppRouter {
           child: MemberMainPage(initialIndex: args ?? 0),
         );
 
+      // AKUN
+      case MemberDetailAkunPage.routeName:
+        return _customTransition(child: MemberDetailAkunPage());
+      case MemberDaftarDevices.routeName:
+        return _customTransition(child: MemberDaftarDevices());
+      case MemberDaftarFavoritPage.routeName:
+        return _customTransition(child: MemberDaftarFavoritPage());
       case MemberDetailRiwayatPage.routeName:
         return _customTransition(child: MemberDetailRiwayatPage());
+
+      // IsiStok
+      case MemberIsiStokPage.routeName:
+        return _customTransition(child: MemberIsiStokPage());
+      case BuatTiketBankTransferPage.routeName:
+        return _customTransition(child: BuatTiketBankTransferPage());
+      case DetailTiketBankTransferPage.routeName:
+        return _customTransition(child: DetailTiketBankTransferPage());
+      case BuatTiketVaPage.routeName:
+        return _customTransition(child: BuatTiketVaPage());
+      case DetailTiketVaPage.routeName:
+        return _customTransition(child: DetailTiketVaPage());
+      case BuatTiketAlfamartPage.routeName:
+        return _customTransition(child: BuatTiketAlfamartPage());
+      case DetailTiketAlfamartPage.routeName:
+        return _customTransition(child: DetailTiketAlfamartPage());
+      case BuatTiketIndomaretPage.routeName:
+        return _customTransition(child: BuatTiketIndomaretPage());
+      case DetailTiketIndomaretPage.routeName:
+        return _customTransition(child: DetailTiketIndomaretPage());
+      case BuatTiketQrisPage.routeName:
+        return _customTransition(child: BuatTiketQrisPage());
+      case DetailTiketQrisPage.routeName:
+        return _customTransition(child: DetailTiketQrisPage());
 
       case CetakStrukElektrikPage.routeName:
         return _customTransition(child: CetakStrukElektrikPage());

@@ -1,4 +1,5 @@
 import 'package:dmpku/core/themes/app_colors.dart';
+import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -92,13 +93,13 @@ class _CustomButtonState extends State<CustomButton> {
         ),
         child: widget.isLoading
             ? SizedBox(
-          height: defaultFontSize,
-          width: defaultFontSize,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation(foregroundColor),
-          ),
-        )
+                height: defaultFontSize,
+                width: defaultFontSize,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation(foregroundColor),
+                ),
+              )
             : _buildButtonContent(defaultFontSize, foregroundColor),
       ),
     );
@@ -117,11 +118,11 @@ class _CustomButtonState extends State<CustomButton> {
   Widget _buildButtonContent(double defaultFontSize, Color foregroundColor) {
     final effectiveTextStyle =
         widget.textStyle ??
-            TextStyle(
-              fontSize: defaultFontSize,
-              fontWeight: FontWeight.w600,
-              color: foregroundColor,
-            );
+        TextStyle(
+          fontSize: defaultFontSize,
+          fontWeight: FontWeight.w600,
+          color: foregroundColor,
+        );
 
     final iconSize = widget.textStyle?.fontSize ?? defaultFontSize;
 
@@ -132,26 +133,22 @@ class _CustomButtonState extends State<CustomButton> {
         color: effectiveTextStyle.color ?? foregroundColor,
       );
 
-      final textWidget = Text(widget.text, style: effectiveTextStyle);
+      final textWidget = Text(
+        widget.text,
+        style: effectiveTextStyle,
+        textHeightBehavior: AppTextHeightBehavior.noPadding,
+      );
 
       if (widget.text.isEmpty) {
         return iconWidget;
       }
 
       return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: widget.iconPosition == IconPosition.start
-            ? [
-          iconWidget,
-          const SizedBox(width: 5),
-          textWidget,
-        ]
-            : [
-          textWidget,
-          const SizedBox(width: 5),
-          iconWidget,
-        ],
+            ? [iconWidget, const SizedBox(width: 5), textWidget]
+            : [textWidget, const SizedBox(width: 5), iconWidget],
       );
     }
 
@@ -232,9 +229,9 @@ class _CustomButtonState extends State<CustomButton> {
   }
 
   (Color backgroundColor, Color foregroundColor, Color borderColor) _getColors(
-      BuildContext context,
-      bool isDarkMode,
-      ) {
+    BuildContext context,
+    bool isDarkMode,
+  ) {
     Color bgColor;
     Color fgColor;
     Color brColor;
@@ -269,16 +266,12 @@ class _CustomButtonState extends State<CustomButton> {
             ? AppColors.lightDestructive
             : AppColors.lightDestructive;
         break;
-        case ButtonVariant.warning:
-        bgColor = isDarkMode
-            ? AppColors.darkWarning
-            : AppColors.lightWarning;
+      case ButtonVariant.warning:
+        bgColor = isDarkMode ? AppColors.darkWarning : AppColors.lightWarning;
         fgColor = isDarkMode
             ? AppColors.darkWarningForeground
             : AppColors.lightWarningForeground;
-        brColor = isDarkMode
-            ? AppColors.darkWarning
-            : AppColors.lightWarning;
+        brColor = isDarkMode ? AppColors.darkWarning : AppColors.lightWarning;
         break;
       case ButtonVariant.outline:
         bgColor = Colors.transparent;
@@ -304,9 +297,9 @@ class _CustomButtonState extends State<CustomButton> {
     }
 
     return (
-    widget.backgroundColor ?? bgColor,
-    widget.foregroundColor ?? fgColor,
-    widget.borderColor ?? brColor,
+      widget.backgroundColor ?? bgColor,
+      widget.foregroundColor ?? fgColor,
+      widget.borderColor ?? brColor,
     );
   }
 
@@ -324,7 +317,15 @@ class _CustomButtonState extends State<CustomButton> {
 
 enum ButtonSize { small, medium, large }
 
-enum ButtonVariant { primary, secondary, destructive, outline, ghost, border, warning }
+enum ButtonVariant {
+  primary,
+  secondary,
+  destructive,
+  outline,
+  ghost,
+  border,
+  warning,
+}
 
 enum ButtonState { enabled, disabled, loading }
 

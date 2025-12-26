@@ -1,15 +1,28 @@
+import 'package:dmpku/core/constants/app_info.dart';
 import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/helpers/device_info_helper.dart';
+import 'package:dmpku/core/helpers/launch_helper.dart';
+import 'package:dmpku/core/helpers/navigator_helper.dart';
+import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/pages/member/akun/daftar_devices/member_daftar_devices.dart';
+import 'package:dmpku/pages/member/akun/detail_akun/member_detail_akun_page.dart';
+import 'package:dmpku/pages/member/akun/favorit/member_daftar_favorit_page.dart';
+import 'package:dmpku/pages/member/akun/favorit/member_favorit_provider.dart';
+import 'package:dmpku/pages/member/akun/widgets/ganti_pin_dialog.dart';
 import 'package:dmpku/pages/member/akun/widgets/member_akun_footer.dart';
 import 'package:dmpku/pages/member/akun/widgets/member_header_content.dart';
 import 'package:dmpku/pages/member/akun/widgets/member_saldo_card.dart';
+import 'package:dmpku/pages/member/akun/widgets/reset_pin_dialog.dart';
+import 'package:dmpku/pages/member/isistok/member_isi_stok_page.dart';
+import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/card_tanya.dart';
 import 'package:dmpku/widgets/custom_button.dart';
+import 'package:dmpku/widgets/dialog/konfirmasi_logout_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,25 +54,43 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
       icon: Assets.img.profile.icDetailAkun,
       title: 'Detail Akun',
       subtitle: 'Informasi akun Anda.',
-      onTap: () {},
+      onTap: () {
+        getMemberProvider(context).getProfileDetail();
+
+        pushNamed(MemberDetailAkunPage.routeName);
+      },
     ),
     MenuItem(
       icon: Assets.img.profile.icManageDevice,
       title: 'Detail Device',
       subtitle: 'Daftar device terhubung.',
-      onTap: () {},
+      onTap: () {
+        getMemberProvider(context).getProfileDevice();
+
+        pushNamed(MemberDaftarDevices.routeName);
+      },
     ),
     MenuItem(
       icon: Assets.img.profile.icFavorit,
       title: 'Daftar Favorit',
       subtitle: 'Kelola daftar favorit Anda.',
-      onTap: () {},
+      onTap: () {
+        getMemberFavoritProvider(context).getFavoritList();
+
+        pushNamed(MemberDaftarFavoritPage.routeName);
+      },
     ),
     MenuItem(
       icon: Assets.img.profile.icPlaystore,
       title: 'Beri Penilaian',
       subtitle: 'Rating di Playstore.',
-      onTap: () {},
+      onTap: () async {
+        var urlPlaystore =
+            await SecureStorageHelper.instance.getPlayStore() ??
+            'https://play.google.com/store/apps/';
+
+        await launchUrlApp(urlPlaystore);
+      },
     ),
   ];
 
@@ -68,13 +99,17 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
       icon: Assets.img.profile.icGantiPin,
       title: 'Ganti PIN',
       subtitle: 'Ubah PIN Anda.',
-      onTap: () {},
+      onTap: () {
+        GantiPinDialog.show(context);
+      },
     ),
     MenuItem(
       icon: Assets.img.profile.icResetPin,
       title: 'Reset/Lupa PIN',
       subtitle: 'Atur ulang PIN Anda.',
-      onTap: () {},
+      onTap: () {
+        ResetPinDialog.show(context);
+      },
     ),
   ];
 
@@ -83,7 +118,9 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
       icon: Assets.img.profile.icHapusAkun,
       title: 'Hapus Akun',
       subtitle: 'Nonaktifkan akun Anda.',
-      onTap: () {},
+      onTap: () {
+        launchUrlApp("https://${APPNAME.toLowerCase()}.com/hapus-akun");
+      },
     ),
   ];
 
@@ -105,7 +142,7 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
             _buildHeaderBackground(),
             Column(
               children: [
-                const SizedBox(height: _headerHeight-15),
+                const SizedBox(height: _headerHeight - 15),
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.only(top: 20),
@@ -160,20 +197,21 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
             isSaldoVisible: _isSaldoVisible,
             onToggleVisibility: _toggleSaldoVisibility,
             onRefresh: _onRefresh,
-            onIsiSaldo: () {
-              // TODO: Navigate to isi saldo
+            onIsiSaldo:  () {
+              getMemberProvider(context).getProfile();
+              getMemberIsiStokProvider(context).fetchRiwayatTiketBankTransfer();
             },
           ),
           Gap(4),
-          MemberMenuSection(title: 'General', items:  _menuGeneral),
+          MemberMenuSection(title: 'General', items: _menuGeneral),
           CardTanya(
             title: "Punya Pertanyaan ?",
             subtitle: "Langsung chat dengan customer service kami",
             onTap: () {},
           ),
           Gap(4),
-          MemberMenuSection(title:'Keamanan Akun',items: _menuKeamanan),
-          MemberMenuSection(title:'Akun',items: _menuAkun),
+          MemberMenuSection(title: 'Keamanan Akun', items: _menuKeamanan),
+          MemberMenuSection(title: 'Akun', items: _menuAkun),
           const Gap(10),
           _buildLogoutButton(),
           Gap(10),
@@ -182,8 +220,6 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
       ),
     );
   }
-
-
 
   Widget _buildLogoutButton() {
     return BlocBuilder<MemberProvider, MemberState>(
@@ -200,7 +236,9 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
           textStyle: context.bodyLarge
               .withColor(Colors.white)
               .withWeight(FontWeight.w800),
-          onPressed: () => getMemberProvider(context).logout(),
+          onPressed: () {
+            KonfirmasiLogoutDialog.show(context);
+          },
           variant: ButtonVariant.destructive,
         );
       },

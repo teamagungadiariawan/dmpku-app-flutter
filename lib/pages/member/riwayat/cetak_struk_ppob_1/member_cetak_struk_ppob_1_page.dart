@@ -20,6 +20,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:lucide_icons/lucide_icons.dart' show LucideIcons;
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MemberCetakStrukPpob1Page extends StatefulWidget {
   static const routeName = '/member/riwayat/cetak-struk-ppob-1';
@@ -201,7 +206,7 @@ class _MemberCetakStrukPpob1PageState extends State<MemberCetakStrukPpob1Page> {
                           MemberCetakStrukPpob1State
                         >(
                           builder: (context, state) {
-                            final String receiptData = _generateReceiptContent(
+                            return _buildReceiptLayout(
                               namaKios: state.namaKios,
                               alamatKios: state.alamatKios,
                               footerKios: state.footerKios,
@@ -212,18 +217,6 @@ class _MemberCetakStrukPpob1PageState extends State<MemberCetakStrukPpob1Page> {
                               ),
                               titleSn: state.titleSn,
                               sn: state.sn,
-                            );
-
-                            return Text(
-                              receiptData,
-                              style: const TextStyle(
-                                fontFamily: 'monospace',
-                                // Wajib Monospace
-                                fontSize: 16,
-                                color: Colors.black,
-                                height: 1.15,
-                                fontWeight: FontWeight.w500,
-                              ),
                             );
                           },
                         ),
@@ -239,7 +232,7 @@ class _MemberCetakStrukPpob1PageState extends State<MemberCetakStrukPpob1Page> {
             return _buildFooterSection(context, state);
           },
         ),
-        const Gap(30),
+        const Gap(10),
       ],
     );
   }
@@ -314,24 +307,42 @@ class _MemberCetakStrukPpob1PageState extends State<MemberCetakStrukPpob1Page> {
             ],
           ),
           Gap(10),
-          CustomButton(
-            width: double.infinity,
-            padding: EdgeInsets.zero,
-            height: 30,
-            text: "Cetak Struk",
-            onPressed: () {
-              PrintStruk(
-                namaKios: state.namaKios,
-                alamatKios: state.alamatKios,
-                footerKios: state.footerKios,
-                dataTrx: state.dataTrx,
-                dataBiaya: state.dataBiaya,
-                totalBayar: ToCurrency(state.totalBayar.toString()),
-                titleSn: state.titleSn,
-                sn: state.sn,
-              );
-            },
-            icon: LucideIcons.printer,
+          Row(
+            children: [
+              Expanded(
+                child: CustomButton(
+                  padding: EdgeInsets.zero,
+                  height: 30,
+                  text: "Bagikan Struk",
+                  onPressed: () {
+                    _handleShareFullPage(context, state);
+                  },
+                  icon: LucideIcons.share2,
+                ),
+              ),
+              Gap(6),
+              Expanded(
+                child: CustomButton(
+                  width: double.infinity,
+                  padding: EdgeInsets.zero,
+                  height: 30,
+                  text: "Cetak Struk",
+                  onPressed: () {
+                    PrintStruk(
+                      namaKios: state.namaKios,
+                      alamatKios: state.alamatKios,
+                      footerKios: state.footerKios,
+                      dataTrx: state.dataTrx,
+                      dataBiaya: state.dataBiaya,
+                      totalBayar: ToCurrency(state.totalBayar.toString()),
+                      titleSn: state.titleSn,
+                      sn: state.sn,
+                    );
+                  },
+                  icon: LucideIcons.printer,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -410,7 +421,7 @@ class _MemberCetakStrukPpob1PageState extends State<MemberCetakStrukPpob1Page> {
     );
   }
 
-  String _generateReceiptContent({
+  Widget _buildReceiptLayout({
     String namaKios = "",
     String alamatKios = "",
     String footerKios = "",
@@ -420,10 +431,8 @@ class _MemberCetakStrukPpob1PageState extends State<MemberCetakStrukPpob1Page> {
     String titleSn = "",
     String sn = "",
   }) {
-    StringBuffer buffer = StringBuffer();
-
     // 1. Helper: Print Tengah
-    void pCenter(String text) {
+    void pCenter(StringBuffer buffer, String text) {
       // Loop: Selama text lebih panjang dari maxChars (32)
       while (text.length > maxChars) {
         // Ambil potongan selebar maxChars
@@ -446,7 +455,7 @@ class _MemberCetakStrukPpob1PageState extends State<MemberCetakStrukPpob1Page> {
 
     // 2. Helper: Print Kiri-Kanan (Smart Truncate)
     // Ini penting banget di 32 char biar ga error layoutnya
-    void pRow(String left, String right) {
+    void pRow(StringBuffer buffer, String left, String right) {
       int availableSpace = maxChars - right.length;
 
       // Kasih jarak minimal 1 spasi antara kiri dan kanan
@@ -461,62 +470,166 @@ class _MemberCetakStrukPpob1PageState extends State<MemberCetakStrukPpob1Page> {
     }
 
     // 3. Helper: Garis
-    void pDivider() {
-      buffer.writeln('-' * maxChars); // Pake dash biasa aja yg aman
+    void pDivider(StringBuffer buffer, {bool newLine = true}) {
+      if (newLine)
+        buffer.writeln('-' * maxChars);
+      else
+        buffer.write('-' * maxChars);
     }
 
-    // 4. Helper: Format Rupiah Simpel
-    String formatRp(int value) {
-      // Simulasi format ribuan pake titik (manual biar ga perlu intl package dulu)
-      return value.toString().replaceAllMapped(
-        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-        (Match m) => '${m[1]}.',
-      );
-    }
+    StringBuffer buffer = StringBuffer();
 
-    // --- ISI STRUK ---
+    pCenter(buffer, namaKios);
+    pCenter(buffer, alamatKios);
+    pDivider(buffer);
 
-    pCenter(namaKios);
-    pCenter(alamatKios);
-    pDivider();
-
-    // Generate list stringnya
     List<String> formattedList = formatKeyValueMultilineNew(dataTrx);
-
-    // Masukin ke buffer struk
     for (String line in formattedList) {
       buffer.writeln(line);
     }
-
-    pDivider();
-
+    pDivider(buffer);
     formattedList = formatKeyValueMultilineNew(dataBiaya);
 
-    // Masukin ke buffer struk
     for (String line in formattedList) {
       buffer.writeln(line);
     }
-
-    pDivider();
+    pDivider(buffer);
     formattedList = formatKeyValueMultilineNew([
       KeyValue(key: "Total Bayar", value: ToCurrency(totalBayar)),
     ]);
 
-    // Masukin ke buffer struk
     for (String line in formattedList) {
       buffer.writeln(line);
     }
+    pDivider(buffer, newLine: false);
 
+    const styleBig = TextStyle(
+      fontFamily: 'monospace',
+      fontSize: 24,
+      // <--- UKURAN FONT DIPERBESAR
+      color: Colors.black,
+      height: 1.15,
+      fontWeight: FontWeight.w900, // Lebih tebal
+    );
+
+    StringBuffer bufferBottom = StringBuffer();
+    pDivider(bufferBottom);
+    pCenter(bufferBottom, footerKios);
+    pDivider(bufferBottom);
+
+    String strSn = "";
     if (titleSn.isNotEmpty && sn.isNotEmpty) {
-      pDivider();
-      pCenter(titleSn);
-      pCenter(sn);
+      // split sn jika terlalu panjang jadi array
+      List<String> snLines = [];
+      int start = 0;
+      int max = (maxChars / 2).toInt();
+      while (start < sn.length) {
+        int end = (start + max < sn.length) ? start + (max) : sn.length;
+        snLines.add(sn.substring(start, end));
+        start += max;
+      }
+
+      strSn = snLines.join('\n');
     }
 
-    pDivider();
-    pCenter(footerKios);
-    pDivider();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          buffer.toString(),
+          style: const TextStyle(
+            fontFamily: 'monospace',
+            // Wajib Monospace
+            fontSize: 16,
+            color: Colors.black,
+            height: 1.15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        if (titleSn.isNotEmpty && sn.isNotEmpty) ...[
+          Text(
+            titleSn,
+            style: styleBig.copyWith(fontSize: 18), // Judul agak besar dikit
+            textAlign: TextAlign.center,
+          ),
+          const Gap(2),
+          Text(
+            strSn,
+            style: styleBig, // SN SANGAT BESAR
+            textAlign: TextAlign.center,
+          ),
+        ],
+        Text(
+          bufferBottom.toString(),
+          style: const TextStyle(
+            fontFamily: 'monospace',
+            // Wajib Monospace
+            fontSize: 16,
+            color: Colors.black,
+            height: 1.15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
 
-    return buffer.toString();
+  // 1. Tambahkan Controller Screenshot
+  final ScreenshotController screenshotController = ScreenshotController();
+
+  // ... method lain (closePage, initState, dll)
+
+  // 2. Tambahkan Function Share Struk Thermal
+  Future<void> _handleShareFullPage(
+    BuildContext context,
+    MemberCetakStrukPpob1State state,
+  ) async {
+    // Capture Widget
+    // Kita bikin container putih biar mirip kertas struk asli
+    final Uint8List? image = await screenshotController.captureFromWidget(
+      Container(
+        width: 380,
+        // Lebar fixed biar hasil gambarnya proporsional kayak struk 58mm
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+        color: Colors.white,
+        // Warna kertas
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildReceiptLayout(
+              namaKios: state.namaKios,
+              alamatKios: state.alamatKios,
+              footerKios: state.footerKios,
+              dataTrx: state.dataTrx,
+              dataBiaya: state.dataBiaya,
+              totalBayar: ToCurrency(state.totalBayar.toString()),
+              titleSn: state.titleSn,
+              sn: state.sn,
+            ),
+            const Gap(30),
+            Text(
+              "Simpan bukti transaksi ini.",
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 12,
+                fontFamily: 'sans-serif',
+              ),
+            ),
+          ],
+        ),
+      ),
+      delay: const Duration(milliseconds: 100),
+      context: context,
+    );
+
+    // Proses Simpan & Share
+    if (image != null) {
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = await File(
+        '${directory.path}/struk_thermal.png',
+      ).create();
+      await imagePath.writeAsBytes(image);
+      await Share.shareXFiles([XFile(imagePath.path)], text: 'Struk Transaksi');
+    }
   }
 }

@@ -1,9 +1,12 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
+import 'package:dmpku/pages/member/isistok/member_isi_stok_page.dart';
+import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/beranda/sales_feature_card.dart';
 import 'package:dmpku/widgets/custom_button.dart';
@@ -46,10 +49,7 @@ class _DashboardHeaderState extends State<DashboardHeader> {
   Widget build(BuildContext context) {
     return Stack(
       clipBehavior: Clip.none,
-      children: [
-        _buildHeaderBackground(),
-        _buildBalanceCard(),
-      ],
+      children: [_buildHeaderBackground(), _buildBalanceCard()],
     );
   }
 
@@ -129,8 +129,13 @@ class _DashboardHeaderState extends State<DashboardHeader> {
           ),
           buttonText: 'Isi Stok',
           buttonIcon: MdiIcons.walletPlusOutline,
-          onRefresh: () => getMemberProvider(context).getProfile(),
-          onButtonPressed: () => widget.onMenuTap('isi_stok'),
+          onRefresh: () {
+            getMemberProvider(context).getProfile();
+            getMemberIsiStokProvider(context).fetchRiwayatTiketBankTransfer();
+          },
+          onButtonPressed: () {
+            pushNamed(MemberIsiStokPage.routeName);
+          },
         );
       },
     );

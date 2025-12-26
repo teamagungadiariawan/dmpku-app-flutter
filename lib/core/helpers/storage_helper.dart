@@ -74,6 +74,14 @@ class SecureStorageHelper {
 
   Future<void> clearToken() => delete(StorageKeys.token);
 
+  // Refresh Token
+  Future<void> saveRefreshToken(String refreshToken) =>
+      write(StorageKeys.refreshToken, refreshToken);
+
+  Future<String?> getRefreshToken() => read(StorageKeys.refreshToken);
+
+  Future<void> clearRefreshToken() => delete(StorageKeys.refreshToken);
+
   // Kode Member
   Future<void> saveKodeMember(String kodeMember) =>
       write(StorageKeys.kodeMember, kodeMember);

@@ -27,16 +27,14 @@ class ItemMutasiStok extends StatelessWidget {
     var dateStr = DateHelper.formatSimpleDate(waktu);
     var waktuStr = DateHelper.formatTime(waktu);
 
-    debugPrint('ItemMutasiStok: dateStr=$dateStr, waktuStr=$waktuStr, keterangan=$keterangan, potongan=$potongan, stok=$stok, isOdd=$isOdd, isMinus=$isMinus');
-
     return Container(
       color: isOdd ? context.secondary : Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Container(
-            width: 70,
+          SizedBox(
+            width: 80,
             child: Text(
               '$dateStr\nPukul $waktuStr',
               textAlign: TextAlign.start,
@@ -47,24 +45,27 @@ class ItemMutasiStok extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.only(right: 2),
-              child: Text(keterangan, style: context.captionMedium
-                  .withWeight(FontWeight.w400)
-                  .withColor(context.foreground)),
+              padding: const EdgeInsets.only(right: 2),
+              child: Text(keterangan,
+                  style: context.captionMedium
+                      .withWeight(FontWeight.w400)
+                      .withColor(context.foreground)),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(right: 4),
+            padding: const EdgeInsets.only(right: 4),
             width: 60,
             child: Text(
-             isMinus ? '-${ToCurrency(potongan.toString())}' : ToCurrency(potongan.toString()),
+              isMinus
+                  ? '-${ToCurrency(potongan.toString())}'
+                  : ToCurrency(potongan.toString()),
               textAlign: TextAlign.end,
               style: context.bodySmall
                   .withColor(isMinus ? context.destructive : context.primary),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(right: 4),
+            padding: const EdgeInsets.only(right: 4),
             width: 50,
             child: Text(
               ToCurrency(stok.toString()),

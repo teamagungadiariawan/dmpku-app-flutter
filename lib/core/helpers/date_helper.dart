@@ -147,6 +147,10 @@ class DateHelper {
     'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
   ];
 
+  static const List<String> _fullDays = [
+    'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+  ];
+
   static String _getShortMonth(int month) {
     if (month < 1 || month > 12) return '';
     return _shortMonths[month];
@@ -169,6 +173,14 @@ class DateHelper {
 
   static String formatFullDate(DateTime dt) {
     return '${dt.day} ${_getFullMonth(dt.month)} ${dt.year}';
+  }
+
+  static String formatFullDateWithDay(DateTime dt) {
+    return '${_fullDays[dt.weekday % 7]}, ${dt.day} ${_getFullMonth(dt.month)} ${dt.year}';
+  }
+
+  static String formatFullDateWithDayShort(DateTime dt) {
+    return '${_fullDays[dt.weekday % 7]}, ${dt.day} ${_getShortMonth(dt.month)} ${dt.year}';
   }
 
   /// Menggabungkan dua tanggal menjadi range string

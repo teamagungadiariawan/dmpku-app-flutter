@@ -62,6 +62,9 @@ class $AssetsAnimationsGen {
 class $AssetsImgGen {
   const $AssetsImgGen();
 
+  /// Directory path: assets/img/bank
+  $AssetsImgBankGen get bank => const $AssetsImgBankGen();
+
   /// Directory path: assets/img/beranda
   $AssetsImgBerandaGen get beranda => const $AssetsImgBerandaGen();
 
@@ -127,6 +130,9 @@ class $AssetsImgGen {
   /// Directory path: assets/img/status
   $AssetsImgStatusGen get status => const $AssetsImgStatusGen();
 
+  /// Directory path: assets/img/stok
+  $AssetsImgStokGen get stok => const $AssetsImgStokGen();
+
   /// List of all assets
   List<AssetGenImage> get values => [
     bgPattern,
@@ -139,6 +145,64 @@ class $AssetsImgGen {
     lockVerifyOtp,
     logoTextWhite,
     logoText,
+  ];
+}
+
+class $AssetsImgBankGen {
+  const $AssetsImgBankGen();
+
+  /// File path: assets/img/bank/ic-method-alfamart.png
+  AssetGenImage get icMethodAlfamart =>
+      const AssetGenImage('assets/img/bank/ic-method-alfamart.png');
+
+  /// File path: assets/img/bank/ic-method-bca.png
+  AssetGenImage get icMethodBca =>
+      const AssetGenImage('assets/img/bank/ic-method-bca.png');
+
+  /// File path: assets/img/bank/ic-method-bni.png
+  AssetGenImage get icMethodBni =>
+      const AssetGenImage('assets/img/bank/ic-method-bni.png');
+
+  /// File path: assets/img/bank/ic-method-bri.png
+  AssetGenImage get icMethodBri =>
+      const AssetGenImage('assets/img/bank/ic-method-bri.png');
+
+  /// File path: assets/img/bank/ic-method-bsi.png
+  AssetGenImage get icMethodBsi =>
+      const AssetGenImage('assets/img/bank/ic-method-bsi.png');
+
+  /// File path: assets/img/bank/ic-method-cimbniaga.png
+  AssetGenImage get icMethodCimbniaga =>
+      const AssetGenImage('assets/img/bank/ic-method-cimbniaga.png');
+
+  /// File path: assets/img/bank/ic-method-indomaret.png
+  AssetGenImage get icMethodIndomaret =>
+      const AssetGenImage('assets/img/bank/ic-method-indomaret.png');
+
+  /// File path: assets/img/bank/ic-method-mandiri.png
+  AssetGenImage get icMethodMandiri =>
+      const AssetGenImage('assets/img/bank/ic-method-mandiri.png');
+
+  /// File path: assets/img/bank/ic-method-permata.png
+  AssetGenImage get icMethodPermata =>
+      const AssetGenImage('assets/img/bank/ic-method-permata.png');
+
+  /// File path: assets/img/bank/ic-method-qris.png
+  AssetGenImage get icMethodQris =>
+      const AssetGenImage('assets/img/bank/ic-method-qris.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+    icMethodAlfamart,
+    icMethodBca,
+    icMethodBni,
+    icMethodBri,
+    icMethodBsi,
+    icMethodCimbniaga,
+    icMethodIndomaret,
+    icMethodMandiri,
+    icMethodPermata,
+    icMethodQris,
   ];
 }
 
@@ -567,6 +631,39 @@ class $AssetsImgStatusGen {
     icStatusGagal,
     icStatusPending,
     icStatusSukses,
+  ];
+}
+
+class $AssetsImgStokGen {
+  const $AssetsImgStokGen();
+
+  /// File path: assets/img/stok/ic-saldo-alfa.png
+  AssetGenImage get icSaldoAlfa =>
+      const AssetGenImage('assets/img/stok/ic-saldo-alfa.png');
+
+  /// File path: assets/img/stok/ic-saldo-indomaret.png
+  AssetGenImage get icSaldoIndomaret =>
+      const AssetGenImage('assets/img/stok/ic-saldo-indomaret.png');
+
+  /// File path: assets/img/stok/ic-saldo-qr.png
+  AssetGenImage get icSaldoQr =>
+      const AssetGenImage('assets/img/stok/ic-saldo-qr.png');
+
+  /// File path: assets/img/stok/ic-saldo-tf.png
+  AssetGenImage get icSaldoTf =>
+      const AssetGenImage('assets/img/stok/ic-saldo-tf.png');
+
+  /// File path: assets/img/stok/ic-saldo-va.png
+  AssetGenImage get icSaldoVa =>
+      const AssetGenImage('assets/img/stok/ic-saldo-va.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+    icSaldoAlfa,
+    icSaldoIndomaret,
+    icSaldoQr,
+    icSaldoTf,
+    icSaldoVa,
   ];
 }
 

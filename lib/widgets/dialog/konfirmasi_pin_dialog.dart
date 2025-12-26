@@ -48,17 +48,17 @@ class KonfirmasiPinDialog<B extends BlocBase<S>, S> extends StatefulWidget {
 
   /// Show dialog dengan Bloc untuk loading state
   static void show<B extends BlocBase<S>, S>(
-      BuildContext context, {
-        required String title,
-        required String subtitle,
-        String? titleTrxSebelumnya,
-        String? subtitleTrxSebelumnya,
-        required Function(String pin) onConfirm,
-        B? bloc,
-        bool Function(S state)? isLoadingSelector,
-        String Function(S state)? errorMessageSelector,
-        TrxSebelumnyaState Function(S state)? trxSebelumnyaSelector,
-      }) {
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    String? titleTrxSebelumnya,
+    String? subtitleTrxSebelumnya,
+    required Function(String pin) onConfirm,
+    B? bloc,
+    bool Function(S state)? isLoadingSelector,
+    String Function(S state)? errorMessageSelector,
+    TrxSebelumnyaState Function(S state)? trxSebelumnyaSelector,
+  }) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -67,24 +67,24 @@ class KonfirmasiPinDialog<B extends BlocBase<S>, S> extends StatefulWidget {
       enableDrag: true,
       builder: (_) => bloc != null
           ? BlocProvider<B>.value(
-        value: bloc,
-        child: KonfirmasiPinDialog<B, S>(
-          title: title,
-          subtitle: subtitle,
-          titleTrxSebelumnya: titleTrxSebelumnya,
-          subtitleTrxSebelumnya: subtitleTrxSebelumnya,
-          onConfirm: onConfirm,
-          bloc: bloc,
-          isLoadingSelector: isLoadingSelector,
-          errorMessageSelector: errorMessageSelector,
-          trxSebelumnyaSelector: trxSebelumnyaSelector,
-        ),
-      )
+              value: bloc,
+              child: KonfirmasiPinDialog<B, S>(
+                title: title,
+                subtitle: subtitle,
+                titleTrxSebelumnya: titleTrxSebelumnya,
+                subtitleTrxSebelumnya: subtitleTrxSebelumnya,
+                onConfirm: onConfirm,
+                bloc: bloc,
+                isLoadingSelector: isLoadingSelector,
+                errorMessageSelector: errorMessageSelector,
+                trxSebelumnyaSelector: trxSebelumnyaSelector,
+              ),
+            )
           : KonfirmasiPinDialog<B, S>(
-        title: title,
-        subtitle: subtitle,
-        onConfirm: onConfirm,
-      ),
+              title: title,
+              subtitle: subtitle,
+              onConfirm: onConfirm,
+            ),
     );
   }
 
@@ -112,6 +112,12 @@ class _KonfirmasiPinDialogState<B extends BlocBase<S>, S>
   }
 
   void onChanged(String value) {
+    if (pin.length == 6 && value.length < 6) {
+      // Jika sebelumnya sudah lengkap (6 digit) dan sekarang berkurang,
+      // berarti user menghapus karakter, maka fokus dikembalikan ke input
+      _clearPin();
+    }
+
     setState(() => pin = value);
   }
 
@@ -312,8 +318,8 @@ class _KonfirmasiPinDialogState<B extends BlocBase<S>, S>
                               fontWeight: FontWeight.w600,
                               color: isStatus
                                   ? (isGagal
-                                  ? Colors.red.shade700
-                                  : context.primary)
+                                        ? Colors.red.shade700
+                                        : context.primary)
                                   : null,
                             ),
                           ),
@@ -343,11 +349,11 @@ class _KonfirmasiPinDialogState<B extends BlocBase<S>, S>
   }
 
   Widget _buildPinInput(
-      BuildContext context,
-      PinTheme defaultTheme,
-      PinTheme focusedTheme,
-      PinTheme submittedTheme,
-      ) {
+    BuildContext context,
+    PinTheme defaultTheme,
+    PinTheme focusedTheme,
+    PinTheme submittedTheme,
+  ) {
     return Align(
       alignment: Alignment.center,
       child: Pinput(
@@ -364,6 +370,8 @@ class _KonfirmasiPinDialogState<B extends BlocBase<S>, S>
         onCompleted: onComplete,
         onChanged: onChanged,
         closeKeyboardWhenCompleted: false,
+        enableSuggestions: false,
+        keyboardType: TextInputType.number,
       ),
     );
   }
@@ -379,7 +387,9 @@ class _KonfirmasiPinDialogState<B extends BlocBase<S>, S>
           return Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            margin: const EdgeInsets.symmetric(horizontal: 4).copyWith(bottom: 8,),
+            margin: const EdgeInsets.symmetric(
+              horizontal: 4,
+            ).copyWith(bottom: 8),
             decoration: BoxDecoration(
               color: Colors.red.shade50,
               borderRadius: BorderRadius.circular(8),
@@ -442,8 +452,9 @@ class _KonfirmasiPinDialogState<B extends BlocBase<S>, S>
   Widget _buildButton(BuildContext context, bool isLoading) {
     return CustomButton(
       text: isLoading ? "Memproses..." : "Konfirmasi",
-      onPressed:
-      (isPinValid && !isLoading) ? () => widget.onConfirm(pin) : null,
+      onPressed: (isPinValid && !isLoading)
+          ? () => widget.onConfirm(pin)
+          : null,
       isLoading: isLoading,
       height: 40,
       size: ButtonSize.large,
