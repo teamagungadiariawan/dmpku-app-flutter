@@ -28,13 +28,11 @@ class GuestPaketTvProviderPage extends StatefulWidget {
       _GuestPaketTvProviderPageState();
 }
 
-class _GuestPaketTvProviderPageState
-    extends State<GuestPaketTvProviderPage> {
+class _GuestPaketTvProviderPageState extends State<GuestPaketTvProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getPaketTvProvider(context).resetState();
     super.dispose();
   }
 
@@ -43,14 +41,13 @@ class _GuestPaketTvProviderPageState
   }
 
   void closePage() {
-    getPaketTvProvider(context).resetState();
     pop();
   }
 
   List<ProviderModel> _filterProviders(
-      List<ProviderModel> providers,
-      String search,
-      ) {
+    List<ProviderModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -102,7 +99,7 @@ class _GuestPaketTvProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<PaketTvProvider, PaketTvState>(
       buildWhen: (previous, current) =>
-      previous.providers != current.providers ||
+          previous.providers != current.providers ||
           previous.searchProvider != current.searchProvider ||
           previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
@@ -118,10 +115,11 @@ class _GuestPaketTvProviderPageState
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                pushNamed(GuestPaketTvProdukPage.routeName);
-                getPaketTvProvider(
-                  context,
-                ).setSelectedProvider(provider);
+                pushNamed(
+                  GuestPaketTvProdukPage.routeName,
+                  arguments: getPaketTvProvider(context),
+                );
+                getPaketTvProvider(context).setSelectedProvider(provider);
               },
             );
           },
@@ -136,7 +134,7 @@ class _GuestPaketTvProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<PaketTvProvider, PaketTvState>(
       buildWhen: (previous, current) =>
-      previous.searchProvider != current.searchProvider,
+          previous.searchProvider != current.searchProvider,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -153,25 +151,23 @@ class _GuestPaketTvProviderPageState
               Expanded(
                 child: TextField(
                   controller: state.searchProviderController,
-                  onChanged: getPaketTvProvider(
-                    context,
-                  ).setSearchProvider,
+                  onChanged: getPaketTvProvider(context).setSearchProvider,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProvider.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getPaketTvProvider(
-                          context,
-                        ).setSearchProvider('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getPaketTvProvider(
+                                context,
+                              ).setSearchProvider('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

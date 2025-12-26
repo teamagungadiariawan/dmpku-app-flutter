@@ -27,17 +27,14 @@ class MemberPdamProviderPage extends StatefulWidget {
   const MemberPdamProviderPage({super.key});
 
   @override
-  State<MemberPdamProviderPage> createState() =>
-      _MemberPdamProviderPageState();
+  State<MemberPdamProviderPage> createState() => _MemberPdamProviderPageState();
 }
 
-class _MemberPdamProviderPageState
-    extends State<MemberPdamProviderPage> {
+class _MemberPdamProviderPageState extends State<MemberPdamProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getMemberPdamProvider(context).resetState();
     super.dispose();
   }
 
@@ -46,14 +43,13 @@ class _MemberPdamProviderPageState
   }
 
   void closePage() {
-    getMemberPdamProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -105,7 +101,7 @@ class _MemberPdamProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<MemberPdamProvider, MemberPdamState>(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -121,10 +117,11 @@ class _MemberPdamProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberPdamProdukPage.routeName);
-                getMemberPdamProvider(
-                  context,
-                ).setSelectedProduct(provider);
+                pushNamed(
+                  MemberPdamProdukPage.routeName,
+                  arguments: getMemberPdamProvider(context),
+                );
+                getMemberPdamProvider(context).setSelectedProduct(provider);
               },
             );
           },
@@ -137,7 +134,7 @@ class _MemberPdamProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<MemberPdamProvider, MemberPdamState>(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -154,25 +151,23 @@ class _MemberPdamProviderPageState
               Expanded(
                 child: TextField(
                   controller: state.searchProductController,
-                  onChanged: getMemberPdamProvider(
-                    context,
-                  ).setSearchProduct,
+                  onChanged: getMemberPdamProvider(context).setSearchProduct,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberPdamProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberPdamProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

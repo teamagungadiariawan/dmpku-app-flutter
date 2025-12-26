@@ -33,7 +33,6 @@ class GuestPaketCuanProviderPage extends StatefulWidget {
 class _GuestPaketCuanProviderPageState
     extends State<GuestPaketCuanProviderPage> {
   void closePage() {
-    getPaketCuanProvider(context).resetState();
     pop();
   }
 
@@ -94,11 +93,17 @@ class _GuestPaketCuanProviderPageState
               imageUrl: provider.imgprovider,
               onTap: () {
                 getPaketCuanProvider(context).setSelectedProvider(provider);
-                pushNamed(GuestPaketCuanSubProviderPage.routeName);
+                pushNamed(
+                  GuestPaketCuanSubProviderPage.routeName,
+                  arguments: getPaketCuanProvider(context),
+                );
               },
               onButtonPressed: () {
                 getPaketCuanProvider(context).setSelectedProvider(provider);
-                pushNamed(GuestPaketCuanSubProviderPage.routeName);
+                pushNamed(
+                  GuestPaketCuanSubProviderPage.routeName,
+                  arguments: getPaketCuanProvider(context),
+                );
               },
             );
           },

@@ -35,7 +35,6 @@ class _MemberPaketNelponProviderPageState
 
   @override
   void dispose() {
-    getMemberPaketNelponProvider(context).resetState();
     super.dispose();
   }
 
@@ -44,7 +43,6 @@ class _MemberPaketNelponProviderPageState
   }
 
   void closePage() {
-    getMemberPaketNelponProvider(context).resetState();
     pop();
   }
 
@@ -56,8 +54,9 @@ class _MemberPaketNelponProviderPageState
 
     return providers.where((provider) {
       return provider.prefixList.any((prefix) {
-        final maxRange =
-            tujuan.length < prefix.length ? tujuan.length : prefix.length;
+        final maxRange = tujuan.length < prefix.length
+            ? tujuan.length
+            : prefix.length;
         return prefix.startsWith(tujuan.substring(0, maxRange));
       });
     }).toList();
@@ -166,9 +165,13 @@ class _MemberPaketNelponProviderPageState
                   shakeKey.currentState?.shake();
                   return;
                 } else {
-                  pushNamed(MemberPaketNelponProdukPage.routeName);
-                  getMemberPaketNelponProvider(context)
-                      .setSelectedProvider(provider);
+                  pushNamed(
+                    MemberPaketNelponProdukPage.routeName,
+                    arguments: getMemberPaketNelponProvider(context),
+                  );
+                  getMemberPaketNelponProvider(
+                    context,
+                  ).setSelectedProvider(provider);
                 }
               },
             );

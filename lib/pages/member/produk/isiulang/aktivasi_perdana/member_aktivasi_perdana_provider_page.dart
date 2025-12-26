@@ -34,7 +34,6 @@ class _MemberAktivasiPerdanaProviderPageState
 
   @override
   void dispose() {
-    getMemberAktivasiPerdanaProvider(context).resetState();
     super.dispose();
   }
 
@@ -43,14 +42,13 @@ class _MemberAktivasiPerdanaProviderPageState
   }
 
   void closePage() {
-    getMemberAktivasiPerdanaProvider(context).resetState();
     pop();
   }
 
   List<ProviderModel> _filterProviders(
-      List<ProviderModel> providers,
-      String search,
-      ) {
+    List<ProviderModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -100,9 +98,12 @@ class _MemberAktivasiPerdanaProviderPageState
   }
 
   Widget _buildListProvider(BuildContext context) {
-    return BlocBuilder<MemberAktivasiPerdanaProvider, MemberAktivasiPerdanaState>(
+    return BlocBuilder<
+      MemberAktivasiPerdanaProvider,
+      MemberAktivasiPerdanaState
+    >(
       buildWhen: (previous, current) =>
-      previous.providers != current.providers ||
+          previous.providers != current.providers ||
           previous.searchProvider != current.searchProvider ||
           previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
@@ -118,7 +119,10 @@ class _MemberAktivasiPerdanaProviderPageState
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                pushNamed(MemberAktivasiPerdanaProdukPage.routeName);
+                pushNamed(
+                  MemberAktivasiPerdanaProdukPage.routeName,
+                  arguments: getMemberAktivasiPerdanaProvider(context),
+                );
                 getMemberAktivasiPerdanaProvider(
                   context,
                 ).setSelectedProvider(provider);
@@ -134,9 +138,12 @@ class _MemberAktivasiPerdanaProviderPageState
   }
 
   Widget _buildSearchField(BuildContext context) {
-    return BlocBuilder<MemberAktivasiPerdanaProvider, MemberAktivasiPerdanaState>(
+    return BlocBuilder<
+      MemberAktivasiPerdanaProvider,
+      MemberAktivasiPerdanaState
+    >(
       buildWhen: (previous, current) =>
-      previous.searchProvider != current.searchProvider,
+          previous.searchProvider != current.searchProvider,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -161,17 +168,17 @@ class _MemberAktivasiPerdanaProviderPageState
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProvider.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberAktivasiPerdanaProvider(
-                          context,
-                        ).setSearchProvider('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberAktivasiPerdanaProvider(
+                                context,
+                              ).setSearchProvider('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

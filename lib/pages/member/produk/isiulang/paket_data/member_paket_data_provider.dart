@@ -172,36 +172,36 @@ class MemberPaketDataState extends Equatable {
 
   @override
   List<Object?> get props => [
-        // Provider API
-        apiFetchProviderStatus,
-        apiFetchProviderMessage,
-        providers,
-        selectedProvider,
-        // Product API
-        apiFetchProductStatus,
-        apiFetchProductMessage,
-        products,
-        selectedProduct,
-        sortProduct,
-        searchProduct,
-        searchProductController,
-        // Single Tujuan
-        tujuan,
-        tujuanFocusNode,
-        tujuanController,
-        tujuanHasError,
-        tujuanErrorMessage,
-        // Konfirmasi State
-        totalPotongStok,
-        detailTransaksi,
-        detailPotongStok,
-        apiKonfirmasiStatus,
-        apiKonfirmasiMessage,
-        // Tambah untuk cek trx sebelumnya
-        adaTrxSebelumnya,
-        detailTrxSebelumnya,
-        trxke,
-      ];
+    // Provider API
+    apiFetchProviderStatus,
+    apiFetchProviderMessage,
+    providers,
+    selectedProvider,
+    // Product API
+    apiFetchProductStatus,
+    apiFetchProductMessage,
+    products,
+    selectedProduct,
+    sortProduct,
+    searchProduct,
+    searchProductController,
+    // Single Tujuan
+    tujuan,
+    tujuanFocusNode,
+    tujuanController,
+    tujuanHasError,
+    tujuanErrorMessage,
+    // Konfirmasi State
+    totalPotongStok,
+    detailTransaksi,
+    detailPotongStok,
+    apiKonfirmasiStatus,
+    apiKonfirmasiMessage,
+    // Tambah untuk cek trx sebelumnya
+    adaTrxSebelumnya,
+    detailTrxSebelumnya,
+    trxke,
+  ];
 }
 
 // ============================================================
@@ -211,13 +211,13 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
   final ProdukService _produkService = ProdukService();
 
   MemberPaketDataProvider()
-      : super(
-          MemberPaketDataState(
-            tujuanFocusNode: FocusNode(),
-            tujuanController: TextEditingController(),
-            searchProductController: TextEditingController(),
-          ),
-        );
+    : super(
+        MemberPaketDataState(
+          tujuanFocusNode: FocusNode(),
+          tujuanController: TextEditingController(),
+          searchProductController: TextEditingController(),
+        ),
+      );
 
   @override
   Future<void> close() {
@@ -233,13 +233,15 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
 
   void konfirmasiTrx(BuildContext context) async {
     // Reset state sebelum show dialog
-    emit(state.copyWith(
-      apiKonfirmasiStatus: ApiStatus.initial,
-      apiKonfirmasiMessage: '',
-      adaTrxSebelumnya: false,
-      detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
-      trxke: 0,
-    ));
+    emit(
+      state.copyWith(
+        apiKonfirmasiStatus: ApiStatus.initial,
+        apiKonfirmasiMessage: '',
+        adaTrxSebelumnya: false,
+        detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
+        trxke: 0,
+      ),
+    );
 
     KonfirmasiPinDialog.show<MemberPaketDataProvider, MemberPaketDataState>(
       context,
@@ -275,10 +277,12 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
 
     if (state.apiKonfirmasiStatus.isLoading) return;
 
-    emit(state.copyWith(
-      apiKonfirmasiStatus: ApiStatus.loading,
-      apiKonfirmasiMessage: '',
-    ));
+    emit(
+      state.copyWith(
+        apiKonfirmasiStatus: ApiStatus.loading,
+        apiKonfirmasiMessage: '',
+      ),
+    );
 
     try {
       var tujuan = state.selectedProvider.inputTipe.filter(state.tujuan.trim());
@@ -337,16 +341,20 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
       }
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION KONFIRMASI: ${e.message}");
-      emit(state.copyWith(
-        apiKonfirmasiStatus: ApiStatus.failure,
-        apiKonfirmasiMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          apiKonfirmasiStatus: ApiStatus.failure,
+          apiKonfirmasiMessage: e.message,
+        ),
+      );
     } catch (e) {
       debugPrint("EXCEPTION KONFIRMASI: $e");
-      emit(state.copyWith(
-        apiKonfirmasiStatus: ApiStatus.failure,
-        apiKonfirmasiMessage: 'Terjadi kesalahan, silakan coba lagi',
-      ));
+      emit(
+        state.copyWith(
+          apiKonfirmasiStatus: ApiStatus.failure,
+          apiKonfirmasiMessage: 'Terjadi kesalahan, silakan coba lagi',
+        ),
+      );
     }
   }
 
@@ -408,11 +416,13 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
     if (state.selectedProvider.idprovider == 0) return;
     if (state.apiFetchProductStatus.isLoading) return;
 
-    emit(state.copyWith(
-      apiFetchProductStatus: ApiStatus.loading,
-      apiFetchProductMessage: '',
-      products: [],
-    ));
+    emit(
+      state.copyWith(
+        apiFetchProductStatus: ApiStatus.loading,
+        apiFetchProductMessage: '',
+        products: [],
+      ),
+    );
 
     try {
       final result = await _produkService.getPaketDataMemberProducts(
@@ -431,23 +441,29 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
       final data = result.data;
 
       if (data != null) {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.success,
-          products: data.productList,
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.success,
+            products: data.productList,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.failure,
-          apiFetchProductMessage: 'Data produk paket data kosong',
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.failure,
+            apiFetchProductMessage: 'Data produk paket data kosong',
+          ),
+        );
       }
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION FETCH PRODUCTS: ${e.message}");
       showWarningMessage(e.message);
-      emit(state.copyWith(
-        apiFetchProductStatus: ApiStatus.failure,
-        apiFetchProductMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          apiFetchProductStatus: ApiStatus.failure,
+          apiFetchProductMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -538,7 +554,10 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
       ),
     );
 
-    pushNamed(MemberPaketDataKonfirmasiTransaksiPage.routeName);
+    pushNamed(
+      MemberPaketDataKonfirmasiTransaksiPage.routeName,
+      arguments: this,
+    );
   }
 
   void _setTrxSebelumnyaFromResponse(BayarResponse data) {
@@ -554,11 +573,13 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
     detail.addItem(KeyValue(key: 'Status', value: data.status));
     detail.addItem(KeyValue(key: 'Waktu', value: data.waktutrx));
 
-    emit(state.copyWith(
-      adaTrxSebelumnya: true,
-      detailTrxSebelumnya: detail,
-      trxke: data.trxke,
-    ));
+    emit(
+      state.copyWith(
+        adaTrxSebelumnya: true,
+        detailTrxSebelumnya: detail,
+        trxke: data.trxke,
+      ),
+    );
   }
 
   // ============================================================
@@ -590,16 +611,18 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
   }
 
   void resetKonfirmasi() {
-    emit(state.copyWith(
-      totalPotongStok: 0,
-      detailTransaksi: DEFAULT_KEY_VALUE_RESPONSE,
-      detailPotongStok: DEFAULT_KEY_VALUE_RESPONSE,
-      apiKonfirmasiStatus: ApiStatus.initial,
-      apiKonfirmasiMessage: '',
-      adaTrxSebelumnya: false,
-      detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
-      trxke: 0,
-    ));
+    emit(
+      state.copyWith(
+        totalPotongStok: 0,
+        detailTransaksi: DEFAULT_KEY_VALUE_RESPONSE,
+        detailPotongStok: DEFAULT_KEY_VALUE_RESPONSE,
+        apiKonfirmasiStatus: ApiStatus.initial,
+        apiKonfirmasiMessage: '',
+        adaTrxSebelumnya: false,
+        detailTrxSebelumnya: DEFAULT_KEY_VALUE_RESPONSE,
+        trxke: 0,
+      ),
+    );
   }
 
   void resetTrxSebelumnya() {
@@ -651,8 +674,9 @@ class MemberPaketDataProvider extends Cubit<MemberPaketDataState> {
 
     // Validasi prefix
     final isValidPrefix = provider.prefixList.any((prefix) {
-      final maxRange =
-          tujuan.length < prefix.length ? tujuan.length : prefix.length;
+      final maxRange = tujuan.length < prefix.length
+          ? tujuan.length
+          : prefix.length;
       return prefix.startsWith(tujuan.substring(0, maxRange));
     });
 

@@ -3,7 +3,8 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/paket_tv/paket_tv_provider.dart';import 'package:dmpku/widgets/card_input_tujuan.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_tv/paket_tv_provider.dart';
+import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
@@ -25,16 +26,13 @@ class GuestPaketTvProdukPage extends StatefulWidget {
   const GuestPaketTvProdukPage({super.key});
 
   @override
-  State<GuestPaketTvProdukPage> createState() =>
-      _GuestPaketTvProdukPageState();
+  State<GuestPaketTvProdukPage> createState() => _GuestPaketTvProdukPageState();
 }
 
-class _GuestPaketTvProdukPageState
-    extends State<GuestPaketTvProdukPage> {
+class _GuestPaketTvProdukPageState extends State<GuestPaketTvProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getPaketTvProvider(context).resetProduct();
     pop();
   }
 
@@ -96,31 +94,29 @@ class _GuestPaketTvProdukPageState
               ],
             ),
           ),
-          bottomNavigationBar:
-              BlocBuilder<PaketTvProvider, PaketTvState>(
-                buildWhen: (previous, current) =>
-                    previous.selectedProduct != current.selectedProduct ||
-                    previous.tujuanHasError != current.tujuanHasError ||
-                    previous.tujuan != current.tujuan ||
-                    previous.apiFetchProductStatus !=
-                        current.apiFetchProductStatus,
-                builder: (context, state) {
-                  final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+          bottomNavigationBar: BlocBuilder<PaketTvProvider, PaketTvState>(
+            buildWhen: (previous, current) =>
+                previous.selectedProduct != current.selectedProduct ||
+                previous.tujuanHasError != current.tujuanHasError ||
+                previous.tujuan != current.tujuan ||
+                previous.apiFetchProductStatus != current.apiFetchProductStatus,
+            builder: (context, state) {
+              final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: bottomInset),
-                    child: ButtonCheckout(
-                      isDisabled:
+              return Padding(
+                padding: EdgeInsets.only(bottom: bottomInset),
+                child: ButtonCheckout(
+                  isDisabled:
                       state.selectedProduct.idproduk == 0 ||
-                          state.tujuanHasError ||
-                          state.tujuan.isEmpty ||
-                          state.apiFetchProductStatus.isLoading,
-                      selectedProduct: state.selectedProduct,
-                      onContinue: () => BelumLoginDialog.show(context),
-                    ),
-                  );
-                },
-              ),
+                      state.tujuanHasError ||
+                      state.tujuan.isEmpty ||
+                      state.apiFetchProductStatus.isLoading,
+                  selectedProduct: state.selectedProduct,
+                  onContinue: () => BelumLoginDialog.show(context),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -145,9 +141,7 @@ class _GuestPaketTvProdukPageState
             getPaketTvProvider(context).setTujuan(value);
           },
           onClear: () {
-            getPaketTvProvider(
-              context,
-            ).setTujuan('', updateController: true);
+            getPaketTvProvider(context).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -155,9 +149,7 @@ class _GuestPaketTvProdukPageState
           icon: MdiIcons.cardAccountDetails,
 
           onFavoritResult: (val) {
-            getPaketTvProvider(
-              context,
-            ).setTujuan(val, updateController: true);
+            getPaketTvProvider(context).setTujuan(val, updateController: true);
           },
           suffixWidget: CustomPopupInputTujuan(
             isContact: true,

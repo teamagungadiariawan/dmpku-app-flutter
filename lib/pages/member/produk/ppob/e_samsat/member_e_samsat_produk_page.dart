@@ -59,7 +59,9 @@ class _MemberESamsatProdukPageState extends State<MemberESamsatProdukPage> {
           ),
           body: Padding(
             padding: paddingPage,
-            child: Column(children: [_buildIdAkunCard(context), _buildPlaceholder(context)]),
+            child: Column(
+              children: [_buildIdAkunCard(context), _buildPlaceholder(context)],
+            ),
           ),
         ),
       ),
@@ -158,7 +160,8 @@ class _MemberESamsatProdukPageState extends State<MemberESamsatProdukPage> {
                       state.noMesinErrorMessage,
                       style: context.bodySmall.withColor(context.destructive),
                     ),
-                  ], Text(
+                  ],
+                  Text(
                     "NIk",
                     style: context.bodyMedium.copyWith(
                       fontWeight: FontWeight.w600,
@@ -248,7 +251,10 @@ class _MemberESamsatProdukPageState extends State<MemberESamsatProdukPage> {
     );
   }
 
-  Widget _buildTextFieldNoMesin(BuildContext context, MemberESamsatState state) {
+  Widget _buildTextFieldNoMesin(
+    BuildContext context,
+    MemberESamsatState state,
+  ) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -375,7 +381,7 @@ class _MemberESamsatProdukPageState extends State<MemberESamsatProdukPage> {
   Widget _buildCheckoutButton(BuildContext context) {
     return BlocBuilder<MemberESamsatProvider, MemberESamsatState>(
       buildWhen: (prev, curr) =>
-      prev.tujuan != curr.tujuan ||
+          prev.tujuan != curr.tujuan ||
           prev.tujuanHasError != curr.tujuanHasError ||
           prev.apiCekTagihanStatus != curr.apiCekTagihanStatus ||
           prev.selectedProduct != curr.selectedProduct,
@@ -391,9 +397,9 @@ class _MemberESamsatProdukPageState extends State<MemberESamsatProdukPage> {
           },
           size: ButtonSize.large,
           state:
-          (state.tujuanHasError ||
-              state.tujuan.isEmpty ||
-              state.selectedProduct.idproduk == 0)
+              (state.tujuanHasError ||
+                  state.tujuan.isEmpty ||
+                  state.selectedProduct.idproduk == 0)
               ? ButtonState.disabled
               : ButtonState.enabled,
         );

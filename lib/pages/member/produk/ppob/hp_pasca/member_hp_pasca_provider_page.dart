@@ -31,13 +31,11 @@ class MemberHpPascaProviderPage extends StatefulWidget {
       _MemberHpPascaProviderPageState();
 }
 
-class _MemberHpPascaProviderPageState
-    extends State<MemberHpPascaProviderPage> {
+class _MemberHpPascaProviderPageState extends State<MemberHpPascaProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getMemberHpPascaProvider(context).resetState();
     super.dispose();
   }
 
@@ -46,14 +44,13 @@ class _MemberHpPascaProviderPageState
   }
 
   void closePage() {
-    getMemberHpPascaProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -105,7 +102,7 @@ class _MemberHpPascaProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<MemberHpPascaProvider, MemberHpPascaState>(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -121,10 +118,11 @@ class _MemberHpPascaProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberHpPascaProdukPage.routeName);
-                getMemberHpPascaProvider(
-                  context,
-                ).setSelectedProduct(provider);
+                pushNamed(
+                  MemberHpPascaProdukPage.routeName,
+                  arguments: getMemberHpPascaProvider(context),
+                );
+                getMemberHpPascaProvider(context).setSelectedProduct(provider);
               },
             );
           },
@@ -137,7 +135,7 @@ class _MemberHpPascaProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<MemberHpPascaProvider, MemberHpPascaState>(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -154,25 +152,23 @@ class _MemberHpPascaProviderPageState
               Expanded(
                 child: TextField(
                   controller: state.searchProductController,
-                  onChanged: getMemberHpPascaProvider(
-                    context,
-                  ).setSearchProduct,
+                  onChanged: getMemberHpPascaProvider(context).setSearchProduct,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberHpPascaProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberHpPascaProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

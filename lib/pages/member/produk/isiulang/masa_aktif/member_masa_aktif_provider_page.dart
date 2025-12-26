@@ -35,7 +35,6 @@ class _MemberMasaAktifProviderPageState
 
   @override
   void dispose() {
-    getMemberMasaAktifProvider(context).resetState();
     super.dispose();
   }
 
@@ -44,7 +43,6 @@ class _MemberMasaAktifProviderPageState
   }
 
   void closePage() {
-    getMemberMasaAktifProvider(context).resetState();
     pop();
   }
 
@@ -56,8 +54,9 @@ class _MemberMasaAktifProviderPageState
 
     return providers.where((provider) {
       return provider.prefixList.any((prefix) {
-        final maxRange =
-            tujuan.length < prefix.length ? tujuan.length : prefix.length;
+        final maxRange = tujuan.length < prefix.length
+            ? tujuan.length
+            : prefix.length;
         return prefix.startsWith(tujuan.substring(0, maxRange));
       });
     }).toList();
@@ -166,9 +165,13 @@ class _MemberMasaAktifProviderPageState
                   shakeKey.currentState?.shake();
                   return;
                 } else {
-                  pushNamed(MemberMasaAktifProdukPage.routeName);
-                  getMemberMasaAktifProvider(context)
-                      .setSelectedProvider(provider);
+                  pushNamed(
+                    MemberMasaAktifProdukPage.routeName,
+                    arguments: getMemberMasaAktifProvider(context),
+                  );
+                  getMemberMasaAktifProvider(
+                    context,
+                  ).setSelectedProvider(provider);
                 }
               },
             );

@@ -35,7 +35,6 @@ class _GuestCekStatusVoucherProviderPageState
 
   @override
   void dispose() {
-    getCekStatusVoucherProvider(context).resetState();
     super.dispose();
   }
 
@@ -44,14 +43,13 @@ class _GuestCekStatusVoucherProviderPageState
   }
 
   void closePage() {
-    getCekStatusVoucherProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -103,7 +101,7 @@ class _GuestCekStatusVoucherProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<CekStatusVoucherProvider, CekStatusVoucherState>(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -119,7 +117,10 @@ class _GuestCekStatusVoucherProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(GuestCekStatusVoucherProdukPage.routeName);
+                pushNamed(
+                  GuestCekStatusVoucherProdukPage.routeName,
+                  arguments: getCekStatusVoucherProvider(context),
+                );
                 getCekStatusVoucherProvider(
                   context,
                 ).setSelectedProduct(provider);
@@ -135,7 +136,7 @@ class _GuestCekStatusVoucherProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<CekStatusVoucherProvider, CekStatusVoucherState>(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -160,17 +161,17 @@ class _GuestCekStatusVoucherProviderPageState
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getCekStatusVoucherProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getCekStatusVoucherProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

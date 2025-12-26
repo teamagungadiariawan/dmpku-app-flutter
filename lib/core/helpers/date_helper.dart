@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 extension DateTimeExtension on DateTime {
   int get unixTimestamp => toUtc().millisecondsSinceEpoch ~/ 1000;
 
@@ -126,7 +124,6 @@ class DateHelper {
         '${dt.second.toString().padLeft(2, '0')}';
   }
 
-
   // Format DateTime ke string "yyyy-MM-dd"
   static String formatDate(DateTime dt) {
     return '${dt.year}-'
@@ -138,17 +135,45 @@ class DateHelper {
 
   // Daftar nama bulan pendek (Sesuaikan kalau mau Inggris: Jan, Feb, Mar...)
   static const List<String> _shortMonths = [
-    '', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-    'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'
+    '',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Agt',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des',
   ];
 
   static const List<String> _fullMonths = [
-    '', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    '',
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
   ];
 
   static const List<String> _fullDays = [
-    'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+    'Minggu',
+    'Senin',
+    'Selasa',
+    'Rabu',
+    'Kamis',
+    'Jumat',
+    'Sabtu',
   ];
 
   static String _getShortMonth(int month) {
@@ -207,5 +232,4 @@ class DateHelper {
     return '${dt.hour.toString().padLeft(2, '0')}:'
         '${dt.minute.toString().padLeft(2, '0')}';
   }
-
 }

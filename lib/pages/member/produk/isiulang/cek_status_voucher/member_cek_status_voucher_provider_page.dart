@@ -20,7 +20,8 @@ import 'package:gap/gap.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MemberCekStatusVoucherProviderPage extends StatefulWidget {
-  static const routeName = '/member/produk/isiulang/cek-status-voucher/provider';
+  static const routeName =
+      '/member/produk/isiulang/cek-status-voucher/provider';
 
   const MemberCekStatusVoucherProviderPage({super.key});
 
@@ -35,7 +36,6 @@ class _MemberCekStatusVoucherProviderPageState
 
   @override
   void dispose() {
-    getMemberCekStatusVoucherProvider(context).resetState();
     super.dispose();
   }
 
@@ -44,14 +44,13 @@ class _MemberCekStatusVoucherProviderPageState
   }
 
   void closePage() {
-    getMemberCekStatusVoucherProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -101,9 +100,12 @@ class _MemberCekStatusVoucherProviderPageState
   }
 
   Widget _buildListProvider(BuildContext context) {
-    return BlocBuilder<MemberCekStatusVoucherProvider, MemberCekStatusVoucherState>(
+    return BlocBuilder<
+      MemberCekStatusVoucherProvider,
+      MemberCekStatusVoucherState
+    >(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -119,7 +121,10 @@ class _MemberCekStatusVoucherProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberCekStatusVoucherProdukPage.routeName);
+                pushNamed(
+                  MemberCekStatusVoucherProdukPage.routeName,
+                  arguments: getMemberCekStatusVoucherProvider(context),
+                );
                 getMemberCekStatusVoucherProvider(
                   context,
                 ).setSelectedProduct(provider);
@@ -133,9 +138,12 @@ class _MemberCekStatusVoucherProviderPageState
   }
 
   Widget _buildSearchField(BuildContext context) {
-    return BlocBuilder<MemberCekStatusVoucherProvider, MemberCekStatusVoucherState>(
+    return BlocBuilder<
+      MemberCekStatusVoucherProvider,
+      MemberCekStatusVoucherState
+    >(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -160,17 +168,17 @@ class _MemberCekStatusVoucherProviderPageState
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberCekStatusVoucherProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberCekStatusVoucherProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

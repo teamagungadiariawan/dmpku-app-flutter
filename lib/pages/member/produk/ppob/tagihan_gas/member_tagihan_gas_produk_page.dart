@@ -29,10 +29,12 @@ class MemberTagihanGasProdukPage extends StatefulWidget {
       _MemberTagihanGasProdukPageState();
 }
 
-class _MemberTagihanGasProdukPageState extends State<MemberTagihanGasProdukPage> {
+class _MemberTagihanGasProdukPageState
+    extends State<MemberTagihanGasProdukPage> {
   final _shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
-  MemberTagihanGasProvider get _provider => getMemberTagihanGasProvider(context);
+  MemberTagihanGasProvider get _provider =>
+      getMemberTagihanGasProvider(context);
 
   void closePage() {
     _provider.resetProduct();
@@ -56,7 +58,9 @@ class _MemberTagihanGasProdukPageState extends State<MemberTagihanGasProdukPage>
           ),
           body: Padding(
             padding: paddingPage,
-            child: Column(children: [_buildIdAkunCard(context), _buildPlaceholder(context)]),
+            child: Column(
+              children: [_buildIdAkunCard(context), _buildPlaceholder(context)],
+            ),
           ),
         ),
       ),
@@ -150,7 +154,10 @@ class _MemberTagihanGasProdukPageState extends State<MemberTagihanGasProdukPage>
     );
   }
 
-  Widget _buildTextFieldTujuan(BuildContext context, MemberTagihanGasState state) {
+  Widget _buildTextFieldTujuan(
+    BuildContext context,
+    MemberTagihanGasState state,
+  ) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -216,7 +223,7 @@ class _MemberTagihanGasProdukPageState extends State<MemberTagihanGasProdukPage>
   Widget _buildCheckoutButton(BuildContext context) {
     return BlocBuilder<MemberTagihanGasProvider, MemberTagihanGasState>(
       buildWhen: (prev, curr) =>
-      prev.tujuan != curr.tujuan ||
+          prev.tujuan != curr.tujuan ||
           prev.tujuanHasError != curr.tujuanHasError ||
           prev.apiCekTagihanStatus != curr.apiCekTagihanStatus ||
           prev.selectedProduct != curr.selectedProduct,
@@ -232,9 +239,9 @@ class _MemberTagihanGasProdukPageState extends State<MemberTagihanGasProdukPage>
           },
           size: ButtonSize.large,
           state:
-          (state.tujuanHasError ||
-              state.tujuan.isEmpty ||
-              state.selectedProduct.idproduk == 0)
+              (state.tujuanHasError ||
+                  state.tujuan.isEmpty ||
+                  state.selectedProduct.idproduk == 0)
               ? ButtonState.disabled
               : ButtonState.enabled,
         );

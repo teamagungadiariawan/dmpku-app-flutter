@@ -58,7 +58,9 @@ class _MemberBpjsKesehatanProdukPageState
           ),
           body: Padding(
             padding: paddingPage,
-            child: Column(children: [_buildIdAkunCard(context), _buildPlaceholder(context)]),
+            child: Column(
+              children: [_buildIdAkunCard(context), _buildPlaceholder(context)],
+            ),
           ),
         ),
       ),

@@ -35,7 +35,6 @@ class _GuestInfoKartuProviderPageState
 
   @override
   void dispose() {
-    getInfoKartuProvider(context).resetState();
     super.dispose();
   }
 
@@ -44,7 +43,6 @@ class _GuestInfoKartuProviderPageState
   }
 
   void closePage() {
-    getInfoKartuProvider(context).resetState();
     pop();
   }
 
@@ -119,7 +117,10 @@ class _GuestInfoKartuProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(GuestInfoKartuProdukPage.routeName);
+                pushNamed(
+                  GuestInfoKartuProdukPage.routeName,
+                  arguments: getInfoKartuProvider(context),
+                );
                 getInfoKartuProvider(context).setSelectedProduct(provider);
               },
             );

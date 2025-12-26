@@ -5,7 +5,8 @@ import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/model/provider_response.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/guest_paket_nelpon_produk_page.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';import 'package:dmpku/widgets/card_input_tujuan.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_nelpon/paket_nelpon_provider.dart';
+import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/produk/custom_popup_input_tujuan.dart';
 import 'package:dmpku/widgets/produk/card_provider.dart';
@@ -34,7 +35,6 @@ class _GuestPaketNelponProviderPageState
 
   @override
   void dispose() {
-    getPaketNelponProvider(context).resetState();
     super.dispose();
   }
 
@@ -43,7 +43,6 @@ class _GuestPaketNelponProviderPageState
   }
 
   void closePage() {
-    getPaketNelponProvider(context).resetState();
     pop();
   }
 
@@ -67,7 +66,7 @@ class _GuestPaketNelponProviderPageState
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child:  WillPopScope(
+      child: WillPopScope(
         onWillPop: () async {
           debugPrint("WillPopScope: onWillPop");
           closePage();
@@ -114,7 +113,9 @@ class _GuestPaketNelponProviderPageState
             getPaketNelponProvider(context).setTujuan(value);
           },
           onClear: () {
-            getPaketNelponProvider(context).setTujuan('', updateController: true);
+            getPaketNelponProvider(
+              context,
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -123,7 +124,9 @@ class _GuestPaketNelponProviderPageState
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(
             onResult: (val) {
-              getPaketNelponProvider(context).setTujuan(val, updateController: true);
+              getPaketNelponProvider(
+                context,
+              ).setTujuan(val, updateController: true);
             },
             isTempel: true,
             isVoice: true,
@@ -142,10 +145,7 @@ class _GuestPaketNelponProviderPageState
           previous.tujuan != current.tujuan ||
           previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
-        var providers = _filterProviders(
-          state.providers,
-          state.tujuan,
-        );
+        var providers = _filterProviders(state.providers, state.tujuan);
         return RefreshableList(
           loadingWidget: CardProviderListShimmer(itemCount: 6),
           isLoading: state.apiFetchProviderStatus.isLoading,
@@ -167,7 +167,10 @@ class _GuestPaketNelponProviderPageState
                   shakeKey.currentState?.shake();
                   return;
                 } else {
-                  pushNamed(GuestPaketNelponProdukPage.routeName);
+                  pushNamed(
+                    GuestPaketNelponProdukPage.routeName,
+                    arguments: getPaketNelponProvider(context),
+                  );
                   getPaketNelponProvider(context).setSelectedProvider(provider);
                 }
               },

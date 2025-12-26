@@ -35,7 +35,6 @@ class _GuestPaketDataProviderPageState
 
   @override
   void dispose() {
-    getPaketDataProvider(context).resetState();
     super.dispose();
   }
 
@@ -44,7 +43,6 @@ class _GuestPaketDataProviderPageState
   }
 
   void closePage() {
-    getPaketDataProvider(context).resetState();
     pop();
   }
 
@@ -124,7 +122,9 @@ class _GuestPaketDataProviderPageState
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(
             onResult: (val) {
-              getPaketDataProvider(context).setTujuan(val, updateController: true);
+              getPaketDataProvider(
+                context,
+              ).setTujuan(val, updateController: true);
             },
             isTempel: true,
             isVoice: true,
@@ -163,7 +163,10 @@ class _GuestPaketDataProviderPageState
                   shakeKey.currentState?.shake();
                   return;
                 } else {
-                  pushNamed(GuestPaketDataProdukPage.routeName);
+                  pushNamed(
+                    GuestPaketDataProdukPage.routeName,
+                    arguments: getPaketDataProvider(context),
+                  );
                   getPaketDataProvider(context).setSelectedProvider(provider);
                 }
               },

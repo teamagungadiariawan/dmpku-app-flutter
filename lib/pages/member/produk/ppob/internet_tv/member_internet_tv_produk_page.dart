@@ -29,10 +29,12 @@ class MemberInternetTvProdukPage extends StatefulWidget {
       _MemberInternetTvProdukPageState();
 }
 
-class _MemberInternetTvProdukPageState extends State<MemberInternetTvProdukPage> {
+class _MemberInternetTvProdukPageState
+    extends State<MemberInternetTvProdukPage> {
   final _shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
-  MemberInternetTvProvider get _provider => getMemberInternetTvProvider(context);
+  MemberInternetTvProvider get _provider =>
+      getMemberInternetTvProvider(context);
 
   void closePage() {
     _provider.resetProduct();
@@ -56,7 +58,9 @@ class _MemberInternetTvProdukPageState extends State<MemberInternetTvProdukPage>
           ),
           body: Padding(
             padding: paddingPage,
-            child: Column(children: [_buildIdAkunCard(context), _buildPlaceholder(context)]),
+            child: Column(
+              children: [_buildIdAkunCard(context), _buildPlaceholder(context)],
+            ),
           ),
         ),
       ),
@@ -102,7 +106,7 @@ class _MemberInternetTvProdukPageState extends State<MemberInternetTvProdukPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                   "ID Pelanggan",
+                  "ID Pelanggan",
                   style: context.bodyMedium.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -150,7 +154,10 @@ class _MemberInternetTvProdukPageState extends State<MemberInternetTvProdukPage>
     );
   }
 
-  Widget _buildTextFieldTujuan(BuildContext context, MemberInternetTvState state) {
+  Widget _buildTextFieldTujuan(
+    BuildContext context,
+    MemberInternetTvState state,
+  ) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -216,7 +223,7 @@ class _MemberInternetTvProdukPageState extends State<MemberInternetTvProdukPage>
   Widget _buildCheckoutButton(BuildContext context) {
     return BlocBuilder<MemberInternetTvProvider, MemberInternetTvState>(
       buildWhen: (prev, curr) =>
-      prev.tujuan != curr.tujuan ||
+          prev.tujuan != curr.tujuan ||
           prev.tujuanHasError != curr.tujuanHasError ||
           prev.apiCekTagihanStatus != curr.apiCekTagihanStatus ||
           prev.selectedProduct != curr.selectedProduct,
@@ -232,9 +239,9 @@ class _MemberInternetTvProdukPageState extends State<MemberInternetTvProdukPage>
           },
           size: ButtonSize.large,
           state:
-          (state.tujuanHasError ||
-              state.tujuan.isEmpty ||
-              state.selectedProduct.idproduk == 0)
+              (state.tujuanHasError ||
+                  state.tujuan.isEmpty ||
+                  state.selectedProduct.idproduk == 0)
               ? ButtonState.disabled
               : ButtonState.enabled,
         );

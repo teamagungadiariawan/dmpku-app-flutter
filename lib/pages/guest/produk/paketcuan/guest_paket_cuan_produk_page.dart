@@ -35,7 +35,6 @@ class _GuestPaketCuanProdukPageState extends State<GuestPaketCuanProdukPage> {
 
   @override
   void dispose() {
-    getPaketCuanProvider(context).resetProductState();
     super.dispose();
   }
 
@@ -44,7 +43,6 @@ class _GuestPaketCuanProdukPageState extends State<GuestPaketCuanProdukPage> {
   }
 
   void closePage() {
-    getPaketCuanProvider(context).resetProductState();
     pop();
   }
 

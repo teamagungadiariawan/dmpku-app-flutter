@@ -32,7 +32,6 @@ class _GuestPaketCuanSubProviderPageState
 
   @override
   void dispose() {
-    getPaketCuanProvider(context).resetSubProviderState();
     super.dispose();
   }
 
@@ -41,7 +40,6 @@ class _GuestPaketCuanSubProviderPageState
   }
 
   void closePage() {
-    getPaketCuanProvider(context).resetSubProviderState();
     pop();
   }
 
@@ -144,7 +142,10 @@ class _GuestPaketCuanSubProviderPageState
                   return;
                 } else {
                   getPaketCuanProvider(context).setSelectedSubProvider(product);
-                  pushNamed(GuestPaketCuanProdukPage.routeName);
+                  pushNamed(
+                    GuestPaketCuanProdukPage.routeName,
+                    arguments: getPaketCuanProvider(context),
+                  );
                 }
               },
             );

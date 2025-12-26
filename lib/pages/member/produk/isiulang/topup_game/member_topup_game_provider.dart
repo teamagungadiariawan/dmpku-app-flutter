@@ -199,41 +199,41 @@ class MemberTopupGameState extends Equatable {
 
   @override
   List<Object?> get props => [
-        apiFetchProviderStatus,
-        apiFetchProviderMessage,
-        topupGameProviders,
-        voucherGameProviders,
-        selectedProvider,
-        searchProvider,
-        searchProviderController,
-        apiFetchProductStatus,
-        apiFetchProductMessage,
-        products,
-        selectedProduct,
-        sortProduct,
-        searchProduct,
-        searchProductController,
-        tujuan,
-        tujuanFocusNode,
-        tujuanController,
-        tujuanHasError,
-        tujuanErrorMessage,
-        isCekAkun,
-        titleForm,
-        hintForm,
-        apiCekAkunStatus,
-        apiCekAkunMessage,
-        cekAkunResult,
-        kodeProdukCek,
-        totalPotongStok,
-        detailTransaksi,
-        detailPotongStok,
-        apiKonfirmasiStatus,
-        apiKonfirmasiMessage,
-        adaTrxSebelumnya,
-        detailTrxSebelumnya,
-        trxke,
-      ];
+    apiFetchProviderStatus,
+    apiFetchProviderMessage,
+    topupGameProviders,
+    voucherGameProviders,
+    selectedProvider,
+    searchProvider,
+    searchProviderController,
+    apiFetchProductStatus,
+    apiFetchProductMessage,
+    products,
+    selectedProduct,
+    sortProduct,
+    searchProduct,
+    searchProductController,
+    tujuan,
+    tujuanFocusNode,
+    tujuanController,
+    tujuanHasError,
+    tujuanErrorMessage,
+    isCekAkun,
+    titleForm,
+    hintForm,
+    apiCekAkunStatus,
+    apiCekAkunMessage,
+    cekAkunResult,
+    kodeProdukCek,
+    totalPotongStok,
+    detailTransaksi,
+    detailPotongStok,
+    apiKonfirmasiStatus,
+    apiKonfirmasiMessage,
+    adaTrxSebelumnya,
+    detailTrxSebelumnya,
+    trxke,
+  ];
 }
 
 // ============================================================
@@ -243,14 +243,14 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
   final ProdukService _produkService = ProdukService();
 
   MemberTopupGameProvider()
-      : super(
-          MemberTopupGameState(
-            tujuanFocusNode: FocusNode(),
-            tujuanController: TextEditingController(),
-            searchProviderController: TextEditingController(),
-            searchProductController: TextEditingController(),
-          ),
-        );
+    : super(
+        MemberTopupGameState(
+          tujuanFocusNode: FocusNode(),
+          tujuanController: TextEditingController(),
+          searchProviderController: TextEditingController(),
+          searchProductController: TextEditingController(),
+        ),
+      );
 
   @override
   Future<void> close() {
@@ -684,7 +684,10 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
       ),
     );
 
-    pushNamed(MemberTopupGameKonfirmasiTransaksiPage.routeName);
+    pushNamed(
+      MemberTopupGameKonfirmasiTransaksiPage.routeName,
+      arguments: this,
+    );
   }
 
   void _setTrxSebelumnyaFromResponse(BayarResponse data) {
@@ -817,8 +820,9 @@ class MemberTopupGameProvider extends Cubit<MemberTopupGameState> {
 
     // Validasi prefix
     final isValidPrefix = provider.prefixList.any((prefix) {
-      final maxRange =
-          tujuan.length < prefix.length ? tujuan.length : prefix.length;
+      final maxRange = tujuan.length < prefix.length
+          ? tujuan.length
+          : prefix.length;
       return prefix.startsWith(tujuan.substring(0, maxRange));
     });
 

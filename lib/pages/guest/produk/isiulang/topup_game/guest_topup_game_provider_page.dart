@@ -78,7 +78,6 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
   }
 
   void closePage() {
-    getTopupGameProvider(context).resetState();
     pop();
   }
 
@@ -220,7 +219,10 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
               imageUrl: provider.imgprovider,
               onPressed: () {
                 getTopupGameProvider(context).setSelectedProvider(provider);
-                pushNamed(GuestTopupGameProdukPage.routeName);
+                pushNamed(
+                  GuestTopupGameProdukPage.routeName,
+                  arguments: getTopupGameProvider(context),
+                );
               },
             );
           },
@@ -263,7 +265,10 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
                   titleForm: 'No. Tujuan',
                   hintForm: 'Contoh : 081XXXXXXXXX',
                 );
-                pushNamed(GuestTopupGameProdukPage.routeName);
+                pushNamed(
+                  GuestTopupGameProdukPage.routeName,
+                  arguments: getTopupGameProvider(context),
+                );
               },
             );
           },
@@ -292,17 +297,17 @@ class _GuestTopupGameProviderPageState extends State<GuestTopupGameProviderPage>
               Expanded(
                 child: TextField(
                   controller: state.searchProviderController,
-                  onChanged: (val) => getTopupGameProvider(context).setSearchProvider(val),
+                  onChanged: (val) =>
+                      getTopupGameProvider(context).setSearchProvider(val),
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Produk',
                     suffixIcon: state.searchProvider.isNotEmpty
                         ? InkWell(
                             onTap: () {
-                              getTopupGameProvider(context).setSearchProvider(
-                                '',
-                                updateController: true,
-                              );
+                              getTopupGameProvider(
+                                context,
+                              ).setSearchProvider('', updateController: true);
                             },
                             child: Icon(
                               MdiIcons.close,

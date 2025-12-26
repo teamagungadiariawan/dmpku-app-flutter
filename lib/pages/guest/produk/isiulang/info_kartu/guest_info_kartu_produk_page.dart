@@ -26,7 +26,6 @@ class _GuestInfoKartuProdukPageState extends State<GuestInfoKartuProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getInfoKartuProvider(context).resetProduct();
     pop();
   }
 

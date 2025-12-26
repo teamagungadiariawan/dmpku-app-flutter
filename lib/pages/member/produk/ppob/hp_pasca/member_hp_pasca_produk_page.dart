@@ -56,7 +56,9 @@ class _MemberHpPascaProdukPageState extends State<MemberHpPascaProdukPage> {
           ),
           body: Padding(
             padding: paddingPage,
-            child: Column(children: [_buildIdAkunCard(context), _buildPlaceholder(context)]),
+            child: Column(
+              children: [_buildIdAkunCard(context), _buildPlaceholder(context)],
+            ),
           ),
         ),
       ),
@@ -216,7 +218,7 @@ class _MemberHpPascaProdukPageState extends State<MemberHpPascaProdukPage> {
   Widget _buildCheckoutButton(BuildContext context) {
     return BlocBuilder<MemberHpPascaProvider, MemberHpPascaState>(
       buildWhen: (prev, curr) =>
-      prev.tujuan != curr.tujuan ||
+          prev.tujuan != curr.tujuan ||
           prev.tujuanHasError != curr.tujuanHasError ||
           prev.apiCekTagihanStatus != curr.apiCekTagihanStatus ||
           prev.selectedProduct != curr.selectedProduct,
@@ -232,9 +234,9 @@ class _MemberHpPascaProdukPageState extends State<MemberHpPascaProdukPage> {
           },
           size: ButtonSize.large,
           state:
-          (state.tujuanHasError ||
-              state.tujuan.isEmpty ||
-              state.selectedProduct.idproduk == 0)
+              (state.tujuanHasError ||
+                  state.tujuan.isEmpty ||
+                  state.selectedProduct.idproduk == 0)
               ? ButtonState.disabled
               : ButtonState.enabled,
         );

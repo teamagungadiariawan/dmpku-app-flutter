@@ -34,7 +34,6 @@ class _GuestVoucherDigitalProviderPageState
 
   @override
   void dispose() {
-    getVoucherDigitalProvider(context).resetState();
     super.dispose();
   }
 
@@ -43,14 +42,13 @@ class _GuestVoucherDigitalProviderPageState
   }
 
   void closePage() {
-    getVoucherDigitalProvider(context).resetState();
     pop();
   }
 
   List<ProviderModel> _filterProviders(
-      List<ProviderModel> providers,
-      String search,
-      ) {
+    List<ProviderModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -102,7 +100,7 @@ class _GuestVoucherDigitalProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<VoucherDigitalProvider, VoucherDigitalState>(
       buildWhen: (previous, current) =>
-      previous.providers != current.providers ||
+          previous.providers != current.providers ||
           previous.searchProvider != current.searchProvider ||
           previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
@@ -118,7 +116,10 @@ class _GuestVoucherDigitalProviderPageState
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                pushNamed(GuestVoucherDigitalProdukPage.routeName);
+                pushNamed(
+                  GuestVoucherDigitalProdukPage.routeName,
+                  arguments: getVoucherDigitalProvider(context),
+                );
                 getVoucherDigitalProvider(
                   context,
                 ).setSelectedProvider(provider);
@@ -136,7 +137,7 @@ class _GuestVoucherDigitalProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<VoucherDigitalProvider, VoucherDigitalState>(
       buildWhen: (previous, current) =>
-      previous.searchProvider != current.searchProvider,
+          previous.searchProvider != current.searchProvider,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -161,17 +162,17 @@ class _GuestVoucherDigitalProviderPageState
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProvider.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getVoucherDigitalProvider(
-                          context,
-                        ).setSearchProvider('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getVoucherDigitalProvider(
+                                context,
+                              ).setSearchProvider('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

@@ -38,7 +38,6 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getTopupGameProvider(context).resetProduct();
     pop();
   }
 
@@ -231,7 +230,6 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
               ),
               const Gap(4),
             ],
-
           ],
         );
       },

@@ -35,7 +35,6 @@ class _MemberPaketCuanProdukPageState extends State<MemberPaketCuanProdukPage> {
 
   @override
   void dispose() {
-    getMemberPaketCuanProvider(context).resetProductState();
     super.dispose();
   }
 
@@ -44,7 +43,6 @@ class _MemberPaketCuanProdukPageState extends State<MemberPaketCuanProdukPage> {
   }
 
   void closePage() {
-    getMemberPaketCuanProvider(context).resetProductState();
     pop();
   }
 
@@ -105,35 +103,40 @@ class _MemberPaketCuanProdukPageState extends State<MemberPaketCuanProdukPage> {
               ],
             ),
           ),
-          bottomNavigationBar: BlocBuilder<MemberPaketCuanProvider, MemberPaketCuanState>(
-            buildWhen: (previous, current) =>
-                previous.selectedProduct != current.selectedProduct ||
-                previous.tujuanHasError != current.tujuanHasError ||
-                previous.tujuan != current.tujuan ||
-                previous.apiFetchProductStatus != current.apiFetchProductStatus,
-            builder: (context, state) {
-              var prod = DEFAULT_PRODUCT.copyWith(
-                idproduk: state.selectedProduct.kodepaket != '' ? 1 : 0,
-                namaproduk: state.selectedProduct.namapaket,
-                hargaproduk: state.selectedProduct.hargapaket,
-              );
+          bottomNavigationBar:
+              BlocBuilder<MemberPaketCuanProvider, MemberPaketCuanState>(
+                buildWhen: (previous, current) =>
+                    previous.selectedProduct != current.selectedProduct ||
+                    previous.tujuanHasError != current.tujuanHasError ||
+                    previous.tujuan != current.tujuan ||
+                    previous.apiFetchProductStatus !=
+                        current.apiFetchProductStatus,
+                builder: (context, state) {
+                  var prod = DEFAULT_PRODUCT.copyWith(
+                    idproduk: state.selectedProduct.kodepaket != '' ? 1 : 0,
+                    namaproduk: state.selectedProduct.namapaket,
+                    hargaproduk: state.selectedProduct.hargapaket,
+                  );
 
-              final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+                  final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-              return Padding(
-                padding: EdgeInsets.only(bottom: bottomInset),
-                child: ButtonCheckout(
-                  isDisabled:
-                      prod.idproduk == 0 ||
-                      state.tujuanHasError ||
-                      state.tujuan.isEmpty ||
-                      state.apiFetchProductStatus.isLoading,
-                  selectedProduct: prod,
-                  onContinue: () => pushNamed(MemberPaketCuanKonfirmasiTransaksiPage.routeName),
-                ),
-              );
-            },
-          ),
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: bottomInset),
+                    child: ButtonCheckout(
+                      isDisabled:
+                          prod.idproduk == 0 ||
+                          state.tujuanHasError ||
+                          state.tujuan.isEmpty ||
+                          state.apiFetchProductStatus.isLoading,
+                      selectedProduct: prod,
+                      onContinue: () => pushNamed(
+                        MemberPaketCuanKonfirmasiTransaksiPage.routeName,
+                        arguments: getMemberPaketCuanProvider(context),
+                      ),
+                    ),
+                  );
+                },
+              ),
         ),
       ),
     );
@@ -157,7 +160,9 @@ class _MemberPaketCuanProdukPageState extends State<MemberPaketCuanProdukPage> {
             getMemberPaketCuanProvider(context).setTujuan(value);
           },
           onClear: () {
-            getMemberPaketCuanProvider(context).setTujuan('', updateController: true);
+            getMemberPaketCuanProvider(
+              context,
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,

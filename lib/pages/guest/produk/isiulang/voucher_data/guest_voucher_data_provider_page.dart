@@ -34,7 +34,6 @@ class _GuestVoucherDataProviderPageState
 
   @override
   void dispose() {
-    getVoucherDataProvider(context).resetState();
     super.dispose();
   }
 
@@ -43,14 +42,13 @@ class _GuestVoucherDataProviderPageState
   }
 
   void closePage() {
-    getVoucherDataProvider(context).resetState();
     pop();
   }
 
   List<ProviderModel> _filterProviders(
-      List<ProviderModel> providers,
-      String search,
-      ) {
+    List<ProviderModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -102,7 +100,7 @@ class _GuestVoucherDataProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<VoucherDataProvider, VoucherDataState>(
       buildWhen: (previous, current) =>
-      previous.providers != current.providers ||
+          previous.providers != current.providers ||
           previous.searchProvider != current.searchProvider ||
           previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
@@ -118,10 +116,11 @@ class _GuestVoucherDataProviderPageState
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                pushNamed(GuestVoucherDataProdukPage.routeName);
-                getVoucherDataProvider(
-                  context,
-                ).setSelectedProvider(provider);
+                pushNamed(
+                  GuestVoucherDataProdukPage.routeName,
+                  arguments: getVoucherDataProvider(context),
+                );
+                getVoucherDataProvider(context).setSelectedProvider(provider);
               },
             );
           },
@@ -136,7 +135,7 @@ class _GuestVoucherDataProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<VoucherDataProvider, VoucherDataState>(
       buildWhen: (previous, current) =>
-      previous.searchProvider != current.searchProvider,
+          previous.searchProvider != current.searchProvider,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -153,25 +152,23 @@ class _GuestVoucherDataProviderPageState
               Expanded(
                 child: TextField(
                   controller: state.searchProviderController,
-                  onChanged: getVoucherDataProvider(
-                    context,
-                  ).setSearchProvider,
+                  onChanged: getVoucherDataProvider(context).setSearchProvider,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProvider.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getVoucherDataProvider(
-                          context,
-                        ).setSearchProvider('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getVoucherDataProvider(
+                                context,
+                              ).setSearchProvider('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

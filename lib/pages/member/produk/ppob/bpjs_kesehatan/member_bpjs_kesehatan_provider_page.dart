@@ -37,7 +37,6 @@ class _MemberBpjsKesehatanProviderPageState
 
   @override
   void dispose() {
-    getMemberBpjsKesehatanProvider(context).resetState();
     super.dispose();
   }
 
@@ -46,14 +45,13 @@ class _MemberBpjsKesehatanProviderPageState
   }
 
   void closePage() {
-    getMemberBpjsKesehatanProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -105,7 +103,7 @@ class _MemberBpjsKesehatanProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<MemberBpjsKesehatanProvider, MemberBpjsKesehatanState>(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -121,7 +119,10 @@ class _MemberBpjsKesehatanProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberBpjsKesehatanProdukPage.routeName);
+                pushNamed(
+                  MemberBpjsKesehatanProdukPage.routeName,
+                  arguments: getMemberBpjsKesehatanProvider(context),
+                );
                 getMemberBpjsKesehatanProvider(
                   context,
                 ).setSelectedProduct(provider);
@@ -137,7 +138,7 @@ class _MemberBpjsKesehatanProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<MemberBpjsKesehatanProvider, MemberBpjsKesehatanState>(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -162,17 +163,17 @@ class _MemberBpjsKesehatanProviderPageState
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberBpjsKesehatanProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberBpjsKesehatanProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

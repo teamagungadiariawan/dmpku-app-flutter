@@ -31,13 +31,11 @@ class MemberBpjsTknProviderPage extends StatefulWidget {
       _MemberBpjsTknProviderPageState();
 }
 
-class _MemberBpjsTknProviderPageState
-    extends State<MemberBpjsTknProviderPage> {
+class _MemberBpjsTknProviderPageState extends State<MemberBpjsTknProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getMemberBpjsTknProvider(context).resetState();
     super.dispose();
   }
 
@@ -46,14 +44,13 @@ class _MemberBpjsTknProviderPageState
   }
 
   void closePage() {
-    getMemberBpjsTknProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -105,7 +102,7 @@ class _MemberBpjsTknProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<MemberBpjsTknProvider, MemberBpjsTknState>(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -121,10 +118,11 @@ class _MemberBpjsTknProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberBpjsTknProdukPage.routeName);
-                getMemberBpjsTknProvider(
-                  context,
-                ).setSelectedProduct(provider);
+                pushNamed(
+                  MemberBpjsTknProdukPage.routeName,
+                  arguments: getMemberBpjsTknProvider(context),
+                );
+                getMemberBpjsTknProvider(context).setSelectedProduct(provider);
               },
             );
           },
@@ -137,7 +135,7 @@ class _MemberBpjsTknProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<MemberBpjsTknProvider, MemberBpjsTknState>(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -154,25 +152,23 @@ class _MemberBpjsTknProviderPageState
               Expanded(
                 child: TextField(
                   controller: state.searchProductController,
-                  onChanged: getMemberBpjsTknProvider(
-                    context,
-                  ).setSearchProduct,
+                  onChanged: getMemberBpjsTknProvider(context).setSearchProduct,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberBpjsTknProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberBpjsTknProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

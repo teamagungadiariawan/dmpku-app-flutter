@@ -30,7 +30,8 @@ class MemberTopupGameProviderPage extends StatefulWidget {
       _MemberTopupGameProviderPageState();
 }
 
-class _MemberTopupGameProviderPageState extends State<MemberTopupGameProviderPage>
+class _MemberTopupGameProviderPageState
+    extends State<MemberTopupGameProviderPage>
     with TickerProviderStateMixin {
   late PageController _pageViewController;
   late final CustomTabController _tabController;
@@ -78,7 +79,6 @@ class _MemberTopupGameProviderPageState extends State<MemberTopupGameProviderPag
   }
 
   void closePage() {
-    getMemberTopupGameProvider(context).resetState();
     pop();
   }
 
@@ -219,8 +219,13 @@ class _MemberTopupGameProviderPageState extends State<MemberTopupGameProviderPag
               title: provider.namaprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                getMemberTopupGameProvider(context).setSelectedProvider(provider);
-                pushNamed(MemberTopupGameProdukPage.routeName);
+                getMemberTopupGameProvider(
+                  context,
+                ).setSelectedProvider(provider);
+                pushNamed(
+                  MemberTopupGameProdukPage.routeName,
+                  arguments: getMemberTopupGameProvider(context),
+                );
               },
             );
           },
@@ -263,7 +268,10 @@ class _MemberTopupGameProviderPageState extends State<MemberTopupGameProviderPag
                   titleForm: 'No. Tujuan',
                   hintForm: 'Contoh : 081XXXXXXXXX',
                 );
-                pushNamed(MemberTopupGameProdukPage.routeName);
+                pushNamed(
+                  MemberTopupGameProdukPage.routeName,
+                  arguments: getMemberTopupGameProvider(context),
+                );
               },
             );
           },
@@ -292,17 +300,18 @@ class _MemberTopupGameProviderPageState extends State<MemberTopupGameProviderPag
               Expanded(
                 child: TextField(
                   controller: state.searchProviderController,
-                  onChanged: (val) => getMemberTopupGameProvider(context).setSearchProvider(val),
+                  onChanged: (val) => getMemberTopupGameProvider(
+                    context,
+                  ).setSearchProvider(val),
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Produk',
                     suffixIcon: state.searchProvider.isNotEmpty
                         ? InkWell(
                             onTap: () {
-                              getMemberTopupGameProvider(context).setSearchProvider(
-                                '',
-                                updateController: true,
-                              );
+                              getMemberTopupGameProvider(
+                                context,
+                              ).setSearchProvider('', updateController: true);
                             },
                             child: Icon(
                               MdiIcons.close,

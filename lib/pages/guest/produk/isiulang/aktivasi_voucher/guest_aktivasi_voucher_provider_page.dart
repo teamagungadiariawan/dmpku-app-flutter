@@ -34,7 +34,6 @@ class _GuestAktivasiVoucherProviderPageState
 
   @override
   void dispose() {
-    getAktivasiVoucherProvider(context).resetState();
     super.dispose();
   }
 
@@ -43,7 +42,6 @@ class _GuestAktivasiVoucherProviderPageState
   }
 
   void closePage() {
-    getAktivasiVoucherProvider(context).resetState();
     pop();
   }
 
@@ -118,7 +116,10 @@ class _GuestAktivasiVoucherProviderPageState
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                pushNamed(GuestAktivasiVoucherProdukPage.routeName);
+                pushNamed(
+                  GuestAktivasiVoucherProdukPage.routeName,
+                  arguments: getAktivasiVoucherProvider(context),
+                );
                 getAktivasiVoucherProvider(
                   context,
                 ).setSelectedProvider(provider);

@@ -34,7 +34,6 @@ class _MemberAktivasiVoucherProviderPageState
 
   @override
   void dispose() {
-    getMemberAktivasiVoucherProvider(context).resetState();
     super.dispose();
   }
 
@@ -43,7 +42,6 @@ class _MemberAktivasiVoucherProviderPageState
   }
 
   void closePage() {
-    getMemberAktivasiVoucherProvider(context).resetState();
     pop();
   }
 
@@ -100,7 +98,10 @@ class _MemberAktivasiVoucherProviderPageState
   }
 
   Widget _buildListProvider(BuildContext context) {
-    return BlocBuilder<MemberAktivasiVoucherProvider, MemberAktivasiVoucherState>(
+    return BlocBuilder<
+      MemberAktivasiVoucherProvider,
+      MemberAktivasiVoucherState
+    >(
       buildWhen: (previous, current) =>
           previous.providers != current.providers ||
           previous.searchProvider != current.searchProvider ||
@@ -118,7 +119,10 @@ class _MemberAktivasiVoucherProviderPageState
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                pushNamed(MemberAktivasiVoucherProdukPage.routeName);
+                pushNamed(
+                  MemberAktivasiVoucherProdukPage.routeName,
+                  arguments: getMemberAktivasiVoucherProvider(context),
+                );
                 getMemberAktivasiVoucherProvider(
                   context,
                 ).setSelectedProvider(provider);
@@ -134,7 +138,10 @@ class _MemberAktivasiVoucherProviderPageState
   }
 
   Widget _buildSearchField(BuildContext context) {
-    return BlocBuilder<MemberAktivasiVoucherProvider, MemberAktivasiVoucherState>(
+    return BlocBuilder<
+      MemberAktivasiVoucherProvider,
+      MemberAktivasiVoucherState
+    >(
       buildWhen: (previous, current) =>
           previous.searchProvider != current.searchProvider,
       builder: (context, state) {

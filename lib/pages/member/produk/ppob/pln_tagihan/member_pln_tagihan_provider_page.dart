@@ -37,7 +37,6 @@ class _MemberPlnTagihanProviderPageState
 
   @override
   void dispose() {
-    getMemberPlnTagihanProvider(context).resetState();
     super.dispose();
   }
 
@@ -46,14 +45,13 @@ class _MemberPlnTagihanProviderPageState
   }
 
   void closePage() {
-    getMemberPlnTagihanProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -105,7 +103,7 @@ class _MemberPlnTagihanProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<MemberPlnTagihanProvider, MemberPlnTagihanState>(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -121,7 +119,10 @@ class _MemberPlnTagihanProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberPlnTagihanProdukPage.routeName);
+                pushNamed(
+                  MemberPlnTagihanProdukPage.routeName,
+                  arguments: getMemberPlnTagihanProvider(context),
+                );
                 getMemberPlnTagihanProvider(
                   context,
                 ).setSelectedProduct(provider);
@@ -137,7 +138,7 @@ class _MemberPlnTagihanProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<MemberPlnTagihanProvider, MemberPlnTagihanState>(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -162,17 +163,17 @@ class _MemberPlnTagihanProviderPageState
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberPlnTagihanProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberPlnTagihanProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

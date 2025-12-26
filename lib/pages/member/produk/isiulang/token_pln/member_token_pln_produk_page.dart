@@ -35,7 +35,6 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getMemberTokenPlnProvider(context).resetState();
     pop();
   }
 

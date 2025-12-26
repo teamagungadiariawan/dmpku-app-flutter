@@ -148,31 +148,31 @@ class MemberTokenPlnState extends Equatable {
 
   @override
   List<Object?> get props => [
-        apiFetchProductStatus,
-        apiFetchProductMessage,
-        products,
-        selectedProduct,
-        sortProduct,
-        searchProduct,
-        searchProductController,
-        tujuan,
-        tujuanFocusNode,
-        tujuanController,
-        tujuanHasError,
-        tujuanErrorMessage,
-        apiCekAkunStatus,
-        apiCekAkunMessage,
-        cekAkunResult,
-        kodeProdukCek,
-        totalPotongStok,
-        detailTransaksi,
-        detailPotongStok,
-        apiKonfirmasiStatus,
-        apiKonfirmasiMessage,
-        adaTrxSebelumnya,
-        detailTrxSebelumnya,
-        trxke,
-      ];
+    apiFetchProductStatus,
+    apiFetchProductMessage,
+    products,
+    selectedProduct,
+    sortProduct,
+    searchProduct,
+    searchProductController,
+    tujuan,
+    tujuanFocusNode,
+    tujuanController,
+    tujuanHasError,
+    tujuanErrorMessage,
+    apiCekAkunStatus,
+    apiCekAkunMessage,
+    cekAkunResult,
+    kodeProdukCek,
+    totalPotongStok,
+    detailTransaksi,
+    detailPotongStok,
+    apiKonfirmasiStatus,
+    apiKonfirmasiMessage,
+    adaTrxSebelumnya,
+    detailTrxSebelumnya,
+    trxke,
+  ];
 }
 
 // ============================================================
@@ -182,13 +182,13 @@ class MemberTokenPlnProvider extends Cubit<MemberTokenPlnState> {
   final ProdukService _produkService = ProdukService();
 
   MemberTokenPlnProvider()
-      : super(
-          MemberTokenPlnState(
-            tujuanFocusNode: FocusNode(),
-            tujuanController: TextEditingController(),
-            searchProductController: TextEditingController(),
-          ),
-        );
+    : super(
+        MemberTokenPlnState(
+          tujuanFocusNode: FocusNode(),
+          tujuanController: TextEditingController(),
+          searchProductController: TextEditingController(),
+        ),
+      );
 
   @override
   Future<void> close() {
@@ -531,7 +531,7 @@ class MemberTokenPlnProvider extends Cubit<MemberTokenPlnState> {
       ),
     );
 
-    pushNamed(MemberTokenPlnKonfirmasiTransaksiPage.routeName);
+    pushNamed(MemberTokenPlnKonfirmasiTransaksiPage.routeName, arguments: this);
   }
 
   void _setTrxSebelumnyaFromResponse(BayarResponse data) {

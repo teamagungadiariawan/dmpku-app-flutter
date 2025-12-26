@@ -37,7 +37,6 @@ class _MemberTagihanGasProviderPageState
 
   @override
   void dispose() {
-    getMemberTagihanGasProvider(context).resetState();
     super.dispose();
   }
 
@@ -46,14 +45,13 @@ class _MemberTagihanGasProviderPageState
   }
 
   void closePage() {
-    getMemberTagihanGasProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -105,7 +103,7 @@ class _MemberTagihanGasProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<MemberTagihanGasProvider, MemberTagihanGasState>(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -121,7 +119,10 @@ class _MemberTagihanGasProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberTagihanGasProdukPage.routeName);
+                pushNamed(
+                  MemberTagihanGasProdukPage.routeName,
+                  arguments: getMemberTagihanGasProvider(context),
+                );
                 getMemberTagihanGasProvider(
                   context,
                 ).setSelectedProduct(provider);
@@ -137,7 +138,7 @@ class _MemberTagihanGasProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<MemberTagihanGasProvider, MemberTagihanGasState>(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -162,17 +163,17 @@ class _MemberTagihanGasProviderPageState
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberTagihanGasProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberTagihanGasProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

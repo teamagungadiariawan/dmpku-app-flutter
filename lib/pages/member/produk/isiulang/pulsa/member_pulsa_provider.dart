@@ -553,7 +553,7 @@ class MemberPulsaProvider extends Cubit<MemberPulsaState> {
       ),
     );
 
-    pushNamed(MemberPulsaKonfirmasiTransaksiPage.routeName);
+    pushNamed(MemberPulsaKonfirmasiTransaksiPage.routeName, arguments: this);
   }
 
   void _setTrxSebelumnyaFromResponse(BayarResponse data) {

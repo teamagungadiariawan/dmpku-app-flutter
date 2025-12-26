@@ -25,8 +25,7 @@ class MemberPdamProdukPage extends StatefulWidget {
   const MemberPdamProdukPage({super.key});
 
   @override
-  State<MemberPdamProdukPage> createState() =>
-      _MemberPdamProdukPageState();
+  State<MemberPdamProdukPage> createState() => _MemberPdamProdukPageState();
 }
 
 class _MemberPdamProdukPageState extends State<MemberPdamProdukPage> {
@@ -56,7 +55,9 @@ class _MemberPdamProdukPageState extends State<MemberPdamProdukPage> {
           ),
           body: Padding(
             padding: paddingPage,
-            child: Column(children: [_buildIdAkunCard(context), _buildPlaceholder(context)]),
+            child: Column(
+              children: [_buildIdAkunCard(context), _buildPlaceholder(context)],
+            ),
           ),
         ),
       ),
@@ -102,7 +103,7 @@ class _MemberPdamProdukPageState extends State<MemberPdamProdukPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                   "ID Pelanggan",
+                  "ID Pelanggan",
                   style: context.bodyMedium.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -212,7 +213,7 @@ class _MemberPdamProdukPageState extends State<MemberPdamProdukPage> {
   Widget _buildCheckoutButton(BuildContext context) {
     return BlocBuilder<MemberPdamProvider, MemberPdamState>(
       buildWhen: (prev, curr) =>
-      prev.tujuan != curr.tujuan ||
+          prev.tujuan != curr.tujuan ||
           prev.tujuanHasError != curr.tujuanHasError ||
           prev.apiCekTagihanStatus != curr.apiCekTagihanStatus ||
           prev.selectedProduct != curr.selectedProduct,
@@ -228,9 +229,9 @@ class _MemberPdamProdukPageState extends State<MemberPdamProdukPage> {
           },
           size: ButtonSize.large,
           state:
-          (state.tujuanHasError ||
-              state.tujuan.isEmpty ||
-              state.selectedProduct.idproduk == 0)
+              (state.tujuanHasError ||
+                  state.tujuan.isEmpty ||
+                  state.selectedProduct.idproduk == 0)
               ? ButtonState.disabled
               : ButtonState.enabled,
         );

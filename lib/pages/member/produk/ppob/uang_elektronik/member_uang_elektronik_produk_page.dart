@@ -96,7 +96,10 @@ class _MemberUangElektronikProdukPageState
             ),
           ),
           bottomNavigationBar:
-              BlocBuilder<MemberUangElektronikProvider, MemberUangElektronikState>(
+              BlocBuilder<
+                MemberUangElektronikProvider,
+                MemberUangElektronikState
+              >(
                 buildWhen: (previous, current) =>
                     previous.selectedProduct != current.selectedProduct ||
                     previous.tujuanHasError != current.tujuanHasError ||
@@ -110,13 +113,15 @@ class _MemberUangElektronikProdukPageState
                     padding: EdgeInsets.only(bottom: bottomInset),
                     child: ButtonCheckout(
                       isDisabled:
-                      state.selectedProduct.idproduk == 0 ||
+                          state.selectedProduct.idproduk == 0 ||
                           state.tujuanHasError ||
                           state.tujuan.isEmpty ||
                           state.apiFetchProductStatus.isLoading,
                       selectedProduct: state.selectedProduct,
                       onContinue: () {
-                        getMemberUangElektronikProvider(context).setNewKonfirmasi();
+                        getMemberUangElektronikProvider(
+                          context,
+                        ).setNewKonfirmasi();
                       },
                     ),
                   );
@@ -254,7 +259,9 @@ class _MemberUangElektronikProdukPageState
               isGangguan: product.isGangguan,
               isPulsa: true,
               onPress: () {
-                getMemberUangElektronikProvider(context).setSelectedProduct(product);
+                getMemberUangElektronikProvider(
+                  context,
+                ).setSelectedProduct(product);
               },
             );
           },

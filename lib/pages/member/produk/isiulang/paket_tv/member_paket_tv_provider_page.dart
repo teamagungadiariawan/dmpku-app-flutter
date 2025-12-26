@@ -28,13 +28,11 @@ class MemberPaketTvProviderPage extends StatefulWidget {
       _MemberPaketTvProviderPageState();
 }
 
-class _MemberPaketTvProviderPageState
-    extends State<MemberPaketTvProviderPage> {
+class _MemberPaketTvProviderPageState extends State<MemberPaketTvProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getMemberPaketTvProvider(context).resetState();
     super.dispose();
   }
 
@@ -43,14 +41,13 @@ class _MemberPaketTvProviderPageState
   }
 
   void closePage() {
-    getMemberPaketTvProvider(context).resetState();
     pop();
   }
 
   List<ProviderModel> _filterProviders(
-      List<ProviderModel> providers,
-      String search,
-      ) {
+    List<ProviderModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -102,7 +99,7 @@ class _MemberPaketTvProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<MemberPaketTvProvider, MemberPaketTvState>(
       buildWhen: (previous, current) =>
-      previous.providers != current.providers ||
+          previous.providers != current.providers ||
           previous.searchProvider != current.searchProvider ||
           previous.apiFetchProviderStatus != current.apiFetchProviderStatus,
       builder: (context, state) {
@@ -118,10 +115,11 @@ class _MemberPaketTvProviderPageState
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                pushNamed(MemberPaketTvProdukPage.routeName);
-                getMemberPaketTvProvider(
-                  context,
-                ).setSelectedProvider(provider);
+                pushNamed(
+                  MemberPaketTvProdukPage.routeName,
+                  arguments: getMemberPaketTvProvider(context),
+                );
+                getMemberPaketTvProvider(context).setSelectedProvider(provider);
               },
             );
           },
@@ -136,7 +134,7 @@ class _MemberPaketTvProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<MemberPaketTvProvider, MemberPaketTvState>(
       buildWhen: (previous, current) =>
-      previous.searchProvider != current.searchProvider,
+          previous.searchProvider != current.searchProvider,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -161,17 +159,17 @@ class _MemberPaketTvProviderPageState
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProvider.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberPaketTvProvider(
-                          context,
-                        ).setSearchProvider('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberPaketTvProvider(
+                                context,
+                              ).setSearchProvider('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

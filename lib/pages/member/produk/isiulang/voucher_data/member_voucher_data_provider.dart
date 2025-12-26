@@ -164,52 +164,52 @@ class MemberVoucherDataState extends Equatable {
 
   @override
   List<Object?> get props => [
-        // Provider API
-        apiFetchProviderStatus,
-        apiFetchProviderMessage,
-        providers,
-        selectedProvider,
-        searchProvider,
-        searchProviderController,
-        // Product API
-        apiFetchProductStatus,
-        apiFetchProductMessage,
-        products,
-        selectedProduct,
-        sortProduct,
-        searchProduct,
-        searchProductController,
-        // Single Tujuan
-        tujuan,
-        tujuanFocusNode,
-        tujuanController,
-        tujuanHasError,
-        tujuanErrorMessage,
-        // Konfirmasi
-        totalPotongStok,
-        detailTransaksi,
-        detailPotongStok,
-        apiKonfirmasiStatus,
-        apiKonfirmasiMessage,
-        // Trx Sebelumnya
-        adaTrxSebelumnya,
-        detailTrxSebelumnya,
-        trxke,
-      ];
+    // Provider API
+    apiFetchProviderStatus,
+    apiFetchProviderMessage,
+    providers,
+    selectedProvider,
+    searchProvider,
+    searchProviderController,
+    // Product API
+    apiFetchProductStatus,
+    apiFetchProductMessage,
+    products,
+    selectedProduct,
+    sortProduct,
+    searchProduct,
+    searchProductController,
+    // Single Tujuan
+    tujuan,
+    tujuanFocusNode,
+    tujuanController,
+    tujuanHasError,
+    tujuanErrorMessage,
+    // Konfirmasi
+    totalPotongStok,
+    detailTransaksi,
+    detailPotongStok,
+    apiKonfirmasiStatus,
+    apiKonfirmasiMessage,
+    // Trx Sebelumnya
+    adaTrxSebelumnya,
+    detailTrxSebelumnya,
+    trxke,
+  ];
 }
 
 class MemberVoucherDataProvider extends Cubit<MemberVoucherDataState> {
   final ProdukService _produkService = ProdukService();
 
   MemberVoucherDataProvider()
-      : super(
-          MemberVoucherDataState(
-            tujuanFocusNode: FocusNode(),
-            searchProviderController: TextEditingController(),
-            searchProductController: TextEditingController(),
-            tujuanController: TextEditingController(),
-          ),
-        );
+    : super(
+        MemberVoucherDataState(
+          tujuanFocusNode: FocusNode(),
+          searchProviderController: TextEditingController(),
+          searchProductController: TextEditingController(),
+          tujuanController: TextEditingController(),
+        ),
+      );
 
   @override
   Future<void> close() {
@@ -551,7 +551,10 @@ class MemberVoucherDataProvider extends Cubit<MemberVoucherDataState> {
       ),
     );
 
-    pushNamed(MemberVoucherDataKonfirmasiTransaksiPage.routeName);
+    pushNamed(
+      MemberVoucherDataKonfirmasiTransaksiPage.routeName,
+      arguments: this,
+    );
   }
 
   void _setTrxSebelumnyaFromResponse(BayarResponse data) {
@@ -680,8 +683,9 @@ class MemberVoucherDataProvider extends Cubit<MemberVoucherDataState> {
 
     // Validasi prefix
     final isValidPrefix = provider.prefixList.any((prefix) {
-      final maxRange =
-          tujuan.length < prefix.length ? tujuan.length : prefix.length;
+      final maxRange = tujuan.length < prefix.length
+          ? tujuan.length
+          : prefix.length;
       return prefix.startsWith(tujuan.substring(0, maxRange));
     });
 

@@ -27,17 +27,14 @@ class MemberPbbProviderPage extends StatefulWidget {
   const MemberPbbProviderPage({super.key});
 
   @override
-  State<MemberPbbProviderPage> createState() =>
-      _MemberPbbProviderPageState();
+  State<MemberPbbProviderPage> createState() => _MemberPbbProviderPageState();
 }
 
-class _MemberPbbProviderPageState
-    extends State<MemberPbbProviderPage> {
+class _MemberPbbProviderPageState extends State<MemberPbbProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getMemberPbbProvider(context).resetState();
     super.dispose();
   }
 
@@ -46,14 +43,13 @@ class _MemberPbbProviderPageState
   }
 
   void closePage() {
-    getMemberPbbProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -105,7 +101,7 @@ class _MemberPbbProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<MemberPbbProvider, MemberPbbState>(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -121,10 +117,11 @@ class _MemberPbbProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberPbbProdukPage.routeName);
-                getMemberPbbProvider(
-                  context,
-                ).setSelectedProduct(provider);
+                pushNamed(
+                  MemberPbbProdukPage.routeName,
+                  arguments: getMemberPbbProvider(context),
+                );
+                getMemberPbbProvider(context).setSelectedProduct(provider);
               },
             );
           },
@@ -137,7 +134,7 @@ class _MemberPbbProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<MemberPbbProvider, MemberPbbState>(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -154,25 +151,23 @@ class _MemberPbbProviderPageState
               Expanded(
                 child: TextField(
                   controller: state.searchProductController,
-                  onChanged: getMemberPbbProvider(
-                    context,
-                  ).setSearchProduct,
+                  onChanged: getMemberPbbProvider(context).setSearchProduct,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberPbbProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberPbbProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

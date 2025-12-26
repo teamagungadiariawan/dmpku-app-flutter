@@ -5,7 +5,8 @@ import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';import 'package:dmpku/widgets/card_input_tujuan.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
+import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
@@ -26,15 +27,13 @@ class GuestWifiIdProdukPage extends StatefulWidget {
   const GuestWifiIdProdukPage({super.key});
 
   @override
-  State<GuestWifiIdProdukPage> createState() =>
-      _GuestWifiIdProdukPageState();
+  State<GuestWifiIdProdukPage> createState() => _GuestWifiIdProdukPageState();
 }
 
 class _GuestWifiIdProdukPageState extends State<GuestWifiIdProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getWifiIdProvider(context).resetState();
     pop();
   }
 
@@ -107,7 +106,7 @@ class _GuestWifiIdProdukPageState extends State<GuestWifiIdProdukPage> {
                 padding: EdgeInsets.only(bottom: bottomInset),
                 child: ButtonCheckout(
                   isDisabled:
-                  state.selectedProduct.idproduk == 0 ||
+                      state.selectedProduct.idproduk == 0 ||
                       state.tujuanHasError ||
                       state.tujuan.isEmpty ||
                       state.apiFetchProductStatus.isLoading,
@@ -141,17 +140,13 @@ class _GuestWifiIdProdukPageState extends State<GuestWifiIdProdukPage> {
             getWifiIdProvider(context).setTujuan(value);
           },
           onClear: () {
-            getWifiIdProvider(
-              context,
-            ).setTujuan('', updateController: true);
+            getWifiIdProvider(context).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           tipeInput: TipeInput.numericOnly,
           suffixWidget: CustomPopupInputTujuan(
             onResult: (val) {
-              getWifiIdProvider(
-                context,
-              ).setTujuan(val, updateController: true);
+              getWifiIdProvider(context).setTujuan(val, updateController: true);
             },
           ),
         );

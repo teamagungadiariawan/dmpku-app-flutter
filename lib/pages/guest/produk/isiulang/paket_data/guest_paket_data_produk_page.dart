@@ -4,7 +4,8 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';import 'package:dmpku/widgets/card_input_tujuan.dart';
+import 'package:dmpku/pages/guest/produk/isiulang/paket_data/paket_data_provider.dart';
+import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
@@ -34,7 +35,6 @@ class _GuestPaketDataProdukPageState extends State<GuestPaketDataProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getPaketDataProvider(context).resetProduct();
     pop();
   }
 
@@ -109,7 +109,7 @@ class _GuestPaketDataProdukPageState extends State<GuestPaketDataProdukPage> {
                 padding: EdgeInsets.only(bottom: bottomInset),
                 child: ButtonCheckout(
                   isDisabled:
-                  state.selectedProduct.idproduk == 0 ||
+                      state.selectedProduct.idproduk == 0 ||
                       state.tujuanHasError ||
                       state.tujuan.isEmpty ||
                       state.apiFetchProductStatus.isLoading,

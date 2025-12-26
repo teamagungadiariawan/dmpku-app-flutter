@@ -33,7 +33,6 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
 
   @override
   void dispose() {
-    getPulsaProvider(context).resetState();
     super.dispose();
   }
 
@@ -42,7 +41,6 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
   }
 
   void closePage() {
-    getPulsaProvider(context).resetState();
     pop();
   }
 
@@ -66,7 +64,7 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child:  WillPopScope(
+      child: WillPopScope(
         onWillPop: () async {
           debugPrint("WillPopScope: onWillPop");
           closePage();
@@ -161,7 +159,10 @@ class _GuestPulsaProviderPageState extends State<GuestPulsaProviderPage> {
                   shakeKey.currentState?.shake();
                   return;
                 } else {
-                  pushNamed(GuestPulsaProdukPage.routeName);
+                  pushNamed(
+                    GuestPulsaProdukPage.routeName,
+                    arguments: getPulsaProvider(context),
+                  );
                   getPulsaProvider(context).setSelectedProvider(provider);
                 }
               },

@@ -83,7 +83,11 @@ class _MemberDompetDigitalProdukkNominalBebasPageState
                     ),
                     child: Row(
                       children: [
-                        Icon(MdiIcons.informationOutline, size: 18, color: context.primary),
+                        Icon(
+                          MdiIcons.informationOutline,
+                          size: 18,
+                          color: context.primary,
+                        ),
                         const Gap(6),
                         Expanded(
                           child: Text(
@@ -322,7 +326,8 @@ class _MemberDompetDigitalProdukkNominalBebasPageState
               controller: state.nominalTrxController,
               keyboardType: TipeInput.numericOnly.keyboardType,
               inputFormatters: TipeInput.numericOnly.inputFormatters,
-              onChanged: (val) => _provider.setNominalTrx(val, updateController: true),
+              onChanged: (val) =>
+                  _provider.setNominalTrx(val, updateController: true),
               autofocus: false,
               decoration: InputDecoration(
                 isDense: true,

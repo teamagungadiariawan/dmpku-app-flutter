@@ -32,7 +32,6 @@ class _MemberPaketCuanSubProviderPageState
 
   @override
   void dispose() {
-    getMemberPaketCuanProvider(context).resetSubProviderState();
     super.dispose();
   }
 
@@ -41,7 +40,6 @@ class _MemberPaketCuanSubProviderPageState
   }
 
   void closePage() {
-    getMemberPaketCuanProvider(context).resetSubProviderState();
     pop();
   }
 
@@ -97,7 +95,9 @@ class _MemberPaketCuanSubProviderPageState
             getMemberPaketCuanProvider(context).setTujuan(value);
           },
           onClear: () {
-            getMemberPaketCuanProvider(context).setTujuan('', updateController: true);
+            getMemberPaketCuanProvider(
+              context,
+            ).setTujuan('', updateController: true);
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
@@ -137,14 +137,21 @@ class _MemberPaketCuanSubProviderPageState
               subtitle: product.deskripsiproduk,
               imageUrl: product.imgproduk,
               onPressed: () {
-                var valid = getMemberPaketCuanProvider(context).validateTujuan();
+                var valid = getMemberPaketCuanProvider(
+                  context,
+                ).validateTujuan();
 
                 if (!valid) {
                   shakeKey.currentState?.shake();
                   return;
                 } else {
-                  getMemberPaketCuanProvider(context).setSelectedSubProvider(product);
-                  pushNamed(MemberPaketCuanProdukPage.routeName);
+                  getMemberPaketCuanProvider(
+                    context,
+                  ).setSelectedSubProvider(product);
+                  pushNamed(
+                    MemberPaketCuanProdukPage.routeName,
+                    arguments: getMemberPaketCuanProvider(context),
+                  );
                 }
               },
             );

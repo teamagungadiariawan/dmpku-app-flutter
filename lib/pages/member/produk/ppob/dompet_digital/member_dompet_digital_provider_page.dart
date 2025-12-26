@@ -81,7 +81,6 @@ class _MemberDompetDigitalProviderPageState
   }
 
   void closePage() {
-    getMemberDompetDigitalProvider(context).resetState();
     pop();
   }
 
@@ -216,7 +215,10 @@ class _MemberDompetDigitalProviderPageState
               subtitle: provider.deskripsiprovider,
               imageUrl: provider.imgprovider,
               onPressed: () {
-                pushNamed(MemberDompetDigitalProdukPage.routeName);
+                pushNamed(
+                  MemberDompetDigitalProdukPage.routeName,
+                  arguments: getMemberDompetDigitalProvider(context),
+                );
                 getMemberDompetDigitalProvider(
                   context,
                 ).setSelectedProvider(provider);
@@ -253,10 +255,13 @@ class _MemberDompetDigitalProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberDompetDigitalProdukNominalBebasPage.routeName);
+                pushNamed(
+                  MemberDompetDigitalProdukNominalBebasPage.routeName,
+                  arguments: getMemberDompetDigitalProvider(context),
+                );
                 getMemberDompetDigitalProvider(
                   context,
-                ).setSelectedProduct(provider,isNominalBebas: true);
+                ).setSelectedProduct(provider, isNominalBebas: true);
               },
             );
           },

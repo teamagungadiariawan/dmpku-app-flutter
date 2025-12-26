@@ -136,29 +136,29 @@ class MemberWifiIdState extends Equatable {
 
   @override
   List<Object?> get props => [
-        apiFetchProductStatus,
-        apiFetchProductMessage,
-        products,
-        selectedProduct,
-        sortProduct,
-        searchProduct,
-        searchProductController,
-        tujuan,
-        tujuanFocusNode,
-        tujuanController,
-        tujuanHasError,
-        tujuanErrorMessage,
-        // Konfirmasi State
-        totalPotongStok,
-        detailTransaksi,
-        detailPotongStok,
-        apiKonfirmasiStatus,
-        apiKonfirmasiMessage,
-        // Tambah untuk cek trx sebelumnya
-        adaTrxSebelumnya,
-        detailTrxSebelumnya,
-        trxke,
-      ];
+    apiFetchProductStatus,
+    apiFetchProductMessage,
+    products,
+    selectedProduct,
+    sortProduct,
+    searchProduct,
+    searchProductController,
+    tujuan,
+    tujuanFocusNode,
+    tujuanController,
+    tujuanHasError,
+    tujuanErrorMessage,
+    // Konfirmasi State
+    totalPotongStok,
+    detailTransaksi,
+    detailPotongStok,
+    apiKonfirmasiStatus,
+    apiKonfirmasiMessage,
+    // Tambah untuk cek trx sebelumnya
+    adaTrxSebelumnya,
+    detailTrxSebelumnya,
+    trxke,
+  ];
 }
 
 // ============================================================
@@ -168,11 +168,13 @@ class MemberWifiIdProvider extends Cubit<MemberWifiIdState> {
   final ProdukService _produkService = ProdukService();
 
   MemberWifiIdProvider()
-      : super(MemberWifiIdState(
+    : super(
+        MemberWifiIdState(
           tujuanFocusNode: FocusNode(),
           tujuanController: TextEditingController(),
           searchProductController: TextEditingController(),
-        ));
+        ),
+      );
 
   @override
   Future<void> close() {
@@ -313,10 +315,12 @@ class MemberWifiIdProvider extends Cubit<MemberWifiIdState> {
   Future<void> fetchProducts() async {
     if (state.apiFetchProductStatus.isLoading) return;
 
-    emit(state.copyWith(
-      apiFetchProductStatus: ApiStatus.loading,
-      apiFetchProductMessage: '',
-    ));
+    emit(
+      state.copyWith(
+        apiFetchProductStatus: ApiStatus.loading,
+        apiFetchProductMessage: '',
+      ),
+    );
 
     try {
       final result = await _produkService.getWifiIdMemberProducts();
@@ -333,23 +337,29 @@ class MemberWifiIdProvider extends Cubit<MemberWifiIdState> {
       final data = result.data;
 
       if (data != null) {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.success,
-          products: data.productList,
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.success,
+            products: data.productList,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          apiFetchProductStatus: ApiStatus.failure,
-          apiFetchProductMessage: 'Data produk wifi id kosong',
-        ));
+        emit(
+          state.copyWith(
+            apiFetchProductStatus: ApiStatus.failure,
+            apiFetchProductMessage: 'Data produk wifi id kosong',
+          ),
+        );
       }
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION FETCH PRODUCTS: ${e.message}");
       showWarningMessage(e.message);
-      emit(state.copyWith(
-        apiFetchProductStatus: ApiStatus.failure,
-        apiFetchProductMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          apiFetchProductStatus: ApiStatus.failure,
+          apiFetchProductMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -420,7 +430,7 @@ class MemberWifiIdProvider extends Cubit<MemberWifiIdState> {
       ),
     );
 
-    pushNamed(MemberWifiIdKonfirmasiTransaksiPage.routeName);
+    pushNamed(MemberWifiIdKonfirmasiTransaksiPage.routeName, arguments: this);
   }
 
   void _setTrxSebelumnyaFromResponse(BayarResponse data) {
@@ -449,11 +459,13 @@ class MemberWifiIdProvider extends Cubit<MemberWifiIdState> {
   // RESET METHODS
   // ============================================================
   void resetState() {
-    emit(MemberWifiIdState(
-      tujuanFocusNode: FocusNode(),
-      tujuanController: TextEditingController(),
-      searchProductController: TextEditingController(),
-    ));
+    emit(
+      MemberWifiIdState(
+        tujuanFocusNode: FocusNode(),
+        tujuanController: TextEditingController(),
+        searchProductController: TextEditingController(),
+      ),
+    );
   }
 
   void resetKonfirmasi() {
@@ -487,10 +499,12 @@ class MemberWifiIdProvider extends Cubit<MemberWifiIdState> {
   bool validateTujuan() {
     final error = _validateTujuanValue(state.tujuan.trim());
 
-    emit(state.copyWith(
-      tujuanHasError: error != null,
-      tujuanErrorMessage: error ?? '',
-    ));
+    emit(
+      state.copyWith(
+        tujuanHasError: error != null,
+        tujuanErrorMessage: error ?? '',
+      ),
+    );
 
     return error == null;
   }

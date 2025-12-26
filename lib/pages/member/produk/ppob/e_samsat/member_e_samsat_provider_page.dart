@@ -31,13 +31,11 @@ class MemberESamsatProviderPage extends StatefulWidget {
       _MemberESamsatProviderPageState();
 }
 
-class _MemberESamsatProviderPageState
-    extends State<MemberESamsatProviderPage> {
+class _MemberESamsatProviderPageState extends State<MemberESamsatProviderPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   @override
   void dispose() {
-    getMemberESamsatProvider(context).resetState();
     super.dispose();
   }
 
@@ -46,14 +44,13 @@ class _MemberESamsatProviderPageState
   }
 
   void closePage() {
-    getMemberESamsatProvider(context).resetState();
     pop();
   }
 
   List<ProductModel> _filterProviders(
-      List<ProductModel> providers,
-      String search,
-      ) {
+    List<ProductModel> providers,
+    String search,
+  ) {
     var filteredProviders = providers;
 
     if (search.isNotEmpty) {
@@ -105,7 +102,7 @@ class _MemberESamsatProviderPageState
   Widget _buildListProvider(BuildContext context) {
     return BlocBuilder<MemberESamsatProvider, MemberESamsatState>(
       buildWhen: (previous, current) =>
-      previous.products != current.products ||
+          previous.products != current.products ||
           previous.searchProduct != current.searchProduct ||
           previous.apiFetchProductStatus != current.apiFetchProductStatus,
       builder: (context, state) {
@@ -121,10 +118,11 @@ class _MemberESamsatProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberESamsatProdukPage.routeName);
-                getMemberESamsatProvider(
-                  context,
-                ).setSelectedProduct(provider);
+                pushNamed(
+                  MemberESamsatProdukPage.routeName,
+                  arguments: getMemberESamsatProvider(context),
+                );
+                getMemberESamsatProvider(context).setSelectedProduct(provider);
               },
             );
           },
@@ -137,7 +135,7 @@ class _MemberESamsatProviderPageState
   Widget _buildSearchField(BuildContext context) {
     return BlocBuilder<MemberESamsatProvider, MemberESamsatState>(
       buildWhen: (previous, current) =>
-      previous.searchProduct != current.searchProduct,
+          previous.searchProduct != current.searchProduct,
       builder: (context, state) {
         return Container(
           width: double.infinity,
@@ -154,25 +152,23 @@ class _MemberESamsatProviderPageState
               Expanded(
                 child: TextField(
                   controller: state.searchProductController,
-                  onChanged: getMemberESamsatProvider(
-                    context,
-                  ).setSearchProduct,
+                  onChanged: getMemberESamsatProvider(context).setSearchProduct,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Provider',
                     suffixIcon: state.searchProduct.isNotEmpty
                         ? InkWell(
-                      onTap: () {
-                        getMemberESamsatProvider(
-                          context,
-                        ).setSearchProduct('', updateController: true);
-                      },
-                      child: Icon(
-                        MdiIcons.close,
-                        size: 18,
-                        color: context.foreground,
-                      ),
-                    )
+                            onTap: () {
+                              getMemberESamsatProvider(
+                                context,
+                              ).setSearchProduct('', updateController: true);
+                            },
+                            child: Icon(
+                              MdiIcons.close,
+                              size: 18,
+                              color: context.foreground,
+                            ),
+                          )
                         : null,
                   ),
                   textInputAction: TextInputAction.done,

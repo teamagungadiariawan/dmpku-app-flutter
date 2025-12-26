@@ -34,7 +34,6 @@ class _GuestVoucherDigitalProdukPageState
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getVoucherDigitalProvider(context).resetProduct();
     pop();
   }
 
@@ -111,7 +110,7 @@ class _GuestVoucherDigitalProdukPageState
                     padding: EdgeInsets.only(bottom: bottomInset),
                     child: ButtonCheckout(
                       isDisabled:
-                      state.selectedProduct.idproduk == 0 ||
+                          state.selectedProduct.idproduk == 0 ||
                           state.tujuanHasError ||
                           state.tujuan.isEmpty ||
                           state.apiFetchProductStatus.isLoading,

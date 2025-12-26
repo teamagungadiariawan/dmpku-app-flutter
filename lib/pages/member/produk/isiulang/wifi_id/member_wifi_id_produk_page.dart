@@ -27,15 +27,13 @@ class MemberWifiIdProdukPage extends StatefulWidget {
   const MemberWifiIdProdukPage({super.key});
 
   @override
-  State<MemberWifiIdProdukPage> createState() =>
-      _MemberWifiIdProdukPageState();
+  State<MemberWifiIdProdukPage> createState() => _MemberWifiIdProdukPageState();
 }
 
 class _MemberWifiIdProdukPageState extends State<MemberWifiIdProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getMemberWifiIdProvider(context).resetState();
     pop();
   }
 
@@ -95,31 +93,33 @@ class _MemberWifiIdProdukPageState extends State<MemberWifiIdProdukPage> {
               ],
             ),
           ),
-          bottomNavigationBar: BlocBuilder<MemberWifiIdProvider, MemberWifiIdState>(
-            buildWhen: (previous, current) =>
-                previous.selectedProduct != current.selectedProduct ||
-                previous.tujuanHasError != current.tujuanHasError ||
-                previous.tujuan != current.tujuan ||
-                previous.apiFetchProductStatus != current.apiFetchProductStatus,
-            builder: (context, state) {
-              final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+          bottomNavigationBar:
+              BlocBuilder<MemberWifiIdProvider, MemberWifiIdState>(
+                buildWhen: (previous, current) =>
+                    previous.selectedProduct != current.selectedProduct ||
+                    previous.tujuanHasError != current.tujuanHasError ||
+                    previous.tujuan != current.tujuan ||
+                    previous.apiFetchProductStatus !=
+                        current.apiFetchProductStatus,
+                builder: (context, state) {
+                  final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-              return Padding(
-                padding: EdgeInsets.only(bottom: bottomInset),
-                child: ButtonCheckout(
-                  isDisabled:
-                  state.selectedProduct.idproduk == 0 ||
-                      state.tujuanHasError ||
-                      state.tujuan.isEmpty ||
-                      state.apiFetchProductStatus.isLoading,
-                  selectedProduct: state.selectedProduct,
-                  onContinue: () {
-                    getMemberWifiIdProvider(context).setNewKonfirmasi();
-                  },
-                ),
-              );
-            },
-          ),
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: bottomInset),
+                    child: ButtonCheckout(
+                      isDisabled:
+                          state.selectedProduct.idproduk == 0 ||
+                          state.tujuanHasError ||
+                          state.tujuan.isEmpty ||
+                          state.apiFetchProductStatus.isLoading,
+                      selectedProduct: state.selectedProduct,
+                      onContinue: () {
+                        getMemberWifiIdProvider(context).setNewKonfirmasi();
+                      },
+                    ),
+                  );
+                },
+              ),
         ),
       ),
     );

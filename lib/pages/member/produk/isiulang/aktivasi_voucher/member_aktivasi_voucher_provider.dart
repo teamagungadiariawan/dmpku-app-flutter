@@ -702,7 +702,10 @@ class MemberAktivasiVoucherProvider extends Cubit<MemberAktivasiVoucherState> {
       ),
     );
 
-    pushNamed(MemberAktivasiVoucherKonfirmasiTransaksiPage.routeName);
+    pushNamed(
+      MemberAktivasiVoucherKonfirmasiTransaksiPage.routeName,
+      arguments: this,
+    );
   }
 
   // ============================================================

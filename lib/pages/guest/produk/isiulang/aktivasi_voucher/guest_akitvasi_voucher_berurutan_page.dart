@@ -32,7 +32,6 @@ class _GuestAkitvasiVoucherBerurutanPageState
   final shakeKeyAkhir = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getAktivasiVoucherProvider(context).resetBerurutan();
     pop();
   }
 

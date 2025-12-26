@@ -167,52 +167,52 @@ class MemberAktivasiPerdanaState extends Equatable {
 
   @override
   List<Object?> get props => [
-        // Provider API
-        apiFetchProviderStatus,
-        apiFetchProviderMessage,
-        providers,
-        selectedProvider,
-        searchProvider,
-        searchProviderController,
-        // Product API
-        apiFetchProductStatus,
-        apiFetchProductMessage,
-        products,
-        selectedProduct,
-        sortProduct,
-        searchProduct,
-        searchProductController,
-        // Single Tujuan
-        tujuan,
-        tujuanFocusNode,
-        tujuanController,
-        tujuanHasError,
-        tujuanErrorMessage,
-        // Konfirmasi
-        totalPotongStok,
-        detailTransaksi,
-        detailPotongStok,
-        apiKonfirmasiStatus,
-        apiKonfirmasiMessage,
-        // Trx Sebelumnya
-        adaTrxSebelumnya,
-        detailTrxSebelumnya,
-        trxke,
-      ];
+    // Provider API
+    apiFetchProviderStatus,
+    apiFetchProviderMessage,
+    providers,
+    selectedProvider,
+    searchProvider,
+    searchProviderController,
+    // Product API
+    apiFetchProductStatus,
+    apiFetchProductMessage,
+    products,
+    selectedProduct,
+    sortProduct,
+    searchProduct,
+    searchProductController,
+    // Single Tujuan
+    tujuan,
+    tujuanFocusNode,
+    tujuanController,
+    tujuanHasError,
+    tujuanErrorMessage,
+    // Konfirmasi
+    totalPotongStok,
+    detailTransaksi,
+    detailPotongStok,
+    apiKonfirmasiStatus,
+    apiKonfirmasiMessage,
+    // Trx Sebelumnya
+    adaTrxSebelumnya,
+    detailTrxSebelumnya,
+    trxke,
+  ];
 }
 
 class MemberAktivasiPerdanaProvider extends Cubit<MemberAktivasiPerdanaState> {
   final ProdukService _produkService = ProdukService();
 
   MemberAktivasiPerdanaProvider()
-      : super(
-          MemberAktivasiPerdanaState(
-            tujuanFocusNode: FocusNode(),
-            searchProviderController: TextEditingController(),
-            searchProductController: TextEditingController(),
-            tujuanController: TextEditingController(),
-          ),
-        );
+    : super(
+        MemberAktivasiPerdanaState(
+          tujuanFocusNode: FocusNode(),
+          searchProviderController: TextEditingController(),
+          searchProductController: TextEditingController(),
+          tujuanController: TextEditingController(),
+        ),
+      );
 
   @override
   Future<void> close() {
@@ -239,8 +239,10 @@ class MemberAktivasiPerdanaProvider extends Cubit<MemberAktivasiPerdanaState> {
       ),
     );
 
-    KonfirmasiPinDialog.show<MemberAktivasiPerdanaProvider,
-        MemberAktivasiPerdanaState>(
+    KonfirmasiPinDialog.show<
+      MemberAktivasiPerdanaProvider,
+      MemberAktivasiPerdanaState
+    >(
       context,
       // Title & Subtitle default
       title:
@@ -556,7 +558,10 @@ class MemberAktivasiPerdanaProvider extends Cubit<MemberAktivasiPerdanaState> {
       ),
     );
 
-    pushNamed(MemberAktivasiPerdanaKonfirmasiTransaksiPage.routeName);
+    pushNamed(
+      MemberAktivasiPerdanaKonfirmasiTransaksiPage.routeName,
+      arguments: this,
+    );
   }
 
   void _setTrxSebelumnyaFromResponse(BayarResponse data) {
@@ -674,8 +679,9 @@ class MemberAktivasiPerdanaProvider extends Cubit<MemberAktivasiPerdanaState> {
 
     // Validasi prefix
     final isValidPrefix = provider.prefixList.any((prefix) {
-      final maxRange =
-          tujuan.length < prefix.length ? tujuan.length : prefix.length;
+      final maxRange = tujuan.length < prefix.length
+          ? tujuan.length
+          : prefix.length;
       return prefix.startsWith(tujuan.substring(0, maxRange));
     });
 
@@ -694,5 +700,4 @@ class MemberAktivasiPerdanaProvider extends Cubit<MemberAktivasiPerdanaState> {
 
 MemberAktivasiPerdanaProvider getMemberAktivasiPerdanaProvider(
   BuildContext context,
-) =>
-    context.read<MemberAktivasiPerdanaProvider>();
+) => context.read<MemberAktivasiPerdanaProvider>();

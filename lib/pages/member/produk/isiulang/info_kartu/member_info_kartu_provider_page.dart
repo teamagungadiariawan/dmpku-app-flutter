@@ -35,7 +35,6 @@ class _MemberInfoKartuProviderPageState
 
   @override
   void dispose() {
-    getMemberInfoKartuProvider(context).resetState();
     super.dispose();
   }
 
@@ -44,7 +43,6 @@ class _MemberInfoKartuProviderPageState
   }
 
   void closePage() {
-    getMemberInfoKartuProvider(context).resetState();
     pop();
   }
 
@@ -119,8 +117,13 @@ class _MemberInfoKartuProviderPageState
               subtitle: provider.deskripsiproduk,
               imageUrl: provider.imgproduk,
               onPressed: () {
-                pushNamed(MemberInfoKartuProdukPage.routeName);
-                getMemberInfoKartuProvider(context).setSelectedProduct(provider);
+                pushNamed(
+                  MemberInfoKartuProdukPage.routeName,
+                  arguments: getMemberInfoKartuProvider(context),
+                );
+                getMemberInfoKartuProvider(
+                  context,
+                ).setSelectedProduct(provider);
               },
             );
           },
@@ -150,7 +153,9 @@ class _MemberInfoKartuProviderPageState
               Expanded(
                 child: TextField(
                   controller: state.searchProductController,
-                  onChanged: getMemberInfoKartuProvider(context).setSearchProduct,
+                  onChanged: getMemberInfoKartuProvider(
+                    context,
+                  ).setSearchProduct,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Cari Provider',

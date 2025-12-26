@@ -166,7 +166,10 @@ class _MemberPulsaProviderPageState extends State<MemberPulsaProviderPage> {
                   shakeKey.currentState?.shake();
                   return;
                 } else {
-                  pushNamed(MemberPulsaProdukPage.routeName);
+                  pushNamed(
+                    MemberPulsaProdukPage.routeName,
+                    arguments: getMemberPulsaProvider(context),
+                  );
                   getMemberPulsaProvider(context).setSelectedProvider(provider);
                 }
               },

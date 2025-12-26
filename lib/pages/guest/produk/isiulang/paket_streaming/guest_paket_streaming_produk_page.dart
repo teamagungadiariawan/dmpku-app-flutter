@@ -34,7 +34,6 @@ class _GuestPaketStreamingProdukPageState
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getPaketStreamingProvider(context).resetProduct();
     pop();
   }
 
@@ -111,7 +110,7 @@ class _GuestPaketStreamingProdukPageState
                     padding: EdgeInsets.only(bottom: bottomInset),
                     child: ButtonCheckout(
                       isDisabled:
-                      state.selectedProduct.idproduk == 0 ||
+                          state.selectedProduct.idproduk == 0 ||
                           state.tujuanHasError ||
                           state.tujuan.isEmpty ||
                           state.apiFetchProductStatus.isLoading,

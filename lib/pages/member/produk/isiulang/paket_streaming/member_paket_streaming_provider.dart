@@ -164,52 +164,52 @@ class MemberPaketStreamingState extends Equatable {
 
   @override
   List<Object?> get props => [
-        // Provider API
-        apiFetchProviderStatus,
-        apiFetchProviderMessage,
-        providers,
-        selectedProvider,
-        searchProvider,
-        searchProviderController,
-        // Product API
-        apiFetchProductStatus,
-        apiFetchProductMessage,
-        products,
-        selectedProduct,
-        sortProduct,
-        searchProduct,
-        searchProductController,
-        // Single Tujuan
-        tujuan,
-        tujuanFocusNode,
-        tujuanController,
-        tujuanHasError,
-        tujuanErrorMessage,
-        // Konfirmasi
-        totalPotongStok,
-        detailTransaksi,
-        detailPotongStok,
-        apiKonfirmasiStatus,
-        apiKonfirmasiMessage,
-        // Trx Sebelumnya
-        adaTrxSebelumnya,
-        detailTrxSebelumnya,
-        trxke,
-      ];
+    // Provider API
+    apiFetchProviderStatus,
+    apiFetchProviderMessage,
+    providers,
+    selectedProvider,
+    searchProvider,
+    searchProviderController,
+    // Product API
+    apiFetchProductStatus,
+    apiFetchProductMessage,
+    products,
+    selectedProduct,
+    sortProduct,
+    searchProduct,
+    searchProductController,
+    // Single Tujuan
+    tujuan,
+    tujuanFocusNode,
+    tujuanController,
+    tujuanHasError,
+    tujuanErrorMessage,
+    // Konfirmasi
+    totalPotongStok,
+    detailTransaksi,
+    detailPotongStok,
+    apiKonfirmasiStatus,
+    apiKonfirmasiMessage,
+    // Trx Sebelumnya
+    adaTrxSebelumnya,
+    detailTrxSebelumnya,
+    trxke,
+  ];
 }
 
 class MemberPaketStreamingProvider extends Cubit<MemberPaketStreamingState> {
   final ProdukService _produkService = ProdukService();
 
   MemberPaketStreamingProvider()
-      : super(
-          MemberPaketStreamingState(
-            tujuanFocusNode: FocusNode(),
-            searchProviderController: TextEditingController(),
-            searchProductController: TextEditingController(),
-            tujuanController: TextEditingController(),
-          ),
-        );
+    : super(
+        MemberPaketStreamingState(
+          tujuanFocusNode: FocusNode(),
+          searchProviderController: TextEditingController(),
+          searchProductController: TextEditingController(),
+          tujuanController: TextEditingController(),
+        ),
+      );
 
   @override
   Future<void> close() {
@@ -236,8 +236,10 @@ class MemberPaketStreamingProvider extends Cubit<MemberPaketStreamingState> {
       ),
     );
 
-    KonfirmasiPinDialog.show<MemberPaketStreamingProvider,
-        MemberPaketStreamingState>(
+    KonfirmasiPinDialog.show<
+      MemberPaketStreamingProvider,
+      MemberPaketStreamingState
+    >(
       context,
       // Title & Subtitle default
       title:
@@ -552,7 +554,10 @@ class MemberPaketStreamingProvider extends Cubit<MemberPaketStreamingState> {
       ),
     );
 
-    pushNamed(MemberPaketStreamingKonfirmasiTransaksiPage.routeName);
+    pushNamed(
+      MemberPaketStreamingKonfirmasiTransaksiPage.routeName,
+      arguments: this,
+    );
   }
 
   void _setTrxSebelumnyaFromResponse(BayarResponse data) {
@@ -681,8 +686,9 @@ class MemberPaketStreamingProvider extends Cubit<MemberPaketStreamingState> {
 
     // Validasi prefix
     final isValidPrefix = provider.prefixList.any((prefix) {
-      final maxRange =
-          tujuan.length < prefix.length ? tujuan.length : prefix.length;
+      final maxRange = tujuan.length < prefix.length
+          ? tujuan.length
+          : prefix.length;
       return prefix.startsWith(tujuan.substring(0, maxRange));
     });
 
@@ -700,5 +706,5 @@ class MemberPaketStreamingProvider extends Cubit<MemberPaketStreamingState> {
 }
 
 MemberPaketStreamingProvider getMemberPaketStreamingProvider(
-        BuildContext context) =>
-    context.read<MemberPaketStreamingProvider>();
+  BuildContext context,
+) => context.read<MemberPaketStreamingProvider>();

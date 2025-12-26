@@ -36,10 +36,12 @@ class MemberDompetDigitalProdukPage extends StatefulWidget {
       _MemberDompetDigitalProdukPageState();
 }
 
-class _MemberDompetDigitalProdukPageState extends State<MemberDompetDigitalProdukPage> {
+class _MemberDompetDigitalProdukPageState
+    extends State<MemberDompetDigitalProdukPage> {
   final _shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
-  MemberDompetDigitalProvider get _provider => getMemberDompetDigitalProvider(context);
+  MemberDompetDigitalProvider get _provider =>
+      getMemberDompetDigitalProvider(context);
 
   void closePage() {
     _provider.resetProduct();
@@ -126,7 +128,8 @@ class _MemberDompetDigitalProdukPageState extends State<MemberDompetDigitalProdu
             child: ButtonCheckout(
               isDisabled: isDisabled,
               selectedProduct: state.selectedProduct,
-              onContinue: () => getMemberDompetDigitalProvider(context).setNewKonfirmasi(),
+              onContinue: () =>
+                  getMemberDompetDigitalProvider(context).setNewKonfirmasi(),
             ),
           );
         },

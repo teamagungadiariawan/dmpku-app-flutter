@@ -32,7 +32,6 @@ class _GuestAktivasiVoucherProdukPageState
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
-    getAktivasiVoucherProvider(context).resetProduct();
     pop();
   }
 
@@ -107,7 +106,7 @@ class _GuestAktivasiVoucherProdukPageState
                     padding: EdgeInsets.only(bottom: bottomInset),
                     child: ButtonCheckout(
                       isDisabled:
-                      state.selectedProduct.idproduk == 0 ||
+                          state.selectedProduct.idproduk == 0 ||
                           state.apiFetchProductStatus.isLoading,
                       selectedProduct: state.selectedProduct,
                       onContinue: () => PilihMetodeVoucherDialog.show(context),
