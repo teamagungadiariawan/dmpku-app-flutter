@@ -65,6 +65,9 @@ class $AssetsImgGen {
   /// Directory path: assets/img/bank
   $AssetsImgBankGen get bank => const $AssetsImgBankGen();
 
+  /// File path: assets/img/banner.png
+  AssetGenImage get banner => const AssetGenImage('assets/img/banner.png');
+
   /// Directory path: assets/img/beranda
   $AssetsImgBerandaGen get beranda => const $AssetsImgBerandaGen();
 
@@ -135,6 +138,7 @@ class $AssetsImgGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    banner,
     bgPattern,
     bgSplash,
     borderBottom,
