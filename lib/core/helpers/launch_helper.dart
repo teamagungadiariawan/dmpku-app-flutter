@@ -61,12 +61,41 @@ Future<void> openBantuanWa(BuildContext context) async {
 
 Future<void> openMapByQuery(String query) async {
   final String encodedQuery = Uri.encodeComponent(query);
-  final Uri url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$encodedQuery');
+  final Uri url = Uri.parse(
+    'https://www.google.com/maps/search/?api=1&query=$encodedQuery',
+  );
 
-  if (!await launchUrl(
-    url,
-    mode: LaunchMode.externalApplication,
-  )) {
+  if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
     throw Exception('Gagal buka maps buat: $query');
+  }
+}
+
+Future<void> launchBantuanWaByMessage({
+  String? phoneNumber,
+  String? text,
+}) async {
+  try {
+    String link;
+
+    if (phoneNumber != null && phoneNumber.isNotEmpty) {
+      link =
+          'https://wa.me/$phoneNumber?text=${Uri.encodeComponent(text ?? '')}';
+    } else {
+      final waCs = await SecureStorageHelper.instance.getWacs();
+      if (waCs == null) {
+        showErrorMessage('Nomor WhatsApp belum tersedia');
+        return;
+      }
+      link = '$waCs&text=${Uri.encodeComponent(text ?? '')}';
+    }
+
+    if (await canLaunchUrl(Uri.parse(link))) {
+      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+    } else {
+      showErrorMessage('Gagal membuka WhatsApp');
+    }
+  } catch (e) {
+    debugPrint('Error: $e');
+    showErrorMessage('Terjadi kesalahan saat membuka WhatsApp');
   }
 }

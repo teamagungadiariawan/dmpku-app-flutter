@@ -3,6 +3,8 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
+import 'package:dmpku/pages/member/isistok/member_mutasi_isi_stok_page.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/circle_pattern.dart';
 import 'package:dmpku/widgets/custom_button.dart';
@@ -32,7 +34,9 @@ class MemberIsiStokHeader extends StatelessWidget {
             ),
           ),
           Positioned.fill(
-            child: Column(children: [_buildAppBar(context), _buildInfoStok(context)]),
+            child: Column(
+              children: [_buildAppBar(context), _buildInfoStok(context)],
+            ),
           ),
         ],
       ),
@@ -108,7 +112,9 @@ class MemberIsiStokHeader extends StatelessWidget {
                             height: 30,
                             child: Shimmer.fromColors(
                               baseColor: context.muted,
-                              highlightColor: context.muted.withValues(alpha: 0.5),
+                              highlightColor: context.muted.withValues(
+                                alpha: 0.5,
+                              ),
                               child: Container(
                                 height: 32,
                                 width: 80,
@@ -148,7 +154,10 @@ class MemberIsiStokHeader extends StatelessWidget {
               ),
               CustomButton(
                 text: "Riwayat Isi Stok",
-                onPressed: () {},
+                onPressed: () {
+                  getMemberIsiStokProvider(context).refreshMutasiDeposit();
+                  pushNamed(MemberMutasiIsiStokPage.routeName);
+                },
                 icon: MdiIcons.receiptTextClockOutline,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 height: 30,

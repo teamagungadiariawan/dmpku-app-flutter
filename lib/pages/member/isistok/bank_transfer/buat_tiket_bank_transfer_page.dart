@@ -73,247 +73,260 @@ class _BuatTiketBankTransferPageState extends State<BuatTiketBankTransferPage> {
     getMemberIsiStokProvider(context).fetchListBankTransfer();
   }
 
+  void closePage() {
+    getMemberIsiStokProvider(context).resetBankTransfer();
+    pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        // Tombol tetep nempel di bawah layar (Sticky Footer)
-        bottomNavigationBar: Padding(
-          padding: paddingPage.copyWith(bottom: paddingPage.bottom + 10),
-          child: BlocBuilder<MemberIsiStokProvider, MemberIsiStokState>(
-            builder: (context, state) {
-              return CustomButton(
-                text: "Buat Tiket",
-                onPressed: () {
-                  var nominal = FromCurrency(_amountController.text);
-                  if (nominal < 20000) {
-                    showWarningMessage(
-                      "Nominal minimal isi stok adalah Rp 20.000",
-                    );
-                    return;
-                  }
+      child: WillPopScope(
+        onWillPop: () async {
+          debugPrint("WillPopScope: onWillPop");
+          closePage();
+          return true; // true = izinkan pop
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          bottomNavigationBar: Padding(
+            padding: paddingPage.copyWith(bottom: paddingPage.bottom + 10),
+            child: BlocBuilder<MemberIsiStokProvider, MemberIsiStokState>(
+              builder: (context, state) {
+                return CustomButton(
+                  text: "Buat Tiket",
+                  onPressed: () {
+                    var nominal = FromCurrency(_amountController.text);
+                    if (nominal < 20000) {
+                      showWarningMessage(
+                        "Nominal minimal isi stok adalah Rp 20.000",
+                      );
+                      return;
+                    }
 
-                  var idbank = selectedBankTransfer.idbank;
-                  if (idbank == 0) {
-                    showWarningMessage(
-                      "Pilih metode isi stok terlebih dahulu.",
-                    );
-                    return;
-                  }
+                    var idbank = selectedBankTransfer.idbank;
+                    if (idbank == 0) {
+                      showWarningMessage(
+                        "Pilih metode isi stok terlebih dahulu.",
+                      );
+                      return;
+                    }
 
-                  getMemberIsiStokProvider(
-                    context,
-                  ).buatTiketBankTransfer(idbank: idbank, nominal: nominal);
-                },
-                isLoading: state.apiBuatTiketBankStatus.isLoading,
-              );
-            },
+                    getMemberIsiStokProvider(
+                      context,
+                    ).buatTiketBankTransfer(idbank: idbank, nominal: nominal);
+                  },
+                  isLoading: state.apiBuatTiketBankStatus.isLoading,
+                );
+              },
+            ),
           ),
-        ),
-        // BODY UTAMA: Pake RefreshIndicator biar tetep bisa tarik layarnya buat refresh
-        body: Column(
-          children: [
-            // 1. Header (Ikut Scroll)
-            _buildHeaderSection(context),
-            Gap(5),
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: _handleRefresh,
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  // Pastiin selalu bisa discroll
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Gap(5),
-                      Padding(
-                        padding: paddingPage,
-                        child: Container(
-                          padding: paddingCard,
-                          decoration: BoxDecoration(
-                            color: blue[300]!.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: blue[500]!),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                MdiIcons.informationSlabCircle,
-                                color: blue[600]!,
-                                size: 20,
-                              ),
-                              Gap(5),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Penting",
-                                      style: context.bodyMedium
-                                          .withWeight(FontWeight.w600)
-                                          .withColor(blue[600]!),
-                                    ),
-                                    Gap(4),
-                                    RichText(
-                                      text: TextSpan(
-                                        style: context.captionRegular.withColor(
-                                          blue[600]!,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text:
-                                                "\u2022 Isi stok via Transfer Bank ",
-                                          ),
-                                          TextSpan(
-                                            text: "Bebas Biaya Admin.",
-                                            style: context.captionRegular
-                                                .withWeight(FontWeight.w600)
-                                                .withColor(blue[600]!),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        style: context.captionRegular.withColor(
-                                          blue[600]!,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text:
-                                                "\u2022 Sistem akan memberikan ",
-                                          ),
-                                          TextSpan(
-                                            text: "Kode Unik",
-                                            style: context.captionRegular
-                                                .withWeight(FontWeight.w600)
-                                                .withColor(blue[600]!),
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                " Sistem akan memberikan (misal: Rp 20.",
-                                          ),
-                                          TextSpan(
-                                            text: "123",
-                                            style: context.captionRegular
-                                                .withWeight(FontWeight.w600)
-                                                .withColor(blue[600]!),
-                                          ),
-                                          TextSpan(text: ")."),
-                                        ],
-                                      ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        style: context.captionRegular.withColor(
-                                          blue[600]!,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text: "\u2022 Wajib transfer ",
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                "sesuai nominal tiket hingga 3 digit",
-                                            style: context.captionRegular
-                                                .withWeight(FontWeight.w600)
-                                                .withColor(blue[600]!),
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                " terakhir agar saldo masuk otomatis.",
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      // 2. Judul Section List
-                      Padding(
-                        padding: paddingPage.copyWith(bottom: 0, top: 5),
-                        child: Text(
-                          "Pilih Metode Isi Stok",
-                          style: context.bodyLarge.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-
-                      Gap(5),
-
-                      // 3. List Bank (Standard ListView)
-                      // Kita bungkus Padding biar rapi kiri-kanannya
-                      Padding(
-                        padding: paddingPage.copyWith(top: 0),
-                        child:
-                            BlocBuilder<
-                              MemberIsiStokProvider,
-                              MemberIsiStokState
-                            >(
-                              buildWhen: (previous, current) =>
-                                  previous.listBankTransfer !=
-                                      current.listBankTransfer ||
-                                  previous.apiGetListProviderStatus !=
-                                      current.apiGetListProviderStatus,
-                              builder: (context, state) {
-                                // Kalo Loading
-                                if (state.apiGetListProviderStatus.isLoading) {
-                                  return const CardProviderListShimmer(
-                                    itemCount: 6,
-                                  );
-                                }
-
-                                // Kalo Kosong/Error
-                                if (state.listBankTransfer.isEmpty) {
-                                  return Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Text(
-                                        "Metode pembayaran tidak tersedia.",
-                                        style: context.bodyMedium,
-                                      ),
-                                    ),
-                                  );
-                                }
-
-                                // Kalo Ada Data -> ListView Builder Biasa
-                                return ListView.separated(
-                                  // PENTING: shrinkWrap & physics ini kuncinya
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  padding: EdgeInsets.zero,
-                                  itemCount: state.listBankTransfer.length,
-                                  separatorBuilder: (c, i) => const Gap(10),
-                                  itemBuilder: (context, index) {
-                                    final bank = state.listBankTransfer[index];
-                                    final isSelected =
-                                        selectedBankTransfer.value ==
-                                        bank.value;
-                                    return _buildBankItem(
-                                      context,
-                                      bank,
-                                      isSelected,
-                                    );
-                                  },
-                                );
-                              },
+          // BODY UTAMA: Pake RefreshIndicator biar tetep bisa tarik layarnya buat refresh
+          body: Column(
+            children: [
+              // 1. Header (Ikut Scroll)
+              _buildHeaderSection(context),
+              Gap(5),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: _handleRefresh,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    // Pastiin selalu bisa discroll
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Gap(5),
+                        Padding(
+                          padding: paddingPage,
+                          child: Container(
+                            padding: paddingCard,
+                            decoration: BoxDecoration(
+                              color: blue[300]!.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: blue[500]!),
                             ),
-                      ),
-                    ],
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  MdiIcons.informationSlabCircle,
+                                  color: blue[600]!,
+                                  size: 20,
+                                ),
+                                Gap(5),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Penting",
+                                        style: context.bodyMedium
+                                            .withWeight(FontWeight.w600)
+                                            .withColor(blue[600]!),
+                                      ),
+                                      Gap(4),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: context.captionRegular
+                                              .withColor(blue[600]!),
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  "\u2022 Isi stok via Transfer Bank ",
+                                            ),
+                                            TextSpan(
+                                              text: "Bebas Biaya Admin.",
+                                              style: context.captionRegular
+                                                  .withWeight(FontWeight.w600)
+                                                  .withColor(blue[600]!),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: context.captionRegular
+                                              .withColor(blue[600]!),
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  "\u2022 Sistem akan memberikan ",
+                                            ),
+                                            TextSpan(
+                                              text: "Kode Unik",
+                                              style: context.captionRegular
+                                                  .withWeight(FontWeight.w600)
+                                                  .withColor(blue[600]!),
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  " Sistem akan memberikan (misal: Rp 20.",
+                                            ),
+                                            TextSpan(
+                                              text: "123",
+                                              style: context.captionRegular
+                                                  .withWeight(FontWeight.w600)
+                                                  .withColor(blue[600]!),
+                                            ),
+                                            TextSpan(text: ")."),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: context.captionRegular
+                                              .withColor(blue[600]!),
+                                          children: [
+                                            TextSpan(
+                                              text: "\u2022 Wajib transfer ",
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  "sesuai nominal tiket hingga 3 digit",
+                                              style: context.captionRegular
+                                                  .withWeight(FontWeight.w600)
+                                                  .withColor(blue[600]!),
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  " terakhir agar saldo masuk otomatis.",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // 2. Judul Section List
+                        Padding(
+                          padding: paddingPage.copyWith(bottom: 0, top: 5),
+                          child: Text(
+                            "Pilih Metode Isi Stok",
+                            style: context.bodyLarge.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+
+                        Gap(5),
+
+                        // 3. List Bank (Standard ListView)
+                        // Kita bungkus Padding biar rapi kiri-kanannya
+                        Padding(
+                          padding: paddingPage.copyWith(top: 0),
+                          child:
+                              BlocBuilder<
+                                MemberIsiStokProvider,
+                                MemberIsiStokState
+                              >(
+                                buildWhen: (previous, current) =>
+                                    previous.listBankTransfer !=
+                                        current.listBankTransfer ||
+                                    previous.apiGetListProviderStatus !=
+                                        current.apiGetListProviderStatus,
+                                builder: (context, state) {
+                                  // Kalo Loading
+                                  if (state
+                                      .apiGetListProviderStatus
+                                      .isLoading) {
+                                    return const CardProviderListShimmer(
+                                      itemCount: 6,
+                                    );
+                                  }
+
+                                  // Kalo Kosong/Error
+                                  if (state.listBankTransfer.isEmpty) {
+                                    return Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Text(
+                                          "Metode pembayaran tidak tersedia.",
+                                          style: context.bodyMedium,
+                                        ),
+                                      ),
+                                    );
+                                  }
+
+                                  // Kalo Ada Data -> ListView Builder Biasa
+                                  return ListView.separated(
+                                    // PENTING: shrinkWrap & physics ini kuncinya
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    padding: EdgeInsets.zero,
+                                    itemCount: state.listBankTransfer.length,
+                                    separatorBuilder: (c, i) => const Gap(10),
+                                    itemBuilder: (context, index) {
+                                      final bank =
+                                          state.listBankTransfer[index];
+                                      final isSelected =
+                                          selectedBankTransfer.value ==
+                                          bank.value;
+                                      return _buildBankItem(
+                                        context,
+                                        bank,
+                                        isSelected,
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

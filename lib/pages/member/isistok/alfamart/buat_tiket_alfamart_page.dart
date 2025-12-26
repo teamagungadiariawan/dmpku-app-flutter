@@ -7,10 +7,12 @@ import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
 import 'package:dmpku/widgets/circle_pattern.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/custom_button.dart';
+import 'package:dmpku/widgets/custom_local_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,12 +34,12 @@ class _BuatTiketAlfamartPageState extends State<BuatTiketAlfamartPage> {
   final TextEditingController _amountController = TextEditingController();
 
   final List<String> _quickAmounts = const [
-    '20.000',
     '50.000',
     '100.000',
     '200.000',
     '500.000',
     '1.000.000',
+    '2.000.000',
   ];
 
   @override
@@ -48,104 +50,160 @@ class _BuatTiketAlfamartPageState extends State<BuatTiketAlfamartPage> {
 
   void _setAmount(String value) {
     String rawValue = value == '1 Juta' ? '1.000.000' : value;
+    rawValue = value == '2 Juta' ? '2.000.000' : value;
     _amountController.value = TextEditingValue(
       text: rawValue,
       selection: TextSelection.collapsed(offset: rawValue.length),
     );
   }
 
+  void closePage() {
+    pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        bottomNavigationBar: Padding(
-          padding: paddingPage.copyWith(bottom: paddingPage.bottom + 10),
-          child: BlocBuilder<MemberIsiStokProvider, MemberIsiStokState>(
-            builder: (context, state) {
-              return CustomButton(
-                text: "Buat Tiket Alfamart",
-                onPressed: () async {
-                  var nominal = FromCurrency(_amountController.text);
-                  if (nominal < 20000) {
-                    showWarningMessage(
-                      "Nominal minimal isi stok adalah Rp 20.000",
-                    );
-                    return;
-                  }
+      child: WillPopScope(
+        onWillPop: () async {
+          debugPrint("WillPopScope: onWillPop");
+          closePage();
+          return true; // true = izinkan pop
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          bottomNavigationBar: Padding(
+            padding: paddingPage.copyWith(bottom: paddingPage.bottom + 10),
+            child: BlocBuilder<MemberIsiStokProvider, MemberIsiStokState>(
+              builder: (context, state) {
+                return CustomButton(
+                  text: "Buat Tiket Alfamart",
+                  onPressed: () async {
+                    var nominal = FromCurrency(_amountController.text);
+                    if (nominal < 50000) {
+                      showWarningMessage(
+                        "Nominal minimal isi stok adalah Rp 50.000",
+                      );
+                      return;
+                    }
 
-                  final success = await getMemberIsiStokProvider(
-                    context,
-                  ).buatTiketAlfamart(nominal: nominal);
-                  
-                  if (success && mounted) {
-                     pop();
-                  }
-                },
-                isLoading: state.apiBuatAlfamartStatus.isLoading,
-              );
-            },
+                    final success = await getMemberIsiStokProvider(
+                      context,
+                    ).buatTiketAlfamart(nominal: nominal);
+                  },
+                  isLoading: state.apiBuatAlfamartStatus.isLoading,
+                );
+              },
+            ),
           ),
-        ),
-        body: Column(
-          children: [
-            _buildHeaderSection(context),
-            Gap(5),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Gap(5),
-                    Padding(
-                      padding: paddingPage,
-                      child: Container(
-                        padding: paddingCard,
-                        decoration: BoxDecoration(
-                          color: blue[300]!.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: blue[500]!),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              MdiIcons.informationSlabCircle,
-                              color: blue[600]!,
-                              size: 20,
-                            ),
-                            Gap(5),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Informasi Alfamart",
-                                    style: context.bodyMedium
-                                        .withWeight(FontWeight.w600)
-                                        .withColor(blue[600]!),
-                                  ),
-                                  Gap(4),
-                                  Text(
-                                    "Metode pembayaran Alfamart akan dikenakan biaya admin sebesar Rp 3.000.",
-                                    style: context.captionRegular.withColor(
-                                      blue[600]!,
-                                    ),
-                                  ),
-                                ],
+          body: Column(
+            children: [
+              _buildHeaderSection(context),
+              Gap(5),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Gap(5),
+                      Padding(
+                        padding: paddingPage,
+                        child: Container(
+                          padding: paddingCard,
+                          decoration: BoxDecoration(
+                            color: blue[300]!.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: blue[500]!),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                MdiIcons.informationSlabCircle,
+                                color: blue[600]!,
+                                size: 20,
                               ),
-                            ),
-                          ],
+                              Gap(5),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Informasi Alfamart",
+                                      style: context.bodyMedium
+                                          .withWeight(FontWeight.w600)
+                                          .withColor(blue[600]!),
+                                    ),
+                                    Gap(4),
+                                    Text(
+                                      "Metode pembayaran Alfamart akan dikenakan biaya admin sebesar Rp 3.000.",
+                                      style: context.captionRegular.withColor(
+                                        blue[600]!,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      Card(
+                        margin: paddingPage,
+                        color: context.card,
+
+                        child: Padding(
+                          padding: paddingCard,
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: context.border),
+                                  color: context.primary.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: CustomLocalImage(
+                                  size: 25,
+                                  imagePath:
+                                      Assets.img.bank.icMethodAlfamart.path,
+                                ),
+                              ),
+                              Gap(12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Alfamart",
+                                      style: context.bodyMedium.withWeight(
+                                        FontWeight.w600,
+                                      ),
+                                    ),
+                                    Gap(4),
+                                    Text(
+                                      "Metode pembayaran Alfamart akan dikenakan biaya admin sebesar Rp 3.000.",
+                                      style: context.bodySmall.withColor(
+                                        context.mutedForeground,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -264,7 +322,7 @@ class _BuatTiketAlfamartPageState extends State<BuatTiketAlfamartPage> {
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  "Minimal Deposit Rp 20.000",
+                  "Minimal Deposit Rp 50.000",
                   textAlign: TextAlign.right,
                   style: context.bodyMedium.withColor(Colors.white),
                 ),
@@ -290,7 +348,9 @@ class _BuatTiketAlfamartPageState extends State<BuatTiketAlfamartPage> {
       itemCount: _quickAmounts.length,
       itemBuilder: (context, index) {
         final amount = _quickAmounts[index];
-        final label = (index == 5) ? "1 Juta" : amount;
+        String label = amount;
+        if (amount == '1.000.000') label = "1 Juta";
+        if (amount == '2.000.000') label = "2 Juta";
 
         return Material(
           color: Colors.transparent,

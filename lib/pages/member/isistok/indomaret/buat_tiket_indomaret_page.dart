@@ -7,10 +7,12 @@ import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/gen/assets.gen.dart' show Assets;
 import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
 import 'package:dmpku/widgets/circle_pattern.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
 import 'package:dmpku/widgets/custom_button.dart';
+import 'package:dmpku/widgets/custom_local_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,12 +34,12 @@ class _BuatTiketIndomaretPageState extends State<BuatTiketIndomaretPage> {
   final TextEditingController _amountController = TextEditingController();
 
   final List<String> _quickAmounts = const [
-    '20.000',
     '50.000',
     '100.000',
     '200.000',
     '500.000',
     '1.000.000',
+    '2.000.000',
   ];
 
   @override
@@ -48,6 +50,7 @@ class _BuatTiketIndomaretPageState extends State<BuatTiketIndomaretPage> {
 
   void _setAmount(String value) {
     String rawValue = value == '1 Juta' ? '1.000.000' : value;
+    rawValue = value == '2 Juta' ? '2.000.000' : value;
     _amountController.value = TextEditingValue(
       text: rawValue,
       selection: TextSelection.collapsed(offset: rawValue.length),
@@ -68,9 +71,9 @@ class _BuatTiketIndomaretPageState extends State<BuatTiketIndomaretPage> {
                 text: "Buat Tiket Indomaret",
                 onPressed: () async {
                   var nominal = FromCurrency(_amountController.text);
-                  if (nominal < 20000) {
+                  if (nominal < 50000) {
                     showWarningMessage(
-                      "Nominal minimal isi stok adalah Rp 20.000",
+                      "Nominal minimal isi stok adalah Rp 50.000",
                     );
                     return;
                   }
@@ -78,10 +81,6 @@ class _BuatTiketIndomaretPageState extends State<BuatTiketIndomaretPage> {
                   final success = await getMemberIsiStokProvider(
                     context,
                   ).buatTiketIndomaret(nominal: nominal);
-                  
-                  if (success && mounted) {
-                     pop();
-                  }
                 },
                 isLoading: state.apiBuatIndomaretStatus.isLoading,
               );
@@ -133,6 +132,54 @@ class _BuatTiketIndomaretPageState extends State<BuatTiketIndomaretPage> {
                                     style: context.captionRegular.withColor(
                                       blue[600]!,
                                     ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Card(
+                      margin: paddingPage,
+                      color: context.card,
+
+                      child: Padding(
+                        padding: paddingCard,
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: context.border),
+                                color: context.primary.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: CustomLocalImage(
+                                size: 25,
+                                imagePath:
+                                    Assets.img.bank.icMethodIndomaret.path,
+                              ),
+                            ),
+                            Gap(12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Indomaret",
+                                    style: context.bodyMedium.withWeight(
+                                      FontWeight.w600,
+                                    ),
+                                  ),
+                                  Gap(4),
+                                  Text(
+                                    "Metode pembayaran Indomaret akan dikenakan biaya admin sebesar Rp 3.500.",
+                                    style: context.bodySmall.withColor(
+                                      context.mutedForeground,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
@@ -264,7 +311,7 @@ class _BuatTiketIndomaretPageState extends State<BuatTiketIndomaretPage> {
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  "Minimal Deposit Rp 20.000",
+                  "Minimal Deposit Rp 50.000",
                   textAlign: TextAlign.right,
                   style: context.bodyMedium.withColor(Colors.white),
                 ),
@@ -290,7 +337,9 @@ class _BuatTiketIndomaretPageState extends State<BuatTiketIndomaretPage> {
       itemCount: _quickAmounts.length,
       itemBuilder: (context, index) {
         final amount = _quickAmounts[index];
-        final label = (index == 5) ? "1 Juta" : amount;
+        String label = amount;
+        if (amount == '1.000.000') label = "1 Juta";
+        if (amount == '2.000.000') label = "2 Juta";
 
         return Material(
           color: Colors.transparent,
