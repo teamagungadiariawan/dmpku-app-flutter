@@ -34,9 +34,13 @@ import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_p
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_subprovider_page.dart';
+import 'package:dmpku/pages/calculator/calculator_page.dart';
 import 'package:dmpku/pages/member/akun/daftar_devices/member_daftar_devices.dart';
 import 'package:dmpku/pages/member/akun/detail_akun/member_detail_akun_page.dart';
 import 'package:dmpku/pages/member/akun/favorit/member_daftar_favorit_page.dart';
+import 'package:dmpku/pages/member/banner/banner_page.dart';
+import 'package:dmpku/pages/member/kasir/member_catatan_page.dart';
+
 import 'package:dmpku/pages/member/isistok/alfamart/buat_tiket_alfamart_page.dart';
 import 'package:dmpku/pages/member/isistok/alfamart/detail_tiket_alfamart_page.dart';
 import 'package:dmpku/pages/member/isistok/bank_transfer/buat_tiket_bank_transfer_page.dart';
@@ -44,7 +48,9 @@ import 'package:dmpku/pages/member/isistok/bank_transfer/detail_tiket_bank_trans
 import 'package:dmpku/pages/member/isistok/indomaret/buat_tiket_indomaret_page.dart';
 import 'package:dmpku/pages/member/isistok/indomaret/detail_tiket_indomaret_page.dart';
 import 'package:dmpku/pages/member/isistok/member_isi_stok_page.dart';
+import 'package:dmpku/pages/member/isistok/member_mutasi_isi_stok_page.dart';
 import 'package:dmpku/pages/member/isistok/qris/buat_tiket_qris_page.dart';
+import 'package:dmpku/pages/member/nobu/progress_nobu_page.dart';
 import 'package:dmpku/pages/member/isistok/qris/detail_tiket_qris_page.dart';
 import 'package:dmpku/pages/member/isistok/va/buat_tiket_va_page.dart';
 import 'package:dmpku/pages/member/isistok/va/detail_tiket_va_page.dart';
@@ -281,6 +287,9 @@ class AppRouter {
           child: MemberMainPage(initialIndex: args ?? 0),
         );
 
+      case MemberCatatanPage.routeName:
+        return _customTransition(child: const MemberCatatanPage());
+
       // AKUN
       case MemberDetailAkunPage.routeName:
         return _customTransition(child: MemberDetailAkunPage());
@@ -314,6 +323,10 @@ class AppRouter {
         return _customTransition(child: BuatTiketQrisPage());
       case DetailTiketQrisPage.routeName:
         return _customTransition(child: DetailTiketQrisPage());
+      case MemberMutasiIsiStokPage.routeName:
+        return _customTransition(child: MemberMutasiIsiStokPage());
+      case ProgressNobuPage.routeName:
+        return _customTransition(child: const ProgressNobuPage());
 
       case CetakStrukElektrikPage.routeName:
         return _customTransition(child: CetakStrukElektrikPage());
@@ -651,6 +664,12 @@ class AppRouter {
         return _customTransition(
           child: const MemberPaketCuanKonfirmasiTransaksiPage(),
         );
+
+      case CalculatorPage.routeName:
+        return _customTransition(child: const CalculatorPage());
+
+      case BannerPage.routeName:
+        return _customTransition(child: const BannerPage());
 
       default:
         return null;

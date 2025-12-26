@@ -4,7 +4,6 @@ import 'package:dmpku/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-
 class SalesFeatureCard extends StatelessWidget {
   final List<MenuData> menus;
   final ValueChanged<String> onMenuTap;
@@ -46,7 +45,11 @@ class SalesFeatureCard extends StatelessWidget {
                 return MenuButton(
                   title: menu.title,
                   icon: menu.icon,
-                  onTap: () => onMenuTap(menu.title),
+                  onTap: () {
+                    if (menu.onTap != null) {
+                      menu.onTap!();
+                    }
+                  },
                 );
               },
             ),

@@ -14,6 +14,7 @@ class RiwayatFilterSheetScaffold extends StatelessWidget {
   final String subtitle;
   final VoidCallback onApply;
   final List<Widget> children;
+  final bool isLoading;
 
   const RiwayatFilterSheetScaffold({
     super.key,
@@ -21,6 +22,7 @@ class RiwayatFilterSheetScaffold extends StatelessWidget {
     required this.subtitle,
     required this.onApply,
     required this.children,
+    this.isLoading = false,
   });
 
   @override
@@ -93,6 +95,7 @@ class RiwayatFilterSheetScaffold extends StatelessWidget {
                 icon: LucideIcons.arrowRight,
                 text: "Terapkan Filter",
                 onPressed: onApply,
+                isLoading: isLoading,
               ),
             ),
             const Gap(15),

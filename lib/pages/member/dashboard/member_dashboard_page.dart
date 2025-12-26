@@ -5,8 +5,12 @@ import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/product_response.dart';
+import 'package:dmpku/pages/calculator/calculator_page.dart';
+import 'package:dmpku/pages/member/akun/favorit/member_daftar_favorit_page.dart';
+import 'package:dmpku/pages/member/banner/banner_page.dart' show BannerPage;
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_app_bar.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_header.dart';
+import 'package:dmpku/pages/member/kasir/member_catatan_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_voucher/member_aktivasi_voucher_provider.dart';
@@ -180,11 +184,39 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
   // ============================================================
 
   List<MenuData> get _salesMenus => [
-    MenuData('Kasir', Assets.img.menuPenjualan.icKasir.provider()),
-    MenuData('Catatan', Assets.img.menuPenjualan.icCatatan.provider()),
-    MenuData('Kalkulator', Assets.img.menuPenjualan.icKalkulator.provider()),
-    MenuData('Favorit', Assets.img.menuPenjualan.icFavorit.provider()),
-    MenuData('Banner', Assets.img.menuPenjualan.icBanner.provider()),
+    MenuData(
+      'Kasir',
+      Assets.img.menuPenjualan.icKasir.provider(),
+      onTap: () {},
+    ),
+    MenuData(
+      'Catatan',
+      Assets.img.menuPenjualan.icCatatan.provider(),
+      onTap: () {
+        pushNamed(MemberCatatanPage.routeName);
+      },
+    ),
+    MenuData(
+      'Kalkulator',
+      Assets.img.menuPenjualan.icKalkulator.provider(),
+      onTap: () {
+        pushNamed(CalculatorPage.routeName);
+      },
+    ),
+    MenuData(
+      'Favorit',
+      Assets.img.menuPenjualan.icFavorit.provider(),
+      onTap: () {
+        pushNamed(MemberDaftarFavoritPage.routeName);
+      },
+    ),
+    MenuData(
+      'Banner',
+      Assets.img.menuPenjualan.icBanner.provider(),
+      onTap: () {
+        pushNamed(BannerPage.routeName);
+      },
+    ),
   ];
 
   List<MenuData> get _isiUlangMenus => [
