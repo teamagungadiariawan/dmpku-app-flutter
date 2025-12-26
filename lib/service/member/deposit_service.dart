@@ -4,10 +4,12 @@ import 'package:dmpku/core/apiconfig/server_exception.dart';
 import 'package:dmpku/model/bank_transfer_response.dart';
 import 'package:dmpku/model/buat_tiket_response.dart';
 import 'package:dmpku/model/riwayat_tiket_response.dart';
+import 'package:dmpku/model/mutasi_deposit_response.dart';
 
 class DepositService {
   final _dio = ApiClient.dio;
 
+  // Bank Transfer
   Future<BaseResponse<BankTransferResponse>> getListBankTransfer() async {
     try {
       final response = await _dio.post(
@@ -154,9 +156,7 @@ class DepositService {
   }
 
   // QRIS
-  Future<BuatTiketQrisResponse> buatTiketQris({
-    required int nominal,
-  }) async {
+  Future<BuatTiketQrisResponse> buatTiketQris({required int nominal}) async {
     try {
       final response = await _dio.post(
         "member/deposit/qris/buatcode",
@@ -177,10 +177,7 @@ class DepositService {
 
   Future<RiwayatTiketQRISResponse> getRiwayatTiketQris() async {
     try {
-      final response = await _dio.post(
-        "member/deposit/qris/riwayat",
-        data: {},
-      );
+      final response = await _dio.post("member/deposit/qris/riwayat", data: {});
 
       final result = RiwayatTiketQRISResponse.fromJson(response.data);
 
@@ -198,7 +195,7 @@ class DepositService {
   Future<BaseResponse<VaBankResponse>> getListBankVa() async {
     try {
       final response = await _dio.post(
-        "member/deposit/va/listva",
+        "member/deposit/vabank/listva",
         data: {},
       );
 
@@ -223,7 +220,7 @@ class DepositService {
   }) async {
     try {
       final response = await _dio.post(
-        "member/deposit/va/buattiket",
+        "member/deposit/vabank/buatva",
         data: {"nominal": nominal, "idbank": idbank},
       );
 
@@ -242,11 +239,35 @@ class DepositService {
   Future<RiwayatTiketResponse> getRiwayatTiketVa() async {
     try {
       final response = await _dio.post(
-        "member/deposit/va/riwayat",
+        "member/deposit/vabank/riwayat",
         data: {},
       );
 
       final result = RiwayatTiketResponse.fromJson(response.data);
+
+      if (!result.status) {
+        throw ServerException.fromDio(r: response);
+      }
+
+      return result;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Mutasi Deposit
+  Future<MutasiDepositResponse> getMutasiDeposit({
+    required String waktuawal,
+    required String waktuakhir,
+    required int page,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "member/areamember/mutasisaldodeposit",
+        data: {"waktuawal": waktuawal, "waktuakhir": waktuakhir, "page": page},
+      );
+
+      final result = MutasiDepositResponse.fromJson(response.data);
 
       if (!result.status) {
         throw ServerException.fromDio(r: response);
