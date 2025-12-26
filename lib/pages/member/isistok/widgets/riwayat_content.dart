@@ -6,6 +6,7 @@ import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
+import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/member/isistok/alfamart/detail_tiket_alfamart_page.dart';
 import 'package:dmpku/pages/member/isistok/indomaret/detail_tiket_indomaret_page.dart';
 import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
@@ -15,6 +16,7 @@ import 'package:dmpku/pages/member/isistok/widgets/riwayat_filter_tabs.dart';
 import 'package:dmpku/pages/member/isistok/widgets/riwayat_list_bank_transfer.dart';
 import 'package:dmpku/pages/member/isistok/widgets/riwayat_list_bank_transfer_shimmer.dart';
 import 'package:dmpku/pages/member/isistok/widgets/riwayat_list_placeholder.dart';
+import 'package:dmpku/widgets/custom_local_image.dart';
 import 'package:dmpku/widgets/custom_network_image.dart';
 import 'package:dmpku/widgets/produk/refreshable_list.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +130,7 @@ class RiwayatListAlfamart extends StatelessWidget {
         if (state.apiRiwayatAlfamartStatus.isLoading) {
           return const RiwayatListBankTransferShimmer();
         }
-        
+
         return RefreshableList(
           padding: paddingPage.copyWith(bottom: 29),
           onRefresh: () async {
@@ -157,7 +159,9 @@ class RiwayatListAlfamart extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(8),
                 onTap: () {
-                  getMemberIsiStokProvider(context).setSelectedRiwayatAlfamart(tiket);
+                  getMemberIsiStokProvider(
+                    context,
+                  ).setSelectedRiwayatAlfamart(tiket);
                   pushNamed(DetailTiketAlfamartPage.routeName);
                 },
                 child: Column(
@@ -173,9 +177,9 @@ class RiwayatListAlfamart extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             padding: const EdgeInsets.all(8.0),
-                            child: CustomNetworkImage(
+                            child: CustomLocalImage(
                               size: 25,
-                              url: tiket.icon,
+                              imagePath: Assets.img.bank.icMethodAlfamart.path,
                             ),
                           ),
                           const Gap(12),
@@ -258,7 +262,7 @@ class RiwayatListIndomaret extends StatelessWidget {
         if (state.apiRiwayatIndomaretStatus.isLoading) {
           return const RiwayatListBankTransferShimmer();
         }
-        
+
         return RefreshableList(
           padding: paddingPage.copyWith(bottom: 29),
           onRefresh: () async {
@@ -287,7 +291,9 @@ class RiwayatListIndomaret extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(8),
                 onTap: () {
-                  getMemberIsiStokProvider(context).setSelectedRiwayatIndomaret(tiket);
+                  getMemberIsiStokProvider(
+                    context,
+                  ).setSelectedRiwayatIndomaret(tiket);
                   pushNamed(DetailTiketIndomaretPage.routeName);
                 },
                 child: Column(
@@ -303,9 +309,9 @@ class RiwayatListIndomaret extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             padding: const EdgeInsets.all(8.0),
-                            child: CustomNetworkImage(
+                            child: CustomLocalImage(
                               size: 25,
-                              url: tiket.icon,
+                              imagePath: Assets.img.bank.icMethodIndomaret.path,
                             ),
                           ),
                           const Gap(12),
@@ -388,7 +394,7 @@ class RiwayatListVa extends StatelessWidget {
         if (state.apiRiwayatVaStatus.isLoading) {
           return const RiwayatListBankTransferShimmer();
         }
-        
+
         return RefreshableList(
           padding: paddingPage.copyWith(bottom: 29),
           onRefresh: () async {
@@ -518,7 +524,7 @@ class RiwayatListQris extends StatelessWidget {
         if (state.apiRiwayatQrisStatus.isLoading) {
           return const RiwayatListBankTransferShimmer();
         }
-        
+
         return RefreshableList(
           padding: paddingPage.copyWith(bottom: 29),
           onRefresh: () async {
@@ -547,7 +553,9 @@ class RiwayatListQris extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(8),
                 onTap: () {
-                  getMemberIsiStokProvider(context).setSelectedRiwayatQris(tiket);
+                  getMemberIsiStokProvider(
+                    context,
+                  ).setSelectedRiwayatQris(tiket);
                   pushNamed(DetailTiketQrisPage.routeName);
                 },
                 child: Column(
@@ -563,9 +571,9 @@ class RiwayatListQris extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             padding: const EdgeInsets.all(8.0),
-                            child: CustomNetworkImage(
+                            child: CustomLocalImage(
                               size: 25,
-                              url: tiket.icon,
+                              imagePath: Assets.img.bank.icMethodQris.path,
                             ),
                           ),
                           const Gap(12),

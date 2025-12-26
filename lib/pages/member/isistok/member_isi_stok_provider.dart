@@ -7,8 +7,13 @@ import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
 import 'package:dmpku/model/bank_transfer_response.dart';
 import 'package:dmpku/model/riwayat_tiket_response.dart';
+import 'package:dmpku/pages/member/isistok/alfamart/detail_tiket_alfamart_page.dart';
 import 'package:dmpku/pages/member/isistok/bank_transfer/detail_tiket_bank_transfer_page.dart';
+import 'package:dmpku/pages/member/isistok/indomaret/detail_tiket_indomaret_page.dart';
+import 'package:dmpku/pages/member/isistok/qris/detail_tiket_qris_page.dart';
+import 'package:dmpku/pages/member/isistok/va/detail_tiket_va_page.dart';
 import 'package:dmpku/service/member/deposit_service.dart';
+import 'package:dmpku/model/mutasi_deposit_response.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,6 +85,18 @@ class MemberIsiStokState extends Equatable {
   final List<RiwayatTiketQRISModel> listRiwayatQris;
   final RiwayatTiketQRISModel selectedRiwayatQris;
 
+  // ==========================================
+  // 6. MUTASI DEPOSIT STATE
+  // ==========================================
+  final ApiStatus apiMutasiStatus;
+  final String apiMutasiMessage;
+  final List<MutasiDepositModel> listMutasiDeposit;
+  final ListGroupedMutasiDepositResponse listMutasiDepositGrouped;
+  final bool hasMoreMutasi;
+  final int pageMutasi;
+  final DateTime? dateStartFilter;
+  final DateTime? dateEndFilter;
+
   const MemberIsiStokState({
     this.focusNodeNominal,
     this.tiketDuration = const Duration(seconds: -1),
@@ -129,6 +146,17 @@ class MemberIsiStokState extends Equatable {
     this.apiRiwayatQrisMessage = '',
     this.listRiwayatQris = const [],
     this.selectedRiwayatQris = DEFAULT_RIWAYAT_TIKET_QRIS,
+
+    // Mutasi Defaults
+    this.apiMutasiStatus = ApiStatus.initial,
+    this.apiMutasiMessage = '',
+    this.listMutasiDeposit = const [],
+    this.listMutasiDepositGrouped =
+        DEFAULT_LIST_GROUPED_MUTASI_DEPOSIT_RESPONSE,
+    this.hasMoreMutasi = true,
+    this.pageMutasi = 1,
+    this.dateStartFilter,
+    this.dateEndFilter,
   });
 
   MemberIsiStokState copyWith({
@@ -180,6 +208,16 @@ class MemberIsiStokState extends Equatable {
     String? apiRiwayatQrisMessage,
     List<RiwayatTiketQRISModel>? listRiwayatQris,
     RiwayatTiketQRISModel? selectedRiwayatQris,
+
+    // Mutasi Params
+    ApiStatus? apiMutasiStatus,
+    String? apiMutasiMessage,
+    List<MutasiDepositModel>? listMutasiDeposit,
+    ListGroupedMutasiDepositResponse? listMutasiDepositGrouped,
+    bool? hasMoreMutasi,
+    int? pageMutasi,
+    DateTime? dateStartFilter,
+    DateTime? dateEndFilter,
   }) {
     return MemberIsiStokState(
       focusNodeNominal: focusNodeNominal ?? this.focusNodeNominal,
@@ -247,6 +285,17 @@ class MemberIsiStokState extends Equatable {
           apiRiwayatQrisMessage ?? this.apiRiwayatQrisMessage,
       listRiwayatQris: listRiwayatQris ?? this.listRiwayatQris,
       selectedRiwayatQris: selectedRiwayatQris ?? this.selectedRiwayatQris,
+
+      // Mutasi Copy
+      apiMutasiStatus: apiMutasiStatus ?? this.apiMutasiStatus,
+      apiMutasiMessage: apiMutasiMessage ?? this.apiMutasiMessage,
+      listMutasiDeposit: listMutasiDeposit ?? this.listMutasiDeposit,
+      listMutasiDepositGrouped:
+          listMutasiDepositGrouped ?? this.listMutasiDepositGrouped,
+      hasMoreMutasi: hasMoreMutasi ?? this.hasMoreMutasi,
+      pageMutasi: pageMutasi ?? this.pageMutasi,
+      dateStartFilter: dateStartFilter ?? this.dateStartFilter,
+      dateEndFilter: dateEndFilter ?? this.dateEndFilter,
     );
   }
 
@@ -300,6 +349,16 @@ class MemberIsiStokState extends Equatable {
     apiRiwayatQrisMessage,
     listRiwayatQris,
     selectedRiwayatQris,
+
+    // Mutasi Props
+    apiMutasiStatus,
+    apiMutasiMessage,
+    listMutasiDeposit,
+    listMutasiDepositGrouped,
+    hasMoreMutasi,
+    pageMutasi,
+    dateStartFilter,
+    dateEndFilter,
   ];
 }
 
@@ -308,7 +367,13 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
   Timer? _debounceTimer;
 
   MemberIsiStokProvider()
-    : super(MemberIsiStokState(focusNodeNominal: FocusNode()));
+    : super(
+        MemberIsiStokState(
+          focusNodeNominal: FocusNode(),
+          dateStartFilter: DateTime.now().subtract(const Duration(days: 1)),
+          dateEndFilter: DateTime.now(),
+        ),
+      );
 
   // ===========================================================================
   // 1. BANK TRANSFER LOGIC
@@ -509,6 +574,16 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
     }
   }
 
+  void resetBankTransfer() {
+    emit(
+      state.copyWith(
+        apiGetListProviderStatus: ApiStatus.initial,
+        apiGetListProviderMessage: '',
+        listBankTransfer: [],
+      ),
+    );
+  }
+
   // ===========================================================================
   // 2. VIRTUAL ACCOUNT (VA) LOGIC
   // ===========================================================================
@@ -599,6 +674,12 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
         ),
       );
 
+      final data = result.data;
+      if (data != null) {
+        setSelectedRiwayatVa(data);
+        pushReplacementNamed(DetailTiketVaPage.routeName);
+      }
+
       // Refresh list riwayat
       fetchRiwayatTiketVa();
       return true;
@@ -653,6 +734,16 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
     }
   }
 
+  void resetVa() {
+    emit(
+      state.copyWith(
+        apiGetListVaStatus: ApiStatus.initial,
+        apiGetListVaMessage: '',
+        listVaBank: [],
+      ),
+    );
+  }
+
   // ===========================================================================
   // 3. ALFAMART LOGIC
   // ===========================================================================
@@ -688,7 +779,16 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
         ),
       );
 
-      fetchRiwayatTiketAlfamart();
+      final data = result.data;
+      if (data != null) {
+        debugPrint("DATA ALFAMART: $data");
+        setSelectedRiwayatAlfamart(data);
+        pushReplacementNamed(DetailTiketAlfamartPage.routeName);
+      } else {
+        debugPrint("DATA ALFAMART NULL");
+      }
+
+      // fetchRiwayatTiketAlfamart();
       return true;
     } on ServerException catch (e) {
       showWarningMessage(e.message);
@@ -696,6 +796,17 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
         state.copyWith(
           apiBuatAlfamartStatus: ApiStatus.failure,
           apiBuatAlfamartMessage: e.message,
+        ),
+      );
+      return false;
+    } catch (e, stackTrace) {
+      debugPrint("ERROR: $e");
+      debugPrintStack(stackTrace: stackTrace);
+      showWarningMessage(e.toString());
+      emit(
+        state.copyWith(
+          apiBuatAlfamartStatus: ApiStatus.failure,
+          apiBuatAlfamartMessage: e.toString(),
         ),
       );
       return false;
@@ -776,7 +887,13 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
         ),
       );
 
-      fetchRiwayatTiketIndomaret();
+      final data = result.data;
+      if (data != null) {
+        setSelectedRiwayatIndomaret(data);
+        pushReplacementNamed(DetailTiketIndomaretPage.routeName);
+      }
+
+      // fetchRiwayatTiketIndomaret();
       return true;
     } on ServerException catch (e) {
       showWarningMessage(e.message);
@@ -784,6 +901,17 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
         state.copyWith(
           apiBuatIndomaretStatus: ApiStatus.failure,
           apiBuatIndomaretMessage: e.message,
+        ),
+      );
+      return false;
+    } catch (e, stackTrace) {
+      debugPrint("ERROR: $e");
+      debugPrintStack(stackTrace: stackTrace);
+      showWarningMessage(e.toString());
+      emit(
+        state.copyWith(
+          apiBuatIndomaretStatus: ApiStatus.failure,
+          apiBuatIndomaretMessage: e.toString(),
         ),
       );
       return false;
@@ -864,6 +992,12 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
         ),
       );
 
+      final data = result.data;
+      if (data != null) {
+        setSelectedRiwayatQris(data);
+        pushReplacementNamed(DetailTiketQrisPage.routeName);
+      }
+
       fetchRiwayatTiketQris();
       return true;
     } on ServerException catch (e) {
@@ -918,7 +1052,140 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
   }
 
   // ===========================================================================
-  // 6. HELPER & TIMER LOGIC (Existing)
+  // 6. MUTASI DEPOSIT LOGIC
+  // ===========================================================================
+
+  void setDateFilterMutasi(DateTime start, DateTime end) {
+    emit(state.copyWith(dateStartFilter: start, dateEndFilter: end));
+  }
+
+  // Mutasi Stok
+  // Paging
+  // ============================================================
+
+  void nextPageMutasiDeposit() {
+    emit(state.copyWith(pageMutasi: state.pageMutasi + 1));
+    fetchMutasiDeposit();
+  }
+
+  void refreshMutasiDeposit() {
+    emit(state.copyWith(pageMutasi: 1));
+    fetchMutasiDeposit();
+  }
+
+  void resetMutasiDepositFilter() {
+    emit(
+      state.copyWith(
+        pageMutasi: 1,
+        dateStartFilter: DateTime.now().subtract(const Duration(days: 1)),
+        dateEndFilter: DateTime.now(),
+        listMutasiDeposit: [],
+        listMutasiDepositGrouped: DEFAULT_LIST_GROUPED_MUTASI_DEPOSIT_RESPONSE,
+        hasMoreMutasi: true,
+      ),
+    );
+    fetchMutasiDeposit();
+  }
+
+  void clearMutasiDeposit() {
+    emit(
+      state.copyWith(
+        pageMutasi: 1,
+        dateStartFilter: DateTime.now().subtract(const Duration(days: 1)),
+        dateEndFilter: DateTime.now(),
+        listMutasiDeposit: [],
+        listMutasiDepositGrouped: DEFAULT_LIST_GROUPED_MUTASI_DEPOSIT_RESPONSE,
+        hasMoreMutasi: true,
+        apiMutasiStatus: ApiStatus.initial,
+        apiMutasiMessage: '',
+      ),
+    );
+  }
+
+  Future<void> fetchMutasiDeposit() async {
+    // Prevent duplicate calls if already loading
+    if (state.apiMutasiStatus.isLoading) return;
+
+    // Show Loading
+    emit(
+      state.copyWith(apiMutasiStatus: ApiStatus.loading, apiMutasiMessage: ''),
+    );
+
+    try {
+      // Use current date filter or default to today/yesterday if null
+      final startDate =
+          state.dateStartFilter ??
+          DateTime.now().subtract(const Duration(days: 1));
+      final endDate = state.dateEndFilter ?? DateTime.now();
+
+      final result = await _depositService.getMutasiDeposit(
+        waktuawal: DateHelper.formatDate(startDate),
+        waktuakhir: DateHelper.formatDate(endDate),
+        page: state.pageMutasi,
+      );
+
+      if (!result.status) {
+        emit(
+          state.copyWith(
+            apiMutasiStatus: ApiStatus.failure,
+            apiMutasiMessage: result.message,
+          ),
+        );
+        showWarningMessage(result.message);
+        return;
+      }
+
+      final newData = result.data;
+
+      List<MutasiDepositModel> updatedList = [];
+      bool hasMore = state.hasMoreMutasi;
+
+      // 1. Logic Penggabungan List
+      if (newData.isEmpty) {
+        if (state.pageMutasi > 1) {
+          // If page > 1 and empty, means we reached end
+          hasMore = false; // or check length < expected page size
+          updatedList = state.listMutasiDeposit;
+        } else {
+          // Page 1 and empty
+          updatedList = [];
+          hasMore = false;
+        }
+      } else {
+        hasMore = newData.length >= 20; // Assuming 20 is page size
+        if (state.pageMutasi == 1) {
+          updatedList = List.from(newData);
+        } else {
+          updatedList = List<MutasiDepositModel>.from(state.listMutasiDeposit)
+            ..addAll(newData);
+        }
+      }
+
+      // 2. Generate Grouped List
+      final groupedData =
+          ListGroupedMutasiDepositResponse.fromListMutasiResponse(updatedList);
+
+      // 3. Emit State
+      emit(
+        state.copyWith(
+          apiMutasiStatus: ApiStatus.success,
+          listMutasiDeposit: updatedList,
+          listMutasiDepositGrouped: groupedData,
+          hasMoreMutasi: hasMore,
+        ),
+      );
+    } on ServerException catch (e) {
+      emit(
+        state.copyWith(
+          apiMutasiStatus: ApiStatus.failure,
+          apiMutasiMessage: e.message,
+        ),
+      );
+    }
+  }
+
+  // ===========================================================================
+  // 7. HELPER & TIMER LOGIC (Existing)
   // ===========================================================================
 
   void startTimerDebounce(Duration duration) {
@@ -964,8 +1231,11 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
 
   void setSelectedRiwayatAlfamart(RiwayatTiketAlfamartModel tiket) {
     emit(state.copyWith(selectedRiwayatAlfamart: tiket));
-    
+
+    debugPrint("Expired Data ${tiket.expireddata.toString()}");
+
     if (tiket.status != 0) {
+      debugPrint("TIKET EXPIRED, STOP TIMER");
       stopTimerDebounce();
       emit(state.copyWith(tiketDuration: Duration.zero));
       return;
@@ -976,7 +1246,7 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
 
   void setSelectedRiwayatIndomaret(RiwayatTiketIndomaretModel tiket) {
     emit(state.copyWith(selectedRiwayatIndomaret: tiket));
-    
+
     if (tiket.status != 0) {
       stopTimerDebounce();
       emit(state.copyWith(tiketDuration: Duration.zero));
@@ -988,7 +1258,7 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
 
   void setSelectedRiwayatVa(RiwayatTiketVAModel tiket) {
     emit(state.copyWith(selectedRiwayatVa: tiket));
-    
+
     if (tiket.status != 0) {
       stopTimerDebounce();
       emit(state.copyWith(tiketDuration: Duration.zero));
@@ -1000,7 +1270,7 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
 
   void setSelectedRiwayatQris(RiwayatTiketQRISModel tiket) {
     emit(state.copyWith(selectedRiwayatQris: tiket));
-    
+
     if (tiket.status != 0) {
       stopTimerDebounce();
       emit(state.copyWith(tiketDuration: Duration.zero));
