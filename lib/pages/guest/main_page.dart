@@ -4,6 +4,7 @@ import 'package:dmpku/pages/guest/belum_login_page.dart';
 import 'package:dmpku/pages/guest/dashboard/dashboard_page.dart';
 import 'package:dmpku/pages/guest/official/official_page.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
+import 'package:dmpku/widgets/dialog/konfirmasi_keluar_app_dialog.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -56,90 +57,97 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        children: _pages,
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: context.background,
-          boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10),
-          ],
-          border: Border(top: BorderSide(color: context.border, width: 1)),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        KonfirmasiKeluarAppDialog.show(context);
+      },
+      child: Scaffold(
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          children: _pages,
         ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: _onItemTapped,
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: context.primary,
-          unselectedItemColor: context.foreground,
-          unselectedFontSize: 14,
-          selectedFontSize: 16,
-          items: [
-            BottomNavigationBarItem(
-              icon: Assets.img.bottomNav.icInactiveHome.image(
-                width: _iconSize,
-                height: _iconSize,
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: context.background,
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10),
+            ],
+            border: Border(top: BorderSide(color: context.border, width: 1)),
+          ),
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: _onItemTapped,
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: context.primary,
+            unselectedItemColor: context.foreground,
+            unselectedFontSize: 14,
+            selectedFontSize: 16,
+            items: [
+              BottomNavigationBarItem(
+                icon: Assets.img.bottomNav.icInactiveHome.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                activeIcon: Assets.img.bottomNav.icActiveHome.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                label: 'Home',
               ),
-              activeIcon: Assets.img.bottomNav.icActiveHome.image(
-                width: _iconSize,
-                height: _iconSize,
+              BottomNavigationBarItem(
+                icon: Assets.img.bottomNav.icInactiveRiwayat.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                activeIcon: Assets.img.bottomNav.icActiveRiwayat.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                label: 'Riwayat',
               ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Assets.img.bottomNav.icInactiveRiwayat.image(
-                width: _iconSize,
-                height: _iconSize,
+              BottomNavigationBarItem(
+                icon: Assets.img.bottomNav.icInactivePromo.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                activeIcon: Assets.img.bottomNav.icActivePromo.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                label: 'PROMO!',
               ),
-              activeIcon: Assets.img.bottomNav.icActiveRiwayat.image(
-                width: _iconSize,
-                height: _iconSize,
+              BottomNavigationBarItem(
+                icon: Assets.img.bottomNav.icInactiveOfficial.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                activeIcon: Assets.img.bottomNav.icActiveOfficial.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                label: 'Official',
               ),
-              label: 'Riwayat',
-            ),
-            BottomNavigationBarItem(
-              icon: Assets.img.bottomNav.icInactivePromo.image(
-                width: _iconSize,
-                height: _iconSize,
+              BottomNavigationBarItem(
+                icon: Assets.img.bottomNav.icInactiveProfile.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                activeIcon: Assets.img.bottomNav.icActiveProfile.image(
+                  width: _iconSize,
+                  height: _iconSize,
+                ),
+                label: 'Akun',
               ),
-              activeIcon: Assets.img.bottomNav.icActivePromo.image(
-                width: _iconSize,
-                height: _iconSize,
-              ),
-              label: 'PROMO!',
-            ),
-            BottomNavigationBarItem(
-              icon: Assets.img.bottomNav.icInactiveOfficial.image(
-                width: _iconSize,
-                height: _iconSize,
-              ),
-              activeIcon: Assets.img.bottomNav.icActiveOfficial.image(
-                width: _iconSize,
-                height: _iconSize,
-              ),
-              label: 'Official',
-            ),
-            BottomNavigationBarItem(
-              icon: Assets.img.bottomNav.icInactiveProfile.image(
-                width: _iconSize,
-                height: _iconSize,
-              ),
-              activeIcon: Assets.img.bottomNav.icActiveProfile.image(
-                width: _iconSize,
-                height: _iconSize,
-              ),
-              label: 'Akun',
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
