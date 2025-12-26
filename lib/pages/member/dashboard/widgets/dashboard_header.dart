@@ -7,6 +7,7 @@ import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/member/isistok/member_isi_stok_page.dart';
 import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
+import 'package:dmpku/pages/member/nobu/progress_nobu_page.dart';
 import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/beranda/sales_feature_card.dart';
 import 'package:dmpku/widgets/custom_button.dart';
@@ -156,7 +157,9 @@ class _DashboardHeaderState extends State<DashboardHeader> {
       ),
       buttonText: 'Scan Qris',
       buttonIcon: MdiIcons.qrcodeScan,
-      onButtonPressed: () => widget.onMenuTap('qris'),
+      onButtonPressed: () {
+        pushNamed(ProgressNobuPage.routeName);
+      },
     );
   }
 

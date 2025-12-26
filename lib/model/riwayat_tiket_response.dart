@@ -199,7 +199,7 @@ class RiwayatTiketAlfamartModel {
       expireddata: json?['expireddata'] ?? '',
       icon: json?['icon'] ?? '',
       invoice: json?['invoice'] ?? '',
-      kodebayar: json?['kodebayar'] ?? '',
+      kodebayar: json?['kodebayar'].trim() ?? '',
       nama: json?['nama'] ?? '',
       namaakun: json?['namaakun'] ?? '',
       nominal: json?['nominal'] ?? 0,
@@ -313,7 +313,7 @@ class RiwayatTiketIndomaretModel {
       expireddata: json?['expireddata'] ?? '',
       icon: json?['icon'] ?? '',
       invoice: json?['invoice'] ?? '',
-      kodebayar: json?['kodebayar'] ?? '',
+      kodebayar: json?['kodebayar'].trim() ?? '',
       nama: json?['nama'] ?? '',
       namaakun: json?['namaakun'] ?? '',
       nominal: json?['nominal'] ?? 0,
@@ -569,6 +569,7 @@ class RiwayatTiketVAModel {
   final int statusbank;
   final int totalbayar;
   final String waktu;
+  final String expireddata;
 
   const RiwayatTiketVAModel({
     required this.admin,
@@ -585,24 +586,26 @@ class RiwayatTiketVAModel {
     required this.statusbank,
     required this.totalbayar,
     required this.waktu,
+    required this.expireddata,
   });
 
   factory RiwayatTiketVAModel.fromJson(Map<String, dynamic>? json) {
     return RiwayatTiketVAModel(
       admin: json?['admin'] ?? 0,
       deskripsi: json?['deskripsi'] ?? '',
-      expired: json?['expired'] ?? '',
+      expired: json?['expired'] ?? json?['expireddata'] ?? '',
       icon: json?['icon'] ?? '',
       invoice: json?['invoice'] ?? '',
       nama: json?['nama'] ?? '',
-      namaakun: json?['namaakun'] ?? '',
+      namaakun: json?['namaakun'].trim() ?? '',
       nominal: json?['nominal'] ?? 0,
-      nova: json?['nova'] ?? '',
+      nova: json?['nova'].trim() ?? '',
       saldomasuk: json?['saldomasuk'] ?? 0,
       status: json?['status'] ?? 0,
       statusbank: json?['statusbank'] ?? 0,
       totalbayar: json?['totalbayar'] ?? 0,
       waktu: json?['waktu'] ?? '',
+      expireddata: json?['expireddata'] ?? '',
     );
   }
 
@@ -628,6 +631,7 @@ class RiwayatTiketVAModel {
     int? statusbank,
     int? totalbayar,
     String? waktu,
+    String? expireddata,
   }) {
     return RiwayatTiketVAModel(
       admin: admin ?? this.admin,
@@ -644,6 +648,7 @@ class RiwayatTiketVAModel {
       statusbank: statusbank ?? this.statusbank,
       totalbayar: totalbayar ?? this.totalbayar,
       waktu: waktu ?? this.waktu,
+      expireddata: expireddata ?? this.expireddata,
     );
   }
 }
@@ -697,4 +702,5 @@ const RiwayatTiketVAModel DEFAULT_RIWAYAT_TIKET_VA = RiwayatTiketVAModel(
   statusbank: 0,
   totalbayar: 0,
   waktu: '',
+  expireddata: '',
 );
