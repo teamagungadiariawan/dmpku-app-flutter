@@ -35,12 +35,12 @@ class _BuatTiketVaPageState extends State<BuatTiketVaPage> {
   VaBankModel? selectedVaBank;
 
   final List<String> _quickAmounts = const [
-    '20.000',
     '50.000',
     '100.000',
     '200.000',
     '500.000',
     '1.000.000',
+    '2.000.000',
   ];
 
   @override
@@ -51,6 +51,7 @@ class _BuatTiketVaPageState extends State<BuatTiketVaPage> {
 
   void _setAmount(String value) {
     String rawValue = value == '1 Juta' ? '1.000.000' : value;
+    rawValue = value == '2 Juta' ? '2.000.000' : value;
     _amountController.value = TextEditingValue(
       text: rawValue,
       selection: TextSelection.collapsed(offset: rawValue.length),
@@ -77,159 +78,168 @@ class _BuatTiketVaPageState extends State<BuatTiketVaPage> {
     });
   }
 
+  void closePage() {
+    getMemberIsiStokProvider(context).resetVa();
+    pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        bottomNavigationBar: Padding(
-          padding: paddingPage.copyWith(bottom: paddingPage.bottom + 10),
-          child: BlocBuilder<MemberIsiStokProvider, MemberIsiStokState>(
-            builder: (context, state) {
-              return CustomButton(
-                text: "Buat Tiket VA",
-                onPressed: () async {
-                  var nominal = FromCurrency(_amountController.text);
-                  if (nominal < 20000) {
-                    showWarningMessage(
-                      "Nominal minimal isi stok adalah Rp 20.000",
-                    );
-                    return;
-                  }
+      child: WillPopScope(
+        onWillPop: () async {
+          debugPrint("WillPopScope: onWillPop");
+          closePage();
+          return true; // true = izinkan pop
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          bottomNavigationBar: Padding(
+            padding: paddingPage.copyWith(bottom: paddingPage.bottom + 10),
+            child: BlocBuilder<MemberIsiStokProvider, MemberIsiStokState>(
+              builder: (context, state) {
+                return CustomButton(
+                  text: "Buat Tiket VA",
+                  onPressed: () async {
+                    var nominal = FromCurrency(_amountController.text);
+                    if (nominal < 50000) {
+                      showWarningMessage(
+                        "Nominal minimal isi stok adalah Rp 50.000",
+                      );
+                      return;
+                    }
 
-                  if (selectedVaBank == null) {
-                    showWarningMessage(
-                      "Pilih bank VA terlebih dahulu.",
-                    );
-                    return;
-                  }
+                    if (selectedVaBank == null) {
+                      showWarningMessage("Pilih bank VA terlebih dahulu.");
+                      return;
+                    }
 
-                  final success = await getMemberIsiStokProvider(
-                    context,
-                  ).buatTiketVa(idbank: selectedVaBank!.idbank, nominal: nominal);
-                  
-                  if (success && mounted) {
-                     pop(); // Close page on success for now
-                  }
-                },
-                isLoading: state.apiBuatVaStatus.isLoading,
-              );
-            },
+                    final success = await getMemberIsiStokProvider(context)
+                        .buatTiketVa(
+                          idbank: selectedVaBank!.idbank,
+                          nominal: nominal,
+                        );
+                  },
+                  isLoading: state.apiBuatVaStatus.isLoading,
+                );
+              },
+            ),
           ),
-        ),
-        body: Column(
-          children: [
-            _buildHeaderSection(context),
-            Gap(5),
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: _handleRefresh,
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Gap(5),
-                      // Info Section
-                      Padding(
-                        padding: paddingPage,
-                        child: Container(
-                          padding: paddingCard,
-                          decoration: BoxDecoration(
-                            color: blue[300]!.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: blue[500]!),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Informasi Virtual Account",
-                                style: context.bodyMedium
-                                    .withWeight(FontWeight.w600)
-                                    .withColor(blue[600]!),
-                              ),
-                              Gap(4),
-                              Text(
-                                "Metode pembayaran Virtual Account akan dikenakan biaya admin sesuai dengan ketentuan masing-masing bank.",
-                                style: context.captionRegular.withColor(
-                                  blue[600]!,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: paddingPage.copyWith(bottom: 0, top: 5),
-                        child: Text(
-                          "Pilih Bank VA",
-                          style: context.bodyLarge.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-
-                      Gap(5),
-
-                      Padding(
-                        padding: paddingPage.copyWith(top: 0),
-                        child:
-                            BlocBuilder<
-                              MemberIsiStokProvider,
-                              MemberIsiStokState
-                            >(
-                              buildWhen: (previous, current) =>
-                                  previous.listVaBank != current.listVaBank ||
-                                  previous.apiGetListVaStatus !=
-                                      current.apiGetListVaStatus,
-                              builder: (context, state) {
-                                if (state.apiGetListVaStatus.isLoading) {
-                                  return const CardProviderListShimmer(
-                                    itemCount: 4,
-                                  );
-                                }
-
-                                if (state.listVaBank.isEmpty) {
-                                  return Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Text(
-                                        "Metode pembayaran VA tidak tersedia.",
-                                        style: context.bodyMedium,
-                                      ),
-                                    ),
-                                  );
-                                }
-
-                                return ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  padding: EdgeInsets.zero,
-                                  itemCount: state.listVaBank.length,
-                                  separatorBuilder: (c, i) => const Gap(10),
-                                  itemBuilder: (context, index) {
-                                    final bank = state.listVaBank[index];
-                                    final isSelected =
-                                        selectedVaBank?.idbank == bank.idbank;
-                                    return _buildBankItem(
-                                      context,
-                                      bank,
-                                      isSelected,
-                                    );
-                                  },
-                                );
-                              },
+          body: Column(
+            children: [
+              _buildHeaderSection(context),
+              Gap(5),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: _handleRefresh,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Gap(5),
+                        // Info Section
+                        Padding(
+                          padding: paddingPage,
+                          child: Container(
+                            padding: paddingCard,
+                            decoration: BoxDecoration(
+                              color: blue[300]!.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: blue[500]!),
                             ),
-                      ),
-                    ],
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Informasi Virtual Account",
+                                  style: context.bodyMedium
+                                      .withWeight(FontWeight.w600)
+                                      .withColor(blue[600]!),
+                                ),
+                                Gap(4),
+                                Text(
+                                  "Metode pembayaran Virtual Account akan dikenakan biaya admin sesuai dengan ketentuan masing-masing bank.",
+                                  style: context.captionRegular.withColor(
+                                    blue[600]!,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: paddingPage.copyWith(bottom: 0, top: 5),
+                          child: Text(
+                            "Pilih Bank VA",
+                            style: context.bodyLarge.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+
+                        Gap(5),
+
+                        Padding(
+                          padding: paddingPage.copyWith(top: 0),
+                          child:
+                              BlocBuilder<
+                                MemberIsiStokProvider,
+                                MemberIsiStokState
+                              >(
+                                buildWhen: (previous, current) =>
+                                    previous.listVaBank != current.listVaBank ||
+                                    previous.apiGetListVaStatus !=
+                                        current.apiGetListVaStatus,
+                                builder: (context, state) {
+                                  if (state.apiGetListVaStatus.isLoading) {
+                                    return const CardProviderListShimmer(
+                                      itemCount: 4,
+                                    );
+                                  }
+
+                                  if (state.listVaBank.isEmpty) {
+                                    return Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Text(
+                                          "Metode pembayaran VA tidak tersedia.",
+                                          style: context.bodyMedium,
+                                        ),
+                                      ),
+                                    );
+                                  }
+
+                                  return ListView.separated(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    padding: EdgeInsets.zero,
+                                    itemCount: state.listVaBank.length,
+                                    separatorBuilder: (c, i) => const Gap(10),
+                                    itemBuilder: (context, index) {
+                                      final bank = state.listVaBank[index];
+                                      final isSelected =
+                                          selectedVaBank?.idbank == bank.idbank;
+                                      return _buildBankItem(
+                                        context,
+                                        bank,
+                                        isSelected,
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -450,7 +460,7 @@ class _BuatTiketVaPageState extends State<BuatTiketVaPage> {
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  "Minimal Deposit Rp 20.000",
+                  "Minimal Deposit Rp 50.000",
                   textAlign: TextAlign.right,
                   style: context.bodyMedium.withColor(Colors.white),
                 ),
@@ -476,7 +486,9 @@ class _BuatTiketVaPageState extends State<BuatTiketVaPage> {
       itemCount: _quickAmounts.length,
       itemBuilder: (context, index) {
         final amount = _quickAmounts[index];
-        final label = (index == 5) ? "1 Juta" : amount;
+        String label = amount;
+        if (amount == '1.000.000') label = "1 Juta";
+        if (amount == '2.000.000') label = "2 Juta";
 
         return Material(
           color: Colors.transparent,

@@ -31,6 +31,7 @@ class _DetailTiketBankTransferPageState
     getMemberIsiStokProvider(
       context,
     ).setSelectedRiwayatTiket(DEFAULT_RIWAYAT_TIKET_BANK_MODEL);
+    getMemberIsiStokProvider(context).stopTimerDebounce();
     pop();
   }
 

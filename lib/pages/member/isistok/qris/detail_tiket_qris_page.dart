@@ -35,6 +35,7 @@ class _DetailTiketQrisPageState extends State<DetailTiketQrisPage> {
     getMemberIsiStokProvider(
       context,
     ).setSelectedRiwayatQris(DEFAULT_RIWAYAT_TIKET_QRIS);
+    getMemberIsiStokProvider(context).stopTimerDebounce();
     pop();
   }
 
@@ -59,8 +60,72 @@ class _DetailTiketQrisPageState extends State<DetailTiketQrisPage> {
                     padding: paddingPage,
                     child: Column(
                       children: [
-                        const SizedBox(height: 200),
+                        const SizedBox(height: 210),
                         _buildQrCodeCard(context, tiket),
+                        const Gap(5),
+                        Container(
+                          padding: paddingCard,
+                          decoration: BoxDecoration(
+                            color: context.destructive,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                child: Text(
+                                  "!",
+                                  style: context.pageTitle.withColor(
+                                    Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Gap(12),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Pengingat",
+                                    style: context.bodyLarge
+                                        .withColor(Colors.white)
+                                        .withWeight(FontWeight.w600),
+                                    textHeightBehavior:
+                                        AppTextHeightBehavior.noPadding,
+                                  ),
+
+                                  RichText(
+                                    text: TextSpan(
+                                      style: context.captionMedium.withColor(
+                                        Colors.white,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              "Nominal stok yang masuk adalah ",
+                                        ),
+                                        TextSpan(
+                                          text: ToCurrency(
+                                            tiket.saldomasuk.toString(),
+                                          ),
+                                          style: context.bodySmall
+                                              .withColor(Colors.white)
+                                              .withWeight(FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                         const Gap(5),
                         Expanded(
                           child: ListView(
@@ -198,10 +263,7 @@ class _DetailTiketQrisPageState extends State<DetailTiketQrisPage> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: CustomNetworkImage(
-                  url: tiket.qrurl,
-                  size: 200,
-                ),
+                child: CustomNetworkImage(url: tiket.qrurl, size: 200),
               ),
             ),
             const Gap(15),
@@ -271,9 +333,17 @@ class _DetailTiketQrisPageState extends State<DetailTiketQrisPage> {
             padding: paddingCard,
             child: Column(
               children: [
-                _buildRow(context, "Nominal Topup", ToCurrency(tiket.nominal.toString())),
+                _buildRow(
+                  context,
+                  "Nominal Topup",
+                  ToCurrency(tiket.nominal.toString()),
+                ),
                 const Gap(8),
-                _buildRow(context, "Biaya Admin", ToCurrency(tiket.admin.toString())),
+                _buildRow(
+                  context,
+                  "Biaya Admin",
+                  ToCurrency(tiket.admin.toString()),
+                ),
                 const Divider(height: 20),
                 _buildRow(
                   context,
