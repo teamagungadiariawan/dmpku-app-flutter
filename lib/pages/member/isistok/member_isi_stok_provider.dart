@@ -366,6 +366,12 @@ class MemberIsiStokProvider extends Cubit<MemberIsiStokState> {
   final DepositService _depositService = DepositService();
   Timer? _debounceTimer;
 
+  @override
+  Future<void> close() {
+    stopTimerDebounce();
+    return super.close();
+  }
+
   MemberIsiStokProvider()
     : super(
         MemberIsiStokState(

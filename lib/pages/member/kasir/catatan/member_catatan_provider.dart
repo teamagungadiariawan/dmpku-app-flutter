@@ -104,6 +104,12 @@ class MemberCatatanProvider extends Cubit<MemberCatatanState> {
   MemberCatatanProvider()
     : super(MemberCatatanState(searchController: TextEditingController()));
 
+  @override
+  Future<void> close() {
+    state.searchController?.dispose();
+    return super.close();
+  }
+
   // Get Catatan List
   Future<void> getCatatanList() async {
     // Unlike original, we might want to refresh even if loading if triggered manually,

@@ -375,6 +375,15 @@ class MemberRiwayatState extends Equatable {
 class MemberRiwayatProvider extends Cubit<MemberRiwayatState> {
   final RiwayatService _riwayatService = RiwayatService();
 
+  @override
+  Future<void> close() {
+    state.kataKunciTodayController?.dispose();
+    state.kataKunciHistoryController?.dispose();
+    state.kataKunciMutasiStokController?.dispose();
+    state.kataKunciRekapTransaksiController?.dispose();
+    return super.close();
+  }
+
   MemberRiwayatProvider()
     : super(
         MemberRiwayatState(

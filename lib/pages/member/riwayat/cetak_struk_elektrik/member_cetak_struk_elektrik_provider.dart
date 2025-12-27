@@ -133,6 +133,13 @@ class MemberCetakStrukElektrikProvider
         ),
       );
 
+  @override
+  Future<void> close() {
+    state.hargaController?.dispose();
+    state.adminController?.dispose();
+    return super.close();
+  }
+
   void setDataTrx(List<KeyValue> dataTrx, {bool ubahTemp = false}) {
     List<KeyValue> dtTrx = [];
 

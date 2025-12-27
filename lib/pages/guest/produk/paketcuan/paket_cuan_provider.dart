@@ -163,6 +163,14 @@ class PaketCuanProvider extends Cubit<PaketCuanState> {
         ),
       );
 
+  @override
+  Future<void> close() {
+    state.tujuanFocusNode?.dispose();
+    state.tujuanController?.dispose();
+    state.searchProductController?.dispose();
+    return super.close();
+  }
+
   void resetState() {
     emit(const PaketCuanState());
   }

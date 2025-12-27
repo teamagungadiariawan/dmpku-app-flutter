@@ -101,6 +101,12 @@ class MemberFavoritProvider extends Cubit<MemberFavoritState> {
   MemberFavoritProvider()
     : super(MemberFavoritState(searchController: TextEditingController()));
 
+  @override
+  Future<void> close() {
+    state.searchController?.dispose();
+    return super.close();
+  }
+
   // Get Favorit List
   Future<void> getFavoritList() async {
     if (state.apiGetFavoritStatus.isLoading) return;
