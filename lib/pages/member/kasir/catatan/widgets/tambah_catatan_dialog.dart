@@ -4,8 +4,7 @@ import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
-import 'package:dmpku/model/catatan_response.dart';
-import 'package:dmpku/pages/member/kasir/member_catatan_provider.dart';
+import 'package:dmpku/pages/member/kasir/catatan/member_catatan_provider.dart';
 import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/dialog/top_divider_sheet.dart';
 import 'package:dmpku/widgets/shake_widget.dart';
@@ -15,12 +14,10 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:gap/gap.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class UbahCatatanDialog extends StatefulWidget {
-  final CatatanModel item;
+class TambahCatatanDialog extends StatefulWidget {
+  const TambahCatatanDialog({super.key});
 
-  const UbahCatatanDialog({super.key, required this.item});
-
-  static void show(BuildContext context, CatatanModel item) {
+  static void show(BuildContext context) {
     var provider = context.read<MemberCatatanProvider>();
 
     showModalBottomSheet(
@@ -30,34 +27,26 @@ class UbahCatatanDialog extends StatefulWidget {
       builder: (_) {
         return BlocProvider.value(
           value: provider,
-          child: UbahCatatanDialog(item: item),
+          child: const TambahCatatanDialog(),
         );
       },
     );
   }
 
   @override
-  State<UbahCatatanDialog> createState() => _UbahCatatanDialogState();
+  State<TambahCatatanDialog> createState() => _TambahCatatanDialogState();
 }
 
-class _UbahCatatanDialogState extends State<UbahCatatanDialog> {
-  late TextEditingController _judulController;
-  late TextEditingController _isiController;
-  late bool _isPinned;
+class _TambahCatatanDialogState extends State<TambahCatatanDialog> {
+  final _judulController = TextEditingController();
+  final _isiController = TextEditingController();
+  bool _isPinned = false;
 
   final shakeKeyJudul = GlobalKey<ShakeWidgetState>();
   final shakeKeyIsi = GlobalKey<ShakeWidgetState>();
 
   String errorJudul = '';
   String errorIsi = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _judulController = TextEditingController(text: widget.item.judul);
-    _isiController = TextEditingController(text: widget.item.isicatatan);
-    _isPinned = widget.item.prioritas == 1;
-  }
 
   @override
   void dispose() {
@@ -92,9 +81,8 @@ class _UbahCatatanDialogState extends State<UbahCatatanDialog> {
   void _submit() {
     if (validate()) {
       getMemberCatatanProvider(context)
-          .ubahCatatan(
+          .tambahCatatan(
             context,
-            idcatatan: widget.item.idcatatan,
             judul: _judulController.text.trim(),
             isicatatan: _isiController.text.trim(),
             perioritas: _isPinned ? 1 : 0,
@@ -138,7 +126,7 @@ class _UbahCatatanDialogState extends State<UbahCatatanDialog> {
                         color: context.isDarkMode ? stone[700] : stone[100],
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(MdiIcons.notebookEdit, size: 16),
+                      child: const Icon(MdiIcons.notebookPlus, size: 16),
                     ),
                     const Gap(10),
                     Expanded(
@@ -146,13 +134,13 @@ class _UbahCatatanDialogState extends State<UbahCatatanDialog> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ubah Catatan',
+                            'Tambah Catatan',
                             style: context.bodyMedium.copyWith(
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                           Text(
-                            'Perbarui detail catatan Anda.',
+                            'Tambahkan catatan baru Anda di sini.',
                             style: context.captionRegular.withColor(
                               context.foreground,
                             ),
@@ -244,8 +232,8 @@ class _UbahCatatanDialogState extends State<UbahCatatanDialog> {
                     width: double.infinity,
                     iconPosition: IconPosition.end,
                     icon: LucideIcons.arrowRight,
-                    isLoading: state.apiUbahCatatanStatus.isLoading,
-                    text: "Simpan Perubahan",
+                    isLoading: state.apiTambahCatatanStatus.isLoading,
+                    text: "Simpan Catatan",
                     onPressed: _submit,
                   ),
                 );

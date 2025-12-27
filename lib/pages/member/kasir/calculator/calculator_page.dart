@@ -155,7 +155,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
       bgColor = AppColors.lightSecondary;
       textColor = AppColors.lightPrimary;
     } else if (isClear) {
-      bgColor = AppColors.lightDestructive.withOpacity(0.1);
+      bgColor = AppColors.lightDestructive.withValues(alpha: 0.1);
       textColor = AppColors.lightDestructive;
     } else {
       bgColor = bgScreen;
@@ -232,9 +232,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
       finalInput = finalInput.replaceAll('÷', '/');
       finalInput = finalInput.replaceAll('%', '/100');
 
-      Parser p = Parser();
+      ShuntingYardParser p = ShuntingYardParser();
       Expression exp = p.parse(finalInput);
       ContextModel cm = ContextModel();
+      // ignore: deprecated_member_use
       double eval = exp.evaluate(EvaluationType.REAL, cm);
 
       String resultStr;
@@ -315,7 +316,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                               textAlign: TextAlign.right,
                             ),
                             subtitle: Text(
-                              parts.length > 0 ? parts[0] : '',
+                              parts.isNotEmpty ? parts[0] : '',
                               style: context.mutedMedium,
                               textAlign: TextAlign.right,
                             ),

@@ -34,12 +34,13 @@ import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_p
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_produk_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_subprovider_page.dart';
-import 'package:dmpku/pages/calculator/calculator_page.dart';
+import 'package:dmpku/pages/member/kasir/calculator/calculator_page.dart';
 import 'package:dmpku/pages/member/akun/daftar_devices/member_daftar_devices.dart';
 import 'package:dmpku/pages/member/akun/detail_akun/member_detail_akun_page.dart';
 import 'package:dmpku/pages/member/akun/favorit/member_daftar_favorit_page.dart';
 import 'package:dmpku/pages/member/banner/banner_page.dart';
-import 'package:dmpku/pages/member/kasir/member_catatan_page.dart';
+import 'package:dmpku/pages/member/kasir/catatan/member_catatan_page.dart';
+import 'package:dmpku/pages/member/kasir/menu_penjualan_page.dart';
 
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
@@ -502,6 +503,8 @@ class AppRouter {
 
       case MemberCatatanPage.routeName:
         return _customTransition(child: const MemberCatatanPage());
+      case MemberMenuPenjualanPage.routeName:
+        return _customTransition(child: const MemberMenuPenjualanPage());
 
       // AKUN
       case MemberDetailAkunPage.routeName:

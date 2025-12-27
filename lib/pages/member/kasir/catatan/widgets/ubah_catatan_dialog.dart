@@ -5,7 +5,7 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/catatan_response.dart';
-import 'package:dmpku/pages/member/kasir/member_catatan_provider.dart';
+import 'package:dmpku/pages/member/kasir/catatan/member_catatan_provider.dart';
 import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/dialog/top_divider_sheet.dart';
 import 'package:dmpku/widgets/shake_widget.dart';
