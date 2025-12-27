@@ -11,6 +11,7 @@ import 'package:dmpku/pages/member/banner/banner_page.dart' show BannerPage;
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_app_bar.dart';
 import 'package:dmpku/pages/member/dashboard/widgets/dashboard_header.dart';
 import 'package:dmpku/pages/member/kasir/catatan/member_catatan_page.dart';
+import 'package:dmpku/pages/member/kasir/kasir_provider.dart';
 import 'package:dmpku/pages/member/kasir/menu_penjualan_page.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/member/produk/isiulang/aktivasi_perdana/member_aktivasi_perdana_provider_page.dart';
@@ -188,6 +189,7 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
       'Kasir',
       Assets.img.menuPenjualan.icKasir.provider(),
       onTap: () {
+        getKasirProvider(context).fetchListPenjualan();
         pushNamed(MemberMenuPenjualanPage.routeName);
       },
     ),

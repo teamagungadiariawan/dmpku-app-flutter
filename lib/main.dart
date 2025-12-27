@@ -8,6 +8,7 @@ import 'package:dmpku/pages/guest/main_page.dart';
 
 import 'package:dmpku/pages/member/akun/favorit/member_favorit_provider.dart';
 import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
+import 'package:dmpku/pages/member/kasir/kasir_provider.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
 
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
@@ -70,6 +71,7 @@ void main() {
           BlocProvider(create: (_) => MemberRiwayatProvider()),
 
           BlocProvider(create: (_) => MemberIsiStokProvider()),
+          BlocProvider(create: (_) => KasirProvider()),
         ],
         child: MyApp(textScaleProvider: textScaleProvider, token: token),
       ),

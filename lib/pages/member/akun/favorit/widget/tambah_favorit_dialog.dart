@@ -18,15 +18,20 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 class TambahFavoritDialog extends StatefulWidget {
   final int idKategori;
+  final String? nomor;
 
-  const TambahFavoritDialog({super.key, required this.idKategori});
+  const TambahFavoritDialog({super.key, required this.idKategori, this.nomor});
 
-  static void show(BuildContext context, {required int idKategori}) {
+  static void show(
+    BuildContext context, {
+    required int idKategori,
+    String? nomor,
+  }) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => TambahFavoritDialog(idKategori: idKategori),
+      builder: (_) => TambahFavoritDialog(idKategori: idKategori, nomor: nomor),
     );
   }
 
@@ -50,7 +55,7 @@ class _TambahFavoritDialogState extends State<TambahFavoritDialog> {
   void initState() {
     super.initState();
     _namaFavoritController = TextEditingController();
-    _nomorFavoritController = TextEditingController();
+    _nomorFavoritController = TextEditingController(text: widget.nomor);
   }
 
   @override

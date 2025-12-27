@@ -10,7 +10,7 @@ extension DateTimeExtension on DateTime {
   String formatReg() {
     return '${day.toString().padLeft(2, '0')}-'
         '${month.toString().padLeft(2, '0')}-'
-        '${year} '
+        '$year '
         '${hour.toString().padLeft(2, '0')}:'
         '${minute.toString().padLeft(2, '0')}:'
         '${second.toString().padLeft(2, '0')}';
@@ -186,10 +186,19 @@ class DateHelper {
     return _fullMonths[month];
   }
 
+  static bool isToday(DateTime dt) {
+    final now = DateTime.now();
+    return dt.year == now.year && dt.month == now.month && dt.day == now.day;
+  }
+
+  //format YYYY-mm-dd
+  static String formatYYYYMMDD(DateTime dt) {
+    return '${dt.year}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')}';
+  }
+
   static String formatSimpleDate(DateTime dt) {
     // jika hari ini return "Hari ini"
-    final now = DateTime.now();
-    if (dt.year == now.year && dt.month == now.month && dt.day == now.day) {
+    if (isToday(dt)) {
       return 'Hari ini';
     }
 
