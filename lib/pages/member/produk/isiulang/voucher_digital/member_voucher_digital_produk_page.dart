@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
@@ -96,7 +98,10 @@ class _MemberVoucherDigitalProdukPageState
             ),
           ),
           bottomNavigationBar:
-              BlocBuilder<MemberVoucherDigitalProvider, MemberVoucherDigitalState>(
+              BlocBuilder<
+                MemberVoucherDigitalProvider,
+                MemberVoucherDigitalState
+              >(
                 buildWhen: (previous, current) =>
                     previous.selectedProduct != current.selectedProduct ||
                     previous.tujuanHasError != current.tujuanHasError ||
@@ -110,13 +115,15 @@ class _MemberVoucherDigitalProdukPageState
                     padding: EdgeInsets.only(bottom: bottomInset),
                     child: ButtonCheckout(
                       isDisabled:
-                      state.selectedProduct.idproduk == 0 ||
+                          state.selectedProduct.idproduk == 0 ||
                           state.tujuanHasError ||
                           state.tujuan.isEmpty ||
                           state.apiFetchProductStatus.isLoading,
                       selectedProduct: state.selectedProduct,
                       onContinue: () {
-                        getMemberVoucherDigitalProvider(context).setNewKonfirmasi();
+                        getMemberVoucherDigitalProvider(
+                          context,
+                        ).setNewKonfirmasi();
                       },
                     ),
                   );
@@ -153,6 +160,7 @@ class _MemberVoucherDigitalProdukPageState
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: false,
+          tipeProduk: TipeProduk.voucherDigital,
 
           onFavoritResult: (val) {
             getMemberVoucherDigitalProvider(
@@ -254,7 +262,9 @@ class _MemberVoucherDigitalProdukPageState
               isGangguan: product.isGangguan,
               isPulsa: true,
               onPress: () {
-                getMemberVoucherDigitalProvider(context).setSelectedProduct(product);
+                getMemberVoucherDigitalProvider(
+                  context,
+                ).setSelectedProduct(product);
               },
             );
           },

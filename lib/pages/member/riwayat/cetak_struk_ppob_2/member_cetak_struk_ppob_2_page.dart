@@ -21,7 +21,7 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:gap/gap.dart';
 import 'package:lucide_icons/lucide_icons.dart' show LucideIcons;
 import 'dart:io';
-import 'dart:typed_data';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
@@ -55,6 +55,8 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
 
   void openAturHargaDialog() async {
     await Future.delayed(const Duration(milliseconds: 300));
+
+    if (!context.mounted) return;
 
     final state = getMemberCetakStrukPpob2Provider(context).state;
     AturHargaPpob2Dialog.show(context, initialadmin: state.admin);
@@ -92,7 +94,7 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
         children: [
           Positioned.fill(
             child: RhombusPattern(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               radius: 4,
               spacing: 30,
               isStaggered: false,
@@ -106,7 +108,7 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: context.card.withOpacity(0.2),
+                    color: context.card.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: context.primaryForeground,
@@ -180,7 +182,7 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
               borderRadius: const BorderRadius.all(Radius.circular(16)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withValues(alpha: 0.3),
                   blurRadius: 25,
                   offset: const Offset(0, -5),
                 ),
@@ -198,29 +200,24 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
                   ),
                   physics: const BouncingScrollPhysics(),
                   // Biar ada mantulnya dikit (iOS style)
-                  child: Container(
-                    // Container ini buat batesin lebar visual jadi 280 (simulasi 58mm)
-                    child:
-                        BlocBuilder<
-                          MemberCetakStrukPpob2Provider,
-                          MemberCetakStrukPpob2State
-                        >(
-                          builder: (context, state) {
-                            return _buildReceiptLayout(
-                              namaKios: state.namaKios,
-                              alamatKios: state.alamatKios,
-                              footerKios: state.footerKios,
-                              dataTrx: state.dataTrx,
-                              dataBiaya: state.dataBiaya,
-                              totalBayar: ToCurrency(
-                                state.totalBayar.toString(),
-                              ),
-                              titleSn: state.titleSn,
-                              sn: state.sn,
-                            );
-                          },
-                        ),
-                  ),
+                  child:
+                      BlocBuilder<
+                        MemberCetakStrukPpob2Provider,
+                        MemberCetakStrukPpob2State
+                      >(
+                        builder: (context, state) {
+                          return _buildReceiptLayout(
+                            namaKios: state.namaKios,
+                            alamatKios: state.alamatKios,
+                            footerKios: state.footerKios,
+                            dataTrx: state.dataTrx,
+                            dataBiaya: state.dataBiaya,
+                            totalBayar: ToCurrency(state.totalBayar.toString()),
+                            titleSn: state.titleSn,
+                            sn: state.sn,
+                          );
+                        },
+                      ),
                 ),
               ),
             ),
@@ -328,7 +325,7 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
                   height: 30,
                   text: "Cetak Struk",
                   onPressed: () {
-                    PrintStruk(
+                    printStruk(
                       namaKios: state.namaKios,
                       alamatKios: state.alamatKios,
                       footerKios: state.footerKios,
@@ -349,7 +346,7 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
     );
   }
 
-  void PrintStruk({
+  void printStruk({
     String namaKios = "",
     String alamatKios = "",
     String footerKios = "",
@@ -451,22 +448,6 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
         String spaces = ' ' * padding;
         buffer.writeln((spaces + text).padRight(maxChars));
       }
-    }
-
-    // 2. Helper: Print Kiri-Kanan (Smart Truncate)
-    // Ini penting banget di 32 char biar ga error layoutnya
-    void pRow(StringBuffer buffer, String left, String right) {
-      int availableSpace = maxChars - right.length;
-
-      // Kasih jarak minimal 1 spasi antara kiri dan kanan
-      if (left.length > availableSpace - 1) {
-        // Potong teks kiri kalau kepanjangan + kasih tanda ".."
-        left = left.substring(0, availableSpace - 2) + "..";
-      }
-
-      int spaceCount = maxChars - left.length - right.length;
-      String spaces = ' ' * spaceCount;
-      buffer.writeln('$left$spaces$right');
     }
 
     // 3. Helper: Garis
@@ -581,12 +562,12 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
 
   // 2. Tambahkan Function Share Struk Thermal
   Future<void> _handleShareFullPage(
-      BuildContext context,
-      MemberCetakStrukPpob2State state,
-      ) async {
+    BuildContext context,
+    MemberCetakStrukPpob2State state,
+  ) async {
     // Capture Widget
     // Kita bikin container putih biar mirip kertas struk asli
-    final Uint8List? image = await screenshotController.captureFromWidget(
+    final Uint8List image = await screenshotController.captureFromWidget(
       Container(
         width: 380,
         // Lebar fixed biar hasil gambarnya proporsional kayak struk 58mm
@@ -623,13 +604,11 @@ class _MemberCetakStrukPpob2PageState extends State<MemberCetakStrukPpob2Page> {
     );
 
     // Proses Simpan & Share
-    if (image != null) {
-      final directory = await getApplicationDocumentsDirectory();
-      final imagePath = await File(
-        '${directory.path}/struk_thermal.png',
-      ).create();
-      await imagePath.writeAsBytes(image);
-      await Share.shareXFiles([XFile(imagePath.path)], text: 'Struk Transaksi');
-    }
+    final directory = await getApplicationDocumentsDirectory();
+    final imagePath = await File(
+      '${directory.path}/struk_thermal.png',
+    ).create();
+    await imagePath.writeAsBytes(image);
+    await Share.shareXFiles([XFile(imagePath.path)], text: 'Struk Transaksi');
   }
 }

@@ -8,7 +8,7 @@ enum TipeProduk {
   internetTv(7),
   masaAktif(8),
   paketData(9),
-  paketSms(10),
+  paketNelpon(10),
   pbb(11),
   pdam(12),
   pkb(13),

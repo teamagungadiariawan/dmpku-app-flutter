@@ -128,8 +128,8 @@ class _MemberDaftarDevicesState extends State<MemberDaftarDevices> {
                                       Container(
                                         padding: const EdgeInsets.all(4),
                                         decoration: BoxDecoration(
-                                          color: context.success.withOpacity(
-                                            0.3,
+                                          color: context.success.withValues(
+                                            alpha: 0.3,
                                           ),
                                           borderRadius: BorderRadius.circular(
                                             8,
@@ -299,7 +299,7 @@ class _MemberDaftarDevicesState extends State<MemberDaftarDevices> {
                           const Gap(4),
                           Expanded(
                             child: Text(
-                              device.alamat ?? 'Lokasi tidak tersedia',
+                              device.alamat,
                               style: context.captionMedium,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -329,8 +329,8 @@ class _MemberDaftarDevicesState extends State<MemberDaftarDevices> {
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: device.isDmpku
-                        ? context.primary.withOpacity(0.3)
-                        : context.success.withOpacity(0.3),
+                        ? context.primary.withValues(alpha: 0.3)
+                        : context.success.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(

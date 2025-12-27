@@ -26,7 +26,7 @@ class CustomButton extends StatefulWidget {
   final Color? borderColor;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.icon,
@@ -46,7 +46,7 @@ class CustomButton extends StatefulWidget {
     this.foregroundColor,
     this.backgroundColor,
     this.borderColor,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomButton> createState() => _CustomButtonState();
@@ -206,7 +206,7 @@ class _CustomButtonState extends State<CustomButton> {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.red.withOpacity(0.4),
+            color: Colors.red.withValues(alpha: 0.4),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

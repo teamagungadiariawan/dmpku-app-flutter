@@ -145,7 +145,7 @@ class _BuatTiketVaPageState extends State<BuatTiketVaPage> {
                           child: Container(
                             padding: paddingCard,
                             decoration: BoxDecoration(
-                              color: blue[300]!.withOpacity(0.1),
+                              color: blue[300]!.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(color: blue[500]!),
                             ),

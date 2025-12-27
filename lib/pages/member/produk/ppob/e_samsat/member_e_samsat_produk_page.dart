@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
@@ -144,6 +146,13 @@ class _MemberESamsatProdukPageState extends State<MemberESamsatProdukPage> {
                     style: context.bodySmall.withColor(context.destructive),
                   ),
                 ],
+                const Gap(8),
+                ButtonFavorit(
+                  isGuest: false,
+                  tipeProduk: TipeProduk.pkb,
+                  onResult: (val) =>
+                      _provider.setTujuan(val, updateController: true),
+                ),
                 Gap(8),
                 if (state.isJatim) ...[
                   Text(

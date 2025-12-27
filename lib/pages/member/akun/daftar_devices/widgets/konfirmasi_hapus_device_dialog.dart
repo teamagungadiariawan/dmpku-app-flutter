@@ -1,6 +1,5 @@
 import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
-import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
 import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
@@ -147,7 +146,7 @@ class _KonfirmasiHapusDeviceDialogState
                   borderRadius: BorderRadius.circular(8),
                   side: BorderSide(color: context.destructive, width: 1),
                 ),
-                color: context.destructive.withOpacity(0.3),
+                color: context.destructive.withValues(alpha: 0.3),
                 child: Padding(
                   padding: paddingCard,
                   child: Column(
@@ -209,7 +208,7 @@ class _KonfirmasiHapusDeviceDialogState
                   borderRadius: BorderRadius.circular(8),
                   side: BorderSide(color: context.warning, width: 1),
                 ),
-                color: context.warning.withOpacity(0.1),
+                color: context.warning.withValues(alpha: 0.1),
                 child: Padding(
                   padding: paddingCard,
                   child: Row(
@@ -260,7 +259,7 @@ class _KonfirmasiHapusDeviceDialogState
 
                   return Card(
                     margin: EdgeInsets.only(top: 10),
-                    color: context.destructive.withOpacity(0.3),
+                    color: context.destructive.withValues(alpha: 0.3),
                     child: Padding(
                       padding: paddingCard,
                       child: Row(

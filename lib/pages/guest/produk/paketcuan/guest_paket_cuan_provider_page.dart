@@ -1,16 +1,11 @@
 import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
-import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
-import 'package:dmpku/core/themes/app_text_styles.dart';
-import 'package:dmpku/core/themes/theme_extension.dart';
-import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_subprovider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/widgets/promo_banner_paket_cuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
-import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/produk/card_paket_cuan.dart';
 import 'package:dmpku/widgets/produk/card_paket_cuan_shimmer.dart';
 import 'package:dmpku/widgets/produk/refreshable_list.dart';
@@ -18,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:lottie/lottie.dart';
 
 class GuestPaketCuanProviderPage extends StatefulWidget {
   static const routeName = '/guest/paketcuan/provider';

@@ -84,7 +84,7 @@ class _FilterRiwayatTodayDialogState extends State<FilterRiwayatTodayDialog> {
                 height: 28,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 variant: ButtonVariant.border,
-                backgroundColor: context.destructive.withOpacity(0.2),
+                backgroundColor: context.destructive.withValues(alpha: 0.2),
                 borderColor: context.destructive,
                 textStyle: context.bodySmall
                     .withColor(context.destructive)
@@ -147,7 +147,7 @@ class _FilterRiwayatTodayDialogState extends State<FilterRiwayatTodayDialog> {
     return Expanded(
       child: Card(
         color: isSelected
-            ? context.primary.withOpacity(0.1)
+            ? context.primary.withValues(alpha: 0.1)
             : context.isDarkMode
                 ? slate[800]
                 : slate[50],

@@ -21,7 +21,7 @@ class CardProductPulsaShimmer extends StatelessWidget {
       color: context.card,
       child: Shimmer.fromColors(
         baseColor: context.muted,
-        highlightColor: context.mutedForeground.withOpacity(0.1),
+        highlightColor: context.mutedForeground.withValues(alpha: 0.1),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

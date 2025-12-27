@@ -1,16 +1,15 @@
 import 'package:dmpku/core/enums/api_status.dart';
-import 'package:dmpku/core/enums/tipe_input.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
-import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/topup_game/member_topup_game_provider.dart';
 import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
-import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/produk/button_cek_akun.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
 import 'package:dmpku/widgets/produk/card_product.dart';
@@ -158,6 +157,7 @@ class _MemberTopupGameProdukPageState extends State<MemberTopupGameProdukPage> {
           shakeKey: _shakeKey,
           showFavoritButton: true,
           isGuest: false,
+          tipeProduk: TipeProduk.topupGame,
           tipeInput: state.selectedProvider.inputTipe,
           suffixWidget: CustomPopupInputTujuan(
             onResult: (val) => _provider.setTujuan(val, updateController: true),
@@ -165,7 +165,9 @@ class _MemberTopupGameProdukPageState extends State<MemberTopupGameProdukPage> {
             isVoice: true,
             isContact: true,
           ),
-          onFavoritResult: (val) {},
+          onFavoritResult: (val) {
+            _provider.setTujuan(val, updateController: true);
+          },
         );
       },
     );
@@ -210,7 +212,7 @@ class _MemberTopupGameProdukPageState extends State<MemberTopupGameProdukPage> {
       child: Container(
         padding: paddingCard,
         decoration: BoxDecoration(
-          color: context.primary.withOpacity(0.1),
+          color: context.primary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: context.primary),
         ),

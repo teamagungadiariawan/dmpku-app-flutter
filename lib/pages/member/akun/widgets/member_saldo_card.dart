@@ -73,7 +73,7 @@ class _SaldoIcon extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: context.primary.withOpacity(0.28),
+        color: context.primary.withValues(alpha: 0.28),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Assets.img.beranda.imgIsiSaldo.image(height: 28, width: 28),

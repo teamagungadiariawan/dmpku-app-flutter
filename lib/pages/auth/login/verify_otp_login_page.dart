@@ -238,7 +238,7 @@ class _VerifyOtpLoginPageState extends State<VerifyOtpLoginPage> {
           child: Container(
             padding: paddingCard,
             decoration: BoxDecoration(
-              color: context.primary.withOpacity(canResend ? 0.25 : 0.15),
+              color: context.primary.withValues(alpha: canResend ? 0.25 : 0.15),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(

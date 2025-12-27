@@ -77,6 +77,7 @@ class CustomPopupInputTujuan extends StatelessWidget {
 
   void _handleVoiceInput(BuildContext context) async {
     await requestMicrophonePermission();
+    if (!context.mounted) return;
     RecordAudioDialog.show(
       context,
       onResult: (recognizedText) {
@@ -87,6 +88,7 @@ class CustomPopupInputTujuan extends StatelessWidget {
 
   void _handleContactPicker(BuildContext context) async {
     await requestContactsPermission();
+    if (!context.mounted) return;
     ContactPickerDialog.show(
       context,
       onSelected: (contactData) {
@@ -102,9 +104,11 @@ class CustomPopupInputTujuan extends StatelessWidget {
         var textpasted = clipboardData.text!.trim();
         onResult(textpasted);
       } else {
+        if (!context.mounted) return;
         _showSnackBar(context, 'Clipboard kosong');
       }
     } catch (e) {
+      if (!context.mounted) return;
       _showSnackBar(context, 'Gagal membaca clipboard');
     }
   }

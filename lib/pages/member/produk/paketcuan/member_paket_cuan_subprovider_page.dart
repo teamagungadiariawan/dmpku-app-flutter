@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
@@ -102,6 +104,7 @@ class _MemberPaketCuanSubProviderPageState
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: false,
+          tipeProduk: TipeProduk.pulsa,
           suffixWidget: CustomPopupInputTujuan(
             onResult: (val) {
               getMemberPaketCuanProvider(
@@ -112,7 +115,11 @@ class _MemberPaketCuanSubProviderPageState
             isTempel: true,
             isVoice: true,
           ),
-          onFavoritResult: (val) {},
+          onFavoritResult: (val) {
+            getMemberPaketCuanProvider(
+              context,
+            ).setTujuan(val, updateController: true);
+          },
         );
       },
     );

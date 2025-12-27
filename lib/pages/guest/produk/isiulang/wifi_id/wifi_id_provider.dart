@@ -1,9 +1,7 @@
 import 'package:dmpku/core/apiconfig/server_exception.dart';
 import 'package:dmpku/core/enums/api_status.dart';
-import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/model/provider_response.dart';
 import 'package:dmpku/service/guest/product_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

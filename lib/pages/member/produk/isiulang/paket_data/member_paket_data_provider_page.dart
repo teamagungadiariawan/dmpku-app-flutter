@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
@@ -120,6 +122,7 @@ class _MemberPaketDataProviderPageState
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: false,
+          tipeProduk: TipeProduk.paketData,
           tipeInput: TipeInput.numericOnly,
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(
@@ -132,7 +135,11 @@ class _MemberPaketDataProviderPageState
             isVoice: true,
             isContact: true,
           ),
-          onFavoritResult: (val) {},
+          onFavoritResult: (val) {
+            getMemberPaketDataProvider(
+              context,
+            ).setTujuan(val, updateController: true);
+          },
         );
       },
     );

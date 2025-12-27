@@ -5,7 +5,7 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/key_value_response.dart';
-import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_1/member_cetak_struk_ppob_1_provider.dart';
+
 import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_2/member_cetak_struk_ppob_2_provider.dart';
 import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/dialog/top_divider_sheet.dart';
@@ -232,7 +232,9 @@ class _AturHargaPpob2DialogState extends State<AturHargaPpob2Dialog> {
                         size: ButtonSize.small,
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         variant: ButtonVariant.border,
-                        backgroundColor: context.destructive.withOpacity(0.2),
+                        backgroundColor: context.destructive.withValues(
+                          alpha: 0.2,
+                        ),
                         borderColor: context.destructive,
                         textStyle: context.bodySmall
                             .withColor(context.destructive)
@@ -267,7 +269,10 @@ class _AturHargaPpob2DialogState extends State<AturHargaPpob2Dialog> {
                     MemberCetakStrukPpob2State
                   >(
                     builder: (context, state) {
-                      return _buildTotalBayarField(context, state.tagihanAwal + state.denda);
+                      return _buildTotalBayarField(
+                        context,
+                        state.tagihanAwal + state.denda,
+                      );
                     },
                   ),
             ),
@@ -310,9 +315,8 @@ class _AturHargaPpob2DialogState extends State<AturHargaPpob2Dialog> {
                     icon: LucideIcons.arrowRight,
                     text: "Terapkan Admin",
                     onPressed: () {
-                      var totalTagihan = state.tagihanAwal +
-                          state.denda +
-                          admin;
+                      var totalTagihan =
+                          state.tagihanAwal + state.denda + admin;
 
                       List<KeyValue> dataBiaya = [
                         KeyValue(
@@ -442,8 +446,8 @@ class _AturHargaPpob2DialogState extends State<AturHargaPpob2Dialog> {
     debugPrint("buildFeeField: totalBayar=${state.totalBayar}");
     debugPrint("buildFeeField: tagihanAwal=${state.tagihanAwal}");
     debugPrint("buildFeeField: denda=${state.denda}");
-    debugPrint("buildFeeField: admin=${admin}");
-    debugPrint("buildFeeField: fee calculated=${fee}");
+    debugPrint("buildFeeField: admin=$admin");
+    debugPrint("buildFeeField: fee calculated=$fee");
 
     return Container(
       width: double.infinity,
@@ -479,13 +483,10 @@ class _AturHargaPpob2DialogState extends State<AturHargaPpob2Dialog> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 150,
-            child: Text(item.key ?? '', style: context.bodySmall),
-          ),
+          SizedBox(width: 150, child: Text(item.key, style: context.bodySmall)),
           Expanded(
             child: Text(
-              item.value ?? '',
+              item.value,
               style: context.bodySmall.withWeight(FontWeight.w600),
               textAlign: TextAlign.end,
             ),

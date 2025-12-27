@@ -24,7 +24,7 @@ class DashboardAppBar extends StatelessWidget {
       left: 0,
       right: 0,
       child: Container(
-        color: context.primary.withOpacity(opacity),
+        color: context.primary.withValues(alpha: opacity),
         child: SafeArea(
           child: SizedBox(
             height: kToolbarHeight,

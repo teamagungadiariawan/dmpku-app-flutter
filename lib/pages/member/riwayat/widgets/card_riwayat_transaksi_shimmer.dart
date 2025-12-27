@@ -21,7 +21,7 @@ class CardRiwayatTransaksiShimmer extends StatelessWidget {
       ),
       child: Shimmer.fromColors(
         baseColor: context.muted,
-        highlightColor: context.mutedForeground.withOpacity(0.1),
+        highlightColor: context.mutedForeground.withValues(alpha: 0.1),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

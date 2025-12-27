@@ -1,5 +1,4 @@
 import 'package:dmpku/core/enums/kategori_favorit.dart';
-import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
@@ -134,7 +133,7 @@ class _PilihKategoriDialogState extends State<PilihKategoriDialog> {
                     ),
                   ),
                   // Opsional: kasih tint warna dikit backgroundnya kalau selected
-                  color: isSelected ? context.primary.withOpacity(0.05) : context.card,
+                  color: isSelected ? context.primary.withValues(alpha: 0.05) : context.card,
                   clipBehavior: Clip.antiAlias, // Biar splash inkwell gak keluar card
                   child: InkWell(
                     onTap: () {

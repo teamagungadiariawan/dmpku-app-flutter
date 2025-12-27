@@ -1,7 +1,6 @@
 import 'package:dmpku/core/apiconfig/server_exception.dart';
 import 'package:dmpku/core/enums/api_status.dart';
 import 'package:dmpku/core/enums/tipe_input.dart';
-import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
@@ -10,8 +9,6 @@ import 'package:dmpku/model/cek_tagihan_response.dart';
 import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/produk/ppob/e_commerce/member_e_commerce_konfirmasi_transaksi_page.dart';
-import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
-import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/service/member/product_service.dart';
 import 'package:dmpku/widgets/dialog/error_tagihan_dialog.dart';
 import 'package:dmpku/widgets/dialog/konfirmasi_pin_dialog.dart';

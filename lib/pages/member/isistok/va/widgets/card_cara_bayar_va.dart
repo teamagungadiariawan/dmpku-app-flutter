@@ -3,7 +3,6 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class CardCaraBayarVa extends StatelessWidget {
   const CardCaraBayarVa({super.key});

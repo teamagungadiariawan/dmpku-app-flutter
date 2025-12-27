@@ -269,7 +269,7 @@ class _GantiPinDialogState extends State<GantiPinDialog> {
 
                   return Card(
                     margin: EdgeInsets.only(top: 10),
-                    color: context.destructive.withOpacity(0.3),
+                    color: context.destructive.withValues(alpha: 0.3),
                     child: Padding(
                       padding: paddingCard,
                       child: Row(

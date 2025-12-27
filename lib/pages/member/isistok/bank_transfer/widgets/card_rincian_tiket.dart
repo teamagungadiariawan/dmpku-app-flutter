@@ -1,4 +1,3 @@
-import 'package:dmpku/core/enums/status_tiket.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';

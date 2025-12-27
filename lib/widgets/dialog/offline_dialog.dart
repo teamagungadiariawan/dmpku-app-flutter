@@ -67,7 +67,7 @@ class OfflineDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "Gagal Koneksi Ke Server ${appname}",
+                      "Gagal Koneksi Ke Server $appname",
                       style: context.bodyLarge.withWeight(FontWeight.w600),
                     ),
                     Gap(8),

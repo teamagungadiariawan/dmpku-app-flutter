@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dmpku/core/helpers/storage_helper.dart';
-import 'package:dmpku/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 

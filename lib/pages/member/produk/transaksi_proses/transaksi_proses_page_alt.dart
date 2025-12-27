@@ -1,5 +1,4 @@
 import 'package:dmpku/core/helpers/navigator_helper.dart';
-import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
@@ -48,8 +47,8 @@ class _TransaksiProsesAltPageState extends State<TransaksiProsesAltPage> {
                   boxShadow: [
                     BoxShadow(
                       color: context.isDarkMode
-                          ? Colors.black.withOpacity(0.5)
-                          : Colors.grey.withOpacity(0.3),
+                          ? Colors.black.withValues(alpha: 0.5)
+                          : Colors.grey.withValues(alpha: 0.3),
                       blurRadius: 10,
                       offset: Offset(0, 4),
                     ),

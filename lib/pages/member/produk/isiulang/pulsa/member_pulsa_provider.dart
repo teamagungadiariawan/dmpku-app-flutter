@@ -7,7 +7,6 @@ import 'package:dmpku/model/bayar_response.dart';
 import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/pulsa/member_pulsa_konfirmasi_transaksi_page.dart';
-import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/service/member/product_service.dart';

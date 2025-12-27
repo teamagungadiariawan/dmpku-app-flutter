@@ -200,7 +200,7 @@ class MemberProvider extends Cubit<MemberState> {
         emit(
           state.copyWith(
             apiGetMemberStatus: ApiStatus.failure,
-            apiGetMemberMessage: result.message ?? 'Failed to get profile data',
+            apiGetMemberMessage: result.message,
           ),
         );
       }
@@ -231,10 +231,7 @@ class MemberProvider extends Cubit<MemberState> {
 
       var data = result.data;
       if (data != null) {
-
-        var detailProf = data.data?.copyWith(
-          nohp: data.nohp,
-        );
+        var detailProf = data.data?.copyWith(nohp: data.nohp);
 
         emit(
           state.copyWith(
@@ -246,8 +243,7 @@ class MemberProvider extends Cubit<MemberState> {
         emit(
           state.copyWith(
             apiGetMemberDetailStatus: ApiStatus.failure,
-            apiGetMemberDetailMessage:
-                result.message ?? 'Failed to get profile detail data',
+            apiGetMemberDetailMessage: result.message,
           ),
         );
       }
@@ -295,8 +291,7 @@ class MemberProvider extends Cubit<MemberState> {
         emit(
           state.copyWith(
             apiGetMemberDeviceStatus: ApiStatus.failure,
-            apiGetMemberDeviceMessage:
-                result.message ?? 'Failed to get profile device data',
+            apiGetMemberDeviceMessage: result.message,
           ),
         );
       }
@@ -326,11 +321,11 @@ class MemberProvider extends Cubit<MemberState> {
         emit(
           state.copyWith(
             apiLogoutStatus: ApiStatus.failure,
-            apiLogoutMessage: result.message ?? 'Failed to logout',
+            apiLogoutMessage: result.message,
           ),
         );
 
-        showErrorMessage(result.message ?? 'Gagal logout dari aplikasi.');
+        showErrorMessage(result.message);
 
         return;
       }
@@ -402,7 +397,7 @@ class MemberProvider extends Cubit<MemberState> {
         return fullLocation;
       }
     } catch (e) {
-      print('Gagal dapet lokasi: $e');
+      debugPrint('Gagal dapet lokasi: $e');
     }
 
     // Kalau gagal atau error, balikin string kosong
@@ -463,12 +458,11 @@ class MemberProvider extends Cubit<MemberState> {
         emit(
           state.copyWith(
             apiDeleteMemberDeviceStatus: ApiStatus.failure,
-            apiDeleteMemberDeviceMessage:
-                result.message ?? 'Failed to delete device',
+            apiDeleteMemberDeviceMessage: result.message,
           ),
         );
 
-        showErrorMessage(result.message ?? 'Gagal menghapus perangkat.');
+        showErrorMessage(result.message);
 
         return false;
       }
@@ -516,11 +510,11 @@ class MemberProvider extends Cubit<MemberState> {
         emit(
           state.copyWith(
             apiGantiPinStatus: ApiStatus.failure,
-            apiGantiPinMessage: result.message ?? 'Failed to change PIN',
+            apiGantiPinMessage: result.message,
           ),
         );
 
-        showErrorMessage(result.message ?? 'Gagal mengganti PIN.');
+        showErrorMessage(result.message);
 
         return false;
       }
@@ -561,11 +555,11 @@ class MemberProvider extends Cubit<MemberState> {
         emit(
           state.copyWith(
             apiResetPinStatus: ApiStatus.failure,
-            apiResetPinMessage: result.message ?? 'Failed to reset PIN',
+            apiResetPinMessage: result.message,
           ),
         );
 
-        showErrorMessage(result.message ?? 'Gagal mereset PIN.');
+        showErrorMessage(result.message);
 
         return false;
       }

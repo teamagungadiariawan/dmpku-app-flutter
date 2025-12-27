@@ -72,7 +72,7 @@ class InputTujuanVoucher extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: context.destructive.withOpacity(0.1),
+          color: context.destructive.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(MdiIcons.trashCan, size: 20, color: context.destructive),

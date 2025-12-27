@@ -149,7 +149,7 @@ class _FilterMutasiStokDialogState extends State<FilterMutasiStokDialog> {
                 height: 28,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 variant: ButtonVariant.border,
-                backgroundColor: context.destructive.withOpacity(0.2),
+                backgroundColor: context.destructive.withValues(alpha: 0.2),
                 borderColor: context.destructive,
                 textStyle: context.bodySmall
                     .withColor(context.destructive)

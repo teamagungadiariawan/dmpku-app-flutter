@@ -208,7 +208,7 @@ class _MemberOfficialPageState extends State<MemberOfficialPage> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: context.primary.withOpacity(0.3),
+            color: context.primary.withValues(alpha: 0.3),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -224,7 +224,7 @@ class _MemberOfficialPageState extends State<MemberOfficialPage> {
               width: 90,
               height: 90,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
             ),
@@ -462,7 +462,7 @@ class _DecorativeCircle extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: context.primary.withOpacity(opacity),
+          color: context.primary.withValues(alpha: opacity),
           shape: BoxShape.circle,
         ),
       ),

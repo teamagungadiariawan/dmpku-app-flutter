@@ -84,7 +84,7 @@ class _MemberDetailAkunPageState extends State<MemberDetailAkunPage> {
         children: [
           Positioned.fill(
             child: RhombusPattern(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               radius: 4,
               spacing: 30,
               isStaggered: false,
@@ -169,7 +169,7 @@ class _MemberDetailAkunPageState extends State<MemberDetailAkunPage> {
               borderRadius: BorderRadius.circular(24),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(24),
                 ),
                 padding: const EdgeInsets.symmetric(
@@ -505,7 +505,7 @@ class _MemberDetailAkunPageState extends State<MemberDetailAkunPage> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: iconColor.withOpacity(0.3),
+                color: iconColor.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(icon, size: 20, color: iconColor),

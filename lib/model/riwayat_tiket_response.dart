@@ -1,5 +1,4 @@
 import 'package:dmpku/core/enums/status_tiket.dart';
-import 'package:flutter/widgets.dart';
 
 // 1. Model buat satu item tiket (Detail per transaksi)
 class RiwayatTiketBankModel {

@@ -1,5 +1,3 @@
-import 'package:dmpku/core/themes/app_text_styles.dart';
-import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -26,9 +24,7 @@ class CustomNetworkImage extends StatelessWidget {
         return SizedBox(
           width: size,
           height: size,
-          child: Center(
-            child: _AnimatedHourglass(size: size * 0.6),
-          ),
+          child: Center(child: _AnimatedHourglass(size: size * 0.6)),
         );
       },
       errorBuilder: (context, error, stackTrace) {
@@ -89,6 +85,4 @@ class _AnimatedHourglassState extends State<_AnimatedHourglass>
       ),
     );
   }
-
-
 }

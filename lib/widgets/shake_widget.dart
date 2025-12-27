@@ -52,13 +52,13 @@ class ShakeWidget extends StatefulWidget {
   final bool enabled;
 
   const ShakeWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 500),
     this.distance = 10.0,
     this.axis = ShakeAxis.horizontal,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   State<ShakeWidget> createState() => ShakeWidgetState();
@@ -123,14 +123,14 @@ class AutoShakeWidget extends StatefulWidget {
   final bool autoStart;
 
   const AutoShakeWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 500),
     this.interval = const Duration(seconds: 3),
     this.distance = 10.0,
     this.axis = ShakeAxis.horizontal,
     this.autoStart = true,
-  }) : super(key: key);
+  });
 
   @override
   State<AutoShakeWidget> createState() => _AutoShakeWidgetState();
@@ -199,13 +199,13 @@ class ShakeErrorWidget extends StatefulWidget {
   final VoidCallback? onShakeComplete;
 
   const ShakeErrorWidget({
-    Key? key,
+    super.key,
     required this.child,
     required this.hasError,
     this.duration = const Duration(milliseconds: 500),
     this.distance = 8.0,
     this.onShakeComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<ShakeErrorWidget> createState() => ShakeErrorWidgetState();

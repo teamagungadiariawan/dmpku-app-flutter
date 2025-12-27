@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
@@ -95,10 +97,10 @@ class _MemberVoucherDataProdukPageState
               ],
             ),
           ),
-          bottomNavigationBar:
-              BlocProvider.value(
-                value: getMemberVoucherDataProvider(context),
-                child: BlocBuilder<MemberVoucherDataProvider, MemberVoucherDataState>(
+          bottomNavigationBar: BlocProvider.value(
+            value: getMemberVoucherDataProvider(context),
+            child:
+                BlocBuilder<MemberVoucherDataProvider, MemberVoucherDataState>(
                   buildWhen: (previous, current) =>
                       previous.selectedProduct != current.selectedProduct ||
                       previous.tujuanHasError != current.tujuanHasError ||
@@ -106,25 +108,29 @@ class _MemberVoucherDataProdukPageState
                       previous.apiFetchProductStatus !=
                           current.apiFetchProductStatus,
                   builder: (context, state) {
-                    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+                    final bottomInset = MediaQuery.of(
+                      context,
+                    ).viewInsets.bottom;
 
                     return Padding(
                       padding: EdgeInsets.only(bottom: bottomInset),
                       child: ButtonCheckout(
                         isDisabled:
-                        state.selectedProduct.idproduk == 0 ||
+                            state.selectedProduct.idproduk == 0 ||
                             state.tujuanHasError ||
                             state.tujuan.isEmpty ||
                             state.apiFetchProductStatus.isLoading,
                         selectedProduct: state.selectedProduct,
                         onContinue: () {
-                          getMemberVoucherDataProvider(context).setNewKonfirmasi();
+                          getMemberVoucherDataProvider(
+                            context,
+                          ).setNewKonfirmasi();
                         },
                       ),
                     );
                   },
                 ),
-              ),
+          ),
         ),
       ),
     );
@@ -156,6 +162,7 @@ class _MemberVoucherDataProdukPageState
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: false,
+          tipeProduk: TipeProduk.voucherData,
 
           onFavoritResult: (val) {
             getMemberVoucherDataProvider(
@@ -257,7 +264,9 @@ class _MemberVoucherDataProdukPageState
               isGangguan: product.isGangguan,
               isPulsa: true,
               onPress: () {
-                getMemberVoucherDataProvider(context).setSelectedProduct(product);
+                getMemberVoucherDataProvider(
+                  context,
+                ).setSelectedProduct(product);
               },
             );
           },

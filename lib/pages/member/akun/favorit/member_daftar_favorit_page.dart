@@ -144,7 +144,7 @@ class _MemberDaftarFavoritPageState extends State<MemberDaftarFavoritPage> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -161,7 +161,7 @@ class _MemberDaftarFavoritPageState extends State<MemberDaftarFavoritPage> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -173,7 +173,7 @@ class _MemberDaftarFavoritPageState extends State<MemberDaftarFavoritPage> {
                     width: 140,
                     height: 140,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Colors.white.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -193,7 +193,7 @@ class _MemberDaftarFavoritPageState extends State<MemberDaftarFavoritPage> {
                           Text(
                             'Total Tersimpan',
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha: 0.9),
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                             ),
@@ -210,7 +210,7 @@ class _MemberDaftarFavoritPageState extends State<MemberDaftarFavoritPage> {
                       ),
                       Icon(
                         Icons.star_border_rounded,
-                        color: Colors.white.withOpacity(0.6),
+                        color: Colors.white.withValues(alpha: 0.6),
                         size: 48,
                       ),
                     ],

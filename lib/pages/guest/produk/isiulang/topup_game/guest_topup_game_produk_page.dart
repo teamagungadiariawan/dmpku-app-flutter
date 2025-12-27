@@ -191,7 +191,7 @@ class _GuestTopupGameProdukPageState extends State<GuestTopupGameProdukPage> {
               Container(
                 padding: paddingCard,
                 decoration: BoxDecoration(
-                  color: context.primary.withOpacity(0.1),
+                  color: context.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: context.primary, width: 1),
                 ),

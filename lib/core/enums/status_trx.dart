@@ -56,14 +56,14 @@ enum TrxStatus {
     switch (this) {
       // Ganti dengan variable color lo, misal: AppColors.primary
       case TrxStatus.success:
-        return context.success.withOpacity(0.2);
+        return context.success.withValues(alpha: 0.2);
       case TrxStatus.pending:
-        return context.warning.withOpacity(0.2); // warning50
+        return context.warning.withValues(alpha: 0.2); // warning50
       case TrxStatus.failed:
-        return context.destructive.withOpacity(0.2); // error50
+        return context.destructive.withValues(alpha: 0.2); // error50
       case TrxStatus.expired:
       case TrxStatus.loading:
-        return context.secondary.withOpacity(0.2);
+        return context.secondary.withValues(alpha: 0.2);
     }
   }
 

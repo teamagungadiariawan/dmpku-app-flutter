@@ -31,8 +31,8 @@ class RiwayatActiveFilterChip extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
             decoration: BoxDecoration(
               color: context.isDarkMode
-                  ? context.primary.withOpacity(0.1)
-                  : context.primary.withOpacity(0.15),
+                  ? context.primary.withValues(alpha: 0.1)
+                  : context.primary.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
@@ -49,7 +49,7 @@ class RiwayatActiveFilterChip extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: context.destructive.withOpacity(0.2),
+                color: context.destructive.withValues(alpha: 0.2),
               ),
               child: Row(
                 children: [

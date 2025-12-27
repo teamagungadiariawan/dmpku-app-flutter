@@ -1,6 +1,6 @@
 import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
-import 'package:dmpku/core/helpers/toast_helper.dart';
+
 import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
@@ -46,7 +46,7 @@ class FilterRekapTransaksiDialog extends StatefulWidget {
 
 class _FilterRekapTransaksiDialogState
     extends State<FilterRekapTransaksiDialog> {
-  late TextEditingController _searchController = TextEditingController(
+  late final TextEditingController _searchController = TextEditingController(
     text: widget.initialSearch,
   );
   late DateTime? _waktuAwal = widget.waktuAwal ?? DateTime.now();
@@ -102,7 +102,7 @@ class _FilterRekapTransaksiDialogState
                 height: 28,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 variant: ButtonVariant.border,
-                backgroundColor: context.destructive.withOpacity(0.2),
+                backgroundColor: context.destructive.withValues(alpha: 0.2),
                 borderColor: context.destructive,
                 textStyle: context.bodySmall
                     .withColor(context.destructive)

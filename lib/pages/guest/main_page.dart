@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
           decoration: BoxDecoration(
             color: context.background,
             boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10),
+              BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10),
             ],
             border: Border(top: BorderSide(color: context.border, width: 1)),
           ),

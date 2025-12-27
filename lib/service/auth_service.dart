@@ -4,7 +4,7 @@ import 'package:dmpku/core/apiconfig/base_response.dart';
 import 'package:dmpku/core/apiconfig/server_exception.dart';
 import 'package:dmpku/core/helpers/device_info_helper.dart';
 import 'package:dmpku/core/helpers/encrypt_helper.dart';
-import 'package:dmpku/core/helpers/location_helper.dart';
+
 import 'package:flutter/material.dart';
 
 class AuthService {

@@ -57,7 +57,7 @@ class RiwayatListKemarin extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
-                      color: context.primary.withOpacity(0.3),
+                      color: context.primary.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(

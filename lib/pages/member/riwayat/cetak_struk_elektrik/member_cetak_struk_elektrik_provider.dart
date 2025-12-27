@@ -6,7 +6,6 @@ import 'package:dmpku/model/riwayat_response.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class MemberCetakStrukElektrikState extends Equatable {
   final List<KeyValue> dataTrx;

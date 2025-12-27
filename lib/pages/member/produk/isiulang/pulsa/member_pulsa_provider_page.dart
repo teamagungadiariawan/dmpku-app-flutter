@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
@@ -121,6 +123,7 @@ class _MemberPulsaProviderPageState extends State<MemberPulsaProviderPage> {
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: false,
+          tipeProduk: TipeProduk.pulsa,
           tipeInput: TipeInput.numericOnly,
           icon: MdiIcons.clipboardAccount,
           suffixWidget: CustomPopupInputTujuan(
@@ -133,7 +136,11 @@ class _MemberPulsaProviderPageState extends State<MemberPulsaProviderPage> {
             isVoice: true,
             isContact: true,
           ),
-          onFavoritResult: (val) {},
+          onFavoritResult: (val) {
+            getMemberPulsaProvider(
+              context,
+            ).setTujuan(val, updateController: true);
+          },
         );
       },
     );

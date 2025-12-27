@@ -1,19 +1,13 @@
-import 'package:dmpku/core/helpers/navigator_helper.dart';
-import 'package:dmpku/core/helpers/storage_helper.dart';
-import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/gen/assets.gen.dart';
-import 'package:dmpku/pages/guest/main_page.dart';
 import 'package:dmpku/pages/member/akun/member_akun_page.dart';
 import 'package:dmpku/pages/member/dashboard/member_dashboard_page.dart';
 import 'package:dmpku/pages/member/official/member_official_page.dart';
 import 'package:dmpku/pages/member/riwayat/member_riwayat_page.dart';
 import 'package:dmpku/pages/member/riwayat/member_riwayat_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
-import 'package:dmpku/widgets/custom_button.dart';
 import 'package:dmpku/widgets/dialog/konfirmasi_keluar_app_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class MemberMainPage extends StatefulWidget {
   static const routeName = '/member/main';
@@ -79,6 +73,16 @@ class _MemberMainPageState extends State<MemberMainPage> {
       canPop: false,
       onPopInvoked: (didPop) {
         if (didPop) return;
+
+        if (_currentIndex != 0) {
+          _pageController.animateToPage(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+          return;
+        }
+
         KonfirmasiKeluarAppDialog.show(context);
       },
       child: Scaffold(
@@ -95,7 +99,10 @@ class _MemberMainPageState extends State<MemberMainPage> {
           decoration: BoxDecoration(
             color: context.background,
             boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10),
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 10,
+              ),
             ],
             border: Border(top: BorderSide(color: context.border, width: 1)),
           ),

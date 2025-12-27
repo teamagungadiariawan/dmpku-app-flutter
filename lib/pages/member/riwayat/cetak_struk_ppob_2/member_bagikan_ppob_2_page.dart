@@ -3,15 +3,14 @@ import 'dart:io';
 import 'package:dmpku/core/enums/status_trx.dart';
 import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
-import 'package:dmpku/core/helpers/printer_helper.dart';
-import 'package:dmpku/core/helpers/storage_helper.dart';
+
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
-import 'package:dmpku/gen/assets.gen.dart';
+
 import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_2/member_cetak_struk_ppob_2_provider.dart';
 import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_2/widgets/atur_harga_ppob_2_dialog.dart';
@@ -94,7 +93,7 @@ class _BagikanPpob2PageState extends State<BagikanPpob2Page> {
             children: [
               Positioned.fill(
                 child: RhombusPattern(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   radius: 4,
                   spacing: 30,
                   isStaggered: false,
@@ -112,7 +111,7 @@ class _BagikanPpob2PageState extends State<BagikanPpob2Page> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: context.card.withOpacity(0.2),
+                              color: context.card.withValues(alpha: 0.2),
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: context.primaryForeground,
@@ -204,7 +203,7 @@ class _BagikanPpob2PageState extends State<BagikanPpob2Page> {
               borderRadius: const BorderRadius.all(Radius.circular(16)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withValues(alpha: 0.3),
                   blurRadius: 25,
                   offset: const Offset(0, -5),
                 ),
@@ -220,7 +219,6 @@ class _BagikanPpob2PageState extends State<BagikanPpob2Page> {
                       context,
                     );
                     var status = state.detailTransaksi.statusTrx;
-                    var waktu = state.detailTransaksi.waktuTrx;
 
                     return Column(
                       children: [

@@ -1,5 +1,5 @@
 import 'package:dmpku/model/riwayat_tiket_response.dart';
-import 'package:flutter/foundation.dart'; // Buat debugPrint kalau butuh
+// Buat debugPrint kalau butuh
 
 // 1. Model buat object "data" (Tiket)
 class TiketDataModel {

@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
@@ -96,7 +98,10 @@ class _MemberPaketStreamingProdukPageState
             ),
           ),
           bottomNavigationBar:
-              BlocBuilder<MemberPaketStreamingProvider, MemberPaketStreamingState>(
+              BlocBuilder<
+                MemberPaketStreamingProvider,
+                MemberPaketStreamingState
+              >(
                 buildWhen: (previous, current) =>
                     previous.selectedProduct != current.selectedProduct ||
                     previous.tujuanHasError != current.tujuanHasError ||
@@ -110,13 +115,15 @@ class _MemberPaketStreamingProdukPageState
                     padding: EdgeInsets.only(bottom: bottomInset),
                     child: ButtonCheckout(
                       isDisabled:
-                      state.selectedProduct.idproduk == 0 ||
+                          state.selectedProduct.idproduk == 0 ||
                           state.tujuanHasError ||
                           state.tujuan.isEmpty ||
                           state.apiFetchProductStatus.isLoading,
                       selectedProduct: state.selectedProduct,
                       onContinue: () {
-                        getMemberPaketStreamingProvider(context).setNewKonfirmasi();
+                        getMemberPaketStreamingProvider(
+                          context,
+                        ).setNewKonfirmasi();
                       },
                     ),
                   );
@@ -152,6 +159,7 @@ class _MemberPaketStreamingProdukPageState
           },
           shakeKey: shakeKey,
           showFavoritButton: true,
+          tipeProduk: TipeProduk.paketStreaming,
           onFavoritResult: (val) {
             getMemberPaketStreamingProvider(
               context,
@@ -252,7 +260,9 @@ class _MemberPaketStreamingProdukPageState
               isGangguan: product.isGangguan,
               isPulsa: true,
               onPress: () {
-                getMemberPaketStreamingProvider(context).setSelectedProduct(product);
+                getMemberPaketStreamingProvider(
+                  context,
+                ).setSelectedProduct(product);
               },
             );
           },

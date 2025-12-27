@@ -60,7 +60,7 @@ class _ErrorTagihanDialogState extends State<ErrorTagihanDialog> {
               TopDividerSheet(),
               Gap(15),
               Card(
-                color: context.destructive.withOpacity(0.2),
+                color: context.destructive.withValues(alpha: 0.2),
                 child: Padding(
                   padding: paddingCard,
                   child: Row(

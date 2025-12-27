@@ -49,8 +49,8 @@ class _TransaksiProsesAktivasiVoucherPageState
                   boxShadow: [
                     BoxShadow(
                       color: context.isDarkMode
-                          ? Colors.black.withOpacity(0.5)
-                          : Colors.grey.withOpacity(0.3),
+                          ? Colors.black.withValues(alpha: 0.5)
+                          : Colors.grey.withValues(alpha: 0.3),
                       blurRadius: 10,
                       offset: Offset(0, 4),
                     ),

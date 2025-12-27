@@ -1,4 +1,3 @@
-import 'package:dmpku/core/enums/status_tiket.dart';
 import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';

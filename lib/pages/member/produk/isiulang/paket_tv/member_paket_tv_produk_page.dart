@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
@@ -6,7 +8,6 @@ import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/paket_tv/member_paket_tv_provider.dart';
 import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
-import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa_shimmer.dart';
@@ -30,8 +31,7 @@ class MemberPaketTvProdukPage extends StatefulWidget {
       _MemberPaketTvProdukPageState();
 }
 
-class _MemberPaketTvProdukPageState
-    extends State<MemberPaketTvProdukPage> {
+class _MemberPaketTvProdukPageState extends State<MemberPaketTvProdukPage> {
   final shakeKey = GlobalKey<ShakeErrorWidgetState>();
 
   void closePage() {
@@ -97,36 +97,35 @@ class _MemberPaketTvProdukPageState
               ],
             ),
           ),
-          bottomNavigationBar:
-              BlocProvider.value(
-                value: getMemberPaketTvProvider(context),
-                child: BlocBuilder<MemberPaketTvProvider, MemberPaketTvState>(
-                  buildWhen: (previous, current) =>
-                      previous.selectedProduct != current.selectedProduct ||
-                      previous.tujuanHasError != current.tujuanHasError ||
-                      previous.tujuan != current.tujuan ||
-                      previous.apiFetchProductStatus !=
-                          current.apiFetchProductStatus,
-                  builder: (context, state) {
-                    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+          bottomNavigationBar: BlocProvider.value(
+            value: getMemberPaketTvProvider(context),
+            child: BlocBuilder<MemberPaketTvProvider, MemberPaketTvState>(
+              buildWhen: (previous, current) =>
+                  previous.selectedProduct != current.selectedProduct ||
+                  previous.tujuanHasError != current.tujuanHasError ||
+                  previous.tujuan != current.tujuan ||
+                  previous.apiFetchProductStatus !=
+                      current.apiFetchProductStatus,
+              builder: (context, state) {
+                final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: bottomInset),
-                      child: ButtonCheckout(
-                        isDisabled:
+                return Padding(
+                  padding: EdgeInsets.only(bottom: bottomInset),
+                  child: ButtonCheckout(
+                    isDisabled:
                         state.selectedProduct.idproduk == 0 ||
-                            state.tujuanHasError ||
-                            state.tujuan.isEmpty ||
-                            state.apiFetchProductStatus.isLoading,
-                        selectedProduct: state.selectedProduct,
-                        onContinue: () {
-                          getMemberPaketTvProvider(context).setNewKonfirmasi();
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
+                        state.tujuanHasError ||
+                        state.tujuan.isEmpty ||
+                        state.apiFetchProductStatus.isLoading,
+                    selectedProduct: state.selectedProduct,
+                    onContinue: () {
+                      getMemberPaketTvProvider(context).setNewKonfirmasi();
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
@@ -158,6 +157,7 @@ class _MemberPaketTvProdukPageState
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: false,
+          tipeProduk: TipeProduk.paketTv,
           icon: MdiIcons.cardAccountDetails,
 
           onFavoritResult: (val) {

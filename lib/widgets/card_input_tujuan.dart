@@ -32,7 +32,7 @@ class CardInputTujuan extends StatelessWidget {
   final bool isCekAkun;
   final bool addButtonLanjutkan;
   final bool isButtonDisabled;
-  final bool isLoadingCekAkun ;
+  final bool isLoadingCekAkun;
 
   final ValueChanged<String>? onFavoritResult;
   final IconData? icon;
@@ -112,6 +112,7 @@ class CardInputTujuan extends StatelessWidget {
               const Gap(8),
               ButtonFavorit(
                 isGuest: isGuest,
+                tipeProduk: tipeProduk,
                 onResult: onFavoritResult ?? (_) {},
               ),
             ],

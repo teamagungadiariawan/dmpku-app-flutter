@@ -61,7 +61,7 @@ class _KonfirmasiLogoutDialogState extends State<KonfirmasiLogoutDialog> {
                   width: 1,
                 ),
               ),
-              color: context.destructive.withOpacity(0.3),
+              color: context.destructive.withValues(alpha: 0.3),
               child: Padding(
                 padding: paddingCard,
                 child: Row(

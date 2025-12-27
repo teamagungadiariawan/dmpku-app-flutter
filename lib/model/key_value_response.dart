@@ -1,5 +1,4 @@
 import 'package:dmpku/core/enums/tipe_input.dart';
-import 'package:flutter/cupertino.dart';
 
 class KeyValue {
   final String key;

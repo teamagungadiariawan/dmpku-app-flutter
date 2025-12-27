@@ -1,6 +1,4 @@
-import 'package:dmpku/core/helpers/produk_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
-import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +13,14 @@ class CardProduct extends StatelessWidget {
   final VoidCallback onPress;
 
   const CardProduct({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.harga,
     required this.selected,
     required this.isGangguan,
     required this.onPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -123,10 +121,7 @@ class CardProduct extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12),
       child: Column(
         children: [
-          Text(
-            subtitle,
-            style: context.bodyMedium.withWeight(FontWeight.w400),
-          ),
+          Text(subtitle, style: context.bodyMedium.withWeight(FontWeight.w400)),
         ],
       ),
     );
@@ -134,7 +129,7 @@ class CardProduct extends StatelessWidget {
 
   Color _getBackgroundColor(BuildContext context) {
     if (selected) {
-      return context.primary.withOpacity(0.3);
+      return context.primary.withValues(alpha: 0.3);
     }
     if (isGangguan) {
       return context.muted;
@@ -146,7 +141,7 @@ class CardProduct extends StatelessWidget {
     return Positioned.fill(
       child: Container(
         decoration: BoxDecoration(
-          color: context.border.withOpacity(0.3),
+          color: context.border.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(12),
         ),
       ),

@@ -232,8 +232,8 @@ class _RecordAudioDialogState extends State<RecordAudioDialog>
                   padding: const EdgeInsets.all(28),
                   decoration: BoxDecoration(
                     color: _isListening
-                        ? Colors.red.withOpacity(0.1)
-                        : indigo[500]!.withOpacity(0.1),
+                        ? Colors.red.withValues(alpha: 0.1)
+                        : indigo[500]!.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Container(
@@ -244,7 +244,7 @@ class _RecordAudioDialogState extends State<RecordAudioDialog>
                       boxShadow: [
                         BoxShadow(
                           color: (_isListening ? Colors.red : indigo[500]!)
-                              .withOpacity(0.3),
+                              .withValues(alpha: 0.3),
                           blurRadius: 20,
                           spreadRadius: 5,
                         ),

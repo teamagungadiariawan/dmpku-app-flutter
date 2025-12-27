@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
@@ -8,7 +10,6 @@ import 'package:dmpku/model/product_response.dart';
 import 'package:dmpku/pages/member/produk/isiulang/wifi_id/member_wifi_id_provider.dart';
 import 'package:dmpku/widgets/card_input_tujuan.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
-import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
 import 'package:dmpku/widgets/produk/button_checkout.dart';
 import 'package:dmpku/widgets/produk/card_product.dart';
 import 'package:dmpku/widgets/produk/card_product_pulsa_shimmer.dart';
@@ -148,7 +149,15 @@ class _MemberWifiIdProdukPageState extends State<MemberWifiIdProdukPage> {
               context,
             ).setTujuan('', updateController: true);
           },
+          tipeProduk: TipeProduk.wifiId,
           shakeKey: shakeKey,
+          showFavoritButton: true,
+          isGuest: false,
+          onFavoritResult: (val) {
+            getMemberWifiIdProvider(
+              context,
+            ).setTujuan(val, updateController: true);
+          },
           tipeInput: TipeInput.numericOnly,
           suffixWidget: CustomPopupInputTujuan(
             onResult: (val) {

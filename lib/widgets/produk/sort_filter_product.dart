@@ -1,6 +1,6 @@
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/product_response.dart';
-import 'package:dmpku/pages/guest/produk/isiulang/pulsa/pulsa_provider.dart';
+
 import 'package:dmpku/widgets/produk/custom_popup_sort_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
@@ -66,13 +66,13 @@ class SortFilterProduct extends StatelessWidget {
                 hintText: 'Cari Produk',
                 suffixIcon: searchValue.isNotEmpty
                     ? InkWell(
-                  onTap: onClearSearch,
-                  child: Icon(
-                    MdiIcons.close,
-                    size: 18,
-                    color: context.foreground,
-                  ),
-                )
+                        onTap: onClearSearch,
+                        child: Icon(
+                          MdiIcons.close,
+                          size: 18,
+                          color: context.foreground,
+                        ),
+                      )
                     : null,
               ),
               textInputAction: TextInputAction.done,

@@ -3,15 +3,12 @@ import 'dart:io';
 import 'package:dmpku/core/enums/status_trx.dart';
 import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
-import 'package:dmpku/core/helpers/printer_helper.dart';
-import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_colors.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
-import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_1/member_cetak_struk_ppob_1_provider.dart';
 import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_1/widgets/atur_harga_ppob_1_dialog.dart';
@@ -94,7 +91,7 @@ class _BagikanPpob1PageState extends State<BagikanPpob1Page> {
             children: [
               Positioned.fill(
                 child: RhombusPattern(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   radius: 4,
                   spacing: 30,
                   isStaggered: false,
@@ -112,7 +109,7 @@ class _BagikanPpob1PageState extends State<BagikanPpob1Page> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: context.card.withOpacity(0.2),
+                              color: context.card.withValues(alpha: 0.2),
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: context.primaryForeground,
@@ -204,7 +201,7 @@ class _BagikanPpob1PageState extends State<BagikanPpob1Page> {
               borderRadius: const BorderRadius.all(Radius.circular(16)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withValues(alpha: 0.3),
                   blurRadius: 25,
                   offset: const Offset(0, -5),
                 ),
@@ -220,7 +217,6 @@ class _BagikanPpob1PageState extends State<BagikanPpob1Page> {
                       context,
                     );
                     var status = state.detailTransaksi.statusTrx;
-                    var waktu = state.detailTransaksi.waktuTrx;
 
                     return Column(
                       children: [
@@ -292,7 +288,6 @@ class _BagikanPpob1PageState extends State<BagikanPpob1Page> {
     Color? dividerColor,
     TrxStatus status,
   ) {
-
     var dataTrx = state.dataTrx;
     if (status.isSuccess) {
       bool hasSn = dataTrx.any((item) => item.key == state.titleSn);
@@ -304,7 +299,6 @@ class _BagikanPpob1PageState extends State<BagikanPpob1Page> {
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         children: [
           ..._buildDataList(dataTrx),
-
 
           // 2. List Biaya / Potong Stok
           Container(
@@ -466,7 +460,7 @@ class _BagikanPpob1PageState extends State<BagikanPpob1Page> {
                   text: "Bagikan",
                   variant: buttonVariant,
                   onPressed: () {
-_handleShareFullPage(context, state);
+                    _handleShareFullPage(context, state);
                   },
                   icon: LucideIcons.share2,
                 ),
@@ -478,10 +472,12 @@ _handleShareFullPage(context, state);
     );
   }
 
-
   final ScreenshotController screenshotController = ScreenshotController();
 
-  Future<void> _handleShareFullPage(BuildContext context, MemberCetakStrukPpob1State state) async {
+  Future<void> _handleShareFullPage(
+    BuildContext context,
+    MemberCetakStrukPpob1State state,
+  ) async {
     var color = state.detailTransaksi.statusTrx.bgColorTrx(context);
     var status = state.detailTransaksi.statusTrx;
 
@@ -501,7 +497,9 @@ _handleShareFullPage(context, state);
               width: double.maxFinite,
               child: Stack(
                 children: [
-                  _buildHeaderSection(context), // BlocBuilder di sini sekarang aman
+                  _buildHeaderSection(
+                    context,
+                  ), // BlocBuilder di sini sekarang aman
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -511,7 +509,9 @@ _handleShareFullPage(context, state);
                         margin: paddingPage,
                         decoration: BoxDecoration(
                           color: context.card,
-                          borderRadius: const BorderRadius.all(Radius.circular(16)),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(16),
+                          ),
                           border: Border.all(color: context.border, width: 0.5),
                         ),
                         child: Column(
@@ -522,16 +522,28 @@ _handleShareFullPage(context, state);
                             ListView(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 8,
+                              ),
                               children: [
                                 ..._buildDataList(dataTrx),
                                 Container(
                                   margin: const EdgeInsets.only(top: 8),
-                                  child: _buildSectionHeader(context, "Detail Potong Stok"),
+                                  child: _buildSectionHeader(
+                                    context,
+                                    "Detail Potong Stok",
+                                  ),
                                 ),
-                                ..._buildDataList(state.dataBiaya, isCurrency: true),
+                                ..._buildDataList(
+                                  state.dataBiaya,
+                                  isCurrency: true,
+                                ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 8,
+                                  ),
                                   margin: const EdgeInsets.only(top: 8),
                                   decoration: BoxDecoration(
                                     color: status.bgColorTrx(context),
@@ -565,7 +577,10 @@ _handleShareFullPage(context, state);
                       ),
                       const Gap(20),
                       Center(
-                        child: Text("Simpan bukti transaksi ini.", style: context.bodySmall),
+                        child: Text(
+                          "Simpan bukti transaksi ini.",
+                          style: context.bodySmall,
+                        ),
                       ),
                       const Gap(20),
                     ],

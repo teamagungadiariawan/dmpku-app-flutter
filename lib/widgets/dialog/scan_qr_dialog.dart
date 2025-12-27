@@ -170,7 +170,7 @@ class _ScanQrDialogState extends State<ScanQrDialog> {
         widget.onScanned!(result!.code ?? '');
 
         Future.delayed(const Duration(milliseconds: 500), () {
-          Navigator.of(context).pop();
+          if (context.mounted) Navigator.of(context).pop();
         });
       }
     });

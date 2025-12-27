@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:pinput/pinput.dart';
 
 class AturHargaNominalBebasDialog extends StatefulWidget {
   static const routeName =
@@ -177,7 +176,7 @@ class _AturHargaNominalBebasDialogState extends State<AturHargaNominalBebasDialo
                         height: 28,
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         variant: ButtonVariant.border,
-                        backgroundColor: context.destructive.withOpacity(0.2),
+                        backgroundColor: context.destructive.withValues(alpha: 0.2),
                         borderColor: context.destructive,
                         textStyle: context.bodySmall
                             .withColor(context.destructive)

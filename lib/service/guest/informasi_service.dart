@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:dmpku/core/apiconfig/api_client_guest.dart';
-import 'package:dmpku/core/apiconfig/base_response.dart';
+
 import 'package:dmpku/core/apiconfig/server_exception.dart';
 import 'package:dmpku/core/helpers/storage_helper.dart';
 import 'package:dmpku/model/informasi_response.dart';
-import 'package:flutter/cupertino.dart';
 
 class InformasiService {
   final _dio = ApiClientGuest.dio;
@@ -20,6 +20,7 @@ class InformasiService {
 
       var data = result;
 
+      // ignore: unnecessary_null_comparison
       if (data != null) {
         if (data.cs.isNotEmpty) {
           for (var contact in data.cs) {

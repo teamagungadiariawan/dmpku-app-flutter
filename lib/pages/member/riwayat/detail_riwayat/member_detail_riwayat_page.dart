@@ -127,7 +127,7 @@ class _MemberDetailRiwayatPageState extends State<MemberDetailRiwayatPage> {
             children: [
               Positioned.fill(
                 child: RhombusPattern(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   radius: 4,
                   spacing: 30,
                   isStaggered: false,
@@ -196,7 +196,7 @@ class _MemberDetailRiwayatPageState extends State<MemberDetailRiwayatPage> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: context.card.withOpacity(0.2),
+              color: context.card.withValues(alpha: 0.2),
               shape: BoxShape.circle,
               border: Border.all(color: context.primaryForeground, width: 1.5),
             ),
@@ -261,7 +261,7 @@ class _MemberDetailRiwayatPageState extends State<MemberDetailRiwayatPage> {
                   borderRadius: const BorderRadius.all(Radius.circular(16)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
+                      color: Colors.black.withValues(alpha: 0.3),
                       blurRadius: 25,
                       offset: const Offset(0, -5),
                     ),

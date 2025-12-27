@@ -117,7 +117,7 @@ class _DashboardHeaderState extends State<DashboardHeader> {
 
         return _buildHeaderMenuItem(
           icon: Assets.img.beranda.imgIsiSaldo.image(height: 14, width: 14),
-          iconBgColor: context.primary.withOpacity(0.28),
+          iconBgColor: context.primary.withValues(alpha: 0.28),
           title: 'Stok Anda',
           subtitle: _buildSaldoDisplay(
             saldo: state.profile.formatSaldo,
@@ -145,7 +145,7 @@ class _DashboardHeaderState extends State<DashboardHeader> {
   Widget _buildQrisMenuItem() {
     return _buildHeaderMenuItem(
       icon: Assets.img.beranda.imgNobu.image(height: 14, width: 14),
-      iconBgColor: context.destructive.withOpacity(0.28),
+      iconBgColor: context.destructive.withValues(alpha: 0.28),
       title: 'Qris By Nobu',
       subtitle: Text(
         'Transaksi lebih mudah',

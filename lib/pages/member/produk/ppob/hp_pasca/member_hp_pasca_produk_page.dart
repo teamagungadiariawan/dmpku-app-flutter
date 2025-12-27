@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
 import 'package:dmpku/core/themes/app_spacing.dart';
@@ -121,6 +123,7 @@ class _MemberHpPascaProdukPageState extends State<MemberHpPascaProdukPage> {
                 Gap(8),
                 ButtonFavorit(
                   isGuest: false,
+                  tipeProduk: TipeProduk.hpPasca,
                   onResult: (val) =>
                       _provider.setTujuan(val, updateController: true),
                 ),

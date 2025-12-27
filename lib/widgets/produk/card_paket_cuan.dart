@@ -41,7 +41,7 @@ class CardPaketCuan extends StatelessWidget {
         border: Border.all(color: context.border, width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),

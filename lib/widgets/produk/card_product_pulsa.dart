@@ -1,6 +1,6 @@
 import 'package:dmpku/core/helpers/produk_helper.dart';
 import 'package:dmpku/core/helpers/strings_helper.dart';
-import 'package:dmpku/core/themes/app_spacing.dart';
+
 import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class CardProductPulsa extends StatelessWidget {
   final bool isPulsa;
 
   const CardProductPulsa({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.harga,
@@ -24,7 +24,7 @@ class CardProductPulsa extends StatelessWidget {
     required this.isGangguan,
     required this.onPress,
     this.isPulsa = false,
-  }) : super(key: key);
+  });
 
   ReformattedDesc get formattedSubtitle {
     if (!isPulsa) {
@@ -162,7 +162,7 @@ class CardProductPulsa extends StatelessWidget {
 
   Color _getBackgroundColor(BuildContext context) {
     if (selected) {
-      return context.primary.withOpacity(0.3);
+      return context.primary.withValues(alpha: 0.3);
     }
     if (isGangguan) {
       return context.muted;
@@ -174,7 +174,7 @@ class CardProductPulsa extends StatelessWidget {
     return Positioned.fill(
       child: Container(
         decoration: BoxDecoration(
-          color: context.border.withOpacity(0.3),
+          color: context.border.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(12),
         ),
       ),

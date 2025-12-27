@@ -1,4 +1,6 @@
 import 'package:dmpku/core/enums/api_status.dart';
+import 'package:dmpku/core/enums/tipe_produk.dart';
+
 import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/system_ui_helper.dart';
@@ -155,6 +157,7 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
           shakeKey: shakeKey,
           showFavoritButton: true,
           isGuest: false,
+          tipeProduk: TipeProduk.tokenPln,
           isCekAkun: false,
           tipeInput: TipeInput.numericOnly,
           suffixWidget: CustomPopupInputTujuan(
@@ -168,7 +171,11 @@ class _MemberTokenPlnProdukPageState extends State<MemberTokenPlnProdukPage> {
             isVoice: true,
             isContact: true,
           ),
-          onFavoritResult: (val) {},
+          onFavoritResult: (val) {
+            getMemberTokenPlnProvider(
+              context,
+            ).setTujuan(val, updateController: true);
+          },
         );
       },
     );

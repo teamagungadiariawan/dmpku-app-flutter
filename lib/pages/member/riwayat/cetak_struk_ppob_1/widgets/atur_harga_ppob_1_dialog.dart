@@ -234,7 +234,9 @@ class _AturHargaPpob1DialogState extends State<AturHargaPpob1Dialog> {
                         size: ButtonSize.small,
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         variant: ButtonVariant.border,
-                        backgroundColor: context.destructive.withOpacity(0.2),
+                        backgroundColor: context.destructive.withValues(
+                          alpha: 0.2,
+                        ),
                         borderColor: context.destructive,
                         textStyle: context.bodySmall
                             .withColor(context.destructive)
@@ -480,13 +482,10 @@ class _AturHargaPpob1DialogState extends State<AturHargaPpob1Dialog> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 150,
-            child: Text(item.key ?? '', style: context.bodySmall),
-          ),
+          SizedBox(width: 150, child: Text(item.key, style: context.bodySmall)),
           Expanded(
             child: Text(
-              item.value ?? '',
+              item.value,
               style: context.bodySmall.withWeight(FontWeight.w600),
               textAlign: TextAlign.end,
             ),

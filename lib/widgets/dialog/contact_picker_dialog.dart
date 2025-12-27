@@ -64,7 +64,6 @@ class ContactPickerDialog extends StatefulWidget {
 }
 
 class _ContactPickerDialogState extends State<ContactPickerDialog> {
-  List<Contact> _contacts = [];
   List<ContactWithPhone> _flattenedContacts = [];
   List<ContactWithPhone> _filteredContacts = [];
   bool _isLoading = true;
@@ -124,7 +123,6 @@ class _ContactPickerDialogState extends State<ContactPickerDialog> {
     }
 
     setState(() {
-      _contacts = contacts;
       _flattenedContacts = flattened;
       _filteredContacts = flattened;
       _isLoading = false;

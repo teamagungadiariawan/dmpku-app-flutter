@@ -103,7 +103,7 @@ class _CustomTabRiwayatState extends State<CustomTabRiwayat> {
                 color: isSelected
                     ? context.card
                     : context.isDarkMode
-                    ? context.card.withOpacity(0.3)
+                    ? context.card.withValues(alpha: 0.3)
                     : Colors.black12,
               ),
               child: Center(

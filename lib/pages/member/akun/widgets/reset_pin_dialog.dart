@@ -64,7 +64,7 @@ class _ResetPinDialogState extends State<ResetPinDialog> {
                       Container(
                         padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: context.destructive.withOpacity(0.2),
+                          color: context.destructive.withValues(alpha: 0.2),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -222,7 +222,7 @@ class _ResetPinDialogState extends State<ResetPinDialog> {
                             // Badge tetep putih biar kontras sama orange muda
                             borderRadius: BorderRadius.circular(6),
                             border: Border.all(
-                              color: colorPalette[200]!.withOpacity(0.5),
+                              color: colorPalette[200]!.withValues(alpha: 0.5),
                             ),
                           ),
                           child: Text(

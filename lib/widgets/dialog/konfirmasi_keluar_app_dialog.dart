@@ -54,7 +54,7 @@ class _KonfirmasiKeluarAppDialogState extends State<KonfirmasiKeluarAppDialog> {
                 borderRadius: BorderRadius.circular(8),
                 side: BorderSide(color: context.destructive, width: 1),
               ),
-              color: context.destructive.withOpacity(0.3),
+              color: context.destructive.withValues(alpha: 0.3),
               child: Padding(
                 padding: paddingCard,
                 child: Row(

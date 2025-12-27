@@ -2,7 +2,6 @@ import 'package:dmpku/core/themes/app_text_styles.dart';
 import 'package:dmpku/model/product_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
-import 'package:gap/gap.dart';
 
 class CustomPopupSortProduct extends StatelessWidget {
   final Function(SortProductBy) onSelected;
@@ -35,7 +34,10 @@ class CustomPopupSortProduct extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Row(
               children: [
-                Text(selectedSort?.displayName ?? "",style: context.labelMedium),
+                Text(
+                  selectedSort?.displayName ?? "",
+                  style: context.labelMedium,
+                ),
                 Spacer(),
                 Icon(selectedSort?.iconData ?? MdiIcons.sort, size: 14),
               ],

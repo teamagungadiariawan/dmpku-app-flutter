@@ -41,6 +41,9 @@ class PilihPrinterDialog extends StatefulWidget {
         await SecureStorageHelper.instance.getPrinterMacAddress() ?? "";
 
     var printer = await PrinterNativeHelper.getPairedDevices();
+
+    if (!context.mounted) return;
+
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true, // biar bisa atur tinggi
@@ -176,7 +179,7 @@ class _PilihPrinterDialogState extends State<PilihPrinterDialog> {
                     height: 28,
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     variant: ButtonVariant.border,
-                    backgroundColor: context.primary.withOpacity(0.2),
+                    backgroundColor: context.primary.withValues(alpha: 0.2),
                     borderColor: context.primary,
                     textStyle: context.bodySmall
                         .withColor(context.primary)
@@ -248,7 +251,7 @@ class _PilihPrinterDialogState extends State<PilihPrinterDialog> {
             ),
           ),
           color: item['address'] == _selectedMacAddress
-              ? context.primary.withOpacity(0.3)
+              ? context.primary.withValues(alpha: 0.3)
               : null,
           child: InkWell(
             onTap: () {

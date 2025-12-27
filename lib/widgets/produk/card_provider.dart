@@ -175,7 +175,7 @@ class CardProvider extends StatelessWidget {
     return Positioned.fill(
       child: Container(
         decoration: BoxDecoration(
-          color: context.border.withOpacity(0.3),
+          color: context.border.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(12),
         ),
       ),
