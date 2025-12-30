@@ -50,7 +50,7 @@ class ApiClient {
   }
 }
 
-class _AppInterceptor extends QueuedInterceptor {
+class _AppInterceptor extends Interceptor {
   @override
   void onRequest(
     RequestOptions options,
@@ -66,7 +66,8 @@ class _AppInterceptor extends QueuedInterceptor {
 
       var headers = options.headers;
 
-      var fmcUser = (await SecureStorageHelper.instance.read(StorageKeys.tokenFcm)) ?? '';
+      var fmcUser =
+          (await SecureStorageHelper.instance.read(StorageKeys.tokenFcm)) ?? '';
       var keteragan = await getKeterangan();
 
       var location = await getLocation();
@@ -157,12 +158,14 @@ class _AppInterceptor extends QueuedInterceptor {
         message = message.replaceAll(' ', '').toLowerCase();
 
         if (code == 401) {
-          if (message.contains('tokeninvalid'))  {
+          if (message.contains('tokeninvalid')) {
             var refreshed = await refreshToken();
             if (!refreshed) {
               await SecureStorageHelper.instance.clearToken();
               await SecureStorageHelper.instance.clearRefreshToken();
-              debugPrint("Token tidak valid. Token telah dihapus dari penyimpanan.");
+              debugPrint(
+                "Token tidak valid. Token telah dihapus dari penyimpanan.",
+              );
               pushNamedAndRemoveUntil(MainPage.routeName);
             } else {
               // Retry the original request
@@ -194,7 +197,6 @@ class _AppInterceptor extends QueuedInterceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-
     debugPrint("Dio Error: ${err.message}");
 
     super.onError(err, handler);
@@ -203,32 +205,38 @@ class _AppInterceptor extends QueuedInterceptor {
 
 Future<bool> refreshToken() async {
   try {
-
     var token = await SecureStorageHelper.instance.getToken();
     var refreshToken = await SecureStorageHelper.instance.getRefreshToken();
-    var kodeMember = await SecureStorageHelper.instance.read(StorageKeys.kodeMember);
+    var kodeMember = await SecureStorageHelper.instance.read(
+      StorageKeys.kodeMember,
+    );
     var uuid = await getDeviceId2();
     var fmcUser = await SecureStorageHelper.instance.read(StorageKeys.tokenFcm);
 
-    final response = await ApiClient.dio.post("login/refreshtoken", data: {
-      "token": token,
-      "refreshtoken": refreshToken,
-      "kodemember": kodeMember,
-      "uuid": uuid,
-      "fmcuser": fmcUser,
-    });
+    final response = await ApiClient.dio.post(
+      "login/refreshtoken",
+      data: {
+        "token": token,
+        "refreshtoken": refreshToken,
+        "kodemember": kodeMember,
+        "uuid": uuid,
+        "fmcuser": fmcUser,
+      },
+    );
 
     final result = BaseResponse.fromJson(response.data);
 
     if (result.status) {
       await SecureStorageHelper.instance.saveToken(result.token);
       await SecureStorageHelper.instance.saveRefreshToken(result.refresh);
-      await SecureStorageHelper.instance.write(StorageKeys.signmember, result.signmember);
+      await SecureStorageHelper.instance.write(
+        StorageKeys.signmember,
+        result.signmember,
+      );
       return true;
     } else {
       return false;
     }
-
   } on DioException catch (e, stackTrace) {
     debugPrintStack(stackTrace: stackTrace);
     debugPrint("DIO EXCEPTION AUTH SERVICE: $e");

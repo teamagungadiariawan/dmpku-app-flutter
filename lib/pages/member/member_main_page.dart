@@ -3,6 +3,8 @@ import 'package:dmpku/gen/assets.gen.dart';
 import 'package:dmpku/pages/member/akun/member_akun_page.dart';
 import 'package:dmpku/pages/member/dashboard/member_dashboard_page.dart';
 import 'package:dmpku/pages/member/official/member_official_page.dart';
+import 'package:dmpku/pages/member/produk/promo/member_promo_page.dart';
+import 'package:dmpku/pages/member/produk/promo/member_promo_provider.dart';
 import 'package:dmpku/pages/member/riwayat/member_riwayat_page.dart';
 import 'package:dmpku/pages/member/riwayat/member_riwayat_provider.dart';
 import 'package:dmpku/provider/member_provider.dart';
@@ -34,7 +36,7 @@ class _MemberMainPageState extends State<MemberMainPage> {
     const MemberDashboardPage(),
     MemberRiwayatPage(),
     // Placeholder for PROMO!
-    const Center(child: Text("Promo Page")),
+    MemberPromoPage(),
     MemberOfficialPage(),
     MemberAkunPage(),
   ];
@@ -51,6 +53,8 @@ class _MemberMainPageState extends State<MemberMainPage> {
     getMemberRiwayatProvider(context).fetchRiwayatHistory();
     getMemberRiwayatProvider(context).fetchMutasiStok();
     getMemberRiwayatProvider(context).fetchRekapTransaksi();
+
+    getMemberPromoProvider(context).fetchPromoProducts();
   }
 
   @override

@@ -40,7 +40,16 @@ import 'package:dmpku/pages/member/akun/detail_akun/member_detail_akun_page.dart
 import 'package:dmpku/pages/member/akun/favorit/member_daftar_favorit_page.dart';
 import 'package:dmpku/pages/member/banner/banner_page.dart';
 import 'package:dmpku/pages/member/kasir/catatan/member_catatan_page.dart';
-import 'package:dmpku/pages/member/kasir/menu_penjualan_page.dart';
+import 'package:dmpku/pages/member/kasir/member_kasir_page.dart';
+import 'package:dmpku/pages/member/kasir/penjualan/detail_penjualan_page.dart';
+import 'package:dmpku/pages/member/kasir/penjualan/input_penjualan_page.dart';
+import 'package:dmpku/pages/member/kasir/kasir_provider.dart';
+import 'package:dmpku/pages/member/kasir/laporan/member_laporan_kasir_page.dart';
+import 'package:dmpku/pages/member/kasir/produk/member_produk_page.dart';
+import 'package:dmpku/pages/member/kasir/produk/member_produk_provider.dart';
+import 'package:dmpku/pages/member/kasir/pelanggan/member_pelanggan_page.dart';
+import 'package:dmpku/pages/member/kasir/pelanggan/member_pelanggan_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_perdana/aktivasi_perdana_provider.dart';
 import 'package:dmpku/pages/guest/produk/isiulang/aktivasi_voucher/aktivasi_voucher_provider.dart';
@@ -197,8 +206,11 @@ import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_1/member_cetak_struk
 import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_2/member_bagikan_ppob_2_page.dart';
 import 'package:dmpku/pages/member/riwayat/cetak_struk_ppob_2/member_cetak_struk_ppob_2_page.dart';
 import 'package:dmpku/pages/member/riwayat/detail_riwayat/member_detail_riwayat_page.dart';
+import 'package:dmpku/pages/member/produk/promo/member_promo_checkout_page.dart';
+import 'package:dmpku/pages/member/produk/promo/member_promo_konfirmasi_transaksi_page.dart';
+import 'package:dmpku/pages/member/produk/promo/member_promo_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:page_transition/page_transition.dart';
 
 class AppRouter {
@@ -503,8 +515,35 @@ class AppRouter {
 
       case MemberCatatanPage.routeName:
         return _customTransition(child: const MemberCatatanPage());
-      case MemberMenuPenjualanPage.routeName:
-        return _customTransition(child: const MemberMenuPenjualanPage());
+      case MemberKasirPage.routeName:
+        return _customTransition(child: const MemberKasirPage());
+      case InputPenjualanPage.routeName:
+        return _customTransition(
+          child: BlocProvider(
+            create: (context) => KasirProvider(),
+            child: const InputPenjualanPage(),
+          ),
+        );
+      case DetailPenjualanPage.routeName:
+        return _customTransition(child: const DetailPenjualanPage());
+      case MemberLaporanKasirPage.routeName:
+        return _customTransition(child: const MemberLaporanKasirPage());
+
+      case MemberProdukPage.routeName:
+        return _customTransition(
+          child: BlocProvider(
+            create: (context) => MemberProdukProvider(),
+            child: const MemberProdukPage(),
+          ),
+        );
+
+      case MemberPelangganPage.routeName:
+        return _customTransition(
+          child: BlocProvider(
+            create: (context) => MemberPelangganProvider(),
+            child: const MemberPelangganPage(),
+          ),
+        );
 
       // AKUN
       case MemberDetailAkunPage.routeName:
@@ -769,6 +808,24 @@ class AppRouter {
           child: BlocProvider.value(
             value: bloc,
             child: const MemberInfoKartuProdukPage(),
+          ),
+        );
+
+      // Member Promo
+      case MemberPromoCheckoutPage.routeName:
+        final bloc = settings.arguments as MemberPromoProvider;
+        return _customTransition(
+          child: BlocProvider.value(
+            value: bloc,
+            child: const MemberPromoCheckoutPage(),
+          ),
+        );
+      case MemberPromoKonfirmasiTransaksiPage.routeName:
+        final bloc = settings.arguments as MemberPromoProvider;
+        return _customTransition(
+          child: BlocProvider.value(
+            value: bloc,
+            child: const MemberPromoKonfirmasiTransaksiPage(),
           ),
         );
 

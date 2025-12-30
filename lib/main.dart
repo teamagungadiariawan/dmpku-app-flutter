@@ -10,6 +10,7 @@ import 'package:dmpku/pages/member/akun/favorit/member_favorit_provider.dart';
 import 'package:dmpku/pages/member/isistok/member_isi_stok_provider.dart';
 import 'package:dmpku/pages/member/kasir/kasir_provider.dart';
 import 'package:dmpku/pages/member/member_main_page.dart';
+import 'package:dmpku/pages/member/produk/promo/member_promo_provider.dart';
 
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/pages/member/riwayat/cetak_struk_elektrik/member_cetak_struk_elektrik_provider.dart';
@@ -72,6 +73,7 @@ void main() {
 
           BlocProvider(create: (_) => MemberIsiStokProvider()),
           BlocProvider(create: (_) => KasirProvider()),
+          BlocProvider(create: (_) => MemberPromoProvider()),
         ],
         child: MyApp(textScaleProvider: textScaleProvider, token: token),
       ),

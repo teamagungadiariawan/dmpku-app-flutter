@@ -15,6 +15,7 @@ class CardProvider extends StatelessWidget {
   final bool isImgLocal;
   final bool isGangguan;
   final EdgeInsetsGeometry? margin;
+  final bool showImage;
 
   const CardProvider({
     super.key,
@@ -27,6 +28,7 @@ class CardProvider extends StatelessWidget {
     this.isGanti = false,
     this.isImgLocal = false,
     this.isGangguan = false,
+    this.showImage = true,
     this.margin,
   });
 
@@ -53,8 +55,10 @@ class CardProvider extends StatelessWidget {
         ),
         child: Row(
           children: [
-            _buildImageContainer(context),
-            const SizedBox(width: 12),
+            if (showImage) ...[
+              _buildImageContainer(context),
+              const SizedBox(width: 12),
+            ],
             _buildTextSection(context),
             const SizedBox(width: 12),
             _buildTrailingWidget(context),

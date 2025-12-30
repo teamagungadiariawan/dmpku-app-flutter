@@ -47,7 +47,7 @@ class ApiClientGuest {
   }
 }
 
-class _AppInterceptor extends QueuedInterceptor {
+class _AppInterceptor extends Interceptor {
   @override
   void onRequest(
     RequestOptions options,
@@ -153,10 +153,5 @@ class _AppInterceptor extends QueuedInterceptor {
     }
 
     super.onResponse(response, handler);
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    super.onError(err, handler);
   }
 }

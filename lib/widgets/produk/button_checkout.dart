@@ -13,12 +13,15 @@ class ButtonCheckout extends StatelessWidget {
   final bool isLoading;
   final bool isDisabled;
 
+  final String? title;
+
   const ButtonCheckout({
     super.key,
     required this.selectedProduct,
     this.onContinue,
     this.isLoading = false,
     this.isDisabled = false,
+    this.title,
   });
 
   bool get _hasSelectedProduct => selectedProduct.idproduk != 0;
@@ -109,7 +112,7 @@ class ButtonCheckout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Lanjutkan Ke Pembelian ",
+                    title ?? "Lanjutkan Ke Pembelian ",
                     style: context.bodyMedium.withColor(foregroundColor),
                   ),
                   Expanded(
