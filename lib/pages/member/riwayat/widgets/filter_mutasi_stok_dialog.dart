@@ -36,8 +36,10 @@ class FilterMutasiStokDialog extends StatefulWidget {
       useSafeArea: true,
       builder: (_) => FilterMutasiStokDialog(
         initialSearch: initialSearch,
-        waktuAwal: waktuAwal ?? DateTime.now().subtract(const Duration(days: 4)),
-        waktuAkhir: waktuAkhir ?? DateTime.now().subtract(const Duration(days: 1)),
+        waktuAwal:
+            waktuAwal ?? DateTime.now().subtract(const Duration(days: 4)),
+        waktuAkhir:
+            waktuAkhir ?? DateTime.now().subtract(const Duration(days: 1)),
       ),
     );
   }
@@ -169,9 +171,7 @@ class _FilterMutasiStokDialogState extends State<FilterMutasiStokDialog> {
                   children: [
                     Text(
                       "Dari:",
-                      style: context.captionRegular.withWeight(
-                        FontWeight.w500,
-                      ),
+                      style: context.captionRegular.withWeight(FontWeight.w500),
                     ),
                     Card(
                       color: context.isDarkMode ? slate[800] : slate[50],
@@ -213,9 +213,7 @@ class _FilterMutasiStokDialogState extends State<FilterMutasiStokDialog> {
                   children: [
                     Text(
                       "Sampai:",
-                      style: context.captionRegular.withWeight(
-                        FontWeight.w500,
-                      ),
+                      style: context.captionRegular.withWeight(FontWeight.w500),
                     ),
                     Card(
                       color: context.isDarkMode ? slate[800] : slate[50],
@@ -283,7 +281,7 @@ class _FilterMutasiStokDialogState extends State<FilterMutasiStokDialog> {
       padding: const EdgeInsets.all(6),
       child: Row(
         children: [
-          Icon(LucideIcons.search, size: 14, color: context.mutedForeground),
+          Icon(LucideIcons.search, size: 18, color: context.foreground),
           const Gap(6),
           Expanded(
             child: TextField(

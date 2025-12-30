@@ -302,7 +302,7 @@ class KasirService {
   ) async {
     try {
       final response = await _dio.post(
-        "member/kasir/listPelanggan",
+        "member/kasir/pelangganlist",
         data: {'kodemember': kodemember},
       );
 
@@ -332,7 +332,7 @@ class KasirService {
   }) async {
     try {
       final response = await _dio.post(
-        "member/kasir/tambahPelanggan",
+        "member/kasir/pelangganadd",
         data: {
           'namapelanggan': namapelanggan,
           'alamatpelanggan': alamatpelanggan,
@@ -364,7 +364,7 @@ class KasirService {
   }) async {
     try {
       final response = await _dio.post(
-        "member/kasir/ubahPelanggan",
+        "member/kasir/pelangganedit",
         data: {
           'idpelanggan': idpelanggan,
           'namapelanggan': namapelanggan,
@@ -394,7 +394,7 @@ class KasirService {
   }) async {
     try {
       final response = await _dio.post(
-        "member/kasir/hapusPelanggan",
+        "member/kasir/pelanggandelete",
         data: {'idpelanggan': idpelanggan, 'kodemember': kodemember},
       );
 
@@ -421,7 +421,7 @@ class KasirService {
   ) async {
     try {
       final response = await _dio.post(
-        "member/kasir/listProduk",
+        "member/kasir/produklist",
         data: {'kodemember': kodemember},
       );
 
@@ -452,7 +452,7 @@ class KasirService {
   }) async {
     try {
       final response = await _dio.post(
-        "member/kasir/tambahProduk",
+        "member/kasir/produkadd",
         data: {
           'kodemember': kodemember,
           'namaproduk': namaproduk,
@@ -486,7 +486,7 @@ class KasirService {
   }) async {
     try {
       final response = await _dio.post(
-        "member/kasir/ubahProduk",
+        "member/kasir/produkedit",
         data: {
           'idproduk': idproduk,
           'kodemember': kodemember,
@@ -517,7 +517,7 @@ class KasirService {
   }) async {
     try {
       final response = await _dio.post(
-        "member/kasir/hapusProduk",
+        "member/kasir/produkdelete",
         data: {'idproduk': idproduk, 'kodemember': kodemember},
       );
 

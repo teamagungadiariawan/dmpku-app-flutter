@@ -175,7 +175,7 @@ class _FilterRekapTransaksiDialogState
       padding: const EdgeInsets.all(6),
       child: Row(
         children: [
-          Icon(LucideIcons.search, size: 14, color: context.mutedForeground),
+          Icon(LucideIcons.search, size: 18, color: context.foreground),
           const Gap(6),
           Expanded(
             child: TextField(

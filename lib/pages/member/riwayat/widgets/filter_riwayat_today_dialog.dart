@@ -149,8 +149,8 @@ class _FilterRiwayatTodayDialogState extends State<FilterRiwayatTodayDialog> {
         color: isSelected
             ? context.primary.withValues(alpha: 0.1)
             : context.isDarkMode
-                ? slate[800]
-                : slate[50],
+            ? slate[800]
+            : slate[50],
         shape: isSelected
             ? RoundedRectangleBorder(
                 side: BorderSide(color: context.primary, width: 1),
@@ -206,7 +206,7 @@ class _FilterRiwayatTodayDialogState extends State<FilterRiwayatTodayDialog> {
       padding: const EdgeInsets.all(6),
       child: Row(
         children: [
-          Icon(LucideIcons.search, size: 14, color: context.mutedForeground),
+          Icon(LucideIcons.search, size: 18, color: context.foreground),
           const Gap(6),
           Expanded(
             child: TextField(

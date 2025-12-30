@@ -90,27 +90,17 @@ class _MemberCatatanViewState extends State<MemberCatatanView> {
           previous.searchController != current.searchController,
       builder: (context, state) {
         return Container(
+          width: double.infinity,
           decoration: BoxDecoration(
-            color: context.background,
+            color: context.muted,
             border: Border.all(color: context.border, width: 1),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          padding: const EdgeInsets.all(6),
           child: Row(
             children: [
-              Icon(
-                LucideIcons.search,
-                size: 20,
-                color: context.mutedForeground,
-              ),
-              const Gap(12),
+              Icon(LucideIcons.search, size: 18, color: context.foreground),
+              const Gap(6),
               Expanded(
                 child: TextField(
                   controller: state.searchController,
@@ -136,7 +126,7 @@ class _MemberCatatanViewState extends State<MemberCatatanView> {
                   },
                   child: Icon(
                     LucideIcons.x,
-                    size: 20,
+                    size: 18,
                     color: context.foreground,
                   ),
                 ),

@@ -24,9 +24,7 @@ class DashboardHeader extends StatefulWidget {
   final VoidCallback onPromoTap;
   final ValueChanged<String> onMenuTap;
 
-  static const double _headerHeight = 260.0;
   static const double _cardOverlapHeight = 75.0;
-  static const double _cardTopOffset = kToolbarHeight + 35.0;
 
   const DashboardHeader({
     super.key,
@@ -48,17 +46,25 @@ class _DashboardHeaderState extends State<DashboardHeader> {
 
   @override
   Widget build(BuildContext context) {
+    // Calculate dynamic heights
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final double headerHeight = 235.0 + statusBarHeight;
+    final double cardTopOffset = statusBarHeight + kToolbarHeight + 10.0;
+
     return Stack(
       clipBehavior: Clip.none,
-      children: [_buildHeaderBackground(), _buildBalanceCard()],
+      children: [
+        _buildHeaderBackground(headerHeight),
+        _buildBalanceCard(cardTopOffset),
+      ],
     );
   }
 
-  Widget _buildHeaderBackground() {
+  Widget _buildHeaderBackground(double headerHeight) {
     return Column(
       children: [
         Container(
-          height: DashboardHeader._headerHeight,
+          height: headerHeight,
           decoration: BoxDecoration(
             color: context.primary,
             image: DecorationImage(
@@ -72,9 +78,9 @@ class _DashboardHeaderState extends State<DashboardHeader> {
     );
   }
 
-  Widget _buildBalanceCard() {
+  Widget _buildBalanceCard(double cardTopOffset) {
     return Positioned(
-      top: DashboardHeader._cardTopOffset,
+      top: cardTopOffset,
       left: 12,
       right: 12,
       child: Column(

@@ -37,13 +37,6 @@ class MemberAkunPage extends StatefulWidget {
 }
 
 class _MemberAkunPageState extends State<MemberAkunPage> {
-  static const double _headerHeight = 160.0;
-  static const _gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
-    crossAxisCount: 2,
-    crossAxisSpacing: 5,
-    childAspectRatio: 2.5,
-  );
-
   bool _isSaldoVisible = true;
 
   List<MenuItem> get _menuGeneral => [
@@ -131,15 +124,19 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Dynamically calculate header height based on status bar padding
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final double headerHeight = 140.0 + statusBarHeight;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: getTransparentSystemUiOverlayStyle(),
       child: Scaffold(
         body: Stack(
           children: [
-            _buildHeaderBackground(),
+            _buildHeaderBackground(headerHeight),
             Column(
               children: [
-                const SizedBox(height: _headerHeight - 15),
+                SizedBox(height: headerHeight - 15),
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.only(top: 20),
@@ -159,7 +156,7 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
               ],
             ),
             MemberHeaderContent(
-              headerHeight: _headerHeight,
+              headerHeight: headerHeight,
               onRefresh: _onRefresh,
             ),
           ],
@@ -168,9 +165,9 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
     );
   }
 
-  Widget _buildHeaderBackground() {
+  Widget _buildHeaderBackground(double headerHeight) {
     return Container(
-      height: _headerHeight + 40,
+      height: headerHeight + 40,
       width: double.infinity,
       decoration: BoxDecoration(
         color: context.primary,
@@ -194,7 +191,7 @@ class _MemberAkunPageState extends State<MemberAkunPage> {
             isSaldoVisible: _isSaldoVisible,
             onToggleVisibility: _toggleSaldoVisibility,
             onRefresh: _onRefresh,
-            onIsiSaldo:  () {
+            onIsiSaldo: () {
               getMemberProvider(context).getProfile();
               getMemberIsiStokProvider(context).fetchRiwayatTiketBankTransfer();
             },

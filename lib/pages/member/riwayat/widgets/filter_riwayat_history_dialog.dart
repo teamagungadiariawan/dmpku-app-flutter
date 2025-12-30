@@ -41,8 +41,10 @@ class FilterRiwayatHistoryDialog extends StatefulWidget {
       builder: (_) => FilterRiwayatHistoryDialog(
         initialSearch: initialSearch,
         initialFilter: initialFilter,
-        waktuAwal: waktuAwal ?? DateTime.now().subtract(const Duration(days: 4)),
-        waktuAkhir: waktuAkhir ?? DateTime.now().subtract(const Duration(days: 1)),
+        waktuAwal:
+            waktuAwal ?? DateTime.now().subtract(const Duration(days: 4)),
+        waktuAkhir:
+            waktuAkhir ?? DateTime.now().subtract(const Duration(days: 1)),
       ),
     );
   }
@@ -178,9 +180,7 @@ class _FilterRiwayatHistoryDialogState
                   children: [
                     Text(
                       "Dari:",
-                      style: context.captionRegular.withWeight(
-                        FontWeight.w500,
-                      ),
+                      style: context.captionRegular.withWeight(FontWeight.w500),
                     ),
                     Card(
                       color: context.isDarkMode ? slate[800] : slate[50],
@@ -222,9 +222,7 @@ class _FilterRiwayatHistoryDialogState
                   children: [
                     Text(
                       "Sampai:",
-                      style: context.captionRegular.withWeight(
-                        FontWeight.w500,
-                      ),
+                      style: context.captionRegular.withWeight(FontWeight.w500),
                     ),
                     Card(
                       color: context.isDarkMode ? slate[800] : slate[50],
@@ -328,8 +326,8 @@ class _FilterRiwayatHistoryDialogState
         color: isSelected
             ? context.primary.withValues(alpha: 0.1)
             : context.isDarkMode
-                ? slate[800]
-                : slate[50],
+            ? slate[800]
+            : slate[50],
         shape: isSelected
             ? RoundedRectangleBorder(
                 side: BorderSide(color: context.primary, width: 1),
@@ -385,7 +383,7 @@ class _FilterRiwayatHistoryDialogState
       padding: const EdgeInsets.all(6),
       child: Row(
         children: [
-          Icon(LucideIcons.search, size: 14, color: context.mutedForeground),
+          Icon(LucideIcons.search, size: 18, color: context.foreground),
           const Gap(6),
           Expanded(
             child: TextField(

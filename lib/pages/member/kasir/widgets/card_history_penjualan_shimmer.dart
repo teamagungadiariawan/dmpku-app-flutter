@@ -119,12 +119,11 @@ class CardHistoryPenjualanListShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
-      separatorBuilder: (context, index) => const Gap(12),
       itemBuilder: (context, index) {
         return CardHistoryPenjualanShimmer(margin: itemMargin);
       },

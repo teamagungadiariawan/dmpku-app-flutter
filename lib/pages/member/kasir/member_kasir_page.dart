@@ -8,8 +8,15 @@ import 'package:dmpku/core/themes/app_spacing.dart';
 import 'package:dmpku/core/themes/theme_extension.dart';
 import 'package:dmpku/model/kasir_response.dart';
 import 'package:dmpku/pages/member/kasir/kasir_provider.dart';
+import 'package:dmpku/pages/member/kasir/penjualan/input_penjualan_page.dart';
 import 'package:dmpku/pages/member/kasir/widgets/card_history_penjualan_shimmer.dart';
+import 'package:dmpku/pages/member/kasir/widgets/card_history_kasir.dart';
 import 'package:dmpku/pages/member/kasir/widgets/filter_penjualan_dialog.dart';
+import 'package:dmpku/pages/member/kasir/widgets/refund_dialog.dart';
+import 'package:dmpku/pages/member/kasir/widgets/sukseskan_dialog.dart';
+import 'package:dmpku/pages/member/kasir/laporan/member_laporan_kasir_page.dart';
+import 'package:dmpku/pages/member/kasir/pelanggan/member_pelanggan_page.dart';
+import 'package:dmpku/pages/member/kasir/produk/member_produk_page.dart';
 import 'package:dmpku/widgets/produk/refreshable_list.dart';
 import 'package:dmpku/widgets/circle_pattern.dart';
 import 'package:dmpku/widgets/custom_app_bar.dart';
@@ -22,17 +29,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:gap/gap.dart';
 
-class MemberMenuPenjualanPage extends StatefulWidget {
-  static const routeName = '/member/kasir/menu-penjualan';
+class MemberKasirPage extends StatefulWidget {
+  static const routeName = '/member/kasir';
 
-  const MemberMenuPenjualanPage({super.key});
+  const MemberKasirPage({super.key});
 
   @override
-  State<MemberMenuPenjualanPage> createState() =>
-      _MemberMenuPenjualanPageState();
+  State<MemberKasirPage> createState() => _MemberKasirPageState();
 }
 
-class _MemberMenuPenjualanPageState extends State<MemberMenuPenjualanPage> {
+class _MemberKasirPageState extends State<MemberKasirPage> {
   @override
   void initState() {
     super.initState();
@@ -62,20 +68,10 @@ class _MemberMenuPenjualanPageState extends State<MemberMenuPenjualanPage> {
               int totalLaba = 0;
 
               for (var item in listData) {
-                // Ignore failed transactions for totals? Usually yes, but depends on logic.
-                // Assuming status 1 is success.
-                // Checking PenjualanModel status type. It's int.
-                // Let's assume we sum everything for now or filter by status if needed.
-                // But usually "Total Penjualan" implies successful ones.
-                // For now, I'll sum all, or check if status is success.
-                // I'll assume status 1 = success, 0 = pending/failed.
-                // Let's sum all to capture "Omzet" broadly, or maybe just success.
-                // Given the image shows "Sukses" and "Pending", I should probably separate?
-                // But usually header "Total Penjualan" sums up mostly successful ones.
-                // Let's use all for now as I don't have definitive status enum map.
-
-                totalPenjualan += item.jumlahbayar;
-                totalModal += item.jumlahmodal;
+                if (item.status == 1) {
+                  totalPenjualan += item.jumlahbayar;
+                  totalModal += item.jumlahmodal;
+                }
               }
 
               totalLaba = totalPenjualan - totalModal;
@@ -157,28 +153,53 @@ class _MemberMenuPenjualanPageState extends State<MemberMenuPenjualanPage> {
                                 icon: MdiIcons.cashRegister,
                                 label: "Input\nPenjualan",
                                 color: Colors.orange,
-                                onTap: () {},
+                                onTap: () async {
+                                  await Navigator.pushNamed(
+                                    context,
+                                    InputPenjualanPage.routeName,
+                                  );
+                                  if (context.mounted) {
+                                    getKasirProvider(
+                                      context,
+                                    ).fetchListPenjualan();
+                                  }
+                                },
                               ),
                               _buildActionItem(
                                 context,
                                 icon: MdiIcons.packageVariant,
                                 label: "Data\nProduk",
                                 color: Colors.blue,
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    MemberProdukPage.routeName,
+                                  );
+                                },
                               ),
                               _buildActionItem(
                                 context,
                                 icon: MdiIcons.accountGroup,
                                 label: "Data\nPelanggan",
                                 color: Colors.purple,
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    MemberPelangganPage.routeName,
+                                  );
+                                },
                               ),
                               _buildActionItem(
                                 context,
                                 icon: MdiIcons.fileChart,
                                 label: "Laporan\nKasir",
                                 color: Colors.pink,
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    MemberLaporanKasirPage.routeName,
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -268,13 +289,7 @@ class _MemberMenuPenjualanPageState extends State<MemberMenuPenjualanPage> {
   ) {
     return Container(
       padding: const EdgeInsets.only(top: 15),
-      decoration: const BoxDecoration(
-        color: bgScreen,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(32),
-          topRight: Radius.circular(32),
-        ),
-      ),
+      decoration: const BoxDecoration(color: bgScreen),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -337,127 +352,55 @@ class _MemberMenuPenjualanPageState extends State<MemberMenuPenjualanPage> {
                 var date = DateTime.parse(item.waktutrx);
                 var jam = DateHelper.formatTime(date);
 
-                return _buildHistoryItem(
-                  context,
-                  title: item.namaproduk,
-                  subtitle: item.namapelanggan.isNotEmpty
-                      ? item.namapelanggan
-                      : 'Umum',
-                  amount: ToCurrency(item.jumlahbayar.toString()),
-                  time: jam,
-                  status: statusText,
-                  statusColor: statusColor,
-                  statusIcon: statusIcon,
-                  invCode: "#TRX-${item.idpenjualan}",
+                return InkWell(
+                  onTap: () {
+                    getKasirProvider(context).setSelectedPenjualan(item);
+                    getKasirProvider(
+                      context,
+                    ).fetchListPenjualanDetail(item.idpenjualan);
+                    Navigator.pushNamed(
+                      context,
+                      '/member/kasir/detail_penjualan',
+                    );
+                  },
+                  child: CardHistoryKasir(
+                    title: item.namaproduk,
+                    subtitle:
+                        (item.namapelanggan.isNotEmpty
+                            ? item.namapelanggan
+                            : 'Umum') +
+                        ' • ' +
+                        item.nohppelanggan,
+                    amount: ToCurrency(item.jumlahbayar.toString()),
+                    time: jam,
+                    status: statusText,
+                    statusColor: statusColor,
+                    statusIcon: statusIcon,
+                    invCode: "#TRX-${item.idpenjualan}",
+                    itemCount: item.jumlahproduk,
+                    onChat: () {
+                      // TODO: Implement chat logic
+                    },
+                    onRefund:
+                        item.status ==
+                            2 // Gagal
+                        ? null
+                        : () {
+                            RefundDialog.show(context, penjualanModel: item);
+                          },
+                    onSukseskan:
+                        item.status ==
+                            2 // Gagal
+                        ? () {
+                            SukseskanDialog.show(context, penjualanModel: item);
+                          }
+                        : null,
+                  ),
                 );
               },
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildHistoryItem(
-    BuildContext context, {
-    required String title,
-    required String subtitle,
-    required String amount,
-    required String time,
-    required String status,
-    required Color statusColor,
-    required IconData statusIcon,
-    required String invCode,
-  }) {
-    return Card(
-      child: Padding(
-        padding: paddingCard,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: context.bodyMedium.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "$invCode • $subtitle",
-                        style: context.bodySmall.copyWith(
-                          color: AppColors.lightMutedForeground,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF3E8FF), // Light purple bg
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    "Rp $amount",
-                    style: context.bodySmall.copyWith(
-                      color: const Color(0xFF7E22CE), // Purple text
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.lightMuted,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    "$time WIB",
-                    style: context.bodyExtraSmall.copyWith(
-                      color: AppColors.lightMutedForeground,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Row(
-                  children: [
-                    Icon(statusIcon, size: 14, color: statusColor),
-                    const SizedBox(width: 4),
-                    Text(
-                      status,
-                      style: context.bodyExtraSmall.copyWith(
-                        color: statusColor,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }

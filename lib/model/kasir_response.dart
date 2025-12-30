@@ -37,7 +37,7 @@ class PenjualanModel {
   final int status;
   final String waktutrx;
 
-  PenjualanModel({
+  const PenjualanModel({
     required this.idpenjualan,
     required this.kodemember,
     required this.jumlahproduk,
@@ -267,3 +267,20 @@ class ListPenjualanResponse {
     return {'data': list.map((e) => e.toJson()).toList()};
   }
 }
+
+const DEFAULT_PENJUALAN = PenjualanModel(
+  idpenjualan: 0,
+  kodemember: '',
+  jumlahproduk: 0,
+  jumlahmodal: 0,
+  jumlahbayar: 0,
+  idpelanggan: 0,
+  namapelanggan: '',
+  nohppelanggan: '',
+  alamatpelanggan: '',
+  namaproduk: '',
+  uangpelanggan: 0,
+  kembalian: 0,
+  status: 0,
+  waktutrx: '',
+);

@@ -921,7 +921,10 @@ class MemberDompetDigitalProvider extends Cubit<MemberDompetDigitalState> {
       ),
     );
 
-    pushNamed(MemberDompetDigitalKonfirmasiTransaksiPage.routeName);
+    pushNamed(
+      MemberDompetDigitalKonfirmasiTransaksiPage.routeName,
+      arguments: this,
+    );
   }
 
   void setNewKonfirmasiNominalBebas() async {
@@ -989,7 +992,10 @@ class MemberDompetDigitalProvider extends Cubit<MemberDompetDigitalState> {
       ),
     );
 
-    pushNamed(MemberDompetDigitalNominalBebasKonfirmasiTransaksiPage.routeName);
+    pushNamed(
+      MemberDompetDigitalNominalBebasKonfirmasiTransaksiPage.routeName,
+      arguments: this,
+    );
   }
 
   void _setTrxSebelumnyaFromResponse(BayarResponse data) {
