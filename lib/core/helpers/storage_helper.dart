@@ -161,4 +161,18 @@ class SecureStorageHelper {
   Future<String?> getFooterKios() => read(StorageKeys.footerKios);
 
   Future<void> clearFooterKios() => delete(StorageKeys.footerKios);
+
+  Future<void> cloneToken() async {
+    var token = await getToken();
+    if (token != null) {
+      await write("${StorageKeys.token}new", token);
+    }
+  }
+
+  Future<void> restoreToken() async {
+    var token = await read("${StorageKeys.token}new");
+    if (token != null) {
+      await write(StorageKeys.token, token);
+    }
+  }
 }
