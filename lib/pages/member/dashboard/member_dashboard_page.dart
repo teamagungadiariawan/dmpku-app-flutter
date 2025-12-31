@@ -461,25 +461,6 @@ class _MemberDashboardPageState extends State<MemberDashboardPage> {
   }
 
   void _handleHelpTap(BuildContext context) async {
-    // await openBantuanWa(context);
-
-    getTransaksiProsesProvider(
-      context,
-    ).setImage(Assets.img.produk.icTokenPln.provider());
-    getTransaksiProsesProvider(context).setProduct(
-      DEFAULT_PRODUCT.copyWith(
-        namaproduk: "Token PLN 20.000",
-        hargaproduk: 20000,
-        kodeproduk: "PLN20K",
-      ),
-    );
-    getTransaksiProsesProvider(context).setPotongStok(20000);
-    getTransaksiProsesProvider(context).setTujuanHistory([
-      ProsesTrxBanyak(tujuan: "081234567890", success: true),
-      ProsesTrxBanyak(tujuan: "089876543210", success: false),
-      ProsesTrxBanyak(tujuan: "082112345678", success: true),
-    ]);
-    getTransaksiProsesProvider(context).setWaktuTransaksi("12 Mei 2024 14:30");
-    pushNamed(TransaksiProsesAktivasiVoucherPage.routeName);
+    await openBantuanWa(context);
   }
 }

@@ -41,6 +41,9 @@ class ApiClient {
           HttpHeaders.contentTypeHeader: "application/json",
           HttpHeaders.acceptHeader: "application/json",
         },
+        validateStatus: (status) {
+          return status != null && status < 500;
+        },
       ),
     );
 
@@ -132,8 +135,6 @@ class _AppInterceptor extends Interceptor {
     try {
       debugPrint("Response Status Code: ${response.statusCode}");
 
-      debugPrint("Response Data: ${response.data}");
-
       if (response.data == null) {
         throw DioException(
           requestOptions: response.requestOptions,
@@ -157,8 +158,13 @@ class _AppInterceptor extends Interceptor {
         //remove spaces from message
         message = message.replaceAll(' ', '').toLowerCase();
 
+        debugPrint("Normalized Message: $message");
+
         if (code == 401) {
-          if (message.contains('tokeninvalid')) {
+          if (message.contains('tokeninvalid') ||
+              message.contains('tokentidakvalid')) {
+            debugPrint("Refresh Token");
+
             var refreshed = await refreshToken();
             if (!refreshed) {
               await SecureStorageHelper.instance.clearToken();

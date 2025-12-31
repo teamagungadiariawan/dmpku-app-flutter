@@ -36,6 +36,8 @@ import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/guest_wifi_id_produk_p
 import 'package:dmpku/pages/guest/produk/isiulang/wifi_id/wifi_id_provider.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/guest_paket_cuan_provider_page.dart';
 import 'package:dmpku/pages/guest/produk/paketcuan/paket_cuan_provider.dart';
+import 'package:dmpku/pages/member/member_main_page.dart';
+import 'package:dmpku/provider/member_provider.dart';
 import 'package:dmpku/widgets/beranda/menu_section.dart';
 import 'package:dmpku/widgets/beranda/paket_cuan_banner.dart';
 import 'package:dmpku/widgets/dialog/belum_login_dialog.dart';
@@ -263,6 +265,9 @@ class _DashboardPageState extends State<DashboardPage> {
 
   void _handleMasukTap() {
     pushNamed(RequestOtpLoginPage.routeName);
+
+    // getMemberProvider(context).getProfile();
+    // pushNamed(MemberMainPage.routeName);
   }
 
   void _handlePaketCuanTap() {
@@ -273,9 +278,13 @@ class _DashboardPageState extends State<DashboardPage> {
   void _handleNotificationTap() async {
     final link = await SecureStorageHelper.instance.getChannelWa();
     await launchUrlApp(link);
+
+    // SecureStorageHelper.instance.restoreToken();
   }
 
   void _handleHelpTap() {
     openBantuanWaGuest();
+
+    // SecureStorageHelper.instance.cloneToken();
   }
 }

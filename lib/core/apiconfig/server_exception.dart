@@ -18,25 +18,26 @@ class ServerException implements Exception {
 
     final code = response?.statusCode ?? HttpStatus.internalServerError;
 
-    debugPrint('ServerException Code: $code');
-    debugPrint('ServerException Response: ${response?.data}');
-
     if (response?.data is Map<String, dynamic>) {
       final data = response!.data as Map<String, dynamic>;
       if (data.containsKey('a')) {
         final a = data['a'] as String;
-
-        debugPrint('ServerException Encrypted Data: $a');
         var enc = Encrypted(a: data["a"] as String);
         var decryptedData = EncryptHelper.decrypt(enc);
-        debugPrint("Decrypted Response Data: $decryptedData");
-
-        var messageTolowerAndNoSpace = (decryptedData['message'] as String?)?.toLowerCase().replaceAll(' ', '') ?? '';
+        var messageTolowerAndNoSpace =
+            (decryptedData['message'] as String?)?.toLowerCase().replaceAll(
+              ' ',
+              '',
+            ) ??
+            '';
         if (messageTolowerAndNoSpace == 'tokentidakvalid') {
           // Token tidak valid, hapus token dari penyimpanan
-          SecureStorageHelper.instance.clearToken();
-          debugPrint("Token tidak valid. Token telah dihapus dari penyimpanan.");
-          pushNamedAndRemoveUntil(MainPage.routeName);
+          // SecureStorageHelper.instance.clearToken();
+          // debugPrint(
+          //   "Token tidak valid. Token telah dihapus dari penyimpanan.",
+          // );
+
+          // pushNamedAndRemoveUntil(MainPage.routeName);
         }
 
         var message = decryptedData['message'] as String? ?? _msgError;
