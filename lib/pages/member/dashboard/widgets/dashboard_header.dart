@@ -230,7 +230,7 @@ class _DashboardHeaderState extends State<DashboardHeader> {
     }
     return Row(
       mainAxisSize: MainAxisSize.max,
-      children: [subtitle, const Spacer(), trailing!],
+      children: [subtitle, const Spacer(), trailing],
     );
   }
 
