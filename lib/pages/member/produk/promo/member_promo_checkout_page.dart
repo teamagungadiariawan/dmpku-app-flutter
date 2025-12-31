@@ -185,11 +185,7 @@ class _MemberPromoCheckoutPageState extends State<MemberPromoCheckoutPage> {
           state: isDisabled ? ButtonState.disabled : ButtonState.enabled,
           isLoading: state.apiCekAkunStatus.isLoading,
           onPressed: () {
-            if (state.selectedProduct.kodeprodukcek.isNotEmpty) {
-              context.read<MemberPromoProvider>().cekAkun();
-            } else {
-              context.read<MemberPromoProvider>().konfirmasiTrx(context);
-            }
+            context.read<MemberPromoProvider>().setNewKonfirmasi();
           },
         );
       },

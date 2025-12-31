@@ -4,10 +4,12 @@ import 'package:dmpku/core/enums/tipe_input.dart';
 import 'package:dmpku/core/helpers/date_helper.dart';
 import 'package:dmpku/core/helpers/navigator_helper.dart';
 import 'package:dmpku/core/helpers/toast_helper.dart';
+import 'package:dmpku/core/helpers/strings_helper.dart';
 import 'package:dmpku/model/bayar_response.dart';
 import 'package:dmpku/model/cek_tagihan_response.dart';
 import 'package:dmpku/model/key_value_response.dart';
 import 'package:dmpku/model/promo_response.dart';
+import 'package:dmpku/pages/member/produk/promo/member_promo_konfirmasi_transaksi_page.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_page_alt.dart';
 import 'package:dmpku/pages/member/produk/transaksi_proses/transaksi_proses_provider.dart';
 import 'package:dmpku/service/member/promo_service.dart';
@@ -361,7 +363,6 @@ class MemberPromoProvider extends Cubit<MemberPromoState> {
           ),
         ),
       );
-      showSuccessMessage('Cek akun berhasil');
     } on ServerException catch (e) {
       debugPrint("SERVER EXCEPTION CEK AKUN: ${e.message}");
       showWarningMessage(e.message);
@@ -377,6 +378,87 @@ class MemberPromoProvider extends Cubit<MemberPromoState> {
   // ============================================================
   // KONFIRMASI METHODS
   // ============================================================
+  void setNewKonfirmasi() async {
+    if (state.selectedProduct.idprodukpromo == 0) {
+      showWarningMessage('Produk tidak valid');
+      return;
+    }
+
+    emit(state.copyWith(cekAkunData: null));
+
+    if (state.selectedProduct.kodeprodukcek.isNotEmpty) {
+      if (state.cekAkunData == null) {
+        await cekAkun();
+      } else {
+        if (!checkTujuanMatchResult(
+          state.detailTransaksi,
+          state.tujuan.trim(),
+        )) {
+          await cekAkun();
+        }
+      }
+    }
+
+    var valid = validateTujuan();
+    if (!valid) return;
+
+    var dtlTransaksi = KeyValueResponse(items: []);
+
+    debugPrint("JUMLAH DETAIL TRANSAKSI: ${dtlTransaksi.items.length}");
+
+    dtlTransaksi.addItem(
+      KeyValue(key: "Waktu", value: DateTime.now().formatReg()),
+    );
+    dtlTransaksi.addItem(
+      KeyValue(key: "Nama Produk", value: state.selectedProduct.namaproduk),
+    );
+    dtlTransaksi.addItem(
+      KeyValue(key: "Kode Produk", value: state.selectedProduct.kodeproduk),
+    );
+
+    debugPrint("JUMLAH DETAIL TRANSAKSI: ${dtlTransaksi.items.length}");
+    if (state.cekAkunData != null) {
+      var cekAkunRes = state.cekAkunData?.dataSplit?.dataTransaksi ?? [];
+
+      for (var item in cekAkunRes) {
+        dtlTransaksi.addItem(KeyValue(key: item.key, value: item.value));
+      }
+    } else {
+      dtlTransaksi.addItem(KeyValue(key: "Tujuan", value: state.tujuan.trim()));
+    }
+
+    var dtlPotongStok = KeyValueResponse(items: []);
+    int finalTotalPotongStok = 0;
+
+    debugPrint("JUMLAH DETAIL POTONG STOK: ${dtlPotongStok.items.length}");
+
+    if (state.cekAkunData != null && state.detailPotongStok.items.isNotEmpty) {
+      for (var item in state.detailPotongStok.items) {
+        dtlPotongStok.addItem(item);
+      }
+      finalTotalPotongStok = state.totalPotongStok;
+    } else {
+      dtlPotongStok.addItem(
+        KeyValue(
+          key: "Harga",
+          value: ToRupiah(state.selectedProduct.hargaproduk.toString()),
+        ),
+      );
+      dtlPotongStok.addItem(KeyValue(key: "Biaya Admin", value: "0"));
+      finalTotalPotongStok = state.selectedProduct.hargaproduk;
+    }
+
+    emit(
+      state.copyWith(
+        totalPotongStok: finalTotalPotongStok,
+        detailTransaksi: dtlTransaksi,
+        detailPotongStok: dtlPotongStok,
+      ),
+    );
+
+    pushNamed(MemberPromoKonfirmasiTransaksiPage.routeName, arguments: this);
+  }
+
   void konfirmasiTrx(BuildContext context) async {
     // Reset state sebelum show dialog
     emit(
